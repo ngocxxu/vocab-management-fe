@@ -1,7 +1,29 @@
-import './App.css';
+import { useRoutes } from 'react-router-dom';
+import './App.scss';
+import Dashboard from './pages/dashboard';
+import { ErrorTemplate } from './pages/error';
+import { Suspense, lazy } from 'react';
 
+const LayoutLazy = lazy(() => import('./pages/layout'));
 function App() {
-  return <h1 className='text-3xl font-bold underline'>Hello world!</h1>;
+  const routes = [
+    {
+      element: (
+        <Suspense fallback={<>Loading...</>}>
+          <LayoutLazy />
+        </Suspense>
+      ),
+      children: [
+        { path: '/', element: <Dashboard /> },
+        { path: '/dashboard', element: <Dashboard /> },
+      ],
+    },
+    { path: '*', element: <ErrorTemplate /> },
+  ];
+
+  const element = useRoutes(routes);
+
+  return <>{element}</>;
 }
 
 export default App;
