@@ -1,0 +1,17 @@
+@import '../../styles/_mixin';
+
+.header {
+  .header-top {
+    background-color: red;
+    .header-top-inner {
+      @include general-width;
+      height: 50px;
+      .header-top-title {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .header-bot {
+    height: 50px;
+  }
+}

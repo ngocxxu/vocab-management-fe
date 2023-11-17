@@ -1,0 +1,39 @@
+$breakpoints: (
+  phone-sm: 420px,
+  phone: 767px,
+  tablet: 768px,
+  tablet-lg: 1024px,
+  desktop: 1025px,
+  desktop-lg: 1600px,
+);
+
+// media queries
+@mixin for-size($breakpoint, $direction: down) {
+  //neu breakpoint ton tai
+  @if map-has-key($breakpoints, $breakpoint) {
+    //Kiểm tra breakpoint truyền vào có tồn tại như bạn đã định nghĩa hay không.
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    // Xác định min-width hay max-width
+    @if $direction == up {
+      //Build media query
+      @media (min-width: $breakpoint-value) {
+        @content;
+      }
+    } @else if $direction == down {
+      //Build media query
+      @media (max-width: $breakpoint-value) {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin vertical-list {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@mixin general-width {
+  margin: 0 4rem;
+}

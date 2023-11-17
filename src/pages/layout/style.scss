@@ -1,0 +1,11 @@
+@use 'sass:map';
+@import '../../styles/_mixin';
+
+.layout {
+  // padding: 0 calc(200px / 2);
+  @include vertical-list;
+  // @include for-size(desktop) {
+  //   max-width: 85%;
+  //   display: none;
+  // }
+}
