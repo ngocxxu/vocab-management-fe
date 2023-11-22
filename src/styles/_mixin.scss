@@ -7,6 +7,21 @@ $breakpoints: (
   desktop-lg: 1600px,
 );
 
+$colorCustom: (
+  green-100: #c8f0e3,
+  green-200: #42cc9e,
+  green-300: #23c58f,
+  purple-100: #d4d6f8,
+  purple-200: #6a72e7,
+  purple-300: #525ce5,
+  dark-100: #27303f,
+  dark-200: #495057,
+  gray-100: #eaedf1,
+  gray-200: #f5f7fa,
+  gray-300: #f9fafc,
+  blue-300: #1f293f,
+);
+
 // media queries
 @mixin for-size($breakpoint, $direction: down) {
   //neu breakpoint ton tai
@@ -35,5 +50,5 @@ $breakpoints: (
 }
 
 @mixin general-width {
-  margin: 0 4rem;
+  padding: 0 4rem;
 }

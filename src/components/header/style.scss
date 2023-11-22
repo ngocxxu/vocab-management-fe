@@ -1,17 +1,38 @@
+@use 'sass:map';
 @import '../../styles/_mixin';
 
 .header {
   .header-top {
-    background-color: red;
+    background-color: map.get($colorCustom, 'blue-300');
     .header-top-inner {
       @include general-width;
       height: 50px;
-      .header-top-title {
-        margin-bottom: 0;
+      .header-top-inner-title {
+        font-weight: 500;
+        font-size: large;
+        color: white;
       }
     }
   }
   .header-bot {
-    height: 50px;
+    .header-bot-menu {
+      padding-left: 3rem;
+    }
+  }
+  .header-breadcrumb {
+    background: url(../../assets/img/background/bg-bcrumb.png);
+    background-position: center;
+    background-color: #525ce5;
+    margin: 0 -24px 23px -24px;
+    padding: 25px 24px 92px 24px;
+    color: #fff;
+    background-size: cover;
+
+    .header-breadcrumb-text {
+      text-decoration: underline;
+      font-weight: 400;
+      font-size: medium;
+      margin-bottom: 0;
+    }
   }
 }

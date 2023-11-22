@@ -1,0 +1,7 @@
+@import '../../styles/_mixin';
+
+.chart-table {
+  @include general-width;
+  margin-top: -6rem;
+  background-color: #fff;
+}
