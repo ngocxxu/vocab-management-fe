@@ -1,54 +1,77 @@
+import { Menu, Button, Text, rem } from '@mantine/core';
 import {
-  FileProtectOutlined,
-  GoldOutlined,
-  HomeOutlined,
-  ReadOutlined,
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Menu } from 'antd';
-import { useState } from 'react';
-import '../header/style.scss';
+  IconSettings,
+  IconSearch,
+  IconPhoto,
+  IconMessageCircle,
+  IconTrash,
+  IconArrowsLeftRight,
+} from '@tabler/icons-react';
 
-const items: MenuProps['items'] = [
-  {
-    label: 'Dashboard',
-    key: 'dashboard',
-    icon: <HomeOutlined />,
-  },
-  {
-    label: 'Vocabulary',
-    key: 'vocab',
-    icon: <ReadOutlined />,
-  },
-  {
-    label: 'Vocab Trainer',
-    key: 'vocab-trainer',
-    icon: <FileProtectOutlined />,
-  },
-  {
-    label: 'History',
-    key: 'history',
-    icon: <GoldOutlined />,
-  },
-];
-
-const MenuCustom = () => {
-  const [current, setCurrent] = useState('mail');
-
-  const onClick: MenuProps['onClick'] = (e) => {
-    console.log('click ', e);
-    setCurrent(e.key);
-  };
-
+function MenuCustom() {
   return (
-    <Menu
-      className='header-bot-menu'
-      onClick={onClick}
-      selectedKeys={[current]}
-      mode='horizontal'
-      items={items}
-    />
+    <Menu shadow='md' width={200}>
+      <Menu.Target>
+        <Button>Toggle menu</Button>
+      </Menu.Target>
+
+      <Menu.Dropdown>
+        <Menu.Label>Application</Menu.Label>
+        <Menu.Item
+          leftSection={
+            <IconSettings style={{ width: rem(14), height: rem(14) }} />
+          }
+        >
+          Settings
+        </Menu.Item>
+        <Menu.Item
+          leftSection={
+            <IconMessageCircle style={{ width: rem(14), height: rem(14) }} />
+          }
+        >
+          Messages
+        </Menu.Item>
+        <Menu.Item
+          leftSection={
+            <IconPhoto style={{ width: rem(14), height: rem(14) }} />
+          }
+        >
+          Gallery
+        </Menu.Item>
+        <Menu.Item
+          leftSection={
+            <IconSearch style={{ width: rem(14), height: rem(14) }} />
+          }
+          rightSection={
+            <Text size='xs' c='dimmed'>
+              ⌘K
+            </Text>
+          }
+        >
+          Search
+        </Menu.Item>
+
+        <Menu.Divider />
+
+        <Menu.Label>Danger zone</Menu.Label>
+        <Menu.Item
+          leftSection={
+            <IconArrowsLeftRight style={{ width: rem(14), height: rem(14) }} />
+          }
+        >
+          Transfer my data
+        </Menu.Item>
+        <Menu.Item
+          color='red'
+          leftSection={
+            <IconTrash style={{ width: rem(14), height: rem(14) }} />
+          }
+        >
+          Delete my account
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   );
-};
+}
 
 export default MenuCustom;

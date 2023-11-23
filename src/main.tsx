@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.scss';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter } from 'react-router-dom';
 import store from './redux/store.ts';
-import { Provider } from 'react-redux';
-import { ConfigProvider } from 'antd';
 
 const queryClient = new QueryClient();
 
@@ -15,13 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-          <ConfigProvider
-            theme={{
-              components: {},
-            }}
-          >
-            <App />
-          </ConfigProvider>
+          <App />
         </QueryClientProvider>
       </BrowserRouter>
     </Provider>

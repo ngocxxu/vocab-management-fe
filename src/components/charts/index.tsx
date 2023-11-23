@@ -1,4 +1,4 @@
-import { Flex, Segmented, Typography } from 'antd';
+import { Flex, SegmentedControl, Text } from '@mantine/core';
 import SimpleBarChart from './SimpleBarChart';
 import './style.scss';
 
@@ -6,16 +6,12 @@ const ChartTable = () => {
   return (
     <div className='chart-table'>
       <Flex
-        justify='space-between'
         align='center'
+        justify='space-between'
         className='chart-table-title'
       >
-        <Typography.Title level={5} style={{ margin: 0 }}>
-          Quick Summary
-        </Typography.Title>
-        <Segmented
-          options={['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly']}
-        />
+        <Text size='md'>Quick Summary</Text>
+        <SegmentedControl data={['React', 'Angular', 'Vue']} />
       </Flex>
       <SimpleBarChart />
     </div>

@@ -1,12 +1,12 @@
-import { Typography } from 'antd';
+import { Text } from '@mantine/core';
 import './style.scss';
 
 const HeaderBreadcrumb = () => {
   return (
     <div className='header-breadcrumb'>
-      <Typography.Title level={5} style={{ margin: 0, color: '#fff' }}>
+      <Text c='#fff' size='md'>
         DASHBOARD DETAIL
-      </Typography.Title>
+      </Text>
       {/* <p className='header-breadcrumb-text'>Back</p> */}
     </div>
   );
