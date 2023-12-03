@@ -1,10 +1,10 @@
-import { Flex, SegmentedControl, Text } from '@mantine/core';
+import { Box, Flex, SegmentedControl, Text } from '@mantine/core';
 import SimpleBarChart from './SimpleBarChart';
 import './style.scss';
 
 const ChartTable = () => {
   return (
-    <div className='chart-table'>
+    <Box m={20}>
       <Flex
         align='center'
         justify='space-between'
@@ -14,7 +14,7 @@ const ChartTable = () => {
         <SegmentedControl data={['React', 'Angular', 'Vue']} />
       </Flex>
       <SimpleBarChart />
-    </div>
+    </Box>
   );
 };
 

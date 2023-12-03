@@ -5,7 +5,6 @@
   .header-top {
     background-color: map.get($colorCustom, 'blue-300');
     .header-top-inner {
-      @include general-width;
       height: 50px;
       .header-top-inner-title {
         font-weight: 500;
@@ -20,11 +19,12 @@
     }
   }
   .header-breadcrumb {
+    height: fit-content;
     background: url(../../assets/img/background/bg-bcrumb.png);
     background-position: center;
     background-color: #525ce5;
-    margin: 0 -24px 23px -24px;
-    padding: 25px 24px 92px 24px;
+    // margin: 0 -24px 23px -24px;
+    // padding: 25px 24px 92px 24px;
     color: #fff;
     background-size: cover;
 
