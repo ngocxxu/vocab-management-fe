@@ -8,7 +8,7 @@ const HeaderBreadcrumb = () => {
         <Text c='#fff' size='md'>
           DASHBOARD DETAIL
         </Text>
-        <p className='header-breadcrumb-text'>Back</p>
+        <Text className=''>Back</Text>
       </Container>
     </div>
   );
