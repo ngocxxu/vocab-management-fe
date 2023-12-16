@@ -1,0 +1,7 @@
+.icon {
+  color: var(--mantine-color-gray-5);
+}
+
+.iconLogout {
+  color: var(--mantine-color-red-8);
+}

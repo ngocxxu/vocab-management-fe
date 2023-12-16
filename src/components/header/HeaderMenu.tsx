@@ -7,7 +7,7 @@ import {
   IconVocabulary,
 } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
-import classes from './HeaderMenu.module.css';
+import classes from './header.module.css';
 
 const links = [
   { link: '/dashboard', label: 'Dashboard', icon: IconHome },

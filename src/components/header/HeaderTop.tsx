@@ -1,6 +1,8 @@
-import { ActionIcon, Avatar, Container, Flex, Indicator } from '@mantine/core';
-import { IconBell, IconSettings } from '@tabler/icons-react';
+import { ActionIcon, Container, Flex, Indicator } from '@mantine/core';
+import { IconBell } from '@tabler/icons-react';
+import UserButton from '../button/UserButton';
 import './style.scss';
+import classes from './header.module.css';
 
 const HeaderTop = () => {
   return (
@@ -15,33 +17,17 @@ const HeaderTop = () => {
           <Flex gap={20} justify='center' align='center'>
             <Indicator label='5' size={15} offset={7} color='red'>
               <ActionIcon
+                classNames={{ root: classes.iconAction }}
                 size='lg'
                 variant='filled'
                 radius='xl'
                 aria-label='Settings'
               >
-                <IconBell
-                  style={{ width: '70%', height: '70%' }}
-                  stroke={1.5}
-                />
+                <IconBell className={classes.icon} />
               </ActionIcon>
             </Indicator>
 
-            <Avatar color='grape' radius='xl'>
-              MK
-            </Avatar>
-
-            <ActionIcon
-              size='lg'
-              variant='filled'
-              radius='xl'
-              aria-label='Settings'
-            >
-              <IconSettings
-                style={{ width: '70%', height: '70%' }}
-                stroke={1.5}
-              />
-            </ActionIcon>
+            <UserButton />
           </Flex>
         </Flex>
       </Container>
