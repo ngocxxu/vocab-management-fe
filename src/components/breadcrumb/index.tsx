@@ -1,28 +1,32 @@
 import React from 'react';
-import { Breadcrumb } from 'antd';
 import './style.scss';
+import { Anchor, Breadcrumbs } from '@mantine/core';
+
+const items = [
+  {
+    title: 'Home',
+  },
+  {
+    title: 'Application Center',
+    href: '',
+  },
+  {
+    title: 'Application List',
+    href: '',
+  },
+  {
+    title: 'An Application',
+  },
+].map((item, index) => (
+  <Anchor href={item.href} key={index}>
+    {item.title}
+  </Anchor>
+));
 
 const BreadcrumbCustom: React.FC = () => (
-  <Breadcrumb
-    className='breadcrumb'
-    separator='>'
-    items={[
-      {
-        title: 'Home',
-      },
-      {
-        title: 'Application Center',
-        href: '',
-      },
-      {
-        title: 'Application List',
-        href: '',
-      },
-      {
-        title: 'An Application',
-      },
-    ]}
-  />
+  <Breadcrumbs className='breadcrumb' separator='>'>
+    {items}
+  </Breadcrumbs>
 );
 
 export default BreadcrumbCustom;
