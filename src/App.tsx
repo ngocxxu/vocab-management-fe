@@ -31,6 +31,7 @@ function App() {
     {
       element: (
         <Suspense fallback={<>Loading...</>}>
+          <></>
           <LayoutLazy />
         </Suspense>
       ),
