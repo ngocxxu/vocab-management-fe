@@ -1,25 +1,6 @@
-import {
-  Avatar,
-  Divider,
-  Group,
-  Menu,
-  Text,
-  UnstyledButton,
-} from '@mantine/core';
-import {
-  IconChevronDown,
-  IconLogout,
-  IconSettings,
-  IconUser,
-} from '@tabler/icons-react';
-import { forwardRef } from 'react';
+import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
+import DropDownCustom from '../dropdown';
 import classes from './button.module.css';
-
-interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
-  image: string;
-  name: string;
-  icon?: React.ReactNode;
-}
 
 const items = [
   {
@@ -37,74 +18,45 @@ const items = [
   },
 ];
 
-const UserMenu = forwardRef<HTMLButtonElement, UserButtonProps>(
-  ({ image, name, icon, ...props }: UserButtonProps, ref) => (
-    <UnstyledButton ref={ref} {...props}>
-      <Group>
-        <Avatar src={image} radius='xl' />
-        <Text c='gray.5' size='sm'>
-          {name}
-        </Text>
-
-        {icon || <IconChevronDown className={classes.icon} size='1rem' />}
-      </Group>
-    </UnstyledButton>
-  )
-);
-
 const MenuItem = () => {
   return (
-    <>
-      {items.map(({ icon, title, color }) => {
+    <ul className='shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52'>
+      {items.map(({ icon, title }) => {
         return (
-          <>
-            {title === 'Logout' && <Divider />}
-            <Menu.Item
-              c={color}
-              leftSection={icon}
-              component='a'
-              href='https://mantine.dev'
-              target='_blank'
-            >
+          <li>
+            <a className={title === 'Logout' ? 'text-red-500' : ''}>
+              {icon}
               {title}
-            </Menu.Item>
-          </>
+            </a>
+          </li>
         );
       })}
-      {/* <Menu.Item
-        leftSection={<IconLogout size='1rem' className={classes.iconLogout} />}
-        component='a'
-        href='https://mantine.dev'
-      >
-        Mantine website
-      </Menu.Item>
-      <Divider />
-      <Menu.Item
-        c='red.8'
-        leftSection={<IconLogout size='1rem' className={classes.iconLogout} />}
-        component='a'
-        href='https://mantine.dev'
-        target='_blank'
-      >
-        Logout
-      </Menu.Item> */}
-    </>
+    </ul>
   );
 };
 
 const UserButton = () => {
   return (
-    <Menu withArrow>
-      <Menu.Target>
-        <UserMenu
-          image='https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png'
-          name='Haneul'
+    <ul className='menu menu-horizontal'>
+      <li>
+        <DropDownCustom
+          head={
+            <div className='flex justify-center items-center gap-2'>
+              <div className='btn btn-ghost btn-circle avatar'>
+                <div className='w-10 rounded-full'>
+                  <img
+                    alt='Tailwind CSS Navbar component'
+                    src='https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
+                  />
+                </div>
+              </div>
+              <p className='text-white font-semibold'>Hanuel</p>
+            </div>
+          }
+          list={<MenuItem />}
         />
-      </Menu.Target>
-      <Menu.Dropdown>
-        <MenuItem />
-      </Menu.Dropdown>
-    </Menu>
+      </li>
+    </ul>
   );
 };
 

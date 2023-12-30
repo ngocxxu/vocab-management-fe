@@ -10,13 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mantine/core": "^7.3.2",
-    "@mantine/dates": "^7.3.2",
-    "@mantine/form": "^7.3.2",
-    "@mantine/hooks": "^7.3.2",
-    "@mantine/modals": "^7.3.2",
-    "@mantine/notifications": "^7.3.2",
-    "@mantine/vanilla-extract": "^7.3.2",
     "@reduxjs/toolkit": "^2.0.1",
     "@tabler/icons-react": "^2.44.0",
     "@tanstack/react-table": "^8.11.2",
@@ -32,18 +25,21 @@
     "recharts": "^2.10.1"
   },
   "devDependencies": {
+    "@types/node": "^20.10.6",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
+    "autoprefixer": "^10.4.16",
+    "daisyui": "^4.4.24",
     "eslint": "^8.53.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
-    "postcss": "^8.4.31",
+    "postcss": "^8.4.32",
     "postcss-preset-mantine": "^1.11.0",
     "postcss-simple-vars": "^7.0.1",
     "sass": "^1.69.5",
+    "tailwindcss": "^3.4.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0"
   }

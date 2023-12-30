@@ -1,13 +1,11 @@
-import { Box, Burger, Container, Flex, Group } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import {
   IconHistory,
   IconHome,
   IconMedal2,
   IconVocabulary,
 } from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
-import classes from './header.module.css';
+import clsx from 'clsx';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const links = [
   { link: '/dashboard', label: 'Dashboard', icon: IconHome },
@@ -27,67 +25,68 @@ const links = [
 ];
 
 export function HeaderMenu() {
-  const [opened, { toggle }] = useDisclosure(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const transformedPath = pathname.split('/').slice(0, 2).join('/');
 
   const items = links.map((link) => {
-    // const menuItems = link.links?.map((item) => (
-    //   <Menu.Item key={item.link}>{item.label}</Menu.Item>
-    // ));
-
-    // if (menuItems) {
-    //   return (
-    //     <Menu
-    //       key={link.label}
-    //       trigger='hover'
-    //       transitionProps={{ exitDuration: 0 }}
-    //       withinPortal
-    //     >
-    //       <Menu.Target>
-    //         <a
-    //           href={link.link}
-    //           className={classes.link}
-    //           onClick={(event) => event.preventDefault()}
-    //         >
-    //           <Center>
-    //             <span className={classes.linkLabel}>{link.label}</span>
-    //             <IconChevronDown size='0.9rem' stroke={1.5} />
-    //           </Center>
-    //         </a>
-    //       </Menu.Target>
-    //       <Menu.Dropdown>{menuItems}</Menu.Dropdown>
-    //     </Menu>
-    //   );
-    // }
-
     return (
       <a
         key={link.label}
         href={link.link}
-        className={classes.link}
         onClick={(event) => {
           event.preventDefault();
           navigate(`${link.link}`);
         }}
       >
-        <Flex align='center' justify='center' gap='xs'>
+        <div
+          className={clsx(
+            'flex justify-center items-center gap-2 h-11 hover:text-purple-700',
+            {
+              'text-purple-700': transformedPath === link.link,
+            }
+          )}
+        >
           <link.icon size={18} />
           {link.label}
-        </Flex>
+        </div>
       </a>
     );
   });
 
   return (
-    <Box mr='xl'>
-      <Container size='xl'>
-        <div className={classes.inner}>
-          <Group gap={15} visibleFrom='sm'>
-            {items}
-          </Group>
-          <Burger opened={opened} onClick={toggle} size='sm' hiddenFrom='sm' />
+    <div className='container mx-auto'>
+      <div className='flex'>
+        <div className='flex justify-start items-center gap-8 sm:visible invisible '>
+          {items}
         </div>
-      </Container>
-    </Box>
+
+        <label className='btn btn-circle swap swap-rotate visible sm:invisible'>
+          {/* this hidden checkbox controls the state */}
+          <input type='checkbox' />
+          {/* hamburger icon */}
+          <svg
+            className='swap-off fill-current'
+            xmlns='http://www.w3.org/2000/svg'
+            width='32'
+            height='32'
+            viewBox='0 0 512 512'
+          >
+            <path d='M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z' />
+          </svg>
+
+          {/* close icon */}
+          <svg
+            className='swap-on fill-current'
+            xmlns='http://www.w3.org/2000/svg'
+            width='32'
+            height='32'
+            viewBox='0 0 512 512'
+          >
+            <polygon points='400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49' />
+          </svg>
+        </label>
+      </div>
+    </div>
   );
 }

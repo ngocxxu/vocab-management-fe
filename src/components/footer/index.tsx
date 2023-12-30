@@ -1,10 +1,10 @@
-import { Container } from '@mantine/core';
-
 const Footer = () => {
   return (
-    <div>
-      <Container size='xl'>Footer</Container>
-    </div>
+    <footer className='footer footer-center p-4 bg-base-300 text-base-content'>
+      <aside>
+        <p>Copyright © 2023 - All right reserved by ACME Industries Ltd</p>
+      </aside>
+    </footer>
   );
 };
 

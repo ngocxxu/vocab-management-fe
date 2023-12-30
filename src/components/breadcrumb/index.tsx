@@ -1,6 +1,5 @@
 import React from 'react';
 import './style.scss';
-import { Anchor, Breadcrumbs } from '@mantine/core';
 
 const items = [
   {
@@ -18,15 +17,15 @@ const items = [
     title: 'An Application',
   },
 ].map((item, index) => (
-  <Anchor href={item.href} key={index}>
+  <a href={item.href} key={index}>
     {item.title}
-  </Anchor>
+  </a>
 ));
 
 const BreadcrumbCustom: React.FC = () => (
-  <Breadcrumbs className='breadcrumb' separator='>'>
-    {items}
-  </Breadcrumbs>
+  <div className='text-sm breadcrumbs'>
+    <ul>{items}</ul>
+  </div>
 );
 
 export default BreadcrumbCustom;

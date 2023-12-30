@@ -1,4 +1,3 @@
-import { Container, Paper } from '@mantine/core';
 import ChartTable from '../../components/charts';
 
 const Dashboard = () => {
@@ -6,12 +5,12 @@ const Dashboard = () => {
   // const { toggle } = useSelector((state: RootState) => state.dashboardReducer);
 
   return (
-    <Container size='xl'>
-      <Paper shadow='sm' withBorder>
+    <div className='container mx-auto'>
+      <div className='shadow-md'>
         <ChartTable />
         {/* <Button type='primary'>{!toggle && 'hi'}</Button> */}
-      </Paper>
-    </Container>
+      </div>
+    </div>
   );
 };
 
