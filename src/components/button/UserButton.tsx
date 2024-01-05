@@ -23,7 +23,7 @@ const MenuItem = () => {
     <ul className='shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52'>
       {items.map(({ icon, title }) => {
         return (
-          <li>
+          <li key={title}>
             <a className={title === 'Logout' ? 'text-red-500' : ''}>
               {icon}
               {title}
@@ -50,7 +50,7 @@ const UserButton = () => {
                   />
                 </div>
               </div>
-              <p className='text-white font-semibold'>Hanuel</p>
+              <p className='text-white font-semibold'>Haneul</p>
             </div>
           }
           list={<MenuItem />}

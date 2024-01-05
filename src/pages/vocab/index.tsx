@@ -1,10 +1,10 @@
 import {
   createColumnHelper,
-  flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { useState } from 'react';
+import Table from '../../components/table';
 import './index.css';
 
 type Person = {
@@ -48,30 +48,21 @@ const columnHelper = createColumnHelper<Person>();
 const columns = [
   columnHelper.accessor('firstName', {
     cell: (info) => info.getValue(),
-    footer: (info) => info.column.id,
   }),
-  columnHelper.accessor((row) => row.lastName, {
-    id: 'lastName',
-    cell: (info) => <i>{info.getValue()}</i>,
-    header: () => <span>Last Name</span>,
-    footer: (info) => info.column.id,
+  columnHelper.accessor('lastName', {
+    header: 'lastName',
   }),
   columnHelper.accessor('age', {
-    header: () => 'Age',
-    cell: (info) => info.renderValue(),
-    footer: (info) => info.column.id,
+    header: 'Age',
   }),
   columnHelper.accessor('visits', {
-    header: () => <span>Visits</span>,
-    footer: (info) => info.column.id,
+    header: 'visits',
   }),
   columnHelper.accessor('status', {
     header: 'Status',
-    footer: (info) => info.column.id,
   }),
   columnHelper.accessor('progress', {
     header: 'Profile Progress',
-    footer: (info) => info.column.id,
   }),
 ];
 
@@ -84,37 +75,7 @@ const Vocab = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return (
-    <table className='container mx-auto shadow rounded-xl'>
-      <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+  return <Table table={table} />;
 };
 
 export default Vocab;
