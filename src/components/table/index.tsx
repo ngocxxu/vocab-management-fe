@@ -6,12 +6,12 @@ type TTable<T> = {
 
 const Table = <T,>({ table }: TTable<T>) => {
   return (
-    <table className='container mx-auto shadow rounded-xl'>
-      <thead>
+    <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 table-fixed'>
+      <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id}>
+              <th scope='col' className='px-6 py-3' key={header.id}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
@@ -25,9 +25,12 @@ const Table = <T,>({ table }: TTable<T>) => {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
+          <tr
+            className='bg-white dark:bg-gray-800 dark:border-gray-700 border-b'
+            key={row.id}
+          >
             {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
+              <td className='px-6 py-4' key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}
