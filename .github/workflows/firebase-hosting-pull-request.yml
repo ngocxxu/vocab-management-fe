@@ -9,7 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: npm ci && npm run build
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set environment variable
+        run: |
+          VITE_APP_API_URL=${{ secrets.VITE_APP_API_URL }}
+          echo "VITE_APP_API_URL=$VITE_APP_API_URL" >> $GITHUB_ENV
+          echo "::addmask::$VITE_APP_API_URL"
+
+      - name: Build
+        run: npm run build
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
