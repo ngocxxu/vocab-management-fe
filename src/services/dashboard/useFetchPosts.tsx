@@ -1,10 +1,8 @@
-import axios from 'axios';
 import { useQuery } from 'react-query';
+import { httpClient } from '../settings';
 
 const fetchPosts = async () => {
-  const { data } = await axios.get(
-    'https://jsonplaceholder.typicode.com/posts'
-  );
+  const { data } = await httpClient.get(`/vocab`);
   return data;
 };
 
