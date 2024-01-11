@@ -1,143 +1,68 @@
-import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { useState } from "react";
+import { IconArrowDown, IconEdit, IconTrash } from "@tabler/icons-react";
+import { ColumnDef } from "@tanstack/react-table";
+import { ReactNode } from "react";
 import Table from "../../components/table";
+import { useFetchPosts } from "../../services/dashboard/useFetchPosts";
+import { useGetAllVocab } from "../../services/vocab/useGetAllVocab";
 
-type Person = {
-  firstName: string;
-  lastName: string;
-  age: number;
-  visits: number;
-  status: string;
-  progress: number;
+type TExamples = {
+  source: string;
+  target: string;
 };
 
-const defaultData: Person[] = [
-  {
-    firstName: "tanner",
-    lastName: "linsley",
-    age: 24,
-    visits: 100,
-    status: "In Relationship",
-    progress: 50,
-  },
-  {
-    firstName: "tandy",
-    lastName: "해서",
-    age: 40,
-    visits: 40,
-    status: "Single",
-    progress: 80,
-  },
-  {
-    firstName: "joe",
-    lastName: "손질해서",
-    age: 45,
-    visits: 20,
-    status: "Complicated",
-    progress: 10,
-  },
-  {
-    firstName: "tanner",
-    lastName: "linsley",
-    age: 24,
-    visits: 100,
-    status: "In Relationship",
-    progress: 50,
-  },
-  {
-    firstName: "tandy",
-    lastName: "해서",
-    age: 40,
-    visits: 40,
-    status: "Single",
-    progress: 80,
-  },
-  {
-    firstName: "joe",
-    lastName: "손질해서",
-    age: 45,
-    visits: 20,
-    status: "Complicated",
-    progress: 10,
-  },
-  {
-    firstName: "tanner",
-    lastName: "linsley",
-    age: 24,
-    visits: 100,
-    status: "In Relationship",
-    progress: 50,
-  },
-  {
-    firstName: "tandy",
-    lastName: "해서",
-    age: 40,
-    visits: 40,
-    status: "Single",
-    progress: 80,
-  },
-  {
-    firstName: "joe",
-    lastName: "손질해서",
-    age: 45,
-    visits: 20,
-    status: "Complicated",
-    progress: 10,
-  },
-];
+type TTextTarget = {
+  text: string;
+  wordType: string;
+  explanationSource: string;
+  explanationTarget: string;
+  examples: TExamples[];
+  grammar: string;
+  subject: string[];
+};
 
-const columns = [
-  {
-    accessorKey: "firstName",
-    header: () => "firstName",
-  },
-  {
-    accessorKey: "lastName",
-    header: () => "lastName",
-  },
-  {
-    accessorKey: "age",
-    header: () => "Age",
-  },
-  {
-    accessorKey: "visits",
-    header: () => "visits",
-  },
-  {
-    accessorKey: "status",
-    header: () => "status",
-  },
-  {
-    accessorKey: "progress",
-    header: () => "progress",
-  },
-  {
-    id: "action",
-    cell: () => (
-      <div className="flex gap-3 items-center">
-        <button className="btn btn-square btn-xs btn-outline border-white bg-white ">
-          <IconEye />
-        </button>
-        <button className="btn btn-square btn-xs btn-outline border-white bg-white ">
-          <IconEdit />
-        </button>
-        <button className="btn btn-square btn-xs btn-outline border-white bg-white ">
-          <IconTrash />
-        </button>
-      </div>
-    ),
-  },
-];
+type TVocab = {
+  sourceLanguage: string;
+  targetLanguage: string;
+  textSource: string;
+  textTarget: TTextTarget[];
+};
 
 const Vocab = () => {
-  const [data] = useState(() => [...defaultData]);
+  const { data } = useGetAllVocab();
+  useFetchPosts();
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  const columns: ColumnDef<TVocab>[] = [
+    {
+      accessorKey: "textSource",
+      header: "textSource",
+      cell: ({ getValue }) => (
+        <div className="break-all">{getValue() as ReactNode}</div>
+      ),
+    },
+    {
+      accessorKey: "textTarget",
+      header: "textTarget",
+      cell: () => (
+        <div className="break-all cursor-pointer flex justify-between items-center">
+          <div>Hello</div>
+          <IconArrowDown />
+        </div>
+      ),
+    },
+    {
+      id: "action",
+      cell: () => (
+        <div className="flex gap-3 items-center w-0">
+          <button className="btn btn-square btn-xs btn-outline border-white bg-white ">
+            <IconEdit />
+          </button>
+          <button className="btn btn-square btn-xs btn-outline border-white bg-white ">
+            <IconTrash />
+          </button>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="container mx-auto -mt-20 bg-white rounded-md p-5 shadow-md mb-10">
@@ -145,7 +70,7 @@ const Vocab = () => {
       <p className="text-sm mb-6">
         Table Edits is a lightweight 해서 plugin for making table rows editable.
       </p>
-      <Table table={table} />
+      <Table data={data ?? []} columns={columns} />
       <div className="join mt-6 flex justify-end">
         <button className="join-item btn btn-sm">«</button>
         <button className="join-item btn btn-sm">‹</button>
