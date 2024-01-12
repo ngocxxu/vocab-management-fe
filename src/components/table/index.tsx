@@ -33,6 +33,14 @@ const DataTable = <T extends TExtend>({ data, columns }: TTable<T>) => {
     getExpandedRowModel: getExpandedRowModel(),
   });
 
+  if (data.length <= 0) {
+    return (
+      <div className="h-36 flex justify-center items-center">
+        <div className="loading loading-infinity loading-lg"></div>
+      </div>
+    );
+  }
+
   return (
     <table className="w-full text-sm text-left rtl:text-right text-gray-500">
       <thead className="text-xs text-gray-700 uppercase bg-gray-50">
