@@ -1,8 +1,15 @@
-import { IconArrowDown, IconEdit, IconTrash } from "@tabler/icons-react";
+import {
+  IconArrowBadgeDownFilled,
+  IconArrowBadgeUpFilled,
+  IconEdit,
+  IconTrash,
+} from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Table from "../../components/table";
-import { useFetchPosts } from "../../services/dashboard/useFetchPosts";
+import { toggleState } from "../../redux/reducer/vocab";
+import { RootState } from "../../redux/store";
 import { useGetAllVocab } from "../../services/vocab/useGetAllVocab";
 
 type TExamples = {
@@ -10,7 +17,7 @@ type TExamples = {
   target: string;
 };
 
-type TTextTarget = {
+export type TTextTarget = {
   text: string;
   wordType: string;
   explanationSource: string;
@@ -21,6 +28,7 @@ type TTextTarget = {
 };
 
 type TVocab = {
+  _id: string;
   sourceLanguage: string;
   targetLanguage: string;
   textSource: string;
@@ -28,24 +36,51 @@ type TVocab = {
 };
 
 const Vocab = () => {
+  const dispatch = useDispatch();
+  const { idsState } = useSelector((state: RootState) => state.vocabReducer);
   const { data } = useGetAllVocab();
-  useFetchPosts();
 
   const columns: ColumnDef<TVocab>[] = [
     {
       accessorKey: "textSource",
       header: "textSource",
       cell: ({ getValue }) => (
-        <div className="break-all">{getValue() as ReactNode}</div>
+        <div className="break-all badge badge-success gap-2 text-white">
+          {getValue() as ReactNode}
+        </div>
       ),
     },
     {
       accessorKey: "textTarget",
       header: "textTarget",
-      cell: () => (
-        <div className="break-all cursor-pointer flex justify-between items-center">
-          <div>Hello</div>
-          <IconArrowDown />
+      cell: ({ row }) => (
+        <div
+          className="break-all cursor-pointer flex justify-between items-center"
+          onClick={() =>
+            dispatch(
+              toggleState({
+                id: row.original._id,
+              })
+            )
+          }
+        >
+          <div>
+            {row.original.textTarget.map((item) => {
+              return (
+                <Fragment key={item.text}>
+                  <div className="badge badge-info gap-2 text-white">
+                    {item.text}
+                  </div>{" "}
+                </Fragment>
+              );
+            })}
+          </div>
+
+          {idsState.includes(row.original._id) ? (
+            <IconArrowBadgeUpFilled />
+          ) : (
+            <IconArrowBadgeDownFilled />
+          )}
         </div>
       ),
     },

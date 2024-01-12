@@ -1,5 +1,5 @@
-import { useQuery } from 'react-query';
-import { httpClient } from '../settings';
+import { useQuery } from "react-query";
+import { httpClient } from "../settings";
 
 const fetchPosts = async () => {
   const { data } = await httpClient.get(`/vocab`);
@@ -8,10 +8,10 @@ const fetchPosts = async () => {
 
 export const useFetchPosts = () => {
   return useQuery({
-    queryKey: ['posts'],
+    queryKey: ["posts"],
     queryFn: fetchPosts,
-    onSuccess: (data) => {
-      console.log({ data });
+    onSuccess: () => {
+      // console.log({ data });
     },
   });
 };

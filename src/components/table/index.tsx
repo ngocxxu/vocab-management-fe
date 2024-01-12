@@ -7,19 +7,26 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { Fragment, ReactNode, memo, useMemo } from "react";
+import { TTextTarget } from "../../pages/vocab";
+import CollapseVocab from "../../pages/vocab/components/collapse";
 
-type TTable<T> = {
+type TTable<T extends TExtend> = {
   data: T[];
   columns: ColumnDef<T>[];
 };
 
-const Table = <T,>({ data, columns }: TTable<T>) => {
-  const memoData = useMemo<ColumnDef<T>[]>(() => columns, [columns]);
+export type TExtend = {
+  _id: string;
+  textTarget: TTextTarget[];
+};
+
+const DataTable = <T extends TExtend>({ data, columns }: TTable<T>) => {
+  const memoColumn = useMemo<ColumnDef<T>[]>(() => columns, [columns]);
 
   const table = useReactTable({
     data,
-    columns: memoData,
+    columns: memoColumn,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -27,48 +34,43 @@ const Table = <T,>({ data, columns }: TTable<T>) => {
   });
 
   return (
-    <>
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th scope="col" className="px-6 py-3" key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
+    <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+      <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <th scope="col" className="px-6 py-3" key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody>
+        {table.getRowModel().rows.map((row) => (
+          <Fragment key={row.id}>
+            <tr className="bg-white border-b">
+              {row.getVisibleCells().map((cell) => (
+                <td className="px-6 py-4" key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
               ))}
             </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <>
-              <tr className="bg-white" key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td className="px-6 py-4" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-              <tr className="border-b bg-slate-100">
-                <td
-                  className="px-6 py-4 break-all"
-                  colSpan={row.getVisibleCells().length}
-                >
-                  Hello
-                </td>
-              </tr>
-            </>
-          ))}
-        </tbody>
-      </table>
-    </>
+            <CollapseVocab row={row} />
+          </Fragment>
+        ))}
+      </tbody>
+    </table>
   );
 };
+
+const Table = memo(DataTable) as <T extends TExtend>(
+  props: TTable<T>
+) => ReactNode;
 
 export default Table;
