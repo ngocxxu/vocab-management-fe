@@ -4,8 +4,16 @@ import {
   IconEdit,
   IconTrash,
 } from "@tabler/icons-react";
-import { ColumnDef } from "@tanstack/react-table";
-import { Fragment, ReactNode, useMemo, useState } from "react";
+import { ColumnDef, getCoreRowModel } from "@tanstack/react-table";
+import {
+  Fragment,
+  HTMLProps,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DropDownCustom from "../../components/dropdown";
 import Modal from "../../components/modal";
@@ -45,15 +53,47 @@ const Vocab = () => {
   const { data } = useGetAllVocab();
   const [idModal] = useState("general-vocab");
   const [isEditing, setIsEditing] = useState(false);
+  const [rowSelection, setRowSelection] = useState({});
+  const refDiv = useRef<HTMLDivElement>(null);
 
   const columns = useMemo<ColumnDef<TVocab>[]>(
     () => [
       {
+        id: "select",
+        header: ({ table }) => (
+          <IndeterminateCheckbox
+            {...{
+              checked: table.getIsAllRowsSelected(),
+              indeterminate: table.getIsSomeRowsSelected(),
+              onChange: table.getToggleAllRowsSelectedHandler(),
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <IndeterminateCheckbox
+            {...{
+              checked: row.getIsSelected(),
+              disabled: !row.getCanSelect(),
+              indeterminate: row.getIsSomeSelected(),
+              onChange: row.getToggleSelectedHandler(),
+            }}
+          />
+        ),
+      },
+      {
         accessorKey: "textSource",
         header: "textSource",
         cell: ({ getValue }) => (
-          <div className="break-all badge bg-emerald-500 gap-2 text-white">
-            {getValue() as ReactNode}
+          <div
+            className="w-full cursor-pointer"
+            onClick={() => {
+              if (!refDiv.current) return;
+              refDiv.current.click();
+            }}
+          >
+            <div className="break-all badge bg-emerald-500 gap-2 text-white">
+              {getValue() as ReactNode}
+            </div>
           </div>
         ),
       },
@@ -62,6 +102,7 @@ const Vocab = () => {
         header: "textTarget",
         cell: ({ row }) => (
           <div
+            ref={refDiv}
             className="break-all cursor-pointer flex justify-between items-center"
             onClick={() =>
               dispatch(
@@ -159,10 +200,45 @@ const Vocab = () => {
         </div>
       </div>
 
-      <Table data={data ?? []} columns={columns} />
+      <Table
+        data={data ?? []}
+        options={{
+          data,
+          columns: columns,
+          getCoreRowModel: getCoreRowModel(),
+          state: {
+            rowSelection,
+          },
+          onRowSelectionChange: setRowSelection,
+        }}
+      />
       <Pagination />
     </div>
   );
 };
+
+function IndeterminateCheckbox({
+  indeterminate,
+  className = "",
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = useRef<HTMLInputElement>(null!);
+
+  useEffect(() => {
+    if (typeof indeterminate === "boolean") {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref, indeterminate]);
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + " cursor-pointer"}
+      {...rest}
+    />
+  );
+}
 
 export default Vocab;

@@ -1,8 +1,6 @@
 import {
-  ColumnDef,
+  TableOptions,
   flexRender,
-  getCoreRowModel,
-  getExpandedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   useReactTable,
@@ -13,7 +11,7 @@ import CollapseVocab from "../../pages/vocab/components/collapse";
 
 type TTable<T extends TExtend> = {
   data: T[];
-  columns: ColumnDef<T>[];
+  options: TableOptions<T>;
 };
 
 export type TExtend = {
@@ -21,14 +19,12 @@ export type TExtend = {
   textTarget: TTextTarget[];
 };
 
-const DataTable = <T extends TExtend>({ data, columns }: TTable<T>) => {
+const DataTable = <T extends TExtend>({ data, options }: TTable<T>) => {
   const table = useReactTable({
-    data,
-    columns: columns,
-    getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
+    enableRowSelection: true,
+    ...options,
   });
 
   if (data.length <= 0) {
