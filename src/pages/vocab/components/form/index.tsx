@@ -29,9 +29,24 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
         control={control}
         rules={{ required: true }}
         render={({ field }) => (
-          <label className="label cursor-pointer">
-            <span className="label-text">Remember me</span>
-            <input type="checkbox" className="checkbox" {...field} />
+          <label className="form-control w-full">
+            <div className="label">
+              <span className="label-text">
+                <span className="text-red-600">*</span>Text source
+              </span>
+            </div>
+            <input
+              type="text"
+              placeholder="Type here"
+              className="input input-bordered input-sm w-full"
+              {...field}
+            />
+            {/* Validation */}
+            {/* <div className="label">
+              <span className="label-text-alt text-red-600">
+                Bottom Left label
+              </span>
+            </div> */}
           </label>
         )}
       />

@@ -40,8 +40,6 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                 },
                 idx
               ) => {
-                console.log({ itemsShow });
-
                 return (
                   <li
                     className={
