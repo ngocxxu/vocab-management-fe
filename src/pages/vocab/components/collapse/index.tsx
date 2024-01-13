@@ -1,15 +1,23 @@
 import { Row } from "@tanstack/react-table";
-import { ReactNode, memo, useState } from "react";
-import { useSelector } from "react-redux";
+import { ReactNode, memo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { TExtend } from "../../../../components/table";
+import { setItemsShowState } from "../../../../redux/reducer/vocab";
 import { RootState } from "../../../../redux/store";
 import styles from "./styles.module.scss";
 
 type TCollapseVocab<T extends TExtend> = { row: Row<T> };
 
 const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
-  const { idsState } = useSelector((state: RootState) => state.vocabReducer);
-  const [itemsShow, setItemsShow] = useState(1);
+  const dispatch = useDispatch();
+  const { idsState, itemsShow } = useSelector(
+    (state: RootState) => state.vocabReducer
+  );
+
+  const checkShow = (idx: number) =>
+    itemsShow.find(
+      (item) => item.idRow === row.original._id && item.idxExample === idx
+    );
 
   return (
     idsState.includes(row.original._id) && (
@@ -32,6 +40,8 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                 },
                 idx
               ) => {
+                console.log({ itemsShow });
+
                 return (
                   <li
                     className={
@@ -49,29 +59,38 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                     <p>{explanationSource}</p>
                     <p>{explanationTarget}</p>
 
-                    {examples.slice(0, itemsShow).map(({ source, target }) => (
-                      <div className="flex justify-start items-end gap-3">
-                        <p
+                    {examples
+                      .slice(0, !checkShow(idx) ? 1 : examples.length)
+                      .map(({ source, target }) => (
+                        <div
                           key={source}
-                          className="border-l-4 border-gray-400 pl-2 mb-2"
+                          className="flex justify-start items-end gap-3"
                         >
-                          {source} <br />
-                          {target}
-                        </p>
-                      </div>
-                    ))}
+                          <p
+                            key={source}
+                            className="border-l-4 border-gray-400 pl-2 mb-2"
+                          >
+                            {source} <br />
+                            {target}
+                          </p>
+                        </div>
+                      ))}
 
-                    <button
-                      className="text-xs text-blue-400 mb-2 block"
-                      onClick={() => {
-                        if (itemsShow > 1) {
-                          return setItemsShow(1);
-                        }
-                        return setItemsShow(examples.length);
-                      }}
-                    >
-                      {itemsShow > 1 ? "Less" : "More"}
-                    </button>
+                    {examples.length > 1 && (
+                      <button
+                        className="text-xs text-blue-400 mb-2 block"
+                        onClick={() => {
+                          dispatch(
+                            setItemsShowState({
+                              idRow: row.original._id,
+                              idxExample: idx,
+                            })
+                          );
+                        }}
+                      >
+                        {!checkShow(idx) ? "More" : "Less"}
+                      </button>
+                    )}
 
                     {grammar && (
                       <div className="badge bg-zinc-200 text-xs">
