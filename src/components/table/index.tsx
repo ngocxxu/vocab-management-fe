@@ -7,7 +7,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Fragment, ReactNode, memo, useMemo } from "react";
+import { Fragment, ReactNode, memo } from "react";
 import { TTextTarget } from "../../pages/vocab";
 import CollapseVocab from "../../pages/vocab/components/collapse";
 
@@ -22,11 +22,9 @@ export type TExtend = {
 };
 
 const DataTable = <T extends TExtend>({ data, columns }: TTable<T>) => {
-  const memoColumn = useMemo<ColumnDef<T>[]>(() => columns, [columns]);
-
   const table = useReactTable({
     data,
-    columns: memoColumn,
+    columns: columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -64,7 +62,7 @@ const DataTable = <T extends TExtend>({ data, columns }: TTable<T>) => {
           <Fragment key={row.id}>
             <tr className="bg-white border-b">
               {row.getVisibleCells().map((cell) => (
-                <td className="px-6 py-4" key={cell.id}>
+                <td className="px-6" key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

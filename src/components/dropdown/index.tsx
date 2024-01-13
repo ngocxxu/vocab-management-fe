@@ -1,5 +1,5 @@
-import { ReactNode, useRef } from 'react';
-import { removeOpenAttribute } from '../../utils';
+import { ReactNode, useRef } from "react";
+import { removeOpenAttribute } from "../../utils";
 
 type DropdownCustom = {
   head: ReactNode | string;
@@ -24,7 +24,7 @@ const DropDownCustom = ({
         removeOpenAttribute(dropdownRef);
       }}
     >
-      <summary className={classNameSummary ? classNameSummary : 'text-white'}>
+      <summary className={classNameSummary ? classNameSummary : "text-white"}>
         {head}
       </summary>
       {list}

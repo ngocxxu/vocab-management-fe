@@ -1,0 +1,7 @@
+.container {
+  transition: all 5s ease-out allow-discrete;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+  p {
+    margin-bottom: 0.5rem;
+  }
+}
