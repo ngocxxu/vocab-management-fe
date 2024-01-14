@@ -10,7 +10,7 @@ const Modal = ({ idModal, children }: TModal) => {
     <>
       <input type="checkbox" id={idModal} className="modal-toggle" />
       <div className="modal" role="dialog">
-        <div className="modal-box">{children}</div>
+        <div className="modal-box max-w-4xl">{children}</div>
         <label className="modal-backdrop" htmlFor={idModal}>
           Close
         </label>
