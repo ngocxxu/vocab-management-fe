@@ -24,7 +24,7 @@ import { RootState } from "../../redux/store";
 import { useGetAllVocab } from "../../services/vocab/useGetAllVocab";
 import FormVocab from "./components/form";
 
-type TExamples = {
+export type TExamples = {
   source: string;
   target: string;
 };

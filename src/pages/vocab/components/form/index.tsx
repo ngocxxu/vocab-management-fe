@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useRef } from "react";
@@ -7,10 +8,12 @@ import {
   useFieldArray,
   useForm,
 } from "react-hook-form";
-import { TTextTarget } from "../..";
+import * as yup from "yup";
+import { TExamples } from "../..";
 import Input from "../../../../components/input";
-import { TextTargetsForm } from "./textTargets";
 import Select from "../../../../components/select";
+import { TOption } from "../../../../utils/types";
+import { TextTargetsForm } from "./textTargets";
 
 type TFormVocab = {
   idModal: string;
@@ -21,16 +24,36 @@ export type TFormInputsVocab = {
   sourceLanguage: string;
   targetLanguage: string;
   textSource: string;
-  textTarget: TTextTarget[];
+  textTarget: {
+    text: string;
+    wordType: string;
+    explanationSource: string;
+    explanationTarget: string;
+    examples: TExamples[];
+    grammar: string;
+    subject: TOption[];
+  }[];
 };
 
+const FormSchema = yup.object().shape({
+  sourceLanguage: yup.string().required(),
+  targetLanguage: yup.string().required(),
+  textSource: yup.string().required(),
+  textTarget: yup.array().required(),
+});
+
 const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
-  const refBtn = useRef<HTMLButtonElement>(null);
-  const { handleSubmit, control } = useForm<TFormInputsVocab>({
+  const refBtn = useRef<HTMLLabelElement>(null);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<TFormInputsVocab>({
     defaultValues: {
       textSource: "",
       ["textTarget"]: [],
     },
+    resolver: yupResolver(FormSchema),
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -38,6 +61,13 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
   });
 
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => console.log(data);
+
+  // Toggle close modal if no errors
+  // useEffect(() => {
+  //   if (Object.keys(errors).length > 0) return;
+  //   if (!refBtn.current) return;
+  //   refBtn.current.click();
+  // }, [errors]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -49,6 +79,7 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
           rules={{ required: true }}
           render={({ field }) => (
             <Select
+              error={errors.sourceLanguage}
               isMark={true}
               label="Source language"
               options={[
@@ -66,6 +97,7 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
           rules={{ required: true }}
           render={({ field }) => (
             <Select
+              error={errors.targetLanguage}
               isMark={true}
               label="Target language"
               options={[
@@ -84,6 +116,7 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
         rules={{ required: true }}
         render={({ field }) => (
           <Input
+            error={errors.textSource}
             isMark={true}
             label="Text source"
             placeholder="Type here"
@@ -110,7 +143,7 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
               className="btn btn-square btn-xs btn-outline border-white bg-white"
             />
           </div>
-          <TextTargetsForm control={control} index={index} />
+          <TextTargetsForm errors={errors} control={control} index={index} />
         </fieldset>
       ))}
 
@@ -135,18 +168,12 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
 
       <div className="modal-action">
         <div className="flex justify-between items-center">
-          <button ref={refBtn} type="submit" />
+          <label ref={refBtn} htmlFor={idModal} />
           <div className="flex justify-center items-center gap-2">
-            <label
-              htmlFor={idModal}
-              className="btn"
-              onClick={() => {
-                if (!refBtn.current) return;
-                refBtn.current.click();
-              }}
-            >
+            <button className="btn" type="submit">
               {isEditing ? "Update" : "Save"}
-            </label>
+            </button>
+
             <label htmlFor={idModal} className="btn">
               Close
             </label>

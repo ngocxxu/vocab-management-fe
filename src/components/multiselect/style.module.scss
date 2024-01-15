@@ -1,0 +1,11 @@
+.item {
+  & > div {
+    border-radius: 0.5rem !important;
+    height: 2rem;
+    max-height: 2rem;
+  }
+  & > div > div {
+    height: 2rem;
+    max-height: 2rem;
+  }
+}

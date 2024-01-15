@@ -1,17 +1,27 @@
-import { Control, Controller, useFieldArray } from "react-hook-form";
-import { TFormInputsVocab } from "..";
-import Input from "../../../../../components/input";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import clsx from "clsx";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  useFieldArray,
+} from "react-hook-form";
+import { TFormInputsVocab } from "..";
+import Input from "../../../../../components/input";
+import Multiselect from "../../../../../components/multiselect";
 import { ExamplesForm } from "../examples";
-import Select from "../../../../../components/select";
 
 type TTextTargetsForm = {
   index: number;
   control: Control<TFormInputsVocab>;
+  errors: FieldErrors<TFormInputsVocab>;
 };
 
-export const TextTargetsForm = ({ index, control }: TTextTargetsForm) => {
+export const TextTargetsForm = ({
+  index,
+  control,
+}: // errors,
+TTextTargetsForm) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: `textTarget.${index}.examples`,
@@ -26,6 +36,7 @@ export const TextTargetsForm = ({ index, control }: TTextTargetsForm) => {
           rules={{ required: true }}
           render={({ field }) => (
             <Input
+              // error={errors.textTarget![index]!.text}
               isMark={true}
               label="Text target"
               placeholder="Type here"
@@ -39,6 +50,7 @@ export const TextTargetsForm = ({ index, control }: TTextTargetsForm) => {
           rules={{ required: true }}
           render={({ field }) => (
             <Input
+              // error={errors.textTarget![index]!.wordType}
               isMark={true}
               label="Word type"
               placeholder="Type here"
@@ -84,7 +96,8 @@ export const TextTargetsForm = ({ index, control }: TTextTargetsForm) => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <Select
+            <Multiselect
+              // error={errors.textTarget![index]!.subject}
               isMark={true}
               label="Subject"
               options={[

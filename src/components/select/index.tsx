@@ -1,9 +1,19 @@
-type TSelect = {
+import { FieldError } from "react-hook-form";
+import { TOption } from "../../utils/types";
+
+export type TSelect = {
   isMark?: boolean;
   label: string;
-  options: { label: string; value: string }[];
+  options: TOption[];
+  error?: FieldError;
 };
-const Select = ({ label, isMark = false, options, ...props }: TSelect) => {
+const Select = ({
+  label,
+  isMark = false,
+  options,
+  error,
+  ...props
+}: TSelect) => {
   return (
     <label className="form-control w-full">
       <div className="label">
@@ -24,9 +34,11 @@ const Select = ({ label, isMark = false, options, ...props }: TSelect) => {
         ))}
       </select>
       {/* Validation */}
-      {/* <div className="label">
-        <span className="label-text-alt">Alt label</span>
-      </div> */}
+      <div className="label">
+        {error && (
+          <span className="label-text-alt text-red-600">This is required.</span>
+        )}
+      </div>
     </label>
   );
 };

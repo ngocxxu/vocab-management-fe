@@ -1,10 +1,19 @@
+import { FieldError } from "react-hook-form";
+
 type TInput = {
   isMark?: boolean;
   label: string;
   placeholder: string;
+  error?: FieldError;
 };
 
-const Input = ({ label, isMark = false, placeholder, ...props }: TInput) => {
+const Input = ({
+  label,
+  isMark = false,
+  placeholder,
+  error,
+  ...props
+}: TInput) => {
   return (
     <label className="form-control w-full">
       <div className="label">
@@ -20,11 +29,11 @@ const Input = ({ label, isMark = false, placeholder, ...props }: TInput) => {
         {...props}
       />
       {/* Validation */}
-      {/* <div className="label">
-      <span className="label-text-alt text-red-600">
-        Bottom Left label
-      </span>
-    </div> */}
+      <div className="label">
+        {error && (
+          <span className="label-text-alt text-red-600">This is required.</span>
+        )}
+      </div>
     </label>
   );
 };
