@@ -21,7 +21,7 @@ const Multiselect = ({ label, options, isMark, error, ...props }: TSelect) => {
       {/* Validation */}
       <div className="label">
         {error && (
-          <span className="label-text-alt text-red-600">This is required.</span>
+          <span className="label-text-alt text-red-600">{error.message}</span>
         )}
       </div>
     </div>

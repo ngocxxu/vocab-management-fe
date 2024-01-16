@@ -51,7 +51,7 @@ const Vocab = () => {
   const dispatch = useDispatch();
   const { idsState } = useSelector((state: RootState) => state.vocabReducer);
   const { data } = useGetAllVocab();
-  const [idModal] = useState("general-vocab");
+  const [isModal, setIsModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const refDiv = useRef<HTMLDivElement>(null);
@@ -136,13 +136,15 @@ const Vocab = () => {
         id: "action",
         cell: () => (
           <div className="flex gap-3 items-center w-0">
-            <label
-              htmlFor={idModal}
+            <button
               className="btn btn-square btn-xs btn-outline border-white bg-white"
-              onClick={() => setIsEditing(true)}
+              onClick={() => {
+                setIsEditing(true);
+                setIsModal(!isModal);
+              }}
             >
               <IconEdit />
-            </label>
+            </button>
 
             <DropDownCustom
               classNameSummary="m-1 btn btn-outline hover:border-white hover:bg-white border-white rounded-full"
@@ -185,17 +187,26 @@ const Vocab = () => {
           </p>
         </div>
         <div>
-          <label
-            htmlFor={idModal}
+          <button
             className="btn"
-            onClick={() => setIsEditing(false)}
+            onClick={() => {
+              setIsEditing(false);
+              setIsModal(!isModal);
+            }}
           >
             Create
-          </label>
+          </button>
 
           <Modal
-            idModal={idModal}
-            children={<FormVocab isEditing={isEditing} idModal={idModal} />}
+            isOpen={isModal}
+            onClose={() => setIsModal(false)}
+            contentLabel={isEditing ? "Edit" : "Create"}
+            children={
+              <FormVocab
+                isEditing={isEditing}
+                onClose={() => setIsModal(false)}
+              />
+            }
           />
         </div>
       </div>

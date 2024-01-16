@@ -5,7 +5,7 @@ export type TSelect = {
   isMark?: boolean;
   label: string;
   options: TOption[];
-  error?: FieldError;
+  error?: FieldError | null;
 };
 const Select = ({
   label,
@@ -23,10 +23,6 @@ const Select = ({
         </span>
       </div>
       <select className="select select-bordered select-sm w-full" {...props}>
-        <option disabled selected>
-          Pick one
-        </option>
-
         {options.map(({ label, value }) => (
           <option key={value} value={value}>
             {label}
@@ -36,7 +32,7 @@ const Select = ({
       {/* Validation */}
       <div className="label">
         {error && (
-          <span className="label-text-alt text-red-600">This is required.</span>
+          <span className="label-text-alt text-red-600">{error.message}</span>
         )}
       </div>
     </label>

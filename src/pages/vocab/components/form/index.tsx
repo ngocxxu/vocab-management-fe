@@ -1,9 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import clsx from "clsx";
-import { useRef } from "react";
 import {
   Controller,
+  Resolver,
   SubmitHandler,
   useFieldArray,
   useForm,
@@ -14,10 +14,12 @@ import Input from "../../../../components/input";
 import Select from "../../../../components/select";
 import { TOption } from "../../../../utils/types";
 import { TextTargetsForm } from "./textTargets";
+import { languageList } from "../../constants";
+import GroupButton from "../../../../components/button/GroupButton";
 
-type TFormVocab = {
-  idModal: string;
+type TFormVocabProps = {
   isEditing: boolean;
+  onClose: () => void;
 };
 
 export type TFormInputsVocab = {
@@ -36,24 +38,39 @@ export type TFormInputsVocab = {
 };
 
 const FormSchema = yup.object().shape({
-  sourceLanguage: yup.string().required(),
-  targetLanguage: yup.string().required(),
-  textSource: yup.string().required(),
-  textTarget: yup.array().required(),
+  sourceLanguage: yup.string().required("Source language is required"),
+  targetLanguage: yup.string().required("Target language is required"),
+  textSource: yup.string().required("Text source is required"),
+  textTarget: yup.array().of(
+    yup.object().shape({
+      text: yup.string().required("Text is required"),
+      wordType: yup.string().required("Word type is required"),
+      subject: yup.array().min(1),
+    })
+  ),
 });
 
-const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
-  const refBtn = useRef<HTMLLabelElement>(null);
+const FormVocab = ({ isEditing, onClose }: TFormVocabProps) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<TFormInputsVocab>({
     defaultValues: {
-      textSource: "",
-      ["textTarget"]: [],
+      sourceLanguage: "ko",
+      targetLanguage: "vi",
+      ["textTarget"]: [
+        {
+          text: "",
+          wordType: "",
+          explanationSource: "",
+          explanationTarget: "",
+          grammar: "",
+          subject: [],
+        },
+      ],
     },
-    resolver: yupResolver(FormSchema),
+    resolver: yupResolver(FormSchema) as unknown as Resolver<TFormInputsVocab>,
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -62,16 +79,8 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
 
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => console.log(data);
 
-  // Toggle close modal if no errors
-  // useEffect(() => {
-  //   if (Object.keys(errors).length > 0) return;
-  //   if (!refBtn.current) return;
-  //   refBtn.current.click();
-  // }, [errors]);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h3 className="font-bold text-lg">{isEditing ? "Edit" : "Create"}</h3>
       <div className="flex justify-center items-center gap-2">
         <Controller
           name="sourceLanguage"
@@ -82,11 +91,7 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
               error={errors.sourceLanguage}
               isMark={true}
               label="Source language"
-              options={[
-                { label: "Korean", value: "ko" },
-                { label: "Vietnamese", value: "vi" },
-                { label: "English", value: "en" },
-              ]}
+              options={languageList}
               {...field}
             />
           )}
@@ -100,11 +105,7 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
               error={errors.targetLanguage}
               isMark={true}
               label="Target language"
-              options={[
-                { label: "Korean", value: "ko" },
-                { label: "Vietnamese", value: "vi" },
-                { label: "English", value: "en" },
-              ]}
+              options={languageList}
               {...field}
             />
           )}
@@ -138,10 +139,12 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
             )}
           >
             <div className="text-sm">Item {index + 1}</div>
-            <IconX
-              onClick={() => remove(index)}
-              className="btn btn-square btn-xs btn-outline border-white bg-white"
-            />
+            {index > 0 && (
+              <IconX
+                onClick={() => remove(index)}
+                className="btn btn-square btn-xs btn-outline border-white bg-white"
+              />
+            )}
           </div>
           <TextTargetsForm errors={errors} control={control} index={index} />
         </fieldset>
@@ -165,20 +168,8 @@ const FormVocab = ({ idModal, isEditing }: TFormVocab) => {
           className="btn btn-square btn-xs btn-outline border-white bg-white w-full h-8"
         />
       </div>
-
-      <div className="modal-action">
-        <div className="flex justify-between items-center">
-          <label ref={refBtn} htmlFor={idModal} />
-          <div className="flex justify-center items-center gap-2">
-            <button className="btn" type="submit">
-              {isEditing ? "Update" : "Save"}
-            </button>
-
-            <label htmlFor={idModal} className="btn">
-              Close
-            </label>
-          </div>
-        </div>
+      <div className="flex justify-end mt-4">
+        <GroupButton isEditing={isEditing} onClose={onClose} />
       </div>
     </form>
   );

@@ -4,7 +4,7 @@ type TInput = {
   isMark?: boolean;
   label: string;
   placeholder: string;
-  error?: FieldError;
+  error?: FieldError | null;
 };
 
 const Input = ({
@@ -31,7 +31,7 @@ const Input = ({
       {/* Validation */}
       <div className="label">
         {error && (
-          <span className="label-text-alt text-red-600">This is required.</span>
+          <span className="label-text-alt text-red-600">{error.message}</span>
         )}
       </div>
     </label>

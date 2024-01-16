@@ -3,6 +3,7 @@ import clsx from "clsx";
 import {
   Control,
   Controller,
+  FieldError,
   FieldErrors,
   useFieldArray,
 } from "react-hook-form";
@@ -10,6 +11,8 @@ import { TFormInputsVocab } from "..";
 import Input from "../../../../../components/input";
 import Multiselect from "../../../../../components/multiselect";
 import { ExamplesForm } from "../examples";
+import Select from "../../../../../components/select";
+import { subjectList, wordTypeList } from "../../../constants";
 
 type TTextTargetsForm = {
   index: number;
@@ -20,12 +23,13 @@ type TTextTargetsForm = {
 export const TextTargetsForm = ({
   index,
   control,
-}: // errors,
-TTextTargetsForm) => {
+  errors,
+}: TTextTargetsForm) => {
   const { fields, append, remove } = useFieldArray({
     control,
     name: `textTarget.${index}.examples`,
   });
+  const checkErrors = Object.keys(errors).length > 0;
 
   return (
     <>
@@ -36,7 +40,7 @@ TTextTargetsForm) => {
           rules={{ required: true }}
           render={({ field }) => (
             <Input
-              // error={errors.textTarget![index]!.text}
+              error={checkErrors ? errors.textTarget![index]?.text : null}
               isMark={true}
               label="Text target"
               placeholder="Type here"
@@ -49,11 +53,11 @@ TTextTargetsForm) => {
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <Input
-              // error={errors.textTarget![index]!.wordType}
+            <Select
+              error={errors.targetLanguage}
               isMark={true}
               label="Word type"
-              placeholder="Type here"
+              options={wordTypeList}
               {...field}
             />
           )}
@@ -97,14 +101,14 @@ TTextTargetsForm) => {
           rules={{ required: true }}
           render={({ field }) => (
             <Multiselect
-              // error={errors.textTarget![index]!.subject}
+              error={
+                checkErrors
+                  ? (errors.textTarget![index]?.subject as FieldError)
+                  : null
+              }
               isMark={true}
               label="Subject"
-              options={[
-                { label: "Idiom", value: "idiom" },
-                { label: "Weather", value: "weather" },
-                { label: "Life", value: "life" },
-              ]}
+              options={subjectList}
               {...field}
             />
           )}
@@ -130,6 +134,7 @@ TTextTargetsForm) => {
           </fieldset>
         ))}
         <button
+          type="button"
           className={clsx(fields.length !== 0 && "mt-2", "btn btn-sm w-full")}
           onClick={() => {
             append({

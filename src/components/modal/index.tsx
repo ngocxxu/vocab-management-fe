@@ -1,21 +1,48 @@
 import { ReactNode } from "react";
+import ModalLib from "react-modal";
 
 type TModal = {
-  idModal: string;
+  isOpen: boolean;
+  onClose: () => void;
+  contentLabel: string;
   children: ReactNode;
 };
 
-const Modal = ({ idModal, children }: TModal) => {
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "100%",
+    maxWidth: "50vw",
+    OverflowY: "auto",
+    height: "100%",
+    maxHeight: "81vh",
+    transition: "max-height 0.5s ease",
+  },
+};
+
+const Modal = ({
+  isOpen,
+  onClose,
+  contentLabel,
+  children,
+  ...props
+}: TModal) => {
   return (
-    <>
-      <input type="checkbox" id={idModal} className="modal-toggle" />
-      <div className="modal" role="dialog">
-        <div className="modal-box max-w-4xl">{children}</div>
-        <label className="modal-backdrop" htmlFor={idModal}>
-          Close
-        </label>
-      </div>
-    </>
+    <ModalLib
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      style={customStyles}
+      contentLabel={contentLabel}
+      {...props}
+    >
+      <h3 className="font-bold text-lg">{contentLabel}</h3>
+      {children}
+    </ModalLib>
   );
 };
 
