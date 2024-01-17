@@ -1,16 +1,17 @@
-import ChartTable from "../../components/charts";
+import toast from 'react-hot-toast';
+import ChartTable from '../../components/charts';
 
 const Dashboard = () => {
-  // const dispatch = useDispatch();
-  // const { toggle } = useSelector((state: RootState) => state.dashboardReducer);
-
+  const showToastMessage = () => toast.success('Here is your toast.');
   return (
-    <div className="container mx-auto">
-      <div className="shadow-md">
-        <ChartTable />
-        {/* <Button type='primary'>{!toggle && 'hi'}</Button> */}
+    <>
+      <div className='container mx-auto'>
+        <button onClick={showToastMessage}>Notify!</button>
+        <div className='shadow-md'>
+          <ChartTable />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

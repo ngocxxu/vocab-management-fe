@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.scss';
 import store from './redux/store.ts';
+import Notification from './components/toast/index.tsx';
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <QueryClientProvider client={queryClient}>
           <App />
+          <Notification />
         </QueryClientProvider>
       </BrowserRouter>
     </Provider>

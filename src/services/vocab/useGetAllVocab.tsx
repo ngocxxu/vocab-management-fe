@@ -1,5 +1,6 @@
-import { useQuery } from "react-query";
-import { httpClient } from "../settings";
+import { useQuery } from 'react-query';
+import { httpClient } from '../settings';
+import { VOCAB_KEYS } from './queryKeys';
 
 const getAllVocab = async () => {
   const { data } = await httpClient.get(`/vocab`);
@@ -8,7 +9,7 @@ const getAllVocab = async () => {
 
 export const useGetAllVocab = () => {
   return useQuery({
-    queryKey: ["vocabs"],
+    queryKey: [VOCAB_KEYS.GET_VOCAB],
     queryFn: getAllVocab,
   });
 };
