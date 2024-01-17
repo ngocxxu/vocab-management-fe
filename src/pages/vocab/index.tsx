@@ -24,6 +24,7 @@ import { RootState } from '../../redux/store';
 import { useGetAllVocab } from '../../services/vocab/useGetAllVocab';
 import FormVocab from './components/form';
 import { useDeleteVocab } from '../../services/vocab/useDeleteVocab';
+import { usePostVocab } from '../../services/vocab/usePostVocab';
 
 export type TExamples = {
   source: string;
@@ -50,6 +51,7 @@ export type TVocab = {
 
 const Vocab = () => {
   const { mutate } = useDeleteVocab();
+  const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab();
   const dispatch = useDispatch();
   const { idsState } = useSelector((state: RootState) => state.vocabReducer);
   const { data } = useGetAllVocab();
@@ -208,6 +210,7 @@ const Vocab = () => {
             contentLabel={isEditing ? 'Edit' : 'Create'}
             children={
               <FormVocab
+                mutate={mutatePost}
                 isEditing={isEditing}
                 onClose={() => setIsModal(false)}
               />
@@ -217,6 +220,7 @@ const Vocab = () => {
       </div>
 
       <Table
+        isLoading={isLoadingPost}
         data={data ?? []}
         options={{
           data,

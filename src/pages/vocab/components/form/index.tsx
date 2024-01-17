@@ -13,14 +13,21 @@ import { TExamples, TVocab } from '../..';
 import GroupButton from '../../../../components/button/GroupButton';
 import Input from '../../../../components/input';
 import Select from '../../../../components/select';
-import { usePostVocab } from '../../../../services/vocab/usePostVocab';
 import { TOption } from '../../../../utils/types';
 import { languageList } from '../../constants';
 import { TextTargetsForm } from './textTargets';
+import { UseMutateFunction } from 'react-query';
+import { AxiosResponse } from 'axios';
 
 type TFormVocabProps = {
   isEditing: boolean;
   onClose: () => void;
+  mutate: UseMutateFunction<
+    AxiosResponse,
+    unknown,
+    Omit<TVocab, 'id'>,
+    unknown
+  >;
 };
 
 export type TFormInputsVocab = {
@@ -51,8 +58,7 @@ const FormSchema = yup.object().shape({
   ),
 });
 
-const FormVocab = ({ isEditing, onClose }: TFormVocabProps) => {
-  const { mutate } = usePostVocab();
+const FormVocab = ({ isEditing, onClose, mutate }: TFormVocabProps) => {
   const {
     handleSubmit,
     control,
