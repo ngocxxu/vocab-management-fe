@@ -96,13 +96,16 @@ const Vocab = () => {
       {
         accessorKey: "textSource",
         header: "textSource",
-        cell: ({ getValue }) => (
+        cell: ({ row, getValue }) => (
           <div
             className="w-full cursor-pointer"
-            onClick={() => {
-              if (!refDiv.current) return;
-              refDiv.current.click();
-            }}
+            onClick={() =>
+              dispatch(
+                toggleState({
+                  id: row.original._id,
+                })
+              )
+            }
           >
             <div className="break-all badge bg-emerald-500 gap-2 text-white">
               {getValue() as ReactNode}
@@ -171,7 +174,7 @@ const Vocab = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [idsState]
+    [idsState, isModal]
   );
 
   return (
