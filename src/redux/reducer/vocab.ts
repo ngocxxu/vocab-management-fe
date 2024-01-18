@@ -6,12 +6,14 @@ type TItemsShow = {
 };
 
 type TInitialStateVocab = {
+  idVocabState: string;
   idsState: string[];
   isToggle: boolean;
   itemsShow: TItemsShow[];
 };
 
 const initialState: TInitialStateVocab = {
+  idVocabState: "",
   idsState: [],
   isToggle: false,
   itemsShow: [],
@@ -21,6 +23,9 @@ const vocabReducer = createSlice({
   name: "vocabReducer",
   initialState,
   reducers: {
+    setIdVocabState(state, action) {
+      state.idVocabState = action.payload;
+    },
     toggleState(state, action) {
       const { id } = action.payload;
       if (!state.idsState.includes(id)) {
@@ -57,5 +62,5 @@ const vocabReducer = createSlice({
   },
 });
 const { actions, reducer } = vocabReducer;
-export const { toggleState, setItemsShowState } = actions;
+export const { toggleState, setItemsShowState, setIdVocabState } = actions;
 export default reducer;

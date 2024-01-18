@@ -3,8 +3,8 @@ import {
   IconArrowBadgeUpFilled,
   IconEdit,
   IconTrash,
-} from '@tabler/icons-react';
-import { ColumnDef, getCoreRowModel } from '@tanstack/react-table';
+} from "@tabler/icons-react";
+import { ColumnDef, getCoreRowModel } from "@tanstack/react-table";
 import {
   Fragment,
   HTMLProps,
@@ -13,18 +13,17 @@ import {
   useMemo,
   useRef,
   useState,
-} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import DropDownCustom from '../../components/dropdown';
-import Modal from '../../components/modal';
-import Pagination from '../../components/pagination';
-import Table from '../../components/table';
-import { toggleState } from '../../redux/reducer/vocab';
-import { RootState } from '../../redux/store';
-import { useGetAllVocab } from '../../services/vocab/useGetAllVocab';
-import FormVocab from './components/form';
-import { useDeleteVocab } from '../../services/vocab/useDeleteVocab';
-import { usePostVocab } from '../../services/vocab/usePostVocab';
+} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Modal from "../../components/modal";
+import Pagination from "../../components/pagination";
+import Table from "../../components/table";
+import { setIdVocabState, toggleState } from "../../redux/reducer/vocab";
+import { RootState } from "../../redux/store";
+import { useDeleteVocab } from "../../services/vocab/useDeleteVocab";
+import { useGetAllVocab } from "../../services/vocab/useGetAllVocab";
+import { usePostVocab } from "../../services/vocab/usePostVocab";
+import FormVocab from "./components/form";
 
 export type TExamples = {
   source: string;
@@ -49,13 +48,23 @@ export type TVocab = {
   textTarget: TTextTarget[];
 };
 
+const customStyleVocabModal = {
+  width: "100%",
+  maxWidth: "50vw",
+  height: "100%",
+  maxHeight: "81vh",
+};
+
 const Vocab = () => {
   const { mutate } = useDeleteVocab();
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab();
   const dispatch = useDispatch();
-  const { idsState } = useSelector((state: RootState) => state.vocabReducer);
+  const { idsState, idVocabState } = useSelector(
+    (state: RootState) => state.vocabReducer
+  );
   const { data } = useGetAllVocab();
   const [isModal, setIsModal] = useState(false);
+  const [isNotifyModal, setIsNotifyModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const refDiv = useRef<HTMLDivElement>(null);
@@ -63,7 +72,7 @@ const Vocab = () => {
   const columns = useMemo<ColumnDef<TVocab>[]>(
     () => [
       {
-        id: 'select',
+        id: "select",
         header: ({ table }) => (
           <IndeterminateCheckbox
             {...{
@@ -85,29 +94,29 @@ const Vocab = () => {
         ),
       },
       {
-        accessorKey: 'textSource',
-        header: 'textSource',
+        accessorKey: "textSource",
+        header: "textSource",
         cell: ({ getValue }) => (
           <div
-            className='w-full cursor-pointer'
+            className="w-full cursor-pointer"
             onClick={() => {
               if (!refDiv.current) return;
               refDiv.current.click();
             }}
           >
-            <div className='break-all badge bg-emerald-500 gap-2 text-white'>
+            <div className="break-all badge bg-emerald-500 gap-2 text-white">
               {getValue() as ReactNode}
             </div>
           </div>
         ),
       },
       {
-        accessorKey: 'textTarget',
-        header: 'textTarget',
+        accessorKey: "textTarget",
+        header: "textTarget",
         cell: ({ row }) => (
           <div
             ref={refDiv}
-            className='break-all cursor-pointer flex justify-between items-center'
+            className="break-all cursor-pointer flex justify-between items-center"
             onClick={() =>
               dispatch(
                 toggleState({
@@ -120,9 +129,9 @@ const Vocab = () => {
               {row.original.textTarget.map((item) => {
                 return (
                   <Fragment key={item.text}>
-                    <div className='badge bg-sky-500 gap-2 text-white'>
+                    <div className="badge bg-sky-500 gap-2 text-white">
                       {item.text}
-                    </div>{' '}
+                    </div>{" "}
                   </Fragment>
                 );
               })}
@@ -137,11 +146,11 @@ const Vocab = () => {
         ),
       },
       {
-        id: 'action',
+        id: "action",
         cell: ({ row }) => (
-          <div className='flex gap-3 items-center w-0'>
+          <div className="flex gap-3 items-center w-0">
             <button
-              className='btn btn-square btn-xs btn-outline border-white bg-white'
+              className="btn btn-square btn-xs btn-outline border-white bg-white"
               onClick={() => {
                 setIsEditing(true);
                 setIsModal(!isModal);
@@ -150,29 +159,12 @@ const Vocab = () => {
               <IconEdit />
             </button>
 
-            <DropDownCustom
-              classNameSummary='m-1 btn btn-outline hover:border-white hover:bg-white border-white rounded-full'
-              head={
-                <IconTrash
-                  className='btn btn-square btn-xs btn-outline border-white bg-white'
-                  onClick={() => mutate(row.original._id)}
-                />
-              }
-              list={
-                <div className='flex justify-center items-center shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-fit'>
-                  <div className='text-xs whitespace-nowrap'>
-                    Do you want to delete?
-                  </div>
-                  <div className='flex justify-center items-center'>
-                    <button className='btn btn-square btn-xs btn-outline border-white bg-white '>
-                      Yes
-                    </button>
-                    <button className='btn btn-square btn-xs btn-outline border-white bg-white '>
-                      No
-                    </button>
-                  </div>
-                </div>
-              }
+            <IconTrash
+              className="btn btn-square btn-xs btn-outline border-white bg-white"
+              onClick={() => {
+                dispatch(setIdVocabState(row.original._id));
+                setIsNotifyModal(true);
+              }}
             />
           </div>
         ),
@@ -183,11 +175,11 @@ const Vocab = () => {
   );
 
   return (
-    <div className='container mx-auto -mt-20 bg-white rounded-md p-5 shadow-md mb-10'>
-      <div className='flex justify-between items-start'>
+    <div className="container mx-auto -mt-20 bg-white rounded-md p-5 shadow-md mb-10">
+      <div className="flex justify-between items-start">
         <div>
-          <h4 className='font-medium'>Vocabulary list</h4>
-          <p className='text-sm mb-6'>
+          <h4 className="font-medium">Vocabulary list</h4>
+          <p className="text-sm mb-6">
             Let your second world be opened up thanks to the vocabulary list
             below. <br />
             Let's run, don't hesitate!
@@ -195,7 +187,7 @@ const Vocab = () => {
         </div>
         <div>
           <button
-            className='btn'
+            className="btn"
             onClick={() => {
               setIsEditing(false);
               setIsModal(!isModal);
@@ -205,15 +197,45 @@ const Vocab = () => {
           </button>
 
           <Modal
+            custom={customStyleVocabModal}
             isOpen={isModal}
             onClose={() => setIsModal(false)}
-            contentLabel={isEditing ? 'Edit' : 'Create'}
+            contentLabel={isEditing ? "Edit" : "Create"}
             children={
               <FormVocab
                 mutate={mutatePost}
                 isEditing={isEditing}
                 onClose={() => setIsModal(false)}
               />
+            }
+          />
+
+          <Modal
+            isOpen={isNotifyModal}
+            onClose={() => setIsNotifyModal(false)}
+            children={
+              <>
+                <div className="whitespace-nowrap mb-2">
+                  Do you want to delete?
+                </div>
+                <div className="flex justify-center items-center gap-2">
+                  <button
+                    className="btn btn-active btn-sm"
+                    onClick={() => setIsNotifyModal(false)}
+                  >
+                    No
+                  </button>
+                  <button
+                    className="btn btn-active btn-neutral btn-sm"
+                    onClick={() => {
+                      setIsNotifyModal(false);
+                      mutate(idVocabState);
+                    }}
+                  >
+                    Yes
+                  </button>
+                </div>
+              </>
             }
           />
         </div>
@@ -239,13 +261,13 @@ const Vocab = () => {
 
 function IndeterminateCheckbox({
   indeterminate,
-  className = '',
+  className = "",
   ...rest
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
   const ref = useRef<HTMLInputElement>(null!);
 
   useEffect(() => {
-    if (typeof indeterminate === 'boolean') {
+    if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -253,9 +275,9 @@ function IndeterminateCheckbox({
 
   return (
     <input
-      type='checkbox'
+      type="checkbox"
       ref={ref}
-      className={className + ' cursor-pointer'}
+      className={className + " cursor-pointer"}
       {...rest}
     />
   );

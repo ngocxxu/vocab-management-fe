@@ -4,25 +4,10 @@ import ModalLib from "react-modal";
 type TModal = {
   isOpen: boolean;
   onClose: () => void;
-  contentLabel: string;
+  contentLabel?: string;
   children: ReactNode;
-};
-
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    width: "100%",
-    maxWidth: "50vw",
-    OverflowY: "auto",
-    height: "100%",
-    maxHeight: "81vh",
-    transition: "max-height 0.5s ease",
-  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  custom?: any;
 };
 
 const Modal = ({
@@ -30,8 +15,23 @@ const Modal = ({
   onClose,
   contentLabel,
   children,
+  custom,
   ...props
 }: TModal) => {
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      OverflowY: "auto",
+      transition: "max-height 0.5s ease",
+      ...custom,
+    },
+  };
+
   return (
     <ModalLib
       isOpen={isOpen}
