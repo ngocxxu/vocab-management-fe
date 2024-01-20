@@ -105,7 +105,12 @@ const Pagination = ({ paginations }: { paginations: TPagination }) => {
       </button>
       <button
         className='join-item btn btn-sm'
-        onClick={() => totalPages - 1}
+        onClick={() =>
+          setSearchParams({
+            page: String(totalPages),
+            limit: LIMIT_PAGE_10,
+          })
+        }
         disabled={currentPage === totalPages}
       >
         »
