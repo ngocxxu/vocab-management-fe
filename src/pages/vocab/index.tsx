@@ -77,7 +77,7 @@ const Vocab = () => {
   const [rowSelection, setRowSelection] = useState({});
   const refDiv = useRef<HTMLDivElement>(null);
 
-  const { data } = useGetAllVocab({
+  const { data, isLoading } = useGetAllVocab({
     page: searchParams.get('page') ?? '1',
     limit: searchParams.get('limit') ?? '10',
   });
@@ -276,7 +276,7 @@ const Vocab = () => {
         }}
         isPagination
         isCollapse
-        isLoading={isLoadingPost || isLoadingPut}
+        isLoading={isLoadingPost || isLoadingPut || isLoading}
         data={data?.data ?? []}
         options={{
           data: data?.data ?? [],

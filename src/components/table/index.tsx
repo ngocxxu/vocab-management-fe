@@ -38,7 +38,7 @@ const DataTable = <T extends TExtend>({
     ...options,
   });
 
-  if (data.length <= 0 && isLoading) {
+  if (isLoading) {
     return (
       <div className='h-[400px] flex justify-center items-center'>
         <div className='loading loading-infinity loading-lg' />
