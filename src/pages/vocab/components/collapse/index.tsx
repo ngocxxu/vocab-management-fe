@@ -52,10 +52,10 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       <span className='font-semibold'>{text} - </span>
                       {subject.map((item) => (
                         <span
-                          key={item}
+                          key={item.label}
                           className='badge badge-outline text-xs mr-1'
                         >
-                          {item}
+                          {item.value}
                         </span>
                       ))}
                     </p>

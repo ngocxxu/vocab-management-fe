@@ -1,5 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { IconPlus, IconX } from '@tabler/icons-react';
+import { AxiosResponse } from 'axios';
 import clsx from 'clsx';
 import {
   Controller,
@@ -8,18 +9,18 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
+import { UseMutateFunction } from 'react-query';
 import * as yup from 'yup';
-import { TExamples, TVocab } from '../..';
+import { TTextTarget, TVocab } from '../..';
 import GroupButton from '../../../../components/button/GroupButton';
 import Input from '../../../../components/input';
 import Select from '../../../../components/select';
-import { TOption } from '../../../../utils/types';
 import { languageList } from '../../constants';
 import { TextTargetsForm } from './textTargets';
-import { UseMutateFunction } from 'react-query';
-import { AxiosResponse } from 'axios';
+import { TPutVocabs } from '../../../../services/vocab/usePutVocab';
 
 type TFormVocabProps = {
+  idVocab: string;
   isEditing: boolean;
   onClose: () => void;
   mutate: UseMutateFunction<
@@ -28,21 +29,14 @@ type TFormVocabProps = {
     Omit<TVocab, 'id'>,
     unknown
   >;
+  mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>;
 };
 
 export type TFormInputsVocab = {
   sourceLanguage: string;
   targetLanguage: string;
   textSource: string;
-  textTarget: {
-    text: string;
-    wordType: string;
-    explanationSource: string;
-    explanationTarget: string;
-    examples: TExamples[];
-    grammar: string;
-    subject: TOption[];
-  }[];
+  textTarget: TTextTarget[];
 };
 
 const FormSchema = yup.object().shape({
@@ -58,8 +52,16 @@ const FormSchema = yup.object().shape({
   ),
 });
 
-const FormVocab = ({ isEditing, onClose, mutate }: TFormVocabProps) => {
+const FormVocab = ({
+  idVocab,
+  isEditing,
+  onClose,
+  mutate,
+  mutatePut,
+}: TFormVocabProps) => {
   const {
+    setValue,
+    reset,
     handleSubmit,
     control,
     formState: { errors },
@@ -86,17 +88,12 @@ const FormVocab = ({ isEditing, onClose, mutate }: TFormVocabProps) => {
   });
 
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
-    const newDataTextTarget = data.textTarget.map((item) => ({
-      ...item,
-      subject: item.subject.map((item) => item.value),
-    }));
-
-    const newData = {
-      ...data,
-      textTarget: newDataTextTarget,
-    } as Omit<TVocab, 'id'>;
-
-    mutate(newData);
+    isEditing
+      ? mutatePut({
+          data: data as Omit<TVocab, 'id'>,
+          id: idVocab,
+        })
+      : mutate(data as Omit<TVocab, 'id'>);
     onClose();
   };
 
@@ -166,7 +163,14 @@ const FormVocab = ({ isEditing, onClose, mutate }: TFormVocabProps) => {
               />
             )}
           </div>
-          <TextTargetsForm errors={errors} control={control} index={index} />
+          <TextTargetsForm
+            isEditing={isEditing}
+            setValue={setValue}
+            reset={reset}
+            errors={errors}
+            control={control}
+            index={index}
+          />
         </fieldset>
       ))}
       <br />
