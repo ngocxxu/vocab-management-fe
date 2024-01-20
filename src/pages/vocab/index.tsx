@@ -15,8 +15,8 @@ import {
   useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import Modal from '../../components/modal';
-import Pagination from '../../components/pagination';
 import Table from '../../components/table';
 import {
   setIdVocabState,
@@ -27,9 +27,10 @@ import { RootState } from '../../redux/store';
 import { useDeleteVocab } from '../../services/vocab/useDeleteVocab';
 import { useGetAllVocab } from '../../services/vocab/useGetAllVocab';
 import { usePostVocab } from '../../services/vocab/usePostVocab';
-import FormVocab from './components/form';
-import { TOption } from '../../utils/types';
 import { usePutVocab } from '../../services/vocab/usePutVocab';
+import { LIMIT_PAGE_10 } from '../../utils/constants';
+import { TOption } from '../../utils/types';
+import FormVocab from './components/form';
 
 export type TExamples = {
   source: string;
@@ -62,6 +63,7 @@ const customStyleVocabModal = {
 };
 
 const Vocab = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { mutate } = useDeleteVocab();
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab();
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab();
@@ -69,12 +71,24 @@ const Vocab = () => {
   const { idsState, idVocabState, itemVocab } = useSelector(
     (state: RootState) => state.vocabReducer
   );
-  const { data } = useGetAllVocab();
   const [isModal, setIsModal] = useState(false);
   const [isNotifyModal, setIsNotifyModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const refDiv = useRef<HTMLDivElement>(null);
+
+  const { data } = useGetAllVocab({
+    page: searchParams.get('page') ?? '1',
+    limit: searchParams.get('limit') ?? '10',
+  });
+
+  useEffect(() => {
+    return setSearchParams({
+      page: searchParams.get('page') ?? '1',
+      limit: LIMIT_PAGE_10,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const columns = useMemo<ColumnDef<TVocab>[]>(
     () => [
@@ -102,7 +116,7 @@ const Vocab = () => {
       },
       {
         accessorKey: 'textSource',
-        header: 'textSource',
+        header: 'Text source',
         cell: ({ row, getValue }) => (
           <div
             className='w-full cursor-pointer'
@@ -122,7 +136,7 @@ const Vocab = () => {
       },
       {
         accessorKey: 'textTarget',
-        header: 'textTarget',
+        header: 'Text target',
         cell: ({ row }) => (
           <div
             ref={refDiv}
@@ -255,19 +269,25 @@ const Vocab = () => {
       </div>
 
       <Table
+        paginations={{
+          currentPage: data?.currentPage ?? 1,
+          totalItems: data?.totalItems ?? 1,
+          totalPages: data?.totalPages ?? 1,
+        }}
+        isPagination
+        isCollapse
         isLoading={isLoadingPost || isLoadingPut}
-        data={data ?? []}
+        data={data?.data ?? []}
         options={{
-          data: data ?? [],
+          data: data?.data ?? [],
           columns: columns,
-          getCoreRowModel: getCoreRowModel(),
           state: {
             rowSelection,
           },
+          getCoreRowModel: getCoreRowModel(),
           onRowSelectionChange: setRowSelection,
         }}
       />
-      <Pagination />
     </div>
   );
 };

@@ -1,17 +1,115 @@
-const Pagination = () => {
+import { Fragment } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { LIMIT_PAGE_10 } from '../../utils/constants';
+import { TPagination } from '../../utils/types';
+
+const Pagination = ({ paginations }: { paginations: TPagination }) => {
+  const { currentPage, totalPages } = paginations;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const onPageChange = (newPageNumber: number) => {
+    setSearchParams({
+      page: String(newPageNumber),
+      limit: LIMIT_PAGE_10,
+    });
+  };
+
+  const getPagesToShow = () => {
+    const adjacentPageCount = 2; // Số trang xung quanh trang hiện tại
+    const pagesToShow: (number | null)[] = [];
+
+    const addPage = (pageNumber: number) => {
+      if (
+        pagesToShow.length > 0 &&
+        pageNumber - pagesToShow[pagesToShow.length - 1]! > 1
+      ) {
+        pagesToShow.push(null);
+      }
+      pagesToShow.push(pageNumber);
+    };
+
+    // Thêm trang đầu tiên
+    addPage(1);
+
+    // Thêm trang hiện tại và các trang xung quanh nó
+    for (
+      let i = currentPage - adjacentPageCount;
+      i <= currentPage + adjacentPageCount;
+      i++
+    ) {
+      if (i > 1 && i < totalPages) {
+        addPage(i);
+      }
+    }
+
+    // Thêm trang cuối cùng
+    addPage(totalPages);
+
+    return pagesToShow;
+  };
+
   return (
-    <div className="join mt-6 flex justify-end">
-      <button className="join-item btn btn-sm">«</button>
-      <button className="join-item btn btn-sm">‹</button>
-      <button className="join-item btn btn-sm bg-gray-700 text-white">1</button>
-      <button className="join-item btn btn-sm">2</button>
-      <button className="join-item btn btn-sm">3</button>
-      <button className="join-item btn btn-sm">4</button>
-      <button className="join-item btn btn-sm">5</button>
-      <button className="join-item btn btn-sm btn-disabled">...</button>
-      <button className="join-item btn btn-sm">100</button>
-      <button className="join-item btn btn-sm">›</button>
-      <button className="join-item btn btn-sm">»</button>
+    <div className='flex items-center justify-end gap-1 mt-4'>
+      <button
+        className='join-item btn btn-sm'
+        onClick={() =>
+          setSearchParams({ page: String(1), limit: LIMIT_PAGE_10 })
+        }
+        disabled={currentPage === 1}
+      >
+        «
+      </button>
+      <button
+        className='join-item btn btn-sm'
+        onClick={() =>
+          setSearchParams({
+            page: String(currentPage - 1),
+            limit: LIMIT_PAGE_10,
+          })
+        }
+        disabled={currentPage === 1}
+      >
+        ‹
+      </button>
+
+      {getPagesToShow().map((pageNumber, index) => (
+        <Fragment key={index}>
+          {pageNumber === null ? (
+            <button className='join-item btn btn-sm btn-disabled'>...</button>
+          ) : (
+            <button
+              onClick={() => onPageChange(pageNumber)}
+              className={
+                pageNumber === parseInt(searchParams.get('page')!)
+                  ? 'active join-item btn btn-sm bg-gray-700 text-white'
+                  : 'join-item btn btn-sm btn-square'
+              }
+            >
+              {pageNumber}
+            </button>
+          )}
+        </Fragment>
+      ))}
+
+      <button
+        className='join-item btn btn-sm'
+        onClick={() =>
+          setSearchParams({
+            page: String(currentPage + 1),
+            limit: LIMIT_PAGE_10,
+          })
+        }
+        disabled={currentPage === totalPages}
+      >
+        ›
+      </button>
+      <button
+        className='join-item btn btn-sm'
+        onClick={() => totalPages - 1}
+        disabled={currentPage === totalPages}
+      >
+        »
+      </button>
     </div>
   );
 };
