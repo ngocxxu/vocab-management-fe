@@ -1,14 +1,14 @@
-import { HTMLProps, useEffect, useRef } from 'react';
+import { HTMLProps, useEffect, useRef } from "react";
 
 export const IndeterminateCheckbox = ({
   indeterminate,
-  className = '',
+  className = "",
   ...rest
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) => {
   const ref = useRef<HTMLInputElement>(null!);
 
   useEffect(() => {
-    if (typeof indeterminate === 'boolean') {
+    if (typeof indeterminate === "boolean") {
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -16,9 +16,9 @@ export const IndeterminateCheckbox = ({
 
   return (
     <input
-      type='checkbox'
+      type="checkbox"
       ref={ref}
-      className={className + ' cursor-pointer'}
+      className={className + " cursor-pointer checkbox checkbox-sm"}
       {...rest}
     />
   );
