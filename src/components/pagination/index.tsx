@@ -3,7 +3,9 @@ import { useSearchParams } from 'react-router-dom';
 import { LIMIT_PAGE_10 } from '../../utils/constants';
 import { TPagination } from '../../utils/types';
 
-const Pagination = ({ paginations }: { paginations: TPagination }) => {
+type TPaginationProps = { paginations: TPagination };
+
+const Pagination = ({ paginations }: TPaginationProps) => {
   const { currentPage, totalPages } = paginations;
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -43,7 +45,7 @@ const Pagination = ({ paginations }: { paginations: TPagination }) => {
     }
 
     // Thêm trang cuối cùng
-    addPage(totalPages);
+    totalPages > 1 && addPage(totalPages);
 
     return pagesToShow;
   };

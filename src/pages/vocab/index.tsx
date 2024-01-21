@@ -2,6 +2,8 @@ import {
   IconArrowBadgeDownFilled,
   IconArrowBadgeUpFilled,
   IconEdit,
+  IconFilter,
+  IconSearch,
   IconTrash,
 } from '@tabler/icons-react';
 import { ColumnDef, getCoreRowModel } from '@tanstack/react-table';
@@ -33,6 +35,7 @@ import { LIMIT_PAGE_10 } from '../../utils/constants';
 import { TOption } from '../../utils/types';
 import { IndeterminateCheckbox } from './components/checkbox';
 import FormVocab from './components/form';
+import Button from '../../components/button';
 
 export type TExamples = {
   source: string;
@@ -102,6 +105,16 @@ const Vocab = () => {
     }
     return mutate(idVocabState);
   };
+
+  useEffect(() => {
+    if (data?.data && data?.data.length <= 0 && data.currentPage > 1) {
+      setSearchParams({
+        page: String(data.currentPage - 1),
+        limit: LIMIT_PAGE_10,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   useEffect(() => {
     return setSearchParams({
@@ -231,61 +244,32 @@ const Vocab = () => {
             Let's run, don't hesitate!
           </p>
         </div>
-        <div>
-          <button
-            className='btn'
+        <div className='flex items-center gap-2'>
+          <Button classNames='btn-sm btn-primary' leftIcon={<IconFilter />} />
+          <div className='flex items-center'>
+            <input
+              type='text'
+              placeholder='Search here'
+              className='input input-bordered input-sm w-full max-w-xs rounded-r-none'
+            />
+            <Button
+              classNames='btn-sm rounded-l-none'
+              leftIcon={<IconSearch />}
+            />
+          </div>
+          <Button
+            classNames='btn-sm btn-neutral'
+            title='Create'
             onClick={() => {
               setIsEditing(false);
               setIsModal(!isModal);
             }}
-          >
-            Create
-          </button>
-
-          <Modal
-            custom={customStyleVocabModal}
-            isOpen={isModal}
-            onClose={() => setIsModal(false)}
-            contentLabel={isEditing ? 'Edit' : 'Create'}
-            children={
-              <FormVocab
-                idVocab={itemVocab._id}
-                mutate={mutatePost}
-                mutatePut={mutatePut}
-                isEditing={isEditing}
-                onClose={() => setIsModal(false)}
-              />
-            }
-          />
-
-          <Modal
-            isOpen={isNotifyModal}
-            onClose={() => {
-              setIsDeleteMulti(true);
-              setIsNotifyModal(false);
-            }}
-            children={
-              <ConfirmButton
-                onNo={() => setIsNotifyModal(false)}
-                onYes={handleOnYes}
-                title='Do you want to delete?'
-              />
-            }
           />
         </div>
       </div>
 
       <Table
-        onConfirmMultiDelete={() => {
-          setIsNotifyModal(true);
-          setIsDeleteMulti(true);
-        }}
         isMultiSelect
-        paginations={{
-          currentPage: data?.currentPage ?? 1,
-          totalItems: data?.totalItems ?? 1,
-          totalPages: data?.totalPages ?? 1,
-        }}
         isPagination
         isCollapse
         isLoading={
@@ -295,6 +279,15 @@ const Vocab = () => {
           isLoadingDelete ||
           isLoadingDeleteMulti
         }
+        onConfirmMultiDelete={() => {
+          setIsNotifyModal(true);
+          setIsDeleteMulti(true);
+        }}
+        paginations={{
+          currentPage: data?.currentPage ?? 1,
+          totalItems: data?.totalItems ?? 1,
+          totalPages: data?.totalPages ?? 1,
+        }}
         data={data?.data ?? []}
         options={{
           data: data?.data ?? [],
@@ -306,6 +299,36 @@ const Vocab = () => {
           onRowSelectionChange: setRowSelection,
           getRowId: (row) => row._id,
         }}
+      />
+
+      <Modal
+        custom={customStyleVocabModal}
+        isOpen={isModal}
+        onClose={() => setIsModal(false)}
+        contentLabel={isEditing ? 'Edit' : 'Create'}
+        children={
+          <FormVocab
+            idVocab={itemVocab._id}
+            mutate={mutatePost}
+            mutatePut={mutatePut}
+            isEditing={isEditing}
+            onClose={() => setIsModal(false)}
+          />
+        }
+      />
+      <Modal
+        isOpen={isNotifyModal}
+        onClose={() => {
+          setIsDeleteMulti(true);
+          setIsNotifyModal(false);
+        }}
+        children={
+          <ConfirmButton
+            onNo={() => setIsNotifyModal(false)}
+            onYes={handleOnYes}
+            title='Do you want to delete?'
+          />
+        }
       />
     </div>
   );
