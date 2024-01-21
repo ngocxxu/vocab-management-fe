@@ -63,7 +63,7 @@ const DataTable = <T extends TExtend>({
       {isMultiSelect &&
         Object.keys(table.getState().rowSelection).length > 0 && (
           <div className='flex justify-between items-center mb-2'>
-            <div>{counts} row(s) selected</div>
+            <div className='text-xs'>{counts} row(s) selected</div>
             <button
               className='btn btn-error btn-xs text-white'
               onClick={onConfirmMultiDelete}
