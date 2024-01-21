@@ -7,7 +7,6 @@ import {
 import { ColumnDef, getCoreRowModel } from '@tanstack/react-table';
 import {
   Fragment,
-  HTMLProps,
   ReactNode,
   useEffect,
   useMemo,
@@ -16,6 +15,7 @@ import {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import ConfirmButton from '../../components/button/ConfirmButton';
 import Modal from '../../components/modal';
 import Table from '../../components/table';
 import {
@@ -24,12 +24,14 @@ import {
   toggleState,
 } from '../../redux/reducer/vocab';
 import { RootState } from '../../redux/store';
+import { useDeleteMultiVocab } from '../../services/vocab/useDeleteMultiVocab';
 import { useDeleteVocab } from '../../services/vocab/useDeleteVocab';
 import { useGetAllVocab } from '../../services/vocab/useGetAllVocab';
 import { usePostVocab } from '../../services/vocab/usePostVocab';
 import { usePutVocab } from '../../services/vocab/usePutVocab';
 import { LIMIT_PAGE_10 } from '../../utils/constants';
 import { TOption } from '../../utils/types';
+import { IndeterminateCheckbox } from './components/checkbox';
 import FormVocab from './components/form';
 
 export type TExamples = {
@@ -65,6 +67,7 @@ const customStyleVocabModal = {
 const Vocab = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { mutate } = useDeleteVocab();
+  const { mutate: mutateDeleteMulti } = useDeleteMultiVocab();
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab();
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab();
   const dispatch = useDispatch();
@@ -75,12 +78,29 @@ const Vocab = () => {
   const [isNotifyModal, setIsNotifyModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
+  const [isDeleteMulti, setIsDeleteMulti] = useState(false);
   const refDiv = useRef<HTMLDivElement>(null);
 
   const { data, isLoading } = useGetAllVocab({
     page: searchParams.get('page') ?? '1',
     limit: searchParams.get('limit') ?? '10',
   });
+
+  const handleOnYes = () => {
+    setIsNotifyModal(false);
+
+    if (isDeleteMulti) {
+      // Loop find value === true and return [ids]
+      const mappedIds: string[] = Object.entries(rowSelection).map(
+        ([key, value]) => {
+          return value ? key : '';
+        }
+      );
+      setRowSelection({});
+      return mutateDeleteMulti(mappedIds);
+    }
+    return mutate(idVocabState);
+  };
 
   useEffect(() => {
     return setSearchParams({
@@ -239,36 +259,27 @@ const Vocab = () => {
 
           <Modal
             isOpen={isNotifyModal}
-            onClose={() => setIsNotifyModal(false)}
+            onClose={() => {
+              setIsDeleteMulti(true);
+              setIsNotifyModal(false);
+            }}
             children={
-              <>
-                <div className='whitespace-nowrap mb-2'>
-                  Do you want to delete?
-                </div>
-                <div className='flex justify-center items-center gap-2'>
-                  <button
-                    className='btn btn-active btn-sm'
-                    onClick={() => setIsNotifyModal(false)}
-                  >
-                    No
-                  </button>
-                  <button
-                    className='btn btn-active btn-neutral btn-sm'
-                    onClick={() => {
-                      setIsNotifyModal(false);
-                      mutate(idVocabState);
-                    }}
-                  >
-                    Yes
-                  </button>
-                </div>
-              </>
+              <ConfirmButton
+                onNo={() => setIsNotifyModal(false)}
+                onYes={handleOnYes}
+                title='Do you want to delete?'
+              />
             }
           />
         </div>
       </div>
 
       <Table
+        onConfirmMultiDelete={() => {
+          setIsNotifyModal(true);
+          setIsDeleteMulti(true);
+        }}
+        isMultiSelect
         paginations={{
           currentPage: data?.currentPage ?? 1,
           totalItems: data?.totalItems ?? 1,
@@ -286,34 +297,11 @@ const Vocab = () => {
           },
           getCoreRowModel: getCoreRowModel(),
           onRowSelectionChange: setRowSelection,
+          getRowId: (row) => row._id,
         }}
       />
     </div>
   );
 };
-
-function IndeterminateCheckbox({
-  indeterminate,
-  className = '',
-  ...rest
-}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
-  const ref = useRef<HTMLInputElement>(null!);
-
-  useEffect(() => {
-    if (typeof indeterminate === 'boolean') {
-      ref.current.indeterminate = !rest.checked && indeterminate;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref, indeterminate]);
-
-  return (
-    <input
-      type='checkbox'
-      ref={ref}
-      className={className + ' cursor-pointer'}
-      {...rest}
-    />
-  );
-}
 
 export default Vocab;

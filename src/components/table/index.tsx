@@ -7,8 +7,8 @@ import {
 import { Fragment, ReactNode, memo } from 'react';
 import { TTextTarget } from '../../pages/vocab';
 import CollapseVocab from '../../pages/vocab/components/collapse';
-import Pagination from '../pagination';
 import { TPagination } from '../../utils/types';
+import Pagination from '../pagination';
 
 type TTable<T extends TExtend> = {
   data: T[];
@@ -17,6 +17,8 @@ type TTable<T extends TExtend> = {
   isCollapse?: boolean;
   isPagination?: boolean;
   paginations?: TPagination;
+  isMultiSelect?: boolean;
+  onConfirmMultiDelete?: () => void;
 };
 
 export type TExtend = {
@@ -30,13 +32,16 @@ const DataTable = <T extends TExtend>({
   isLoading,
   isPagination = false,
   isCollapse = false,
+  isMultiSelect = false,
   paginations,
+  onConfirmMultiDelete,
 }: TTable<T>) => {
   const table = useReactTable({
     getFilteredRowModel: getFilteredRowModel(),
     enableRowSelection: true,
     ...options,
   });
+  const counts = Object.keys(table.getState().rowSelection).length;
 
   if (isLoading) {
     return (
@@ -54,6 +59,18 @@ const DataTable = <T extends TExtend>({
 
   return (
     <>
+      {isMultiSelect &&
+        Object.keys(table.getState().rowSelection).length > 0 && (
+          <div className='flex justify-between items-center mb-2'>
+            <div>{counts} row(s) selected</div>
+            <button
+              className='btn btn-error btn-xs text-white'
+              onClick={onConfirmMultiDelete}
+            >
+              Delete ({counts})
+            </button>
+          </div>
+        )}
       <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
         <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
           {table.getHeaderGroups().map((headerGroup) => (
