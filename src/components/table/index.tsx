@@ -4,6 +4,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import clsx from 'clsx';
 import { Fragment, ReactNode, memo } from 'react';
 import { TTextTarget } from '../../pages/vocab';
 import CollapseVocab from '../../pages/vocab/components/collapse';
@@ -75,8 +76,15 @@ const DataTable = <T extends TExtend>({
         <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th scope='col' className='px-6 py-3' key={header.id}>
+              {headerGroup.headers.map((header, idx) => (
+                <th
+                  scope='col'
+                  className={clsx(
+                    'px-6 py-3',
+                    isMultiSelect && idx === 0 && 'w-2'
+                  )}
+                  key={header.id}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(

@@ -127,6 +127,8 @@ const Vocab = () => {
   const columns = useMemo<ColumnDef<TVocab>[]>(
     () => [
       {
+        enableResizing: false,
+        size: 200,
         id: 'select',
         header: ({ table }) => (
           <IndeterminateCheckbox
@@ -298,6 +300,11 @@ const Vocab = () => {
           getCoreRowModel: getCoreRowModel(),
           onRowSelectionChange: setRowSelection,
           getRowId: (row) => row._id,
+          defaultColumn: {
+            size: 800, //starting column size
+            minSize: 500, //enforced during column resizing
+            maxSize: 5000, //enforced during column resizing
+          },
         }}
       />
 

@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { LIMIT_PAGE_10 } from '../../utils/constants';
 import { TPagination } from '../../utils/types';
+import clsx from 'clsx';
 
 type TPaginationProps = { paginations: TPagination };
 
@@ -81,11 +82,12 @@ const Pagination = ({ paginations }: TPaginationProps) => {
           ) : (
             <button
               onClick={() => onPageChange(pageNumber)}
-              className={
+              className={clsx(
+                'join-item btn btn-sm',
                 pageNumber === parseInt(searchParams.get('page')!)
-                  ? 'active join-item btn btn-sm bg-gray-700 text-white'
-                  : 'join-item btn btn-sm btn-square'
-              }
+                  ? 'active  bg-gray-700 text-white'
+                  : 'btn-square'
+              )}
             >
               {pageNumber}
             </button>
