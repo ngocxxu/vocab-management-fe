@@ -66,8 +66,9 @@ const customStyleVocabModal = {
 
 const Vocab = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { mutate } = useDeleteVocab();
-  const { mutate: mutateDeleteMulti } = useDeleteMultiVocab();
+  const { mutate, isLoading: isLoadingDelete } = useDeleteVocab();
+  const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
+    useDeleteMultiVocab();
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab();
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab();
   const dispatch = useDispatch();
@@ -287,7 +288,13 @@ const Vocab = () => {
         }}
         isPagination
         isCollapse
-        isLoading={isLoadingPost || isLoadingPut || isLoading}
+        isLoading={
+          isLoadingPost ||
+          isLoadingPut ||
+          isLoading ||
+          isLoadingDelete ||
+          isLoadingDeleteMulti
+        }
         data={data?.data ?? []}
         options={{
           data: data?.data ?? [],
