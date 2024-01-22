@@ -25,6 +25,8 @@ type TTable<T extends TExtend> = {
 export type TExtend = {
   _id: string;
   textTarget: TTextTarget[];
+  sourceLanguage: string;
+  targetLanguage: string;
 };
 
 const DataTable = <T extends TExtend>({

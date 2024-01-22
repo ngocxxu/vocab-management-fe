@@ -1,14 +1,16 @@
-import { Row } from '@tanstack/react-table';
-import { ReactNode, memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { TExtend } from '../../../../components/table';
-import { setItemsShowState } from '../../../../redux/reducer/vocab';
-import { RootState } from '../../../../redux/store';
-import styles from './styles.module.scss';
+import { Row } from "@tanstack/react-table";
+import { ReactNode, memo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { TExtend } from "../../../../components/table";
+import Voice from "../../../../components/voice";
+import { setItemsShowState } from "../../../../redux/reducer/vocab";
+import { RootState } from "../../../../redux/store";
+import styles from "./styles.module.scss";
 
 type TCollapseVocab<T extends TExtend> = { row: Row<T> };
 
 const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
+  const { textTarget, sourceLanguage, targetLanguage } = row.original;
   const dispatch = useDispatch();
   const { idsState, itemsShow } = useSelector(
     (state: RootState) => state.vocabReducer
@@ -23,11 +25,11 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
     idsState.includes(row.original._id) && (
       <tr className={styles.container}>
         <td
-          className='px-6 py-4 break-all'
+          className="px-6 py-4 break-all"
           colSpan={row.getVisibleCells().length}
         >
-          <ol className='list-decimal'>
-            {row.original.textTarget.map(
+          <ol className="list-decimal">
+            {textTarget.map(
               (
                 {
                   text,
@@ -42,46 +44,60 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
               ) => {
                 return (
                   <li
-                    className={
-                      idx === row.original.textTarget.length - 1 ? '' : 'mb-4'
-                    }
+                    className={idx === textTarget.length - 1 ? "" : "mb-4"}
                     key={text}
                   >
-                    <p>
-                      <span className='text-sky-500'>{wordType} </span>
-                      <span className='font-semibold'>{text} - </span>
-                      {subject.map((item) => (
-                        <span
-                          key={item.label}
-                          className='badge badge-outline text-xs mr-1'
-                        >
-                          {item.value}
-                        </span>
-                      ))}
-                    </p>
-                    <p>{explanationSource}</p>
-                    <p>{explanationTarget}</p>
+                    <div className="flex items-center mb-2 gap-3">
+                      <div className="flex items-center gap-1">
+                        <div className="text-sky-500">{wordType}</div>
+                        <div className="flex items-center">
+                          <span className="font-semibold">{text}</span>
+                          <Voice lang={targetLanguage} text={text} />
+                        </div>
+                      </div>
+                      <div>
+                        {subject.map((item) => (
+                          <span
+                            key={item.label}
+                            className="badge badge-outline text-xs mr-1"
+                          >
+                            {item.value}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-center mb-2">
+                      <span>{explanationSource}</span>
+                      <Voice lang={sourceLanguage} text={explanationSource} />
+                    </div>
+                    <div className="flex items-center mb-2">
+                      <span>{explanationTarget}</span>
+                      <Voice lang={targetLanguage} text={explanationTarget} />
+                    </div>
 
                     {examples
                       .slice(0, !checkShow(idx) ? 1 : examples.length)
                       .map(({ source, target }) => (
                         <div
                           key={source}
-                          className='flex justify-start items-end gap-3'
+                          className="flex justify-start items-end gap-3"
                         >
-                          <p
-                            key={source}
-                            className='border-l-4 border-gray-400 pl-2 mb-2'
-                          >
-                            {source} <br />
-                            {target}
-                          </p>
+                          <div className="border-l-4 border-gray-400 pl-2 mb-2">
+                            <div className="flex items-center">
+                              <div>{source}</div>
+                              <Voice lang={sourceLanguage} text={source} />
+                            </div>
+                            <div className="flex items-center">
+                              <div>{target}</div>
+                              <Voice lang={targetLanguage} text={target} />
+                            </div>
+                          </div>
                         </div>
                       ))}
 
                     {examples.length > 1 && (
                       <button
-                        className='text-xs text-blue-400 mb-2 block'
+                        className="text-xs text-blue-400 mb-2 block"
                         onClick={() => {
                           dispatch(
                             setItemsShowState({
@@ -91,13 +107,13 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                           );
                         }}
                       >
-                        {!checkShow(idx) ? 'More' : 'Less'}
+                        {!checkShow(idx) ? "More" : "Less"}
                       </button>
                     )}
 
                     {grammar && (
-                      <div className='badge bg-zinc-200 text-xs'>
-                        <span className='mr-2'>Grammar structure:</span>{' '}
+                      <div className="badge bg-zinc-200 text-xs">
+                        <span className="mr-2">Grammar structure:</span>{" "}
                         {grammar}
                       </div>
                     )}
