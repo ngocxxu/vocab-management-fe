@@ -7,30 +7,32 @@ type TVoice = {
 };
 
 const Voice = ({ lang, text }: TVoice) => {
+  const synth = window.speechSynthesis;
+
+  const checkLanguageExistVoice = () => {
+    const voices = synth.getVoices();
+    return voices
+      .filter((voice) => voice.name.includes("Google"))
+      .find((item) => item.lang.includes(lang));
+  };
+
   const handleTextToSpeech: MouseEventHandler<SVGSVGElement> = (e) => {
     // Defeat bubble event click
     e.stopPropagation();
-    const synth = window.speechSynthesis;
-    const voices = synth.getVoices();
-    const findVoice = voices
-      .filter((voice) => voice.name.includes("Google"))
-      .find((item) => item.lang.includes(lang));
-
-    if (!findVoice) return;
 
     const utterThis = new SpeechSynthesisUtterance(text);
-    utterThis.voice = findVoice;
+    utterThis.voice = checkLanguageExistVoice() ?? null;
     synth.speak(utterThis);
   };
 
-  if (lang === "vi") return;
-
   return (
-    <IconVolume
-      className="cursor-pointer ml-1.5"
-      size="1rem"
-      onClick={(e) => handleTextToSpeech(e)}
-    />
+    checkLanguageExistVoice() && (
+      <IconVolume
+        className="cursor-pointer ml-1.5"
+        size="1rem"
+        onClick={(e) => handleTextToSpeech(e)}
+      />
+    )
   );
 };
 
