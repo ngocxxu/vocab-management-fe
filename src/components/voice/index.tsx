@@ -1,4 +1,5 @@
 import { IconVolume } from "@tabler/icons-react";
+import { MouseEventHandler } from "react";
 
 type TVoice = {
   lang: string;
@@ -6,7 +7,9 @@ type TVoice = {
 };
 
 const Voice = ({ lang, text }: TVoice) => {
-  const handleTextToSpeech = () => {
+  const handleTextToSpeech: MouseEventHandler<SVGSVGElement> = (e) => {
+    // Defeat bubble event click
+    e.stopPropagation();
     const synth = window.speechSynthesis;
     const voices = synth.getVoices();
     const findVoice = voices
@@ -26,7 +29,7 @@ const Voice = ({ lang, text }: TVoice) => {
     <IconVolume
       className="cursor-pointer ml-1.5"
       size="1rem"
-      onClick={handleTextToSpeech}
+      onClick={(e) => handleTextToSpeech(e)}
     />
   );
 };

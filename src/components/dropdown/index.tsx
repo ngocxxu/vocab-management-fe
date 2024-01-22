@@ -1,5 +1,4 @@
 import { ReactNode, useRef } from "react";
-import { removeOpenAttribute } from "../../utils";
 
 type DropdownCustom = {
   head: ReactNode | string;
@@ -20,9 +19,9 @@ const DropDownCustom = ({
     <details
       ref={dropdownRef}
       className={`dropdown ${position}`}
-      onBlur={() => {
-        removeOpenAttribute(dropdownRef);
-      }}
+      // onBlur={() => {
+      //   removeOpenAttribute(dropdownRef);
+      // }}
     >
       <summary className={classNameSummary ? classNameSummary : "text-white"}>
         {head}
