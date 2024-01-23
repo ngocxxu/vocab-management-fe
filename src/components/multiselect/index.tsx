@@ -1,30 +1,38 @@
-import { forwardRef } from 'react';
-import { MultiSelect } from 'react-multi-select-component';
-import { TSelect } from '../select';
-import styles from './style.module.scss';
+import { forwardRef } from "react";
+import { FieldError } from "react-hook-form";
+import ReactSelect from "react-select";
+import { TOption } from "../../utils/types";
 
-const Multiselect = forwardRef(
+type TMultiSelect = {
+  isMark?: boolean;
+  label: string;
+  options: TOption[];
+  error?: FieldError | null;
+};
+
+const MultiSelect = forwardRef(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ label, options, isMark, error, ...props }: TSelect, _ref) => {
+  ({ label, options, isMark, error, ...props }: TMultiSelect, _ref) => {
     return (
-      <div className='w-full'>
-        <div className='label'>
-          <span className='label-text'>
-            {isMark && <span className='text-red-600'>*</span>}
+      <div className="w-full">
+        <div className="label">
+          <span className="label-text">
+            {isMark && <span className="text-red-600">*</span>}
             {label}
           </span>
         </div>
-        <MultiSelect
-          className={styles.item}
-          value={[]}
+        <ReactSelect
+          isMulti
+          name="colors"
           options={options}
-          labelledBy='Select'
+          className="basic-multi-select"
+          classNamePrefix="select"
           {...props}
         />
         {/* Validation */}
-        <div className='label'>
+        <div className="label">
           {error && (
-            <span className='label-text-alt text-red-600'>
+            <span className="label-text-alt text-red-600">
               This field must have at least 1 items
             </span>
           )}
@@ -34,4 +42,4 @@ const Multiselect = forwardRef(
   }
 );
 
-export default Multiselect;
+export default MultiSelect;
