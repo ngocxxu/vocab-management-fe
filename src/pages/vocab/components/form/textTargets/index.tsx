@@ -50,6 +50,7 @@ export const TextTargetsForm = ({
     if (
       itemVocab &&
       isEditing &&
+      // Set intial value from backend when re-render times
       fieldsLengthItem === itemVocab.textTarget.length
     ) {
       reset((prev) => ({ ...prev, ...itemVocab }));
