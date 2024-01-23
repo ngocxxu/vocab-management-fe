@@ -1,7 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import { AxiosResponse } from "axios";
-import clsx from "clsx";
 import {
   Controller,
   Resolver,
@@ -10,16 +9,16 @@ import {
   useForm,
 } from "react-hook-form";
 import { UseMutateFunction } from "react-query";
+import { useSelector } from "react-redux";
 import * as yup from "yup";
 import { TTextTarget, TVocab } from "../..";
 import GroupButton from "../../../../components/button/GroupButton";
 import Input from "../../../../components/input";
 import Select from "../../../../components/select";
+import { RootState } from "../../../../redux/store";
+import { TPutVocabs } from "../../../../services/vocab/usePutVocab";
 import { defaultValue, languageList } from "../../constants";
 import { TextTargetsForm } from "./textTargets";
-import { TPutVocabs } from "../../../../services/vocab/usePutVocab";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../redux/store";
 
 type TFormVocabProps = {
   idVocab: string;
@@ -147,12 +146,7 @@ const FormVocab = ({
           className="border border-gray-200 rounded-md mt-4 p-2"
           key={field.id}
         >
-          <div
-            className={clsx(
-              index !== 0 && "mt-4",
-              "flex justify-between items-center"
-            )}
-          >
+          <div className="flex justify-between items-center font-semibold">
             <div className="text-sm">Item {index + 1}</div>
             {index > 0 && (
               <IconX
