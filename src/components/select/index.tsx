@@ -28,6 +28,10 @@ const Select = ({
         </span>
       </div>
       <ReactSelect
+        classNames={{
+          control: () => "!rounded-lg text-sm",
+          option: () => "!text-sm",
+        }}
         value={options.find((item) => item.value === value)}
         options={options}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

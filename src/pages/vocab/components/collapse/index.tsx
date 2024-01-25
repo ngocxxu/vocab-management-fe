@@ -66,14 +66,19 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                         ))}
                       </div>
                     </div>
-                    <div className="flex items-center mb-2">
-                      <span>{explanationSource}</span>
-                      <Voice lang={sourceLanguage} text={explanationSource} />
-                    </div>
-                    <div className="flex items-center mb-2">
-                      <span>{explanationTarget}</span>
-                      <Voice lang={targetLanguage} text={explanationTarget} />
-                    </div>
+
+                    {explanationSource && (
+                      <div className="flex items-center mb-2">
+                        <span>{explanationSource}</span>
+                        <Voice lang={sourceLanguage} text={explanationSource} />
+                      </div>
+                    )}
+                    {explanationTarget && (
+                      <div className="flex items-center mb-2">
+                        <span>{explanationTarget}</span>
+                        <Voice lang={targetLanguage} text={explanationTarget} />
+                      </div>
+                    )}
 
                     {examples
                       .slice(0, !checkShow(idx) ? 1 : examples.length)

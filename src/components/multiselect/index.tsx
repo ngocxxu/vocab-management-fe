@@ -22,6 +22,10 @@ const MultiSelect = forwardRef(
           </span>
         </div>
         <ReactSelect
+          classNames={{
+            control: () => "!rounded-lg text-sm",
+            option: () => "!text-sm",
+          }}
           isMulti
           name="colors"
           options={options}
