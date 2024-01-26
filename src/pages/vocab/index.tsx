@@ -1,3 +1,5 @@
+import Input from "@/components/input";
+import { Popover } from "@/components/popover";
 import {
   IconArrowBadgeDownFilled,
   IconArrowBadgeUpFilled,
@@ -12,7 +14,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import Button from "../../components/button";
 import ConfirmButton from "../../components/button/ConfirmButton";
-import DropDownCustom from "../../components/dropdown";
 import Modal from "../../components/modal";
 import Table from "../../components/table";
 import Voice from "../../components/voice";
@@ -31,7 +32,7 @@ import { LIMIT_PAGE_10 } from "../../utils/constants";
 import { TOption } from "../../utils/types";
 import { IndeterminateCheckbox } from "./components/checkbox";
 import FormVocab from "./components/form";
-import Input from "@/components/input";
+import { AlertDialog } from "@/components/alertDialog";
 
 export type TExamples = {
   source: string;
@@ -211,7 +212,7 @@ const Vocab = () => {
         id: "action",
         cell: ({ row }) => (
           <div className="flex gap-3 items-center w-0">
-            <button
+            <Button
               className="btn btn-square btn-xs btn-outline border-white bg-white"
               onClick={() => {
                 dispatch(setItemVocabState(row.original));
@@ -220,14 +221,18 @@ const Vocab = () => {
               }}
             >
               <IconEdit />
-            </button>
-
-            <IconTrash
-              className="btn btn-square btn-xs btn-outline border-white bg-white"
-              onClick={() => {
-                dispatch(setIdVocabState(row.original._id));
-                setIsNotifyModal(true);
-              }}
+            </Button>
+            <AlertDialog
+              head={
+                <IconTrash
+                  className="btn btn-square btn-xs btn-outline border-white bg-white"
+                  onClick={() => {
+                    dispatch(setIdVocabState(row.original._id));
+                    setIsNotifyModal(true);
+                  }}
+                />
+              }
+              title="Do you want to delete?"
             />
           </div>
         ),
@@ -249,11 +254,7 @@ const Vocab = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <DropDownCustom
-            label="Filter"
-            head={<IconFilter />}
-            list={[{ body: <>Hello</> }]}
-          />
+          <Popover head={<IconFilter />} body={<>Hello</>} />
           <div className="flex items-center">
             <Input placeholder="Search here" />
             <Button

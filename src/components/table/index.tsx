@@ -10,6 +10,7 @@ import { TTextTarget } from "../../pages/vocab";
 import CollapseVocab from "../../pages/vocab/components/collapse";
 import { TPagination } from "../../utils/types";
 import Pagination from "../pagination";
+import Button from "../button";
 
 type TTable<T extends TExtend> = {
   data: T[];
@@ -66,12 +67,12 @@ const DataTable = <T extends TExtend>({
         Object.keys(table.getState().rowSelection).length > 0 && (
           <div className="flex justify-between items-center mb-2">
             <div className="text-xs">{counts} row(s) selected</div>
-            <button
+            <Button
               className="btn btn-error btn-xs text-white"
               onClick={onConfirmMultiDelete}
             >
               Delete ({counts})
-            </button>
+            </Button>
           </div>
         )}
       <table className="table text-sm text-left rtl:text-right text-gray-500">

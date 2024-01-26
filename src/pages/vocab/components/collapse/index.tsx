@@ -6,6 +6,7 @@ import Voice from "../../../../components/voice";
 import { setItemsShowState } from "../../../../redux/reducer/vocab";
 import { RootState } from "../../../../redux/store";
 import styles from "./styles.module.scss";
+import Button from "@/components/button";
 
 type TCollapseVocab<T extends TExtend> = { row: Row<T> };
 
@@ -101,7 +102,7 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       ))}
 
                     {examples.length > 1 && (
-                      <button
+                      <Button
                         className="text-xs text-blue-400 mb-2 block"
                         onClick={() => {
                           dispatch(
@@ -113,7 +114,7 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                         }}
                       >
                         {!checkShow(idx) ? "More" : "Less"}
-                      </button>
+                      </Button>
                     )}
 
                     {grammar && (

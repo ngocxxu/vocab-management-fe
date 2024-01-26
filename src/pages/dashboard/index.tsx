@@ -1,6 +1,7 @@
 import { useToast } from "@/components/ui/use-toast";
 import ChartTable from "../../components/charts";
 import { ToastAction } from "@/components/ui/toast";
+import Button from "@/components/button";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -14,7 +15,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="container mx-auto">
-        <button onClick={showToastMessage}>Notify!</button>
+        <Button onClick={showToastMessage}>Notify!</Button>
         <div className="shadow-md">
           <ChartTable />
         </div>

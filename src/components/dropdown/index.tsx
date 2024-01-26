@@ -31,7 +31,6 @@ const DropDownCustom = ({ head, list, label }: DropdownCustom) => {
             {separator && <DropdownMenuSeparator />}
           </Fragment>
         ))}
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

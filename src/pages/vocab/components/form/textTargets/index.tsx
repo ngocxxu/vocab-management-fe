@@ -18,6 +18,7 @@ import Select from "../../../../../components/select";
 import { RootState } from "../../../../../redux/store";
 import { subjectList, wordTypeList } from "../../../constants";
 import { ExamplesForm } from "../examples";
+import Button from "@/components/button";
 
 type TTextTargetsForm = {
   fieldsLengthItem: number;
@@ -163,9 +164,9 @@ export const TextTargetsForm = ({
             <ExamplesForm control={control} idx={idx} idxTextTarget={index} />
           </fieldset>
         ))}
-        <button
+        <Button
           type="button"
-          className={clsx(fields.length !== 0 && "mt-2", "btn btn-sm w-full")}
+          className={clsx(fields.length !== 0 && "mt-2", "w-full")}
           onClick={() => {
             append({
               source: "",
@@ -175,7 +176,7 @@ export const TextTargetsForm = ({
         >
           <IconPlus />
           Example
-        </button>
+        </Button>
       </div>
     </>
   );
