@@ -1,8 +1,9 @@
-import { Fragment } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { LIMIT_PAGE_10 } from '../../utils/constants';
-import { TPagination } from '../../utils/types';
-import clsx from 'clsx';
+import { Fragment } from "react";
+import { useSearchParams } from "react-router-dom";
+import { LIMIT_PAGE_10 } from "../../utils/constants";
+import { TPagination } from "../../utils/types";
+import clsx from "clsx";
+import { ButtonLib } from "../ui/button";
 
 type TPaginationProps = { paginations: TPagination };
 
@@ -52,18 +53,18 @@ const Pagination = ({ paginations }: TPaginationProps) => {
   };
 
   return (
-    <div className='flex items-center justify-end gap-1 mt-4'>
-      <button
-        className='join-item btn btn-sm'
+    <div className="flex items-center justify-end gap-1 mt-4">
+      <ButtonLib
+        className="join-item btn btn-sm"
         onClick={() =>
           setSearchParams({ page: String(1), limit: LIMIT_PAGE_10 })
         }
         disabled={currentPage === 1}
       >
         «
-      </button>
-      <button
-        className='join-item btn btn-sm'
+      </ButtonLib>
+      <ButtonLib
+        className="join-item btn btn-sm"
         onClick={() =>
           setSearchParams({
             page: String(currentPage - 1),
@@ -73,30 +74,32 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         disabled={currentPage === 1}
       >
         ‹
-      </button>
+      </ButtonLib>
 
       {getPagesToShow().map((pageNumber, index) => (
         <Fragment key={index}>
           {pageNumber === null ? (
-            <button className='join-item btn btn-sm btn-disabled'>...</button>
+            <ButtonLib className="join-item btn btn-sm btn-disabled">
+              ...
+            </ButtonLib>
           ) : (
-            <button
+            <ButtonLib
               onClick={() => onPageChange(pageNumber)}
               className={clsx(
-                'join-item btn btn-sm',
-                pageNumber === parseInt(searchParams.get('page')!)
-                  ? 'active  bg-gray-700 text-white'
-                  : 'btn-square'
+                "join-item btn btn-sm",
+                pageNumber === parseInt(searchParams.get("page")!)
+                  ? "active  bg-gray-700 text-white"
+                  : "btn-square"
               )}
             >
               {pageNumber}
-            </button>
+            </ButtonLib>
           )}
         </Fragment>
       ))}
 
-      <button
-        className='join-item btn btn-sm'
+      <ButtonLib
+        className="join-item btn btn-sm"
         onClick={() =>
           setSearchParams({
             page: String(currentPage + 1),
@@ -106,9 +109,9 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         disabled={currentPage === totalPages}
       >
         ›
-      </button>
-      <button
-        className='join-item btn btn-sm'
+      </ButtonLib>
+      <ButtonLib
+        className="join-item btn btn-sm"
         onClick={() =>
           setSearchParams({
             page: String(totalPages),
@@ -118,7 +121,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         disabled={currentPage === totalPages}
       >
         »
-      </button>
+      </ButtonLib>
     </div>
   );
 };

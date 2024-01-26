@@ -31,6 +31,7 @@ import { LIMIT_PAGE_10 } from "../../utils/constants";
 import { TOption } from "../../utils/types";
 import { IndeterminateCheckbox } from "./components/checkbox";
 import FormVocab from "./components/form";
+import Input from "@/components/input";
 
 export type TExamples = {
   source: string;
@@ -249,21 +250,12 @@ const Vocab = () => {
         </div>
         <div className="flex items-center gap-2">
           <DropDownCustom
-            position="dropdown-end"
-            classNameSummary="m-1 btn btn-primary btn-sm"
-            head={<IconFilter className="text-white" />}
-            list={
-              <div className="shadow menu dropdown-content bg-base-100 rounded-box w-[50vh]">
-                Hello
-              </div>
-            }
+            label="Filter"
+            head={<IconFilter />}
+            list={[{ body: <>Hello</> }]}
           />
           <div className="flex items-center">
-            <input
-              type="text"
-              placeholder="Search here"
-              className="input input-bordered input-sm w-full max-w-xs rounded-r-none"
-            />
+            <Input placeholder="Search here" />
             <Button
               classNames="btn-sm rounded-l-none"
               leftIcon={<IconSearch />}

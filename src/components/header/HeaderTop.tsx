@@ -3,6 +3,15 @@ import UserButton from "../button/UserButton";
 import DropDownCustom from "../dropdown";
 import "./style.scss";
 
+const list = [
+  {
+    body: "Item 1",
+  },
+  {
+    body: "Item 2",
+  },
+];
+
 const HeaderTop = () => {
   return (
     <div className="header-top bg-neutral py-2">
@@ -15,19 +24,9 @@ const HeaderTop = () => {
                 99+
               </span>
               <DropDownCustom
-                position="dropdown-end"
-                classNameSummary="m-1 btn btn-outline border-neutral bg-neutral rounded-full"
-                head={<IconBell className="text-white" />}
-                list={
-                  <ul className="shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-                    <li>
-                      <a>Item 1</a>
-                    </li>
-                    <li>
-                      <a>Item 2</a>
-                    </li>
-                  </ul>
-                }
+                label="Announcement"
+                head={<IconBell />}
+                list={list}
               />
             </div>
             <UserButton />

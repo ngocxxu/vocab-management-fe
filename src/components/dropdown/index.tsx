@@ -1,33 +1,39 @@
-import { ReactNode, useRef } from "react";
+import { Fragment, ReactNode } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 type DropdownCustom = {
-  head: ReactNode | string;
-  list: JSX.Element;
-  classNameSummary?: string;
-  position?: string;
+  head: ReactNode;
+  label: string;
+  list: {
+    icon?: ReactNode;
+    body: ReactNode;
+    separator?: boolean;
+  }[];
 };
 
-const DropDownCustom = ({
-  head,
-  list,
-  classNameSummary,
-  position,
-}: DropdownCustom) => {
-  const dropdownRef = useRef<HTMLDetailsElement>(null!);
-
+const DropDownCustom = ({ head, list, label }: DropdownCustom) => {
   return (
-    <details
-      ref={dropdownRef}
-      className={`dropdown ${position}`}
-      // onBlur={() => {
-      //   removeOpenAttribute(dropdownRef);
-      // }}
-    >
-      <summary className={classNameSummary ? classNameSummary : "text-white"}>
-        {head}
-      </summary>
-      {list}
-    </details>
+    <DropdownMenu>
+      <DropdownMenuTrigger>{head}</DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>{label}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {list.map(({ body, separator }) => (
+          <Fragment key={body?.toString()}>
+            <DropdownMenuItem>{body}</DropdownMenuItem>
+            {separator && <DropdownMenuSeparator />}
+          </Fragment>
+        ))}
+        <DropdownMenuItem>Subscription</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
