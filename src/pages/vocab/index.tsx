@@ -1,3 +1,4 @@
+import { AlertDialog } from "@/components/alertDialog";
 import Input from "@/components/input";
 import { Popover } from "@/components/popover";
 import {
@@ -13,7 +14,6 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import Button from "../../components/button";
-import ConfirmButton from "../../components/button/ConfirmButton";
 import Modal from "../../components/modal";
 import Table from "../../components/table";
 import Voice from "../../components/voice";
@@ -32,7 +32,7 @@ import { LIMIT_PAGE_10 } from "../../utils/constants";
 import { TOption } from "../../utils/types";
 import { IndeterminateCheckbox } from "./components/checkbox";
 import FormVocab from "./components/form";
-import { AlertDialog } from "@/components/alertDialog";
+import { Badge } from "@/components/badge";
 
 export type TExamples = {
   source: string;
@@ -76,7 +76,6 @@ const Vocab = () => {
     (state: RootState) => state.vocabReducer
   );
   const [isModal, setIsModal] = useState(false);
-  const [isNotifyModal, setIsNotifyModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
@@ -88,8 +87,6 @@ const Vocab = () => {
   });
 
   const handleOnYes = () => {
-    setIsNotifyModal(false);
-
     if (isDeleteMulti) {
       // Loop find value === true and return [ids]
       const mappedIds: string[] = Object.entries(rowSelection).map(
@@ -162,9 +159,13 @@ const Vocab = () => {
             }
           >
             <div className="flex items-center">
-              <div className="break-all badge bg-emerald-500 gap-2 text-white">
+              <Badge
+                variant="outline"
+                className="break-all badge bg-emerald-500 gap-2 text-white"
+              >
                 {String(getValue())}
-              </div>
+              </Badge>
+
               <Voice
                 lang={row.original.sourceLanguage}
                 text={String(getValue())}
@@ -192,9 +193,12 @@ const Vocab = () => {
               {row.original.textTarget.map((item) => {
                 return (
                   <Fragment key={item.text}>
-                    <div className="badge bg-sky-500 gap-2 text-white">
+                    <Badge
+                      variant="outline"
+                      className="bg-sky-500 gap-2 text-white"
+                    >
                       {item.text}
-                    </div>{" "}
+                    </Badge>{" "}
                   </Fragment>
                 );
               })}
@@ -213,26 +217,28 @@ const Vocab = () => {
         cell: ({ row }) => (
           <div className="flex gap-3 items-center w-0">
             <Button
-              className="btn btn-square btn-xs btn-outline border-white bg-white"
+              size="icon"
+              variant="outline"
               onClick={() => {
                 dispatch(setItemVocabState(row.original));
                 setIsEditing(true);
                 setIsModal(!isModal);
               }}
-            >
-              <IconEdit />
-            </Button>
+              leftIcon={<IconEdit />}
+            />
             <AlertDialog
               head={
-                <IconTrash
-                  className="btn btn-square btn-xs btn-outline border-white bg-white"
+                <Button
                   onClick={() => {
                     dispatch(setIdVocabState(row.original._id));
-                    setIsNotifyModal(true);
                   }}
+                  size="icon"
+                  variant="outline"
+                  leftIcon={<IconTrash />}
                 />
               }
               title="Do you want to delete?"
+              onYes={handleOnYes}
             />
           </div>
         ),
@@ -285,7 +291,6 @@ const Vocab = () => {
           isLoadingDeleteMulti
         }
         onConfirmMultiDelete={() => {
-          setIsNotifyModal(true);
           setIsDeleteMulti(true);
         }}
         paginations={{
@@ -321,7 +326,7 @@ const Vocab = () => {
           />
         }
       />
-      <Modal
+      {/* <Modal
         isOpen={isNotifyModal}
         onClose={() => {
           setIsDeleteMulti(true);
@@ -334,7 +339,7 @@ const Vocab = () => {
             title="Do you want to delete?"
           />
         }
-      />
+      /> */}
     </div>
   );
 };

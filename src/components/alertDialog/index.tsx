@@ -14,9 +14,10 @@ import { ReactNode } from "react";
 type TAlertDialog = {
   head: ReactNode;
   title: string;
+  onYes: () => void;
 };
 
-export function AlertDialog({ head, title }: TAlertDialog) {
+export function AlertDialog({ head, title, onYes }: TAlertDialog) {
   return (
     <AlertDialogLib>
       <AlertDialogTrigger asChild>{head}</AlertDialogTrigger>
@@ -30,7 +31,7 @@ export function AlertDialog({ head, title }: TAlertDialog) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Delete</AlertDialogAction>
+          <AlertDialogAction onClick={onYes}>Delete</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialogLib>

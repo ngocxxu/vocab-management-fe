@@ -75,7 +75,7 @@ const DataTable = <T extends TExtend>({
             </Button>
           </div>
         )}
-      <table className="table text-sm text-left rtl:text-right text-gray-500">
+      <table className="table text-sm text-left rtl:text-right text-gray-500 w-full">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -104,7 +104,7 @@ const DataTable = <T extends TExtend>({
             <Fragment key={row.id}>
               <tr className="bg-white border-b">
                 {row.getVisibleCells().map((cell) => (
-                  <td className="px-6 py-3" key={cell.id}>
+                  <td className="px-6 py-2" key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

@@ -1,10 +1,5 @@
-import { BadgeLib } from "../ui/badge";
+import { BadgeLib, BadgeProps } from "../ui/badge";
 
-type TBadge = {
-  variant: "secondary" | "destructive" | "outline";
-  title: string;
-};
-
-export const Badge = ({ variant, title }: TBadge) => {
-  return <BadgeLib variant={variant}>{title}</BadgeLib>;
+export const Badge = ({ children, ...props }: BadgeProps) => {
+  return <BadgeLib {...props}>{children}</BadgeLib>;
 };

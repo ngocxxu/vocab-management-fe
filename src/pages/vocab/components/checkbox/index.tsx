@@ -1,4 +1,4 @@
-import { Checkbox } from "@/components/checkbox";
+// import { Checkbox } from "@/comp/checkbox";
 import { HTMLProps, useEffect, useRef } from "react";
 
 export const IndeterminateCheckbox = ({
@@ -14,5 +14,5 @@ export const IndeterminateCheckbox = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, indeterminate]);
 
-  return <Checkbox type="checkbox" ref={ref} {...rest} />;
+  return <input type="checkbox" ref={ref} {...rest} />;
 };

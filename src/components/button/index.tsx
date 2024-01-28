@@ -1,5 +1,5 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
-import { ButtonLib } from "@/components/ui/button";
+import { ButtonLib, ButtonProps } from "@/components/ui/button";
 
 type TButton = {
   title?: string;
@@ -14,9 +14,9 @@ const Button = ({
   rightIcon,
   classNames,
   ...props
-}: TButton & ButtonHTMLAttributes<HTMLButtonElement>) => {
+}: TButton & ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps) => {
   return (
-    <ButtonLib className={`btn ${classNames}`} {...props}>
+    <ButtonLib className={classNames} {...props}>
       {leftIcon && leftIcon}
       {title}
       {rightIcon && rightIcon}
