@@ -55,7 +55,8 @@ const Pagination = ({ paginations }: TPaginationProps) => {
   return (
     <div className="flex items-center justify-end gap-1 mt-4">
       <ButtonLib
-        className="join-item btn btn-sm"
+        variant="outline"
+        className="h-7 px-2.5"
         onClick={() =>
           setSearchParams({ page: String(1), limit: LIMIT_PAGE_10 })
         }
@@ -64,7 +65,8 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         «
       </ButtonLib>
       <ButtonLib
-        className="join-item btn btn-sm"
+        variant="outline"
+        className="h-7 px-2.5"
         onClick={() =>
           setSearchParams({
             page: String(currentPage - 1),
@@ -79,17 +81,18 @@ const Pagination = ({ paginations }: TPaginationProps) => {
       {getPagesToShow().map((pageNumber, index) => (
         <Fragment key={index}>
           {pageNumber === null ? (
-            <ButtonLib className="join-item btn btn-sm btn-disabled">
+            <ButtonLib variant="outline" className="h-7 px-2.5">
               ...
             </ButtonLib>
           ) : (
             <ButtonLib
+              variant="outline"
               onClick={() => onPageChange(pageNumber)}
               className={clsx(
-                "join-item btn btn-sm",
+                "h-7 px-2.5",
                 pageNumber === parseInt(searchParams.get("page")!)
-                  ? "active  bg-gray-700 text-white"
-                  : "btn-square"
+                  ? "active bg-customBlue text-white"
+                  : ""
               )}
             >
               {pageNumber}
@@ -99,7 +102,8 @@ const Pagination = ({ paginations }: TPaginationProps) => {
       ))}
 
       <ButtonLib
-        className="join-item btn btn-sm"
+        variant="outline"
+        className="h-7 px-2.5"
         onClick={() =>
           setSearchParams({
             page: String(currentPage + 1),
@@ -111,7 +115,8 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         ›
       </ButtonLib>
       <ButtonLib
-        className="join-item btn btn-sm"
+        variant="outline"
+        className="h-7 px-2.5"
         onClick={() =>
           setSearchParams({
             page: String(totalPages),

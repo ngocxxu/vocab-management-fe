@@ -2,9 +2,9 @@ import dayjs from "dayjs";
 
 const Footer = () => {
   return (
-    <footer className="footer footer-center p-4 bg-gray-300 text-base-content relative right-0 bottom-0 text-center">
+    <footer className="footer footer-center p-3 bg-customBlue text-white relative right-0 bottom-0 text-center">
       <aside>
-        <p>Copyright © {dayjs().year()} - Ngoc Quach</p>
+        <p>Copyright © {dayjs().year()} - Dev: Bono - Design: Ranie</p>
       </aside>
     </footer>
   );

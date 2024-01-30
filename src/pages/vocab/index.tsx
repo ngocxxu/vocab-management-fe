@@ -1,4 +1,5 @@
 import { AlertDialog } from "@/components/alertDialog";
+import { Badge } from "@/components/badge";
 import Input from "@/components/input";
 import { Popover } from "@/components/popover";
 import {
@@ -17,11 +18,7 @@ import Button from "../../components/button";
 import Modal from "../../components/modal";
 import Table from "../../components/table";
 import Voice from "../../components/voice";
-import {
-  setIdVocabState,
-  setItemVocabState,
-  toggleState,
-} from "../../redux/reducer/vocab";
+import { setItemVocabState, toggleState } from "../../redux/reducer/vocab";
 import { RootState } from "../../redux/store";
 import { useDeleteMultiVocab } from "../../services/vocab/useDeleteMultiVocab";
 import { useDeleteVocab } from "../../services/vocab/useDeleteVocab";
@@ -32,7 +29,6 @@ import { LIMIT_PAGE_10 } from "../../utils/constants";
 import { TOption } from "../../utils/types";
 import { IndeterminateCheckbox } from "./components/checkbox";
 import FormVocab from "./components/form";
-import { Badge } from "@/components/badge";
 
 export type TExamples = {
   source: string;
@@ -72,7 +68,7 @@ const Vocab = () => {
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab();
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab();
   const dispatch = useDispatch();
-  const { idsState, idVocabState, itemVocab } = useSelector(
+  const { idsState, itemVocab } = useSelector(
     (state: RootState) => state.vocabReducer
   );
   const [isModal, setIsModal] = useState(false);
@@ -86,7 +82,7 @@ const Vocab = () => {
     limit: searchParams.get("limit") ?? "10",
   });
 
-  const handleOnYes = () => {
+  const handleOnYes = (id?: string) => {
     if (isDeleteMulti) {
       // Loop find value === true and return [ids]
       const mappedIds: string[] = Object.entries(rowSelection).map(
@@ -97,7 +93,7 @@ const Vocab = () => {
       setRowSelection({});
       return mutateDeleteMulti(mappedIds);
     }
-    return mutate(idVocabState);
+    return mutate(id ?? "");
   };
 
   useEffect(() => {
@@ -229,16 +225,13 @@ const Vocab = () => {
             <AlertDialog
               head={
                 <Button
-                  onClick={() => {
-                    dispatch(setIdVocabState(row.original._id));
-                  }}
                   size="icon"
                   variant="outline"
                   leftIcon={<IconTrash />}
                 />
               }
               title="Do you want to delete?"
-              onYes={handleOnYes}
+              onYes={() => handleOnYes(row.original._id)}
             />
           </div>
         ),
@@ -293,6 +286,7 @@ const Vocab = () => {
         onConfirmMultiDelete={() => {
           setIsDeleteMulti(true);
         }}
+        onYes={handleOnYes}
         paginations={{
           currentPage: data?.currentPage ?? 1,
           totalItems: data?.totalItems ?? 1,

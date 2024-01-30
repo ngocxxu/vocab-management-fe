@@ -14,7 +14,7 @@ import { ReactNode } from "react";
 type TAlertDialog = {
   head: ReactNode;
   title: string;
-  onYes: () => void;
+  onYes?: () => void;
 };
 
 export function AlertDialog({ head, title, onYes }: TAlertDialog) {

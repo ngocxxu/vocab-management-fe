@@ -1,5 +1,6 @@
 import { FieldError } from "react-hook-form";
 import { InputLib } from "../ui/input";
+import clsx from "clsx";
 
 type TInput = {
   isMark?: boolean;
@@ -17,11 +18,9 @@ const Input = ({
 }: TInput) => {
   return (
     <label className="form-control w-full">
-      <div className="label">
-        <span className="label-text">
-          {isMark && <span className="text-red-600">*</span>}
-          {label}
-        </span>
+      <div className={clsx("text-sm", label && "mt-4")}>
+        {isMark && <span className="text-red-600">*</span>}
+        {label}
       </div>
       <InputLib
         type="text"
@@ -29,12 +28,9 @@ const Input = ({
         className="input input-bordered input-sm w-full"
         {...props}
       />
+
       {/* Validation */}
-      <div className="label">
-        {error && (
-          <span className="label-text-alt text-red-600">{error.message}</span>
-        )}
-      </div>
+      {error && <span className="text-xs text-red-600">{error.message}</span>}
     </label>
   );
 };

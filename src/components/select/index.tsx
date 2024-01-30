@@ -1,6 +1,7 @@
 import { FieldError } from "react-hook-form";
 import ReactSelect from "react-select";
 import { TOption } from "../../utils/types";
+import clsx from "clsx";
 
 export type TSelect = {
   isMark?: boolean;
@@ -21,11 +22,9 @@ const Select = ({
 }: TSelect) => {
   return (
     <label className="form-control w-full">
-      <div className="label">
-        <span className="label-text">
-          {isMark && <span className="text-red-600">*</span>}
-          {label}
-        </span>
+      <div className={clsx("text-sm", label && "mt-4")}>
+        {isMark && <span className="text-red-600">*</span>}
+        {label}
       </div>
       <ReactSelect
         classNames={{
@@ -40,11 +39,7 @@ const Select = ({
       />
 
       {/* Validation */}
-      <div className="label">
-        {error && (
-          <span className="label-text-alt text-red-600">{error.message}</span>
-        )}
-      </div>
+      {error && <span className="text-sm text-red-600">{error.message}</span>}
     </label>
   );
 };

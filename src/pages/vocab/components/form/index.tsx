@@ -19,6 +19,7 @@ import { RootState } from "../../../../redux/store";
 import { TPutVocabs } from "../../../../services/vocab/usePutVocab";
 import { defaultValue, languageList } from "../../constants";
 import { TextTargetsForm } from "./textTargets";
+import Button from "@/components/button";
 
 type TFormVocabProps = {
   idVocab: string;
@@ -149,10 +150,7 @@ const FormVocab = ({
           <div className="flex justify-between items-center font-semibold">
             <div className="text-sm">Item {index + 1}</div>
             {index > 0 && (
-              <IconX
-                onClick={() => remove(index)}
-                className="btn btn-square btn-xs btn-outline border-white bg-white"
-              />
+              <IconX onClick={() => remove(index)} className="cursor-pointer" />
             )}
           </div>
           <TextTargetsForm
@@ -167,17 +165,19 @@ const FormVocab = ({
         </fieldset>
       ))}
       <br />
-      <div className="border border-gray-300 rounded-md flex justify-center items-center">
-        <IconPlus
-          onClick={() => {
-            append({
-              ...defaultValue,
-              examples: [],
-            });
-          }}
-          className="btn btn-square btn-xs btn-outline border-white bg-white w-full h-8"
-        />
-      </div>
+      <Button
+        className="w-full"
+        variant="outline"
+        type="button"
+        onClick={() => {
+          append({
+            ...defaultValue,
+            examples: [],
+          });
+        }}
+        leftIcon={<IconPlus className="mr-1" />}
+      />
+
       <div className="flex justify-end mt-4">
         <GroupButton isEditing={isEditing} onClose={onClose} />
       </div>

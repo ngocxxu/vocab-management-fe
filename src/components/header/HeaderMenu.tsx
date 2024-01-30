@@ -2,13 +2,10 @@ import {
   IconHistory,
   IconHome,
   IconMedal2,
-  IconMenu2,
   IconVocabulary,
-  IconX,
 } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Checkbox } from "../checkbox";
 
 const links = [
   { link: "/dashboard", label: "Dashboard", icon: IconHome },
@@ -64,11 +61,11 @@ export function HeaderMenu() {
           {items}
         </div>
 
-        <label className="btn btn-circle swap swap-rotate visible sm:invisible">
+        {/* <label className="btn btn-circle swap swap-rotate visible sm:invisible">
           <Checkbox />
           <IconMenu2 className="swap-off fill-current" width="32" height="32" />
           <IconX className="swap-on fill-current" width="32" height="32" />
-        </label>
+        </label> */}
       </div>
     </div>
   );

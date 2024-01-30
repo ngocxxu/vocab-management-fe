@@ -173,10 +173,9 @@ export const TextTargetsForm = ({
               target: "",
             });
           }}
-        >
-          <IconPlus />
-          Example
-        </Button>
+          title="Example"
+          leftIcon={<IconPlus className="mr-1" />}
+        />
       </div>
     </>
   );

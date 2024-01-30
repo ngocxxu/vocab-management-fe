@@ -11,6 +11,7 @@ import CollapseVocab from "../../pages/vocab/components/collapse";
 import { TPagination } from "../../utils/types";
 import Pagination from "../pagination";
 import Button from "../button";
+import { AlertDialog } from "../alertDialog";
 
 type TTable<T extends TExtend> = {
   data: T[];
@@ -21,6 +22,7 @@ type TTable<T extends TExtend> = {
   paginations?: TPagination;
   isMultiSelect?: boolean;
   onConfirmMultiDelete?: () => void;
+  onYes?: () => void;
 };
 
 export type TExtend = {
@@ -39,6 +41,7 @@ const DataTable = <T extends TExtend>({
   isMultiSelect = false,
   paginations,
   onConfirmMultiDelete,
+  onYes,
 }: TTable<T>) => {
   const table = useReactTable({
     getFilteredRowModel: getFilteredRowModel(),
@@ -67,12 +70,18 @@ const DataTable = <T extends TExtend>({
         Object.keys(table.getState().rowSelection).length > 0 && (
           <div className="flex justify-between items-center mb-2">
             <div className="text-xs">{counts} row(s) selected</div>
-            <Button
-              className="btn btn-error btn-xs text-white"
-              onClick={onConfirmMultiDelete}
-            >
-              Delete ({counts})
-            </Button>
+            <AlertDialog
+              head={
+                <Button
+                  onClick={onConfirmMultiDelete}
+                  variant="destructive"
+                  className="btn btn-error btn-xs text-white"
+                  title={`Delete (${counts})`}
+                />
+              }
+              title="Do you want to delete these?"
+              onYes={onYes}
+            />
           </div>
         )}
       <table className="table text-sm text-left rtl:text-right text-gray-500 w-full">
