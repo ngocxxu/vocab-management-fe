@@ -51,7 +51,7 @@ const DataTable = <T extends TExtend>({
   });
   const counts = Object.keys(table.getState().rowSelection).length;
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <div className="h-[400px] flex justify-center items-center">
         <IconLoader2 className="h-10 w-10 animate-spin" />
