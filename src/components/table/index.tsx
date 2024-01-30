@@ -12,6 +12,7 @@ import { TPagination } from "../../utils/types";
 import Pagination from "../pagination";
 import Button from "../button";
 import { AlertDialog } from "../alertDialog";
+import { IconLoader2 } from "@tabler/icons-react";
 
 type TTable<T extends TExtend> = {
   data: T[];
@@ -50,10 +51,10 @@ const DataTable = <T extends TExtend>({
   });
   const counts = Object.keys(table.getState().rowSelection).length;
 
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <div className="h-[400px] flex justify-center items-center">
-        <div className="loading loading-infinity loading-lg" />
+        <IconLoader2 className="h-10 w-10 animate-spin" />
       </div>
     );
   }
