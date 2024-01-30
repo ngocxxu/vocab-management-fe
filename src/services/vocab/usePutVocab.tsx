@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient } from 'react-query';
-import { TVocab } from '../../pages/vocab';
-import { httpClient } from '../settings';
-import toast from 'react-hot-toast';
-import { VOCAB_KEYS } from './queryKeys';
+import { useMutation, useQueryClient } from "react-query";
+import { TVocab } from "../../pages/vocab";
+import { httpClient } from "../settings";
+import { VOCAB_KEYS } from "./queryKeys";
+import { useToast } from "@/components/ui/use-toast";
 
 export type TPutVocabs = {
-  data: Omit<TVocab, 'id'>;
+  data: Omit<TVocab, "id">;
   id: string;
 };
 
@@ -15,16 +15,23 @@ const postVocab = async (item: TPutVocabs) => {
 };
 
 export const usePutVocab = () => {
+  const { toast } = useToast();
   const client = useQueryClient();
 
   return useMutation({
     mutationFn: (item: TPutVocabs) => postVocab(item),
     onSuccess: () => {
       client.invalidateQueries([VOCAB_KEYS.GET_VOCAB]);
-      toast.success('Updated successfully');
+      toast({
+        title: "Success",
+        description: "Updated successfully",
+      });
     },
     onError: () => {
-      toast.error('Failed, please try again');
+      toast({
+        title: "Error",
+        description: "Failed, please try again",
+      });
     },
   });
 };

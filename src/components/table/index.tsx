@@ -10,6 +10,8 @@ import { TTextTarget } from "../../pages/vocab";
 import CollapseVocab from "../../pages/vocab/components/collapse";
 import { TPagination } from "../../utils/types";
 import Pagination from "../pagination";
+import Button from "../button";
+import { AlertDialog } from "../alertDialog";
 
 type TTable<T extends TExtend> = {
   data: T[];
@@ -20,6 +22,7 @@ type TTable<T extends TExtend> = {
   paginations?: TPagination;
   isMultiSelect?: boolean;
   onConfirmMultiDelete?: () => void;
+  onYes?: () => void;
 };
 
 export type TExtend = {
@@ -38,6 +41,7 @@ const DataTable = <T extends TExtend>({
   isMultiSelect = false,
   paginations,
   onConfirmMultiDelete,
+  onYes,
 }: TTable<T>) => {
   const table = useReactTable({
     getFilteredRowModel: getFilteredRowModel(),
@@ -66,15 +70,21 @@ const DataTable = <T extends TExtend>({
         Object.keys(table.getState().rowSelection).length > 0 && (
           <div className="flex justify-between items-center mb-2">
             <div className="text-xs">{counts} row(s) selected</div>
-            <button
-              className="btn btn-error btn-xs text-white"
-              onClick={onConfirmMultiDelete}
-            >
-              Delete ({counts})
-            </button>
+            <AlertDialog
+              head={
+                <Button
+                  onClick={onConfirmMultiDelete}
+                  variant="destructive"
+                  className="btn btn-error btn-xs text-white"
+                  title={`Delete (${counts})`}
+                />
+              }
+              title="Do you want to delete these?"
+              onYes={onYes}
+            />
           </div>
         )}
-      <table className="table text-sm text-left rtl:text-right text-gray-500">
+      <table className="table text-sm text-left rtl:text-right text-gray-500 w-full">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -103,7 +113,7 @@ const DataTable = <T extends TExtend>({
             <Fragment key={row.id}>
               <tr className="bg-white border-b">
                 {row.getVisibleCells().map((cell) => (
-                  <td className="px-6 py-3" key={cell.id}>
+                  <td className="px-6 py-2" key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

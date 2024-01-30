@@ -1,16 +1,24 @@
 import { ReactNode } from "react";
+import {
+  TooltipContent,
+  TooltipLib,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 type TTooltip = {
   children: ReactNode;
+  body: ReactNode;
 };
 
-const Tooltip = ({ children }: TTooltip) => {
+const Tooltip = ({ children, body }: TTooltip) => {
   return (
-    <div className="relative">
-      <div className="absolute top-0 left-0 -translate-x-8 translate-y-4">
-        {children}
-      </div>
-    </div>
+    <TooltipProvider>
+      <TooltipLib>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent>{body}</TooltipContent>
+      </TooltipLib>
+    </TooltipProvider>
   );
 };
 

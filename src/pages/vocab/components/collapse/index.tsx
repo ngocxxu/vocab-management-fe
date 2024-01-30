@@ -6,6 +6,8 @@ import Voice from "../../../../components/voice";
 import { setItemsShowState } from "../../../../redux/reducer/vocab";
 import { RootState } from "../../../../redux/store";
 import styles from "./styles.module.scss";
+import Button from "@/components/button";
+import { Badge } from "@/components/badge";
 
 type TCollapseVocab<T extends TExtend> = { row: Row<T> };
 
@@ -57,12 +59,13 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       </div>
                       <div>
                         {subject.map((item) => (
-                          <span
+                          <Badge
                             key={item.label}
-                            className="badge badge-outline text-xs mr-1"
+                            variant="outline"
+                            className="text-xs mr-1 border-gray-300"
                           >
                             {item.value}
-                          </span>
+                          </Badge>
                         ))}
                       </div>
                     </div>
@@ -101,7 +104,8 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       ))}
 
                     {examples.length > 1 && (
-                      <button
+                      <Button
+                        variant="link"
                         className="text-xs text-blue-400 mb-2 block"
                         onClick={() => {
                           dispatch(
@@ -111,16 +115,19 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                             })
                           );
                         }}
-                      >
-                        {!checkShow(idx) ? "More" : "Less"}
-                      </button>
+                        title={!checkShow(idx) ? "More" : "Less"}
+                      />
                     )}
 
                     {grammar && (
-                      <div className="badge bg-zinc-200 text-xs">
+                      <Badge variant="outline" className="bg-gray-200">
                         <span className="mr-2">Grammar structure:</span>{" "}
                         {grammar}
-                      </div>
+                      </Badge>
+                      // <div className="badge bg-zinc-200 text-xs">
+                      //   <span className="mr-2">Grammar structure:</span>{" "}
+                      //   {grammar}
+                      // </div>
                     )}
                   </li>
                 );

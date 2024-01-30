@@ -1,7 +1,7 @@
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "../ui/toaster";
 
 const Notification = () => {
-  return <Toaster position='top-right' />;
+  return <Toaster />;
 };
 
 export default Notification;

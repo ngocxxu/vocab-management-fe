@@ -1,3 +1,7 @@
+import { AlertDialog } from "@/components/alertDialog";
+import { Badge } from "@/components/badge";
+import Input from "@/components/input";
+import { Popover } from "@/components/popover";
 import {
   IconArrowBadgeDownFilled,
   IconArrowBadgeUpFilled,
@@ -11,16 +15,10 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import Button from "../../components/button";
-import ConfirmButton from "../../components/button/ConfirmButton";
-import DropDownCustom from "../../components/dropdown";
 import Modal from "../../components/modal";
 import Table from "../../components/table";
 import Voice from "../../components/voice";
-import {
-  setIdVocabState,
-  setItemVocabState,
-  toggleState,
-} from "../../redux/reducer/vocab";
+import { setItemVocabState, toggleState } from "../../redux/reducer/vocab";
 import { RootState } from "../../redux/store";
 import { useDeleteMultiVocab } from "../../services/vocab/useDeleteMultiVocab";
 import { useDeleteVocab } from "../../services/vocab/useDeleteVocab";
@@ -70,11 +68,10 @@ const Vocab = () => {
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab();
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab();
   const dispatch = useDispatch();
-  const { idsState, idVocabState, itemVocab } = useSelector(
+  const { idsState, itemVocab } = useSelector(
     (state: RootState) => state.vocabReducer
   );
   const [isModal, setIsModal] = useState(false);
-  const [isNotifyModal, setIsNotifyModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
@@ -85,9 +82,7 @@ const Vocab = () => {
     limit: searchParams.get("limit") ?? "10",
   });
 
-  const handleOnYes = () => {
-    setIsNotifyModal(false);
-
+  const handleOnYes = (id?: string) => {
     if (isDeleteMulti) {
       // Loop find value === true and return [ids]
       const mappedIds: string[] = Object.entries(rowSelection).map(
@@ -98,7 +93,7 @@ const Vocab = () => {
       setRowSelection({});
       return mutateDeleteMulti(mappedIds);
     }
-    return mutate(idVocabState);
+    return mutate(id ?? "");
   };
 
   useEffect(() => {
@@ -160,9 +155,13 @@ const Vocab = () => {
             }
           >
             <div className="flex items-center">
-              <div className="break-all badge bg-emerald-500 gap-2 text-white">
+              <Badge
+                variant="outline"
+                className="break-all badge bg-emerald-500 gap-2 text-white"
+              >
                 {String(getValue())}
-              </div>
+              </Badge>
+
               <Voice
                 lang={row.original.sourceLanguage}
                 text={String(getValue())}
@@ -190,9 +189,12 @@ const Vocab = () => {
               {row.original.textTarget.map((item) => {
                 return (
                   <Fragment key={item.text}>
-                    <div className="badge bg-sky-500 gap-2 text-white">
+                    <Badge
+                      variant="outline"
+                      className="bg-sky-500 gap-2 text-white"
+                    >
                       {item.text}
-                    </div>{" "}
+                    </Badge>{" "}
                   </Fragment>
                 );
               })}
@@ -210,23 +212,26 @@ const Vocab = () => {
         id: "action",
         cell: ({ row }) => (
           <div className="flex gap-3 items-center w-0">
-            <button
-              className="btn btn-square btn-xs btn-outline border-white bg-white"
+            <Button
+              size="icon"
+              variant="outline"
               onClick={() => {
                 dispatch(setItemVocabState(row.original));
                 setIsEditing(true);
                 setIsModal(!isModal);
               }}
-            >
-              <IconEdit />
-            </button>
-
-            <IconTrash
-              className="btn btn-square btn-xs btn-outline border-white bg-white"
-              onClick={() => {
-                dispatch(setIdVocabState(row.original._id));
-                setIsNotifyModal(true);
-              }}
+              leftIcon={<IconEdit />}
+            />
+            <AlertDialog
+              head={
+                <Button
+                  size="icon"
+                  variant="outline"
+                  leftIcon={<IconTrash />}
+                />
+              }
+              title="Do you want to delete?"
+              onYes={() => handleOnYes(row.original._id)}
             />
           </div>
         ),
@@ -248,22 +253,9 @@ const Vocab = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <DropDownCustom
-            position="dropdown-end"
-            classNameSummary="m-1 btn btn-primary btn-sm"
-            head={<IconFilter className="text-white" />}
-            list={
-              <div className="shadow menu dropdown-content bg-base-100 rounded-box w-[50vh]">
-                Hello
-              </div>
-            }
-          />
+          <Popover head={<IconFilter />} body={<>Hello</>} />
           <div className="flex items-center">
-            <input
-              type="text"
-              placeholder="Search here"
-              className="input input-bordered input-sm w-full max-w-xs rounded-r-none"
-            />
+            <Input placeholder="Search here" />
             <Button
               classNames="btn-sm rounded-l-none"
               leftIcon={<IconSearch />}
@@ -292,9 +284,9 @@ const Vocab = () => {
           isLoadingDeleteMulti
         }
         onConfirmMultiDelete={() => {
-          setIsNotifyModal(true);
           setIsDeleteMulti(true);
         }}
+        onYes={handleOnYes}
         paginations={{
           currentPage: data?.currentPage ?? 1,
           totalItems: data?.totalItems ?? 1,
@@ -328,7 +320,7 @@ const Vocab = () => {
           />
         }
       />
-      <Modal
+      {/* <Modal
         isOpen={isNotifyModal}
         onClose={() => {
           setIsDeleteMulti(true);
@@ -341,7 +333,7 @@ const Vocab = () => {
             title="Do you want to delete?"
           />
         }
-      />
+      /> */}
     </div>
   );
 };
