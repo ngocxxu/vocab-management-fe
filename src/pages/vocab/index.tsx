@@ -1,10 +1,10 @@
+import IconArrowDown from "@/assets/svg/IconArrowDown";
+import IconArrowUp from "@/assets/svg/IconArrowUp";
 import { AlertDialog } from "@/components/alertDialog";
 import { Badge } from "@/components/badge";
 import Input from "@/components/input";
 import { Popover } from "@/components/popover";
 import {
-  IconArrowBadgeDownFilled,
-  IconArrowBadgeUpFilled,
   IconEdit,
   IconFilter,
   IconSearch,
@@ -201,9 +201,9 @@ const Vocab = () => {
             </div>
 
             {idsState.includes(row.original._id) ? (
-              <IconArrowBadgeUpFilled />
+              <IconArrowUp />
             ) : (
-              <IconArrowBadgeDownFilled />
+              <IconArrowDown />
             )}
           </div>
         ),
@@ -213,21 +213,27 @@ const Vocab = () => {
         cell: ({ row }) => (
           <div className="flex gap-3 items-center w-0">
             <Button
+              className="h-6 w-6"
               size="icon"
-              variant="outline"
+              variant="ghost"
               onClick={() => {
                 dispatch(setItemVocabState(row.original));
                 setIsEditing(true);
                 setIsModal(!isModal);
               }}
-              leftIcon={<IconEdit />}
+              leftIcon={
+                <IconEdit className="text-gray-400 hover:text-gray-500" />
+              }
             />
             <AlertDialog
               head={
                 <Button
+                  className="h-6 w-6"
                   size="icon"
-                  variant="outline"
-                  leftIcon={<IconTrash />}
+                  variant="ghost"
+                  leftIcon={
+                    <IconTrash className="text-gray-400 hover:text-gray-500" />
+                  }
                 />
               }
               title="Do you want to delete?"
@@ -242,85 +248,85 @@ const Vocab = () => {
   );
 
   return (
-    <div className="container mx-auto -mt-20 bg-white rounded-md p-5 shadow-md mb-10">
-      <div className="flex justify-between items-start">
-        <div>
-          <h4 className="font-medium">Vocabulary list</h4>
-          <p className="text-sm mb-6">
-            Let your second world be opened up thanks to the vocabulary list
-            below. <br />
-            Let's run, don't hesitate!
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Popover head={<IconFilter />} body={<>Hello</>} />
-          <div className="flex items-center">
-            <Input placeholder="Search here" />
+    <div className="my-10">
+      <div className="container bg-white mx-auto rounded-md p-5 border shadow-md">
+        <div className="flex justify-between items-start">
+          <div>
+            <h4 className="font-medium">Vocabulary list</h4>
+            <p className="text-sm mb-6">
+              Let your second world be opened up thanks to the vocabulary list
+              below. <br />
+              Let's run, don't hesitate!
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Popover head={<IconFilter />} body={<>Hello</>} />
+            <div className="flex items-center">
+              <Input placeholder="Search here" />
+              <Button
+                classNames="btn-sm rounded-l-none"
+                leftIcon={<IconSearch />}
+              />
+            </div>
             <Button
-              classNames="btn-sm rounded-l-none"
-              leftIcon={<IconSearch />}
+              title="+ Add new"
+              onClick={() => {
+                setIsEditing(false);
+                setIsModal(!isModal);
+              }}
             />
           </div>
-          <Button
-            classNames="btn-sm btn-neutral"
-            title="Create"
-            onClick={() => {
-              setIsEditing(false);
-              setIsModal(!isModal);
-            }}
-          />
         </div>
-      </div>
 
-      <Table
-        isMultiSelect
-        isPagination
-        isCollapse
-        isLoading={
-          isLoadingPost ||
-          isLoadingPut ||
-          isLoading ||
-          isLoadingDelete ||
-          isLoadingDeleteMulti
-        }
-        onConfirmMultiDelete={() => {
-          setIsDeleteMulti(true);
-        }}
-        onYes={handleOnYes}
-        paginations={{
-          currentPage: data?.currentPage ?? 1,
-          totalItems: data?.totalItems ?? 1,
-          totalPages: data?.totalPages ?? 1,
-        }}
-        data={data?.data ?? []}
-        options={{
-          data: data?.data ?? [],
-          columns: columns,
-          state: {
-            rowSelection,
-          },
-          getCoreRowModel: getCoreRowModel(),
-          onRowSelectionChange: setRowSelection,
-          getRowId: (row) => row._id,
-        }}
-      />
+        <Table
+          isMultiSelect
+          isPagination
+          isCollapse
+          isLoading={
+            isLoadingPost ||
+            isLoadingPut ||
+            isLoading ||
+            isLoadingDelete ||
+            isLoadingDeleteMulti
+          }
+          onConfirmMultiDelete={() => {
+            setIsDeleteMulti(true);
+          }}
+          onYes={handleOnYes}
+          paginations={{
+            currentPage: data?.currentPage ?? 1,
+            totalItems: data?.totalItems ?? 1,
+            totalPages: data?.totalPages ?? 1,
+          }}
+          data={data?.data ?? []}
+          options={{
+            data: data?.data ?? [],
+            columns: columns,
+            state: {
+              rowSelection,
+            },
+            getCoreRowModel: getCoreRowModel(),
+            onRowSelectionChange: setRowSelection,
+            getRowId: (row) => row._id,
+          }}
+        />
 
-      <Modal
-        custom={customStyleVocabModal}
-        isOpen={isModal}
-        onClose={() => setIsModal(false)}
-        contentLabel={isEditing ? "Edit" : "Create"}
-        children={
-          <FormVocab
-            idVocab={itemVocab._id}
-            mutate={mutatePost}
-            mutatePut={mutatePut}
-            isEditing={isEditing}
-            onClose={() => setIsModal(false)}
-          />
-        }
-      />
-      {/* <Modal
+        <Modal
+          custom={customStyleVocabModal}
+          isOpen={isModal}
+          onClose={() => setIsModal(false)}
+          contentLabel={isEditing ? "Edit" : "Create"}
+          children={
+            <FormVocab
+              idVocab={itemVocab._id}
+              mutate={mutatePost}
+              mutatePut={mutatePut}
+              isEditing={isEditing}
+              onClose={() => setIsModal(false)}
+            />
+          }
+        />
+        {/* <Modal
         isOpen={isNotifyModal}
         onClose={() => {
           setIsDeleteMulti(true);
@@ -334,6 +340,7 @@ const Vocab = () => {
           />
         }
       /> */}
+      </div>
     </div>
   );
 };

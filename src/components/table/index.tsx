@@ -117,7 +117,7 @@ const DataTable = <T extends TExtend>({
             <Fragment key={row.id}>
               <tr className="bg-white border-b">
                 {row.getVisibleCells().map((cell) => (
-                  <td className="px-6 py-2" key={cell.id}>
+                  <td className="px-6 py-3" key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}

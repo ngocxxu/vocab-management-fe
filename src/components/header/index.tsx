@@ -1,4 +1,3 @@
-import HeaderBreadcrumb from "./HeaderBreadcrumb";
 import HeaderTop from "./HeaderTop";
 import "./style.scss";
 
@@ -6,7 +5,7 @@ const Header = () => {
   return (
     <div className="header">
       <HeaderTop />
-      <HeaderBreadcrumb />
+      {/* <HeaderBreadcrumb /> */}
     </div>
   );
 };

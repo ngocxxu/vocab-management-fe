@@ -14,5 +14,12 @@ export const IndeterminateCheckbox = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref, indeterminate]);
 
-  return <input type="checkbox" ref={ref} {...rest} />;
+  return (
+    <input
+      className="accent-customBlack w-4 h-4"
+      type="checkbox"
+      ref={ref}
+      {...rest}
+    />
+  );
 };
