@@ -12,7 +12,7 @@ import { TPagination } from "../../utils/types";
 import Pagination from "../pagination";
 import Button from "../button";
 import { AlertDialog } from "../alertDialog";
-import { IconLoader2 } from "@tabler/icons-react";
+import { IconDatabaseOff, IconLoader2 } from "@tabler/icons-react";
 
 type TTable<T extends TExtend> = {
   data: T[];
@@ -61,7 +61,10 @@ const DataTable = <T extends TExtend>({
 
   if (data.length <= 0) {
     return (
-      <div className="flex justify-center items-center">No data found</div>
+      <div className="h-[400px] flex flex-col justify-center items-center gap-2">
+        <IconDatabaseOff size="2rem" />
+        <p className="text-xl">No data found</p>
+      </div>
     );
   }
 

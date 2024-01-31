@@ -39,34 +39,31 @@ export function HeaderMenu() {
           navigate(`${link.link}`);
         }}
       >
-        <div
-          className={clsx(
-            "flex justify-center items-center gap-2 h-11 hover:text-purple-700",
-            {
-              "text-purple-700": transformedPath === link.link,
-            }
-          )}
-        >
-          <link.icon size={18} />
-          {link.label}
+        <div className="flex justify-center items-center gap-2">
+          <link.icon className="mb-1" size={18} />
+          <p
+            className={clsx("pb-1", {
+              "border-b-2": transformedPath === link.link,
+            })}
+          >
+            {link.label}
+          </p>
         </div>
       </a>
     );
   });
 
   return (
-    <div className="container mx-auto">
-      <div className="flex">
-        <div className="flex justify-start items-center gap-8 sm:visible invisible ">
-          {items}
-        </div>
+    <div className="flex">
+      <div className="flex justify-start items-center gap-8 sm:visible invisible ">
+        {items}
+      </div>
 
-        {/* <label className="btn btn-circle swap swap-rotate visible sm:invisible">
+      {/* <label className="btn btn-circle swap swap-rotate visible sm:invisible">
           <Checkbox />
           <IconMenu2 className="swap-off fill-current" width="32" height="32" />
           <IconX className="swap-on fill-current" width="32" height="32" />
         </label> */}
-      </div>
     </div>
   );
 }

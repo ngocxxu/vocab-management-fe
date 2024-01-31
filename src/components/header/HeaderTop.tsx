@@ -3,6 +3,7 @@ import UserButton from "../button/UserButton";
 import DropDownCustom from "../dropdown";
 import "./style.scss";
 import IconVocab from "@/assets/svg/IconVocab";
+import { HeaderMenu } from "./HeaderMenu";
 
 const list = [
   {
@@ -18,9 +19,12 @@ const HeaderTop = () => {
     <div className="header-top bg-customBlue  text-white">
       <div className="container mx-auto">
         <div className="header-top-inner flex justify-between">
-          <p className="header-top-inner-title my-auto">
-            <IconVocab />
-          </p>
+          <div className="flex justify-between gap-10">
+            <p className="header-top-inner-title my-auto">
+              <IconVocab />
+            </p>
+            <HeaderMenu />
+          </div>
           <div className="flex justify-center items-center gap-6">
             <DropDownCustom
               label="Announcement"

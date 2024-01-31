@@ -1,13 +1,11 @@
-import HeaderBreadcrumb from './HeaderBreadcrumb';
-import { HeaderMenu } from './HeaderMenu';
-import HeaderTop from './HeaderTop';
-import './style.scss';
+import HeaderBreadcrumb from "./HeaderBreadcrumb";
+import HeaderTop from "./HeaderTop";
+import "./style.scss";
 
 const Header = () => {
   return (
-    <div className='header'>
+    <div className="header">
       <HeaderTop />
-      <HeaderMenu />
       <HeaderBreadcrumb />
     </div>
   );
