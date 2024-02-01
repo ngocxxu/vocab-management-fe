@@ -295,14 +295,14 @@ const Vocab = () => {
                 align="end"
                 side="bottom"
                 head={
-                  <ButtonLib variant="ghost">
+                  <ButtonLib className="mr-2" variant="ghost">
                     <IconFilter /> Filters
                   </ButtonLib>
                 }
                 body={<div>Hello</div>}
                 className="w-80"
               />
-              <div className="flex items-center">
+              <div className="flex items-center mr-2">
                 <Input placeholder="Search here" />
                 <Button
                   classNames="btn-sm rounded-l-none"

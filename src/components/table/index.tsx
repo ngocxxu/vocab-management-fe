@@ -75,7 +75,7 @@ const DataTable = <T extends TExtend>({
       {isToolbar && (
         <div className="flex justify-between items-center mb-2">
           <div className="text-xs">{counts} row(s) selected</div>
-          <div className="flex justify-center items-center gap-2">
+          <div className="flex justify-center items-center">
             {Object.keys(table.getState().rowSelection).length > 0 && (
               <AlertDialog
                 head={
