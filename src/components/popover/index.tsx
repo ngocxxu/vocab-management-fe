@@ -3,6 +3,7 @@ import {
   PopoverLib,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { ReactNode } from "react";
 
 type TPopover = {
@@ -10,11 +11,15 @@ type TPopover = {
   body: ReactNode;
 };
 
-export function Popover({ head, body }: TPopover) {
+export function Popover({
+  head,
+  body,
+  ...props
+}: TPopover & PopoverPrimitive.PopperContentProps) {
   return (
     <PopoverLib>
       <PopoverTrigger asChild>{head}</PopoverTrigger>
-      <PopoverContent className="w-80">{body}</PopoverContent>
+      <PopoverContent {...props}>{body}</PopoverContent>
     </PopoverLib>
   );
 }

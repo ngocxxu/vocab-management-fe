@@ -16,7 +16,7 @@ const list = [
 
 const HeaderTop = () => {
   return (
-    <div className="header-top bg-customBlue  text-white">
+    <div className="header-top bg-customBlue text-white">
       <div className="container mx-auto">
         <div className="header-top-inner flex justify-between">
           <div className="flex justify-between gap-10">

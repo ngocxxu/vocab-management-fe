@@ -4,12 +4,8 @@ import { AlertDialog } from "@/components/alertDialog";
 import { Badge } from "@/components/badge";
 import Input from "@/components/input";
 import { Popover } from "@/components/popover";
-import {
-  IconEdit,
-  IconFilter,
-  IconSearch,
-  IconTrash,
-} from "@tabler/icons-react";
+import { ButtonLib } from "@/components/ui/button";
+import { IconEdit, IconSearch, IconTrash } from "@tabler/icons-react";
 import { ColumnDef, getCoreRowModel } from "@tanstack/react-table";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +25,7 @@ import { LIMIT_PAGE_10 } from "../../utils/constants";
 import { TOption } from "../../utils/types";
 import { IndeterminateCheckbox } from "./components/checkbox";
 import FormVocab from "./components/form";
+import IconFilter from "@/assets/svg/IconFilter";
 
 export type TExamples = {
   source: string;
@@ -259,27 +256,10 @@ const Vocab = () => {
               Let's run, don't hesitate!
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Popover head={<IconFilter />} body={<>Hello</>} />
-            <div className="flex items-center">
-              <Input placeholder="Search here" />
-              <Button
-                classNames="btn-sm rounded-l-none"
-                leftIcon={<IconSearch />}
-              />
-            </div>
-            <Button
-              title="+ Add new"
-              onClick={() => {
-                setIsEditing(false);
-                setIsModal(!isModal);
-              }}
-            />
-          </div>
         </div>
 
         <Table
-          isMultiSelect
+          isToolbar
           isPagination
           isCollapse
           isLoading={
@@ -309,6 +289,35 @@ const Vocab = () => {
             onRowSelectionChange: setRowSelection,
             getRowId: (row) => row._id,
           }}
+          toolbar={
+            <>
+              <Popover
+                align="end"
+                side="bottom"
+                head={
+                  <ButtonLib variant="ghost">
+                    <IconFilter /> Filters
+                  </ButtonLib>
+                }
+                body={<div>Hello</div>}
+                className="w-80"
+              />
+              <div className="flex items-center">
+                <Input placeholder="Search here" />
+                <Button
+                  classNames="btn-sm rounded-l-none"
+                  leftIcon={<IconSearch />}
+                />
+              </div>
+              <Button
+                title="+ Add new"
+                onClick={() => {
+                  setIsEditing(false);
+                  setIsModal(!isModal);
+                }}
+              />
+            </>
+          }
         />
 
         <Modal

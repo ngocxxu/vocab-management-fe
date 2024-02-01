@@ -1,3 +1,4 @@
+import { IconDatabaseOff, IconLoader2, IconTrash } from "@tabler/icons-react";
 import {
   TableOptions,
   flexRender,
@@ -9,10 +10,9 @@ import { Fragment, ReactNode, memo } from "react";
 import { TTextTarget } from "../../pages/vocab";
 import CollapseVocab from "../../pages/vocab/components/collapse";
 import { TPagination } from "../../utils/types";
-import Pagination from "../pagination";
-import Button from "../button";
 import { AlertDialog } from "../alertDialog";
-import { IconDatabaseOff, IconLoader2 } from "@tabler/icons-react";
+import Button from "../button";
+import Pagination from "../pagination";
 
 type TTable<T extends TExtend> = {
   data: T[];
@@ -21,7 +21,8 @@ type TTable<T extends TExtend> = {
   isCollapse?: boolean;
   isPagination?: boolean;
   paginations?: TPagination;
-  isMultiSelect?: boolean;
+  isToolbar?: boolean;
+  toolbar?: ReactNode;
   onConfirmMultiDelete?: () => void;
   onYes?: () => void;
 };
@@ -39,10 +40,11 @@ const DataTable = <T extends TExtend>({
   isLoading,
   isPagination = false,
   isCollapse = false,
-  isMultiSelect = false,
+  isToolbar = false,
   paginations,
   onConfirmMultiDelete,
   onYes,
+  toolbar,
 }: TTable<T>) => {
   const table = useReactTable({
     getFilteredRowModel: getFilteredRowModel(),
@@ -70,24 +72,28 @@ const DataTable = <T extends TExtend>({
 
   return (
     <>
-      {isMultiSelect &&
-        Object.keys(table.getState().rowSelection).length > 0 && (
-          <div className="flex justify-between items-center mb-2">
-            <div className="text-xs">{counts} row(s) selected</div>
-            <AlertDialog
-              head={
-                <Button
-                  onClick={onConfirmMultiDelete}
-                  variant="destructive"
-                  className="btn btn-error btn-xs text-white"
-                  title={`Delete (${counts})`}
-                />
-              }
-              title="Do you want to delete these?"
-              onYes={onYes}
-            />
+      {isToolbar && (
+        <div className="flex justify-between items-center mb-2">
+          <div className="text-xs">{counts} row(s) selected</div>
+          <div className="flex justify-center items-center gap-2">
+            {Object.keys(table.getState().rowSelection).length > 0 && (
+              <AlertDialog
+                head={
+                  <Button
+                    onClick={onConfirmMultiDelete}
+                    variant="ghost"
+                    title={`Delete (${counts})`}
+                    leftIcon={<IconTrash />}
+                  />
+                }
+                title="Do you want to delete these?"
+                onYes={onYes}
+              />
+            )}
+            {toolbar}
           </div>
-        )}
+        </div>
+      )}
       <table className="table text-sm text-left rtl:text-right text-gray-500 w-full">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -95,10 +101,7 @@ const DataTable = <T extends TExtend>({
               {headerGroup.headers.map((header, idx) => (
                 <th
                   scope="col"
-                  className={clsx(
-                    "px-6 py-3",
-                    isMultiSelect && idx === 0 && "w-2"
-                  )}
+                  className={clsx("px-6 py-3", isToolbar && idx === 0 && "w-2")}
                   key={header.id}
                 >
                   {header.isPlaceholder
