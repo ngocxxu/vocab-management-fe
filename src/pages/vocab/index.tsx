@@ -2,10 +2,7 @@ import IconArrowDown from "@/assets/svg/IconArrowDown";
 import IconArrowUp from "@/assets/svg/IconArrowUp";
 import { AlertDialog } from "@/components/alertDialog";
 import { Badge } from "@/components/badge";
-import Input from "@/components/input";
-import { Popover } from "@/components/popover";
-import { ButtonLib } from "@/components/ui/button";
-import { IconEdit, IconSearch, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { ColumnDef, getCoreRowModel } from "@tanstack/react-table";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +22,7 @@ import { LIMIT_PAGE_10 } from "../../utils/constants";
 import { TOption } from "../../utils/types";
 import { IndeterminateCheckbox } from "./components/checkbox";
 import FormVocab from "./components/form";
-import IconFilter from "@/assets/svg/IconFilter";
+import { ToolBar } from "./components/toolBar";
 
 export type TExamples = {
   source: string;
@@ -290,33 +287,12 @@ const Vocab = () => {
             getRowId: (row) => row._id,
           }}
           toolbar={
-            <>
-              <Popover
-                align="end"
-                side="bottom"
-                head={
-                  <ButtonLib className="mr-2" variant="ghost">
-                    <IconFilter /> Filters
-                  </ButtonLib>
-                }
-                body={<div>Hello</div>}
-                className="w-80"
-              />
-              <div className="flex items-center mr-2">
-                <Input placeholder="Search here" />
-                <Button
-                  classNames="btn-sm rounded-l-none"
-                  leftIcon={<IconSearch />}
-                />
-              </div>
-              <Button
-                title="+ Add new"
-                onClick={() => {
-                  setIsEditing(false);
-                  setIsModal(!isModal);
-                }}
-              />
-            </>
+            <ToolBar
+              onAddNew={() => {
+                setIsEditing(false);
+                setIsModal(!isModal);
+              }}
+            />
           }
         />
 
@@ -335,20 +311,6 @@ const Vocab = () => {
             />
           }
         />
-        {/* <Modal
-        isOpen={isNotifyModal}
-        onClose={() => {
-          setIsDeleteMulti(true);
-          setIsNotifyModal(false);
-        }}
-        children={
-          <ConfirmButton
-            onNo={() => setIsNotifyModal(false)}
-            onYes={handleOnYes}
-            title="Do you want to delete?"
-          />
-        }
-      /> */}
       </div>
     </div>
   );

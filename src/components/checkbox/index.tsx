@@ -1,11 +1,12 @@
 import { CheckboxLib } from "@/components/ui/checkbox";
+import { CheckboxProps } from "@radix-ui/react-checkbox";
 import { ReactNode, useId } from "react";
 
 type TCheckBox = {
   label?: ReactNode;
 };
 
-export function Checkbox({ label, ...props }: TCheckBox) {
+export function Checkbox({ label, ...props }: TCheckBox & CheckboxProps) {
   const randomId = useId();
 
   return (

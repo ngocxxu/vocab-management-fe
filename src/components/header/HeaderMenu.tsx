@@ -11,7 +11,7 @@ const links = [
   { link: "/dashboard", label: "Dashboard", icon: IconHome },
   {
     link: "/vocab",
-    label: "Vocabulary",
+    label: "Vocabulary List",
     icon: IconVocabulary,
     // links: [
     //   { link: '/docs', label: 'Documentation' },
