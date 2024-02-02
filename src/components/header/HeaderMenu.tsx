@@ -1,18 +1,18 @@
 import {
+  IconBooks,
   IconHistory,
-  IconHome,
+  IconLayoutDashboard,
   IconMedal2,
-  IconVocabulary,
 } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const links = [
-  { link: "/dashboard", label: "Dashboard", icon: IconHome },
+  { link: "/dashboard", label: "Dashboard", icon: IconLayoutDashboard },
   {
     link: "/vocab",
     label: "Vocabulary List",
-    icon: IconVocabulary,
+    icon: IconBooks,
     // links: [
     //   { link: '/docs', label: 'Documentation' },
     //   { link: '/resources', label: 'Resources' },

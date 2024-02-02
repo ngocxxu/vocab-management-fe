@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 type TMultiSelect = {
   isMark?: boolean;
-  label: string;
+  label?: string;
   options: TOption[];
   error?: FieldError | null;
 };

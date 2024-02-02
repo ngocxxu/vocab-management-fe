@@ -1,4 +1,9 @@
-import { IconDatabaseOff, IconLoader2, IconTrash } from "@tabler/icons-react";
+import {
+  IconDatabaseOff,
+  IconLoader2,
+  IconSchool,
+  IconTrash,
+} from "@tabler/icons-react";
 import {
   TableOptions,
   flexRender,
@@ -75,15 +80,22 @@ const DataTable = <T extends TExtend>({
       {isToolbar && (
         <div className="flex justify-between items-center mb-2">
           <div className="text-xs">{counts} row(s) selected</div>
-          <div className="flex justify-center items-center">
-            {Object.keys(table.getState().rowSelection).length > 0 && (
+          <div className="flex justify-center items-center gap-1">
+            {counts > 0 && (
+              <Button
+                variant="outline"
+                title="Practice"
+                leftIcon={<IconSchool className="mr-2" />}
+              />
+            )}
+            {counts > 0 && (
               <AlertDialog
                 head={
                   <Button
                     onClick={onConfirmMultiDelete}
                     variant="ghost"
                     title={`Delete (${counts})`}
-                    leftIcon={<IconTrash />}
+                    leftIcon={<IconTrash className="mr-2" />}
                   />
                 }
                 title="Do you want to delete these?"

@@ -7,6 +7,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { Filter } from "../filter";
 import { useState } from "react";
 import { statusList } from "../../constants";
+import { TOption } from "@/utils/types";
 
 type TToolbar = {
   onAddNew: () => void;
@@ -14,6 +15,7 @@ type TToolbar = {
 
 export type TFormInputsFilter = {
   status?: string[];
+  subject?: TOption[];
 };
 
 export const ToolBar = ({ onAddNew }: TToolbar) => {
