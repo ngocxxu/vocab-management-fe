@@ -14,23 +14,16 @@ type TPopover = {
 export function Popover({
   head,
   body,
+  open,
+  onOpenChange,
   ...props
 }: TPopover &
   PopoverPrimitive.PopoverProps &
   PopoverPrimitive.PopperContentProps) {
   return (
-    <PopoverLib>
+    <PopoverLib open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{head}</PopoverTrigger>
-      <PopoverContent {...props}>
-        {body}
-        {/* <PopoverClose>
-          <Button
-            className="absolute bottom-10 right-40"
-            title="Cancel"
-            variant="ghost"
-          />
-        </PopoverClose> */}
-      </PopoverContent>
+      <PopoverContent {...props}>{body}</PopoverContent>
     </PopoverLib>
   );
 }

@@ -166,7 +166,7 @@ export const TextTargetsForm = ({
         ))}
         <Button
           type="button"
-          className={clsx(fields.length !== 0 && "mt-2", "w-full")}
+          classNames={clsx(fields.length !== 0 && "mt-2", "w-full")}
           onClick={() => {
             append({
               source: "",

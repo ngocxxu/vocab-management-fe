@@ -91,7 +91,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
               className={clsx(
                 "h-7 px-2.5",
                 pageNumber === parseInt(searchParams.get("page")!)
-                  ? "active bg-customBlack text-white"
+                  ? "active bg-customBlue text-white"
                   : ""
               )}
             >

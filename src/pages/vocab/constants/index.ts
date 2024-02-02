@@ -82,3 +82,18 @@ export const defaultValue = {
   grammar: "",
   subject: [],
 };
+
+export const statusList = [
+  {
+    label: "Pending",
+    value: "Pending",
+  },
+  {
+    label: "Passed",
+    value: "Passed",
+  },
+  {
+    label: "Failed",
+    value: "Failed",
+  },
+];

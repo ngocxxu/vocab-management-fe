@@ -3,23 +3,13 @@ import { Checkbox } from "@/components/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Fragment } from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { statusList } from "../../constants";
 
-const statusList = [
-  {
-    label: "Pending",
-    value: "Pending",
-  },
-  {
-    label: "Passed",
-    value: "Passed",
-  },
-  {
-    label: "Failed",
-    value: "Failed",
-  },
-];
+type TFilter = {
+  onClose: () => void;
+};
 
-export const Filter = () => {
+export const Filter = ({ onClose }: TFilter) => {
   const { control } = useFormContext();
 
   return (
@@ -30,6 +20,7 @@ export const Filter = () => {
         {statusList.map((item) => {
           return (
             <Controller
+              key={item.label}
               name="status"
               control={control}
               rules={{ required: true }}
@@ -63,6 +54,7 @@ export const Filter = () => {
         {statusList.map((item) => {
           return (
             <Controller
+              key={item.label}
               name="status"
               control={control}
               rules={{ required: true }}
@@ -92,7 +84,7 @@ export const Filter = () => {
 
       <Separator className="my-4" />
       <div className="flex justify-end items-center mr-16">
-        <GroupButton variantNo="ghost" />
+        <GroupButton variantNo="ghost" onClose={onClose} />
       </div>
     </>
   );

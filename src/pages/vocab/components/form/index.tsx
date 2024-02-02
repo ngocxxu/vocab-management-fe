@@ -179,7 +179,11 @@ const FormVocab = ({
       />
 
       <div className="flex justify-end mt-4">
-        <GroupButton isEditing={isEditing} onClose={onClose} />
+        <GroupButton
+          variantNo="ghost"
+          isEditing={isEditing}
+          onClose={onClose}
+        />
       </div>
     </form>
   );

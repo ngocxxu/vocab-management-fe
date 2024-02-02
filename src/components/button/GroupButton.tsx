@@ -1,4 +1,4 @@
-import { ButtonLib } from "../ui/button";
+import Button from ".";
 
 type TGroupButton = {
   isEditing?: boolean;
@@ -16,18 +16,18 @@ const GroupButton = ({
   return (
     <div className="flex justify-center items-center gap-2">
       {onClose && (
-        <ButtonLib
+        <Button
           variant={variantNo}
           type="button"
           onClick={onClose}
-          className="btn"
-        >
-          Cancel
-        </ButtonLib>
+          title="Cancel"
+        />
       )}
-      <ButtonLib variant={variantYes} className="btn btn-neutral" type="submit">
-        {isEditing ? "Update" : "Save"}
-      </ButtonLib>
+      <Button
+        variant={variantYes}
+        type="submit"
+        title={isEditing ? "Update" : "Save"}
+      />
     </div>
   );
 };
