@@ -78,8 +78,15 @@ const DataTable = <T extends TExtend>({
   return (
     <>
       {isToolbar && (
-        <div className="flex justify-between items-center mb-2">
-          <div className="text-xs">{counts} row(s) selected</div>
+        <div
+          className={clsx(
+            "flex justify-end items-center mb-2",
+            counts > 0 && "justify-between"
+          )}
+        >
+          {counts > 0 && (
+            <div className="text-xs">{counts} row(s) selected</div>
+          )}
           <div className="flex justify-center items-center gap-1">
             {counts > 0 && (
               <Button

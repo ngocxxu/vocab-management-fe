@@ -7,6 +7,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
+import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 
 type DropdownCustom = {
   head: ReactNode;
@@ -18,11 +20,18 @@ type DropdownCustom = {
   }[];
 };
 
-const DropDownCustom = ({ head, list, label }: DropdownCustom) => {
+const DropDownCustom = ({
+  head,
+  list,
+  label,
+  ...props
+}: DropdownCustom &
+  DropdownMenuProps &
+  DropdownMenuPrimitive.DropdownMenuContentProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>{head}</DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent {...props}>
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {list.map(({ body, separator }) => (

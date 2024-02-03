@@ -27,6 +27,8 @@ const HeaderTop = () => {
           </div>
           <div className="flex justify-center items-center gap-6">
             <DropDownCustom
+              align="end"
+              side="bottom"
               label="Announcement"
               head={<IconBell />}
               list={list}
