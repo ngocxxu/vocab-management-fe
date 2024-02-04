@@ -1,4 +1,7 @@
 import {
+  IconArrowsDownUp,
+  IconArrowsMoveVertical,
+  IconArrowsUpDown,
   IconDatabaseOff,
   IconLoader2,
   IconSchool,
@@ -12,12 +15,12 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import { Fragment, ReactNode, memo } from "react";
-import { TTextTarget } from "../../pages/vocab";
 import CollapseVocab from "../../pages/vocab/components/collapse";
 import { TPagination } from "../../utils/types";
 import { AlertDialog } from "../alertDialog";
 import Button from "../button";
 import Pagination from "../pagination";
+import { TTextTarget } from "@/pages/vocab/types";
 
 type TTable<T extends TExtend> = {
   data: T[];
@@ -123,12 +126,29 @@ const DataTable = <T extends TExtend>({
                   className={clsx("px-6 py-3", isToolbar && idx === 0 && "w-2")}
                   key={header.id}
                 >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                  <div
+                    {...{
+                      className: header.column.getCanSort()
+                        ? "cursor-pointer select-none flex items-center gap-4"
+                        : "",
+                      onClick: header.column.getToggleSortingHandler(),
+                    }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+
+                    {{
+                      asc: <IconArrowsDownUp size="1rem" />,
+                      desc: <IconArrowsUpDown size="1rem" />,
+                    }[header.column.getIsSorted() as string] ??
+                      (header.column.getCanSort() && (
+                        <IconArrowsMoveVertical size="1rem" />
+                      ))}
+                  </div>
                 </th>
               ))}
             </tr>

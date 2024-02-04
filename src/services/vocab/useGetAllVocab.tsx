@@ -1,8 +1,8 @@
-import { useQuery } from 'react-query';
-import { TVocab } from '../../pages/vocab';
-import { ResponseAPI, TPage } from '../../utils/types';
-import { httpClient } from '../settings';
-import { VOCAB_KEYS } from './queryKeys';
+import { useQuery } from "react-query";
+import { ResponseAPI, TPage } from "../../utils/types";
+import { httpClient } from "../settings";
+import { VOCAB_KEYS } from "./queryKeys";
+import { TVocab } from "@/pages/vocab/types";
 
 const getAllVocab = async (pageOptions: TPage) => {
   const { page, limit } = pageOptions;

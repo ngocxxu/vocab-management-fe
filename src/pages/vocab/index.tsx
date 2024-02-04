@@ -3,12 +3,15 @@ import IconArrowUp from "@/assets/svg/IconArrowUp";
 import { AlertDialog } from "@/components/alertDialog";
 import { Badge } from "@/components/badge";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
-import { ColumnDef, getCoreRowModel } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  SortingState,
+  getCoreRowModel,
+} from "@tanstack/react-table";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import Button from "../../components/button";
-import Modal from "../../components/modal";
 import Table from "../../components/table";
 import Voice from "../../components/voice";
 import { setItemVocabState, toggleState } from "../../redux/reducer/vocab";
@@ -19,40 +22,9 @@ import { useGetAllVocab } from "../../services/vocab/useGetAllVocab";
 import { usePostVocab } from "../../services/vocab/usePostVocab";
 import { usePutVocab } from "../../services/vocab/usePutVocab";
 import { LIMIT_PAGE_10 } from "../../utils/constants";
-import { TOption } from "../../utils/types";
 import { IndeterminateCheckbox } from "./components/checkbox";
-import FormVocab from "./components/form";
 import { ToolBar } from "./components/toolBar";
-
-export type TExamples = {
-  source: string;
-  target: string;
-};
-
-export type TTextTarget = {
-  text: string;
-  wordType: string;
-  explanationSource: string;
-  explanationTarget: string;
-  examples: TExamples[];
-  grammar: string;
-  subject: TOption[];
-};
-
-export type TVocab = {
-  _id: string;
-  sourceLanguage: string;
-  targetLanguage: string;
-  textSource: string;
-  textTarget: TTextTarget[];
-};
-
-const customStyleVocabModal = {
-  width: "100%",
-  maxWidth: "50vw",
-  height: "100%",
-  maxHeight: "81vh",
-};
+import { TVocab } from "./types";
 
 const Vocab = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,6 +41,7 @@ const Vocab = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const refDiv = useRef<HTMLDivElement>(null);
 
   const { data, isLoading } = useGetAllVocab({
@@ -111,7 +84,7 @@ const Vocab = () => {
   const columns = useMemo<ColumnDef<TVocab>[]>(
     () => [
       {
-        enableResizing: false,
+        enableSorting: false,
         size: 200,
         id: "select",
         header: ({ table }) => (
@@ -203,6 +176,7 @@ const Vocab = () => {
         ),
       },
       {
+        enableSorting: false,
         id: "action",
         cell: ({ row }) => (
           <div className="flex gap-3 items-center w-0">
@@ -281,13 +255,19 @@ const Vocab = () => {
             columns: columns,
             state: {
               rowSelection,
+              sorting,
             },
             getCoreRowModel: getCoreRowModel(),
             onRowSelectionChange: setRowSelection,
             getRowId: (row) => row._id,
+            onSortingChange: setSorting,
           }}
           toolbar={
             <ToolBar
+              idVocab={itemVocab._id}
+              mutatePost={mutatePost}
+              mutatePut={mutatePut}
+              isEditing={isEditing}
               onAddNew={() => {
                 setIsEditing(false);
                 setIsModal(!isModal);
@@ -296,7 +276,7 @@ const Vocab = () => {
           }
         />
 
-        <Modal
+        {/* <Modal
           custom={customStyleVocabModal}
           isOpen={isModal}
           onClose={() => setIsModal(false)}
@@ -310,7 +290,7 @@ const Vocab = () => {
               onClose={() => setIsModal(false)}
             />
           }
-        />
+        /> */}
       </div>
     </div>
   );

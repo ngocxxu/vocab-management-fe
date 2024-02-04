@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "react-query";
-import { TVocab } from "../../pages/vocab";
 import { httpClient } from "../settings";
 import { VOCAB_KEYS } from "./queryKeys";
 import { useToast } from "@/components/ui/use-toast";
+import { TVocab } from "@/pages/vocab/types";
 
 export type TPutVocabs = {
   data: Omit<TVocab, "id">;

@@ -1,49 +1,45 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { ReactNode } from "react";
-import ModalLib from "react-modal";
+import {
+  DialogContent,
+  DialogHeader,
+  DialogLib,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 
 type TModal = {
-  isOpen: boolean;
-  onClose: () => void;
-  contentLabel?: string;
-  children: ReactNode;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  custom?: any;
+  head: ReactNode;
+  body: ReactNode;
+  title?: string;
 };
 
-const Modal = ({
-  isOpen,
-  onClose,
-  contentLabel,
-  children,
-  custom,
+export const Modal = ({
+  head,
+  body,
+  open,
+  onOpenChange,
+  title,
   ...props
-}: TModal) => {
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      OverflowY: "auto",
-      transition: "max-height 0.5s ease",
-      ...custom,
-    },
-  };
-
+}: TModal &
+  DialogPrimitive.DialogProps &
+  DialogPrimitive.DialogContentProps) => {
   return (
-    <ModalLib
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel={contentLabel}
-      {...props}
-    >
-      <h3 className="font-bold text-lg">{contentLabel}</h3>
-      {children}
-    </ModalLib>
+    <DialogLib open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>{head}</DialogTrigger>
+      <DialogContent {...props}>
+        <DialogHeader>
+          {title && <DialogTitle>{title}</DialogTitle>}
+        </DialogHeader>
+        {body}
+        {/* <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter> */}
+      </DialogContent>
+    </DialogLib>
   );
 };
-
-export default Modal;

@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { TVocab } from '../../pages/vocab';
+import { TVocab } from "@/pages/vocab/types";
+import { createSlice } from "@reduxjs/toolkit";
 
 type TItemsShow = {
   idRow: string;
@@ -16,20 +16,20 @@ type TInitialStateVocab = {
 
 const initialState: TInitialStateVocab = {
   itemVocab: {
-    _id: '',
-    sourceLanguage: '',
-    targetLanguage: '',
-    textSource: '',
+    _id: "",
+    sourceLanguage: "",
+    targetLanguage: "",
+    textSource: "",
     textTarget: [],
   },
-  idVocabState: '',
+  idVocabState: "",
   idsState: [],
   isToggle: false,
   itemsShow: [],
 };
 
 const vocabReducer = createSlice({
-  name: 'vocabReducer',
+  name: "vocabReducer",
   initialState,
   reducers: {
     setItemVocabState(state, action) {

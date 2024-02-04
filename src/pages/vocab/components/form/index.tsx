@@ -11,7 +11,6 @@ import {
 import { UseMutateFunction } from "react-query";
 import { useSelector } from "react-redux";
 import * as yup from "yup";
-import { TTextTarget, TVocab } from "../..";
 import GroupButton from "../../../../components/button/GroupButton";
 import Input from "../../../../components/input";
 import Select from "../../../../components/select";
@@ -20,6 +19,7 @@ import { TPutVocabs } from "../../../../services/vocab/usePutVocab";
 import { defaultValue, languageList } from "../../constants";
 import { TextTargetsForm } from "./textTargets";
 import Button from "@/components/button";
+import { TTextTarget, TVocab } from "../../types";
 
 type TFormVocabProps = {
   idVocab: string;

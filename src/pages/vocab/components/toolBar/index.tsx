@@ -8,9 +8,24 @@ import { Filter } from "../filter";
 import { useState } from "react";
 import { statusList } from "../../constants";
 import { TOption } from "@/utils/types";
+import { Modal } from "@/components/modal/index";
+import FormVocab from "../form";
+import { UseMutateFunction } from "react-query";
+import { AxiosResponse } from "axios";
+import { TVocab } from "../../types";
+import { TPutVocabs } from "@/services/vocab/usePutVocab";
 
 type TToolbar = {
   onAddNew: () => void;
+  idVocab: string;
+  mutatePost: UseMutateFunction<
+    AxiosResponse,
+    unknown,
+    Omit<TVocab, "id">,
+    unknown
+  >;
+  mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>;
+  isEditing: boolean;
 };
 
 export type TFormInputsFilter = {
@@ -18,8 +33,15 @@ export type TFormInputsFilter = {
   subject?: TOption[];
 };
 
-export const ToolBar = ({ onAddNew }: TToolbar) => {
+export const ToolBar = ({
+  onAddNew,
+  mutatePost,
+  idVocab,
+  mutatePut,
+  isEditing,
+}: TToolbar) => {
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const methods = useForm<TFormInputsFilter>({
     defaultValues: {
@@ -54,11 +76,29 @@ export const ToolBar = ({ onAddNew }: TToolbar) => {
         className="w-80"
       />
       <SearchBar />
-      <Button
-        type="button"
-        classNames="ml-3"
-        title="+ Add new"
-        onClick={onAddNew}
+
+      <Modal
+        title={isEditing ? "Edit" : "Create"}
+        open={openModal}
+        onOpenChange={setOpenModal}
+        head={
+          <Button
+            type="button"
+            classNames="ml-3"
+            title="+ Add new"
+            onClick={onAddNew}
+          />
+        }
+        body={
+          <FormVocab
+            idVocab={idVocab}
+            mutate={mutatePost}
+            mutatePut={mutatePut}
+            isEditing={isEditing}
+            onClose={() => setOpenModal(false)}
+          />
+        }
+        className="w-full h-full max-w-[80vh] !max-h-[85vh] overflow-x-auto"
       />
     </div>
   );
