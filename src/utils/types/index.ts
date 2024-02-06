@@ -16,4 +16,8 @@ export type TPagination = {
 export type TPage = {
   page: string;
   limit: string;
+  sortBy?: string;
+  orderBy?: string;
+  subjectFilter?: string[];
+  search?: string;
 };

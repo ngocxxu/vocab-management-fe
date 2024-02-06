@@ -1,3 +1,4 @@
+import { TFormInputsFilter } from "@/pages/vocab/components/toolBar";
 import { TVocab } from "@/pages/vocab/types";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -12,6 +13,8 @@ type TInitialStateVocab = {
   idsState: string[];
   isToggle: boolean;
   itemsShow: TItemsShow[];
+  filterData: TFormInputsFilter;
+  searchVocab: string;
 };
 
 const initialState: TInitialStateVocab = {
@@ -26,12 +29,20 @@ const initialState: TInitialStateVocab = {
   idsState: [],
   isToggle: false,
   itemsShow: [],
+  filterData: {},
+  searchVocab: "",
 };
 
 const vocabReducer = createSlice({
   name: "vocabReducer",
   initialState,
   reducers: {
+    setSearchVocabState(state, action) {
+      state.searchVocab = action.payload;
+    },
+    setFilterVocabState(state, action) {
+      state.filterData = action.payload;
+    },
     setItemVocabState(state, action) {
       state.itemVocab = action.payload;
     },
@@ -79,5 +90,7 @@ export const {
   setItemsShowState,
   setIdVocabState,
   setItemVocabState,
+  setFilterVocabState,
+  setSearchVocabState,
 } = actions;
 export default reducer;

@@ -14,6 +14,11 @@ import { UseMutateFunction } from "react-query";
 import { AxiosResponse } from "axios";
 import { TVocab } from "../../types";
 import { TPutVocabs } from "@/services/vocab/usePutVocab";
+import { useDispatch } from "react-redux";
+import {
+  setFilterVocabState,
+  setSearchVocabState,
+} from "@/redux/reducer/vocab";
 
 type TToolbar = {
   onAddNew: () => void;
@@ -40,6 +45,7 @@ export const ToolBar = ({
   mutatePut,
   isEditing,
 }: TToolbar) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
@@ -50,7 +56,7 @@ export const ToolBar = ({
   });
 
   const onSubmit: SubmitHandler<TFormInputsFilter> = (data) => {
-    console.log(data);
+    dispatch(setFilterVocabState(data));
     setOpen(false);
   };
 
@@ -75,7 +81,7 @@ export const ToolBar = ({
         }
         className="w-80"
       />
-      <SearchBar />
+      <SearchBar onSearch={(input) => dispatch(setSearchVocabState(input))} />
 
       <Modal
         title={isEditing ? "Edit" : "Create"}

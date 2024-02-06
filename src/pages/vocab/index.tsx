@@ -34,7 +34,7 @@ const Vocab = () => {
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab();
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab();
   const dispatch = useDispatch();
-  const { idsState, itemVocab } = useSelector(
+  const { idsState, itemVocab, filterData, searchVocab } = useSelector(
     (state: RootState) => state.vocabReducer
   );
   const [isModal, setIsModal] = useState(false);
@@ -44,9 +44,21 @@ const Vocab = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const refDiv = useRef<HTMLDivElement>(null);
 
+  const convertOrderBy = () => {
+    if (sorting[0]?.id) {
+      return sorting[0]?.desc ? "desc" : "asc";
+    } else {
+      return undefined;
+    }
+  };
+
   const { data, isLoading } = useGetAllVocab({
     page: searchParams.get("page") ?? "1",
     limit: searchParams.get("limit") ?? "10",
+    sortBy: sorting[0]?.id ?? undefined,
+    orderBy: convertOrderBy(),
+    subjectFilter: filterData.subject?.map((item) => item.value),
+    search: searchVocab || undefined,
   });
 
   const handleOnYes = (id?: string) => {
@@ -72,14 +84,6 @@ const Vocab = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
-
-  useEffect(() => {
-    return setSearchParams({
-      page: searchParams.get("page") ?? "1",
-      limit: LIMIT_PAGE_10,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const columns = useMemo<ColumnDef<TVocab>[]>(
     () => [
@@ -275,22 +279,6 @@ const Vocab = () => {
             />
           }
         />
-
-        {/* <Modal
-          custom={customStyleVocabModal}
-          isOpen={isModal}
-          onClose={() => setIsModal(false)}
-          contentLabel={isEditing ? "Edit" : "Create"}
-          children={
-            <FormVocab
-              idVocab={itemVocab._id}
-              mutate={mutatePost}
-              mutatePut={mutatePut}
-              isEditing={isEditing}
-              onClose={() => setIsModal(false)}
-            />
-          }
-        /> */}
       </div>
     </div>
   );

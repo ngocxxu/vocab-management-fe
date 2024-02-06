@@ -69,15 +69,6 @@ const DataTable = <T extends TExtend>({
     );
   }
 
-  if (data.length <= 0) {
-    return (
-      <div className="h-[400px] flex flex-col justify-center items-center gap-2">
-        <IconDatabaseOff size="2rem" />
-        <p className="text-xl">No data found</p>
-      </div>
-    );
-  }
-
   return (
     <>
       {isToolbar && (
@@ -116,59 +107,73 @@ const DataTable = <T extends TExtend>({
           </div>
         </div>
       )}
-      <table className="table text-sm text-left rtl:text-right text-gray-500 w-full">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header, idx) => (
-                <th
-                  scope="col"
-                  className={clsx("px-6 py-3", isToolbar && idx === 0 && "w-2")}
-                  key={header.id}
-                >
-                  <div
-                    {...{
-                      className: header.column.getCanSort()
-                        ? "cursor-pointer select-none flex items-center gap-4"
-                        : "",
-                      onClick: header.column.getToggleSortingHandler(),
-                    }}
+      {data.length > 0 ? (
+        <table className="table text-sm text-left rtl:text-right text-gray-500 w-full">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header, idx) => (
+                  <th
+                    scope="col"
+                    className={clsx(
+                      "px-6 py-3",
+                      isToolbar && idx === 0 && "w-2"
+                    )}
+                    key={header.id}
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                    <div
+                      {...{
+                        className: header.column.getCanSort()
+                          ? "cursor-pointer select-none flex items-center gap-4"
+                          : "",
+                        onClick: header.column.getToggleSortingHandler(),
+                      }}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
 
-                    {{
-                      asc: <IconArrowsDownUp size="1rem" />,
-                      desc: <IconArrowsUpDown size="1rem" />,
-                    }[header.column.getIsSorted() as string] ??
-                      (header.column.getCanSort() && (
-                        <IconArrowsMoveVertical size="1rem" />
-                      ))}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <Fragment key={row.id}>
-              <tr className="bg-white border-b">
-                {row.getVisibleCells().map((cell) => (
-                  <td className="px-6 py-3" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
+                      {{
+                        asc: <IconArrowsDownUp size="1rem" />,
+                        desc: <IconArrowsUpDown size="1rem" />,
+                      }[header.column.getIsSorted() as string] ??
+                        (header.column.getCanSort() && (
+                          <IconArrowsMoveVertical size="1rem" />
+                        ))}
+                    </div>
+                  </th>
                 ))}
               </tr>
-              {isCollapse && <CollapseVocab row={row} />}
-            </Fragment>
-          ))}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <Fragment key={row.id}>
+                <tr className="bg-white border-b">
+                  {row.getVisibleCells().map((cell) => (
+                    <td className="px-6 py-3" key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+                {isCollapse && <CollapseVocab row={row} />}
+              </Fragment>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="h-[400px] flex flex-col justify-center items-center gap-2">
+          <IconDatabaseOff size="2rem" />
+          <p className="text-xl">No data found</p>
+        </div>
+      )}
+
       {isPagination && <Pagination paginations={paginations!} />}
     </>
   );

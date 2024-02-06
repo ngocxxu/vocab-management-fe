@@ -5,12 +5,24 @@ import { VOCAB_KEYS } from "./queryKeys";
 import { TVocab } from "@/pages/vocab/types";
 
 const getAllVocab = async (pageOptions: TPage) => {
-  const { page, limit } = pageOptions;
+  const params = new URLSearchParams();
+
+  Object.entries(pageOptions).map(([key, value]) => {
+    if (typeof value === "string") {
+      if (value !== undefined) {
+        params.append(`${key}`, value.toString());
+      }
+    } else {
+      if (value !== undefined && (value as string[]).length > 0) {
+        (value as string[]).forEach((item) => {
+          params.append(`${key}`, item);
+        });
+      }
+    }
+  });
+
   const { data } = await httpClient.get<ResponseAPI<TVocab>>(
-    `/vocab?${new URLSearchParams({
-      page,
-      limit,
-    })}`
+    `/vocab?${params.toString()}`
   );
   return data;
 };
