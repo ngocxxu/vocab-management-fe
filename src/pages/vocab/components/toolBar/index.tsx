@@ -1,24 +1,27 @@
-import IconFilter from "@/assets/svg/IconFilter";
-import Button from "@/components/button";
-import { Popover } from "@/components/popover";
-import { SearchBar } from "@/components/searchBar";
-import { ButtonLib } from "@/components/ui/button";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { Filter } from "../filter";
-import { useState } from "react";
-import { statusList } from "../../constants";
-import { TOption } from "@/utils/types";
-import { Modal } from "@/components/modal/index";
-import FormVocab from "../form";
-import { UseMutateFunction } from "react-query";
-import { AxiosResponse } from "axios";
-import { TVocab } from "../../types";
-import { TPutVocabs } from "@/services/vocab/usePutVocab";
-import { useDispatch } from "react-redux";
+import IconFilter from '@/assets/svg/IconFilter';
+import Button from '@/components/button';
+import { Modal } from '@/components/modal/index';
+import { Popover } from '@/components/popover';
+import { SearchBar } from '@/components/searchBar';
+import { ButtonLib } from '@/components/ui/button';
 import {
+  resetFilterState,
   setFilterVocabState,
   setSearchVocabState,
-} from "@/redux/reducer/vocab";
+} from '@/redux/reducer/vocab';
+import { RootState } from '@/redux/store';
+import { TPutVocabs } from '@/services/vocab/usePutVocab';
+import { TOption } from '@/utils/types';
+import { AxiosResponse } from 'axios';
+import { useState } from 'react';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { UseMutateFunction } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
+import { TVocab } from '../../types';
+import { Filter } from '../filter';
+import FormVocab from '../form';
+import IconFilterRemove from '@/assets/svg/IconFilterRemove';
+import { defaultStatus } from '@/utils/constants';
 
 type TToolbar = {
   onAddNew: () => void;
@@ -26,7 +29,7 @@ type TToolbar = {
   mutatePost: UseMutateFunction<
     AxiosResponse,
     unknown,
-    Omit<TVocab, "id">,
+    Omit<TVocab, 'id'>,
     unknown
   >;
   mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>;
@@ -45,13 +48,21 @@ export const ToolBar = ({
   mutatePut,
   isEditing,
 }: TToolbar) => {
+  const { filterData, searchVocab } = useSelector(
+    (state: RootState) => state.vocabReducer
+  );
+  const isClear =
+    searchVocab ||
+    // (filterData.status && filterData.status?.length > 0) ||
+    (filterData.subject && filterData.subject?.length > 0);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const methods = useForm<TFormInputsFilter>({
     defaultValues: {
-      status: [...statusList.map((item) => item.value)],
+      subject: filterData.subject,
+      status: filterData.status,
     },
   });
 
@@ -61,37 +72,52 @@ export const ToolBar = ({
   };
 
   return (
-    <div className="flex items-center justify-end">
-      <Popover
-        open={open}
-        onOpenChange={setOpen}
-        align="end"
-        side="bottom"
-        head={
-          <ButtonLib variant="ghost">
-            <IconFilter /> Filters
+    <div className='flex items-center justify-end'>
+      <FormProvider {...methods}>
+        {isClear && (
+          <ButtonLib
+            variant='outline'
+            onClick={() => {
+              dispatch(resetFilterState());
+              methods.setValue('subject', []);
+              methods.setValue('status', defaultStatus);
+            }}
+          >
+            <IconFilterRemove /> Clear all
           </ButtonLib>
-        }
-        body={
-          <FormProvider {...methods}>
+        )}
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          align='end'
+          side='bottom'
+          head={
+            <ButtonLib className='mx-1' variant='ghost'>
+              <IconFilter /> Filters
+            </ButtonLib>
+          }
+          body={
             <form onSubmit={methods.handleSubmit(onSubmit)}>
               <Filter onClose={() => setOpen(false)} />
             </form>
-          </FormProvider>
-        }
-        className="w-80"
+          }
+          className='w-80'
+        />
+      </FormProvider>
+      <SearchBar
+        defaultValue={searchVocab}
+        onSearch={(input) => dispatch(setSearchVocabState(input))}
       />
-      <SearchBar onSearch={(input) => dispatch(setSearchVocabState(input))} />
 
       <Modal
-        title={isEditing ? "Edit" : "Create"}
+        title={isEditing ? 'Edit' : 'Create'}
         open={openModal}
         onOpenChange={setOpenModal}
         head={
           <Button
-            type="button"
-            classNames="ml-3"
-            title="+ Add new"
+            type='button'
+            classNames='ml-3'
+            title='+ Add new'
             onClick={onAddNew}
           />
         }
@@ -104,7 +130,7 @@ export const ToolBar = ({
             onClose={() => setOpenModal(false)}
           />
         }
-        className="w-full h-full max-w-[80vh] !max-h-[85vh] overflow-x-auto"
+        className='w-full h-full max-w-[100vh] !max-h-[85vh] overflow-x-auto'
       />
     </div>
   );
