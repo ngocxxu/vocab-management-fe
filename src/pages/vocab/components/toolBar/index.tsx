@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TVocab } from '../../types';
 import { Filter } from '../filter';
 import FormVocab from '../form';
+import { RowSelectionState } from '@tanstack/react-table';
 
 type TToolbar = {
   onAddNew: () => void;
@@ -36,6 +37,8 @@ type TToolbar = {
   isEditing: boolean;
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  rowSelection: RowSelectionState;
+  setRowSelection: React.Dispatch<React.SetStateAction<Record<string, never>>>;
 };
 
 export type TFormInputsFilter = {
@@ -51,12 +54,16 @@ export const ToolBar = ({
   isEditing,
   openModal,
   setOpenModal,
+  rowSelection,
+  setRowSelection,
 }: TToolbar) => {
+  const counts = Object.keys(rowSelection).length;
   const { filterData, searchVocab } = useSelector(
     (state: RootState) => state.vocabReducer
   );
   const isClear =
     searchVocab ||
+    counts > 0 ||
     // (filterData.status && filterData.status?.length > 0) ||
     (filterData.subject && filterData.subject?.length > 0);
   const dispatch = useDispatch();
@@ -79,8 +86,10 @@ export const ToolBar = ({
       <FormProvider {...methods}>
         {isClear && (
           <ButtonLib
+            className='mr-1'
             variant='outline'
             onClick={() => {
+              setRowSelection({});
               dispatch(resetFilterState());
               methods.setValue('subject', []);
               methods.setValue('status', defaultStatus);
@@ -95,7 +104,7 @@ export const ToolBar = ({
           align='end'
           side='bottom'
           head={
-            <ButtonLib className='mx-1' variant='ghost'>
+            <ButtonLib className='mr-1' variant='ghost'>
               <IconFilter /> Filters
             </ButtonLib>
           }

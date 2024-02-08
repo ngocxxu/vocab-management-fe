@@ -276,6 +276,8 @@ const Vocab = () => {
           }}
           toolbar={
             <ToolBar
+              rowSelection={rowSelection}
+              setRowSelection={setRowSelection}
               openModal={openModal}
               setOpenModal={setOpenModal}
               idVocab={itemVocab._id}
