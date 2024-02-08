@@ -5,19 +5,41 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@/components/ui/toast"
-import { useToast } from "@/components/ui/use-toast"
+} from '@/components/ui/toast';
+import { useToast } from '@/components/ui/use-toast';
+import { Badge } from '../badge';
+import clsx from 'clsx';
 
 export function Toaster() {
-  const { toasts } = useToast()
+  const { toasts } = useToast();
 
   return (
-    <ToastProvider>
+    <ToastProvider swipeDirection='up'>
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
-          <Toast key={id} {...props}>
-            <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
+          <Toast
+            className={clsx(
+              'bg-customGreen4',
+              title === 'Error' && 'bg-customRed3'
+            )}
+            key={id}
+            {...props}
+          >
+            <div className='flex gap-2'>
+              {title && (
+                <ToastTitle>
+                  <Badge
+                    className={clsx(
+                      'gap-2 text-white',
+                      'bg-customGreen',
+                      title === 'Error' && 'bg-customRed'
+                    )}
+                    variant='outline'
+                  >
+                    {title}
+                  </Badge>
+                </ToastTitle>
+              )}
               {description && (
                 <ToastDescription>{description}</ToastDescription>
               )}
@@ -25,9 +47,9 @@ export function Toaster() {
             {action}
             <ToastClose />
           </Toast>
-        )
+        );
       })}
       <ToastViewport />
     </ToastProvider>
-  )
+  );
 }

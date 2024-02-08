@@ -37,7 +37,7 @@ const Vocab = () => {
   const { idsState, itemVocab, filterData, searchVocab } = useSelector(
     (state: RootState) => state.vocabReducer
   );
-  const [isModal, setIsModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
@@ -198,8 +198,8 @@ const Vocab = () => {
               variant='ghost'
               onClick={() => {
                 dispatch(setItemVocabState(row.original));
+                setOpenModal(true);
                 setIsEditing(true);
-                setIsModal(!isModal);
               }}
               leftIcon={
                 <IconEdit className='text-gray-400 hover:text-gray-500' />
@@ -224,7 +224,7 @@ const Vocab = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [idsState, isModal]
+    [idsState]
   );
 
   return (
@@ -276,13 +276,14 @@ const Vocab = () => {
           }}
           toolbar={
             <ToolBar
+              openModal={openModal}
+              setOpenModal={setOpenModal}
               idVocab={itemVocab._id}
               mutatePost={mutatePost}
               mutatePut={mutatePut}
               isEditing={isEditing}
               onAddNew={() => {
                 setIsEditing(false);
-                setIsModal(!isModal);
               }}
             />
           }

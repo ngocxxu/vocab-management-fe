@@ -18,9 +18,15 @@ module.exports = {
     },
     extend: {
       colors: {
-        customGray: '#a7afbc',
+        customGray: '#99A1B7',
+        customGray2: '#4B5675',
         customGreen: '#17C653',
+        customGreen2: '#14B8A6',
+        customGreen3: '#037847',
+        customGreen4: '#ECFDF3',
         customRed: '#F82C5D',
+        customRed2: '#A30D11',
+        customRed3: '#FBE7E8',
         customBlue: '#1B84FF',
         customBlue2: '#1b508e',
         customBlack: '#0f172a',

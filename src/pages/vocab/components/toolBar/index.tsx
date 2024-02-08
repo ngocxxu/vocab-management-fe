@@ -1,4 +1,5 @@
 import IconFilter from '@/assets/svg/IconFilter';
+import IconFilterRemove from '@/assets/svg/IconFilterRemove';
 import Button from '@/components/button';
 import { Modal } from '@/components/modal/index';
 import { Popover } from '@/components/popover';
@@ -11,6 +12,7 @@ import {
 } from '@/redux/reducer/vocab';
 import { RootState } from '@/redux/store';
 import { TPutVocabs } from '@/services/vocab/usePutVocab';
+import { defaultStatus } from '@/utils/constants';
 import { TOption } from '@/utils/types';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
@@ -20,8 +22,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TVocab } from '../../types';
 import { Filter } from '../filter';
 import FormVocab from '../form';
-import IconFilterRemove from '@/assets/svg/IconFilterRemove';
-import { defaultStatus } from '@/utils/constants';
 
 type TToolbar = {
   onAddNew: () => void;
@@ -34,6 +34,8 @@ type TToolbar = {
   >;
   mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>;
   isEditing: boolean;
+  openModal: boolean;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type TFormInputsFilter = {
@@ -47,6 +49,8 @@ export const ToolBar = ({
   idVocab,
   mutatePut,
   isEditing,
+  openModal,
+  setOpenModal,
 }: TToolbar) => {
   const { filterData, searchVocab } = useSelector(
     (state: RootState) => state.vocabReducer
@@ -57,7 +61,6 @@ export const ToolBar = ({
     (filterData.subject && filterData.subject?.length > 0);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
 
   const methods = useForm<TFormInputsFilter>({
     defaultValues: {
