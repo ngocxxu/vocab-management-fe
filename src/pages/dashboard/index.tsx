@@ -1,26 +1,19 @@
-import { useToast } from "@/components/ui/use-toast";
-import ChartTable from "../../components/charts";
-import { ToastAction } from "@/components/ui/toast";
-import Button from "@/components/button";
+import LineChartTable from './components/lineChartTable';
+import { NoticeCalendar } from './components/noticeCalendar';
+import PieChartTable from './components/pieChartTable';
 
 const Dashboard = () => {
-  const { toast } = useToast();
-  const showToastMessage = () =>
-    toast({
-      title: "Success",
-      description: "Friday, February 10, 2023 at 5:57 PM",
-      action: <ToastAction altText="Goto schedule to undo">Undo</ToastAction>,
-    });
-
   return (
-    <>
-      <div className="container mx-auto">
-        <Button onClick={showToastMessage}>Notify!</Button>
-        <div className="shadow-md">
-          <ChartTable />
+    <div className='container mx-auto mb-5'>
+      <h1 className='text-2xl font-semibold mt-5 mb-3'>Welcome,</h1>
+      <div className='grid grid-cols-2 gap-5'>
+        <PieChartTable />
+        <NoticeCalendar />
+        <div className='col-span-2'>
+          <LineChartTable />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

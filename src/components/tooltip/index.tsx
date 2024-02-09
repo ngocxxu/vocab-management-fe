@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 import {
   TooltipContent,
   TooltipLib,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from '../ui/tooltip';
 
 type TTooltip = {
   children: ReactNode;
@@ -13,10 +13,12 @@ type TTooltip = {
 
 const Tooltip = ({ children, body }: TTooltip) => {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={300}>
       <TooltipLib>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent>{body}</TooltipContent>
+        <TooltipContent className='bg-customBlue2 text-white'>
+          {body}
+        </TooltipContent>
       </TooltipLib>
     </TooltipProvider>
   );

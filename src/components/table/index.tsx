@@ -25,7 +25,7 @@ import { TTextTarget } from '@/pages/vocab/types';
 type TTable<T extends TExtend> = {
   data: T[];
   options: TableOptions<T>;
-  isLoading: boolean;
+  isLoading?: boolean;
   isCollapse?: boolean;
   isPagination?: boolean;
   paginations?: TPagination;

@@ -20,6 +20,8 @@ module.exports = {
       colors: {
         customGray: '#99A1B7',
         customGray2: '#4B5675',
+        customGray3: '#E4E6EF',
+        customGray4: '#cbd5e1',
         customGreen: '#17C653',
         customGreen2: '#14B8A6',
         customGreen3: '#037847',
@@ -30,6 +32,7 @@ module.exports = {
         customBlue: '#1B84FF',
         customBlue2: '#1b508e',
         customBlack: '#0f172a',
+        customYellow: '#F6C000',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
