@@ -4,10 +4,9 @@ import {
   IconArrowsUpDown,
   IconDatabaseOff,
   IconLoader2,
-  IconSchool,
-  IconTrash,
 } from '@tabler/icons-react';
 import {
+  Row,
   TableOptions,
   flexRender,
   getFilteredRowModel,
@@ -15,51 +14,36 @@ import {
 } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { Fragment, ReactNode, memo } from 'react';
-import CollapseVocab from '../../pages/vocab/components/collapse';
+import CollapseVocab, { TExtend } from '../../pages/vocab/components/collapse';
 import { TPagination } from '../../utils/types';
-import { AlertDialog } from '../alertDialog';
-import Button from '../button';
 import Pagination from '../pagination';
-import { TTextTarget } from '@/pages/vocab/types';
 
-type TTable<T extends TExtend> = {
+type TTable<T> = {
   data: T[];
   options: TableOptions<T>;
   isLoading?: boolean;
   isCollapse?: boolean;
   isPagination?: boolean;
   paginations?: TPagination;
-  isToolbar?: boolean;
-  toolbar?: ReactNode;
-  onConfirmMultiDelete?: () => void;
-  onYes?: () => void;
+  components?: {
+    toolbar?: ReactNode;
+  };
 };
 
-export type TExtend = {
-  _id: string;
-  textTarget: TTextTarget[];
-  sourceLanguage: string;
-  targetLanguage: string;
-};
-
-const DataTable = <T extends TExtend>({
+const DataTable = <T,>({
   data,
   options,
   isLoading,
   isPagination = false,
   isCollapse = false,
-  isToolbar = false,
   paginations,
-  onConfirmMultiDelete,
-  onYes,
-  toolbar,
+  components,
 }: TTable<T>) => {
   const table = useReactTable({
     getFilteredRowModel: getFilteredRowModel(),
     enableRowSelection: true,
     ...options,
   });
-  const counts = Object.keys(table.getState().rowSelection).length;
 
   if (isLoading) {
     return (
@@ -71,64 +55,28 @@ const DataTable = <T extends TExtend>({
 
   return (
     <>
-      {isToolbar && (
-        <div
-          className={clsx(
-            'flex justify-end items-center mb-2',
-            counts > 0 && 'justify-between'
-          )}
-        >
-          {counts > 0 && (
-            <div className='text-xs'>{counts} row(s) selected</div>
-          )}
-          <div className='flex justify-center items-center gap-1'>
-            {counts > 0 && (
-              <Button
-                variant='outline'
-                title='Practice'
-                leftIcon={<IconSchool className='mr-2 text-customBlue' />}
-              />
-            )}
-            {counts > 0 && (
-              <AlertDialog
-                head={
-                  <Button
-                    onClick={onConfirmMultiDelete}
-                    variant='ghost'
-                    title={`Delete (${counts})`}
-                    leftIcon={<IconTrash className='mr-2 text-customRed' />}
-                  />
-                }
-                title='Do you want to delete these?'
-                onYes={onYes}
-              />
-            )}
-            {toolbar}
-          </div>
-        </div>
-      )}
+      {components?.toolbar}
+
       {data.length > 0 ? (
         <>
           <table className='table text-sm text-left rtl:text-right text-gray-500 w-full'>
             <thead className='text-xs text-gray-700 uppercase bg-gray-50'>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header, idx) => (
+                  {headerGroup.headers.map((header) => (
                     <th
                       scope='col'
-                      className={clsx(
-                        'px-6 py-3',
-                        isToolbar && idx === 0 && 'w-2'
-                      )}
+                      className='px-6 py-3'
                       key={header.id}
+                      colSpan={header.colSpan}
+                      style={{ width: `${header.getSize()}px` }}
                     >
                       <div
-                        {...{
-                          className: header.column.getCanSort()
-                            ? 'cursor-pointer select-none flex items-center gap-4'
-                            : '',
-                          onClick: header.column.getToggleSortingHandler(),
-                        }}
+                        className={clsx(
+                          header.column.getCanSort() &&
+                            'cursor-pointer select-none flex items-center gap-4'
+                        )}
+                        onClick={() => header.column.getToggleSortingHandler()}
                       >
                         {header.isPlaceholder
                           ? null
@@ -163,7 +111,7 @@ const DataTable = <T extends TExtend>({
                       </td>
                     ))}
                   </tr>
-                  {isCollapse && <CollapseVocab row={row} />}
+                  {isCollapse && <CollapseVocab row={row as Row<TExtend>} />}
                 </Fragment>
               ))}
             </tbody>
@@ -180,8 +128,6 @@ const DataTable = <T extends TExtend>({
   );
 };
 
-const Table = memo(DataTable) as <T extends TExtend>(
-  props: TTable<T>
-) => ReactNode;
+const Table = memo(DataTable) as <T>(props: TTable<T>) => ReactNode;
 
 export default Table;

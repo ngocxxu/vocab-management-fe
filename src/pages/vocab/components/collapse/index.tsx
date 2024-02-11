@@ -1,15 +1,21 @@
-import { Row } from "@tanstack/react-table";
-import { ReactNode, memo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { TExtend } from "../../../../components/table";
-import Voice from "../../../../components/voice";
-import { setItemsShowState } from "../../../../redux/reducer/vocab";
-import { RootState } from "../../../../redux/store";
-import styles from "./styles.module.scss";
-import Button from "@/components/button";
-import { Badge } from "@/components/badge";
+import { Row } from '@tanstack/react-table';
+import { ReactNode, memo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Voice from '../../../../components/voice';
+import { setItemsShowState } from '../../../../redux/reducer/vocab';
+import { RootState } from '../../../../redux/store';
+import styles from './styles.module.scss';
+import Button from '@/components/button';
+import { Badge } from '@/components/badge';
+import { TTextTarget } from '../../types';
 
 type TCollapseVocab<T extends TExtend> = { row: Row<T> };
+export type TExtend = {
+  _id: string;
+  textTarget: TTextTarget[];
+  sourceLanguage: string;
+  targetLanguage: string;
+};
 
 const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
   const { textTarget, sourceLanguage, targetLanguage } = row.original;
@@ -27,10 +33,10 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
     idsState.includes(row.original._id) && (
       <tr className={styles.container}>
         <td
-          className="px-6 py-4 break-all"
+          className='px-6 py-4 break-all'
           colSpan={row.getVisibleCells().length}
         >
-          <ol className="list-decimal">
+          <ol className='list-decimal'>
             {textTarget.map(
               (
                 {
@@ -46,14 +52,14 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
               ) => {
                 return (
                   <li
-                    className={idx === textTarget.length - 1 ? "" : "mb-4"}
+                    className={idx === textTarget.length - 1 ? '' : 'mb-4'}
                     key={text}
                   >
-                    <div className="flex items-center mb-2 gap-3">
-                      <div className="flex items-center gap-1">
-                        <div className="text-sky-500">{wordType}</div>
-                        <div className="flex items-center">
-                          <span className="font-semibold">{text}</span>
+                    <div className='flex items-center mb-2 gap-3'>
+                      <div className='flex items-center gap-1'>
+                        <div className='text-sky-500'>{wordType}</div>
+                        <div className='flex items-center'>
+                          <span className='font-semibold'>{text}</span>
                           <Voice lang={targetLanguage} text={text} />
                         </div>
                       </div>
@@ -61,8 +67,8 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                         {subject.map((item) => (
                           <Badge
                             key={item.label}
-                            variant="outline"
-                            className="text-xs mr-1 border-gray-300"
+                            variant='outline'
+                            className='text-xs mr-1 border-gray-300'
                           >
                             {item.value}
                           </Badge>
@@ -71,13 +77,13 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                     </div>
 
                     {explanationSource && (
-                      <div className="flex items-center mb-2">
+                      <div className='flex items-center mb-2'>
                         <span>{explanationSource}</span>
                         <Voice lang={sourceLanguage} text={explanationSource} />
                       </div>
                     )}
                     {explanationTarget && (
-                      <div className="flex items-center mb-2">
+                      <div className='flex items-center mb-2'>
                         <span>{explanationTarget}</span>
                         <Voice lang={targetLanguage} text={explanationTarget} />
                       </div>
@@ -88,14 +94,14 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       .map(({ source, target }) => (
                         <div
                           key={source}
-                          className="flex justify-start items-end gap-3"
+                          className='flex justify-start items-end gap-3'
                         >
-                          <div className="border-l-4 border-gray-400 pl-2 mb-2">
-                            <div className="flex items-center">
+                          <div className='border-l-4 border-gray-400 pl-2 mb-2'>
+                            <div className='flex items-center'>
                               <div>{source}</div>
                               <Voice lang={sourceLanguage} text={source} />
                             </div>
-                            <div className="flex items-center">
+                            <div className='flex items-center'>
                               <div>{target}</div>
                               <Voice lang={targetLanguage} text={target} />
                             </div>
@@ -105,8 +111,8 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
 
                     {examples.length > 1 && (
                       <Button
-                        variant="link"
-                        className="text-xs text-blue-400 mb-2 block"
+                        variant='link'
+                        className='text-xs text-blue-400 mb-2 block'
                         onClick={() => {
                           dispatch(
                             setItemsShowState({
@@ -115,13 +121,13 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                             })
                           );
                         }}
-                        title={!checkShow(idx) ? "More" : "Less"}
+                        title={!checkShow(idx) ? 'More' : 'Less'}
                       />
                     )}
 
                     {grammar && (
-                      <Badge variant="outline" className="bg-gray-200">
-                        <span className="mr-2">Grammar structure:</span>{" "}
+                      <Badge variant='outline' className='bg-gray-200'>
+                        <span className='mr-2'>Grammar structure:</span>{' '}
                         {grammar}
                       </Badge>
                       // <div className="badge bg-zinc-200 text-xs">

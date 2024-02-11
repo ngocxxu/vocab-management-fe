@@ -2,12 +2,14 @@ import IconArrowDown from '@/assets/svg/IconArrowDown';
 import IconArrowUp from '@/assets/svg/IconArrowUp';
 import { AlertDialog } from '@/components/alertDialog';
 import { Badge } from '@/components/badge';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import HeaderTable from '@/components/headerTable';
+import { IconEdit, IconSchool, IconTrash } from '@tabler/icons-react';
 import {
   ColumnDef,
   SortingState,
   getCoreRowModel,
 } from '@tanstack/react-table';
+import clsx from 'clsx';
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
@@ -43,6 +45,7 @@ const Vocab = () => {
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const refDiv = useRef<HTMLDivElement>(null);
+  const counts = Object.keys(rowSelection).length;
 
   const convertOrderBy = () => {
     if (sorting[0]?.id) {
@@ -97,7 +100,6 @@ const Vocab = () => {
     () => [
       {
         enableSorting: false,
-        size: 200,
         id: 'select',
         header: ({ table }) => (
           <IndeterminateCheckbox
@@ -120,6 +122,7 @@ const Vocab = () => {
         ),
       },
       {
+        size: 1000,
         accessorKey: 'textSource',
         header: 'Text source',
         cell: ({ row, getValue }) => (
@@ -150,6 +153,7 @@ const Vocab = () => {
         ),
       },
       {
+        size: 1000,
         accessorKey: 'textTarget',
         header: 'Text target',
         cell: ({ row }) => (
@@ -228,70 +232,96 @@ const Vocab = () => {
   );
 
   return (
-    <div className='my-10'>
-      <div className='container bg-white mx-auto rounded-md p-5 border shadow-md'>
-        <div className='flex justify-between items-start'>
-          <div>
-            <h4 className='font-medium'>Vocabulary list</h4>
-            <p className='text-sm mb-6'>
-              Let your second world be opened up thanks to the vocabulary list
-              below. <br />
-              Let's run, don't hesitate!
-            </p>
-          </div>
-        </div>
-
-        <Table
-          isToolbar
-          isPagination
-          isCollapse
-          isLoading={
-            isLoadingPost ||
-            isLoadingPut ||
-            isLoading ||
-            isLoadingDelete ||
-            isLoadingDeleteMulti
-          }
-          onConfirmMultiDelete={() => {
-            setIsDeleteMulti(true);
-          }}
-          onYes={handleOnYes}
-          paginations={{
-            currentPage: data?.currentPage ?? 1,
-            totalItems: data?.totalItems ?? 1,
-            totalPages: data?.totalPages ?? 1,
-          }}
-          data={data?.data ?? []}
-          options={{
-            data: data?.data ?? [],
-            columns: columns,
-            state: {
-              rowSelection,
-              sorting,
-            },
-            getCoreRowModel: getCoreRowModel(),
-            onRowSelectionChange: setRowSelection,
-            getRowId: (row) => row._id,
-            onSortingChange: setSorting,
-          }}
-          toolbar={
-            <ToolBar
-              rowSelection={rowSelection}
-              setRowSelection={setRowSelection}
-              openModal={openModal}
-              setOpenModal={setOpenModal}
-              idVocab={itemVocab._id}
-              mutatePost={mutatePost}
-              mutatePut={mutatePut}
-              isEditing={isEditing}
-              onAddNew={() => {
-                setIsEditing(false);
-              }}
-            />
-          }
-        />
-      </div>
-    </div>
+    <HeaderTable
+      headText='Vocabulary List'
+      bodyText={
+        <>
+          Let your second world be opened up thanks to the vocabulary list
+          below. <br />
+          Let's run, don't hesitate!
+        </>
+      }
+    >
+      <Table
+        components={{
+          toolbar: (
+            <div
+              className={clsx(
+                'flex justify-end items-center mb-2',
+                counts > 0 && 'justify-between'
+              )}
+            >
+              {counts > 0 && (
+                <div className='text-xs'>{counts} row(s) selected</div>
+              )}
+              <div className='flex justify-center items-center gap-1'>
+                {counts > 0 && (
+                  <Button
+                    variant='outline'
+                    title='Practice'
+                    leftIcon={<IconSchool className='mr-2 text-customBlue' />}
+                  />
+                )}
+                {counts > 0 && (
+                  <AlertDialog
+                    head={
+                      <Button
+                        onClick={() => setIsDeleteMulti(true)}
+                        variant='ghost'
+                        title={`Delete (${counts})`}
+                        leftIcon={<IconTrash className='mr-2 text-customRed' />}
+                      />
+                    }
+                    title='Do you want to delete these?'
+                    onYes={handleOnYes}
+                  />
+                )}
+                <ToolBar
+                  rowSelection={rowSelection}
+                  setRowSelection={setRowSelection}
+                  openModal={openModal}
+                  setOpenModal={setOpenModal}
+                  idVocab={itemVocab._id}
+                  mutatePost={mutatePost}
+                  mutatePut={mutatePut}
+                  isEditing={isEditing}
+                  onAddNew={() => {
+                    setIsEditing(false);
+                  }}
+                />
+              </div>
+            </div>
+          ),
+        }}
+        isPagination
+        isCollapse
+        isLoading={
+          isLoadingPost ||
+          isLoadingPut ||
+          isLoading ||
+          isLoadingDelete ||
+          isLoadingDeleteMulti
+        }
+        paginations={{
+          currentPage: data?.currentPage ?? 1,
+          totalItems: data?.totalItems ?? 1,
+          totalPages: data?.totalPages ?? 1,
+        }}
+        data={data?.data ?? []}
+        options={{
+          data: data?.data ?? [],
+          columns: columns,
+          state: {
+            rowSelection,
+            sorting,
+          },
+          getCoreRowModel: getCoreRowModel(),
+          onRowSelectionChange: setRowSelection,
+          getRowId: (row) => row._id,
+          onSortingChange: setSorting,
+        }}
+      />
+    </HeaderTable>
   );
 };
 
