@@ -1,10 +1,9 @@
 import React from 'react';
 
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
 import { Separator } from '../ui/separator';
-import IconArrowLeft from '@/assets/svg/IconArrowLeft';
-import IconArrowRight from '@/assets/svg/IconArrowRight';
 
 function CustomCaption(props: CaptionProps) {
   const { goToMonth, nextMonth, previousMonth } = useNavigation();
@@ -15,7 +14,7 @@ function CustomCaption(props: CaptionProps) {
           disabled={!previousMonth}
           onClick={() => previousMonth && goToMonth(previousMonth)}
         >
-          <IconArrowLeft />
+          <IconChevronLeft />
         </button>
         <div className='font-semibold'>
           {format(props.displayMonth, 'MMMM yyy')}
@@ -24,7 +23,7 @@ function CustomCaption(props: CaptionProps) {
           disabled={!nextMonth}
           onClick={() => nextMonth && goToMonth(nextMonth)}
         >
-          <IconArrowRight />
+          <IconChevronRight />
         </button>
       </div>
       <Separator />

@@ -5,6 +5,7 @@ type TGroupButton = {
   onClose?: () => void;
   variantNo?: 'default' | 'outline' | 'secondary' | 'ghost';
   variantYes?: 'default' | 'outline' | 'secondary' | 'ghost';
+  disabledYes?: boolean;
 };
 
 const GroupButton = ({
@@ -12,6 +13,7 @@ const GroupButton = ({
   onClose,
   variantNo = 'default',
   variantYes = 'default',
+  disabledYes,
 }: TGroupButton) => {
   return (
     <div className='flex justify-center items-center gap-2'>
@@ -24,6 +26,7 @@ const GroupButton = ({
         />
       )}
       <Button
+        disabled={disabledYes}
         variant={variantYes}
         type='submit'
         title={isEditing ? 'Update' : 'Save'}

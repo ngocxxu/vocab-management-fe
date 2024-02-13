@@ -1,10 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import dashboardReducer from "./reducer/dashboard";
-import vocabReducer from "./reducer/vocab";
+import { configureStore } from '@reduxjs/toolkit';
+import dashboardReducer from './reducer/dashboard';
+import vocabReducer from './reducer/vocab';
+import vocabTrainerReducer from './reducer/vocabTrainer';
+
 const store = configureStore({
   reducer: {
     dashboardReducer,
     vocabReducer,
+    vocabTrainerReducer,
   },
 });
 

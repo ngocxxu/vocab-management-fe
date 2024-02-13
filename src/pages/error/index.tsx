@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Page404 from '../../assets/img/background/404page.jpg';
+import Page404 from '../../assets/img/background/404page.webp';
 
 export const ErrorTemplate = () => {
   const navigate = useNavigate();

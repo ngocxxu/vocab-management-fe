@@ -12,17 +12,18 @@ import {
 } from '@/redux/reducer/vocab';
 import { RootState } from '@/redux/store';
 import { TPutVocabs } from '@/services/vocab/usePutVocab';
-import { defaultStatus } from '@/utils/constants';
+import { ROUTER_VOCAB_TRAINER, defaultStatus } from '@/utils/constants';
 import { TOption } from '@/utils/types';
+import { RowSelectionState } from '@tanstack/react-table';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { UseMutateFunction } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { TVocab } from '../../types';
 import { Filter } from '../filter';
 import FormVocab from '../form';
-import { RowSelectionState } from '@tanstack/react-table';
 
 type TToolbar = {
   onAddNew: () => void;
@@ -57,6 +58,8 @@ export const ToolBar = ({
   rowSelection,
   setRowSelection,
 }: TToolbar) => {
+  const { pathname } = useLocation();
+
   const counts = Object.keys(rowSelection).length;
   const { filterData, searchVocab } = useSelector(
     (state: RootState) => state.vocabReducer
@@ -121,29 +124,31 @@ export const ToolBar = ({
         onSearch={(input) => dispatch(setSearchVocabState(input))}
       />
 
-      <Modal
-        title={isEditing ? 'Edit' : 'Create'}
-        open={openModal}
-        onOpenChange={setOpenModal}
-        head={
-          <Button
-            type='button'
-            classNames='ml-3'
-            title='+ Add new'
-            onClick={onAddNew}
-          />
-        }
-        body={
-          <FormVocab
-            idVocab={idVocab}
-            mutate={mutatePost}
-            mutatePut={mutatePut}
-            isEditing={isEditing}
-            onClose={() => setOpenModal(false)}
-          />
-        }
-        className='w-full h-full max-w-[100vh] !max-h-[85vh] overflow-x-auto'
-      />
+      {pathname !== ROUTER_VOCAB_TRAINER && (
+        <Modal
+          title={isEditing ? 'Edit' : 'Create'}
+          open={openModal}
+          onOpenChange={setOpenModal}
+          head={
+            <Button
+              type='button'
+              classNames='ml-3'
+              title='+ Add new'
+              onClick={onAddNew}
+            />
+          }
+          body={
+            <FormVocab
+              idVocab={idVocab}
+              mutate={mutatePost}
+              mutatePut={mutatePut}
+              isEditing={isEditing}
+              onClose={() => setOpenModal(false)}
+            />
+          }
+          className='w-full h-full max-w-[100vh] !max-h-[85vh] overflow-x-auto'
+        />
+      )}
     </div>
   );
 };

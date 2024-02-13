@@ -1,18 +1,23 @@
-import IconArrowDown from '@/assets/svg/IconArrowDown';
-import IconArrowUp from '@/assets/svg/IconArrowUp';
 import { AlertDialog } from '@/components/alertDialog';
 import { Badge } from '@/components/badge';
-import HeaderTable from '@/components/headerTable';
-import { IconEdit, IconSchool, IconTrash } from '@tabler/icons-react';
+import { setRowSelectionState } from '@/redux/reducer/vocabTrainer';
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconEdit,
+  IconSchool,
+  IconTrash,
+} from '@tabler/icons-react';
 import {
   ColumnDef,
   SortingState,
   getCoreRowModel,
+  getSortedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import Button from '../../components/button';
 import Table from '../../components/table';
 import Voice from '../../components/voice';
@@ -23,12 +28,13 @@ import { useDeleteVocab } from '../../services/vocab/useDeleteVocab';
 import { useGetAllVocab } from '../../services/vocab/useGetAllVocab';
 import { usePostVocab } from '../../services/vocab/usePostVocab';
 import { usePutVocab } from '../../services/vocab/usePutVocab';
-import { LIMIT_PAGE_10 } from '../../utils/constants';
+import { LIMIT_PAGE_10, ROUTER_VOCAB_TRAINER } from '../../utils/constants';
 import { IndeterminateCheckbox } from './components/checkbox';
 import { ToolBar } from './components/toolBar';
 import { TVocab } from './types';
 
 const Vocab = () => {
+  const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { mutate, isLoading: isLoadingDelete } = useDeleteVocab();
   const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
@@ -184,9 +190,9 @@ const Vocab = () => {
             </div>
 
             {idsState.includes(row.original._id) ? (
-              <IconArrowUp />
+              <IconChevronUp />
             ) : (
-              <IconArrowDown />
+              <IconChevronDown />
             )}
           </div>
         ),
@@ -196,19 +202,21 @@ const Vocab = () => {
         id: 'action',
         cell: ({ row }) => (
           <div className='flex gap-3 items-center w-0'>
-            <Button
-              className='h-6 w-6'
-              size='icon'
-              variant='ghost'
-              onClick={() => {
-                dispatch(setItemVocabState(row.original));
-                setOpenModal(true);
-                setIsEditing(true);
-              }}
-              leftIcon={
-                <IconEdit className='text-gray-400 hover:text-gray-500' />
-              }
-            />
+            {pathname !== ROUTER_VOCAB_TRAINER && (
+              <Button
+                className='h-6 w-6'
+                size='icon'
+                variant='ghost'
+                onClick={() => {
+                  dispatch(setItemVocabState(row.original));
+                  setOpenModal(true);
+                  setIsEditing(true);
+                }}
+                leftIcon={
+                  <IconEdit className='text-gray-400 hover:text-gray-500' />
+                }
+              />
+            )}
             <AlertDialog
               head={
                 <Button
@@ -231,97 +239,91 @@ const Vocab = () => {
     [idsState]
   );
 
+  useEffect(() => {
+    dispatch(setRowSelectionState(rowSelection));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rowSelection]);
+
   return (
-    <HeaderTable
-      headText='Vocabulary List'
-      bodyText={
-        <>
-          Let your second world be opened up thanks to the vocabulary list
-          below. <br />
-          Let's run, don't hesitate!
-        </>
-      }
-    >
-      <Table
-        components={{
-          toolbar: (
-            <div
-              className={clsx(
-                'flex justify-end items-center mb-2',
-                counts > 0 && 'justify-between'
-              )}
-            >
-              {counts > 0 && (
-                <div className='text-xs'>{counts} row(s) selected</div>
-              )}
-              <div className='flex justify-center items-center gap-1'>
-                {counts > 0 && (
-                  <Button
-                    variant='outline'
-                    title='Practice'
-                    leftIcon={<IconSchool className='mr-2 text-customBlue' />}
-                  />
-                )}
-                {counts > 0 && (
-                  <AlertDialog
-                    head={
-                      <Button
-                        onClick={() => setIsDeleteMulti(true)}
-                        variant='ghost'
-                        title={`Delete (${counts})`}
-                        leftIcon={<IconTrash className='mr-2 text-customRed' />}
-                      />
-                    }
-                    title='Do you want to delete these?'
-                    onYes={handleOnYes}
-                  />
-                )}
-                <ToolBar
-                  rowSelection={rowSelection}
-                  setRowSelection={setRowSelection}
-                  openModal={openModal}
-                  setOpenModal={setOpenModal}
-                  idVocab={itemVocab._id}
-                  mutatePost={mutatePost}
-                  mutatePut={mutatePut}
-                  isEditing={isEditing}
-                  onAddNew={() => {
-                    setIsEditing(false);
-                  }}
+    <Table
+      components={{
+        toolbar: (
+          <div
+            className={clsx(
+              'flex justify-end items-center mb-2',
+              counts > 0 && 'justify-between'
+            )}
+          >
+            {counts > 0 && (
+              <div className='text-xs'>{counts} row(s) selected</div>
+            )}
+            <div className='flex justify-center items-center gap-1'>
+              {counts >= 5 && pathname !== ROUTER_VOCAB_TRAINER && (
+                <Button
+                  variant='outline'
+                  title='Practice'
+                  leftIcon={<IconSchool className='mr-2 text-customBlue' />}
                 />
-              </div>
+              )}
+              {counts > 0 && pathname !== ROUTER_VOCAB_TRAINER && (
+                <AlertDialog
+                  head={
+                    <Button
+                      onClick={() => setIsDeleteMulti(true)}
+                      variant='ghost'
+                      title={`Delete (${counts})`}
+                      leftIcon={<IconTrash className='mr-2 text-customRed' />}
+                    />
+                  }
+                  title='Do you want to delete these?'
+                  onYes={handleOnYes}
+                />
+              )}
+              <ToolBar
+                rowSelection={rowSelection}
+                setRowSelection={setRowSelection}
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+                idVocab={itemVocab._id}
+                mutatePost={mutatePost}
+                mutatePut={mutatePut}
+                isEditing={isEditing}
+                onAddNew={() => {
+                  setIsEditing(false);
+                }}
+              />
             </div>
-          ),
-        }}
-        isPagination
-        isCollapse
-        isLoading={
-          isLoadingPost ||
-          isLoadingPut ||
-          isLoading ||
-          isLoadingDelete ||
-          isLoadingDeleteMulti
-        }
-        paginations={{
-          currentPage: data?.currentPage ?? 1,
-          totalItems: data?.totalItems ?? 1,
-          totalPages: data?.totalPages ?? 1,
-        }}
-        data={data?.data ?? []}
-        options={{
-          data: data?.data ?? [],
-          columns: columns,
-          state: {
-            rowSelection,
-            sorting,
-          },
-          getCoreRowModel: getCoreRowModel(),
-          onRowSelectionChange: setRowSelection,
-          getRowId: (row) => row._id,
-          onSortingChange: setSorting,
-        }}
-      />
-    </HeaderTable>
+          </div>
+        ),
+      }}
+      isPagination
+      isCollapse
+      isLoading={
+        isLoadingPost ||
+        isLoadingPut ||
+        isLoading ||
+        isLoadingDelete ||
+        isLoadingDeleteMulti
+      }
+      paginations={{
+        currentPage: data?.currentPage ?? 1,
+        totalItems: data?.totalItems ?? 1,
+        totalPages: data?.totalPages ?? 1,
+      }}
+      options={{
+        data: data?.data ?? [],
+        columns: columns,
+        state: {
+          rowSelection,
+          sorting,
+        },
+        getSortedRowModel: getSortedRowModel(),
+        getCoreRowModel: getCoreRowModel(),
+        onRowSelectionChange: setRowSelection,
+        getRowId: (row) => row._id,
+        onSortingChange: setSorting,
+      }}
+    />
   );
 };
 
