@@ -5,7 +5,6 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconEdit,
-  IconSchool,
   IconTrash,
 } from '@tabler/icons-react';
 import {
@@ -258,13 +257,6 @@ const Vocab = () => {
               <div className='text-xs'>{counts} row(s) selected</div>
             )}
             <div className='flex justify-center items-center gap-1'>
-              {counts >= 5 && pathname !== ROUTER_VOCAB_TRAINER && (
-                <Button
-                  variant='outline'
-                  title='Practice'
-                  leftIcon={<IconSchool className='mr-2 text-customBlue' />}
-                />
-              )}
               {counts > 0 && pathname !== ROUTER_VOCAB_TRAINER && (
                 <AlertDialog
                   head={

@@ -21,7 +21,7 @@ const Input = ({
 }: TInput) => {
   return (
     <label className='form-control w-full'>
-      <div className={clsx('text-sm', !removeStyle && 'mt-4')}>
+      <div className={clsx('text-sm mb-1', !removeStyle && 'mt-4')}>
         {isMark && <span className='text-red-600'>*</span>}
         {label}
       </div>

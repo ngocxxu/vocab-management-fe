@@ -29,7 +29,7 @@ export const Modal = ({
   return (
     <DialogLib open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{head}</DialogTrigger>
-      <DialogContent {...props}>
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} {...props}>
         <DialogHeader>
           {title && (
             <DialogTitle>

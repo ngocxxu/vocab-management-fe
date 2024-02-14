@@ -64,6 +64,7 @@ const VocabTrainer = () => {
   const columns = useMemo<ColumnDef<TVocabTrainer>[]>(
     () => [
       {
+        size: 0,
         enableSorting: false,
         id: 'select',
         header: ({ table }) => (
