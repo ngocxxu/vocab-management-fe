@@ -9,7 +9,7 @@ export type TPutVocabs = {
   id: string;
 };
 
-const postVocab = async (item: TPutVocabs) => {
+const putVocab = async (item: TPutVocabs) => {
   const res = await httpClient.put(`/vocab/${item.id}`, item.data);
   return res;
 };
@@ -19,7 +19,7 @@ export const usePutVocab = () => {
   const client = useQueryClient();
 
   return useMutation({
-    mutationFn: (item: TPutVocabs) => postVocab(item),
+    mutationFn: (item: TPutVocabs) => putVocab(item),
     onSuccess: () => {
       client.invalidateQueries([VOCAB_KEYS.GET_VOCAB]);
       toast({

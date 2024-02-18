@@ -9,7 +9,6 @@ export type TVocabTrainer = {
 };
 
 export type TWordResults = {
-  numberQuestion: number;
   userSelect: string;
   systemSelect: string;
 };
