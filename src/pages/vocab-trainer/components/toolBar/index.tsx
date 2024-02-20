@@ -1,16 +1,17 @@
-import IconFilterRemove from '@/assets/svg/IconFilterRemove';
-import Button from '@/components/button';
-import { Modal } from '@/components/modal/index';
-import { SearchBar } from '@/components/searchBar';
-import { ButtonLib } from '@/components/ui/button';
-import { resetFilterState, setSearchVocabState } from '@/redux/reducer/vocab';
-import { RootState } from '@/redux/store';
-import { defaultStatus } from '@/utils/constants';
-import { TOption } from '@/utils/types';
-import { RowSelectionState } from '@tanstack/react-table';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import FormVocabTrainer from '../form';
+import IconFilterRemove from "@/assets/svg/IconFilterRemove";
+import Button from "@/components/button";
+import { Modal } from "@/components/modal/index";
+import { SearchBar } from "@/components/searchBar";
+import { ButtonLib } from "@/components/ui/button";
+import { resetFilterState, setSearchVocabState } from "@/redux/reducer/vocab";
+import { RootState } from "@/redux/store";
+import { defaultStatus } from "@/utils/constants";
+import { TOption } from "@/utils/types";
+import { RowSelectionState } from "@tanstack/react-table";
+import { FormProvider, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import FormVocabTrainer from "../form";
+import { setOpenModalState } from "@/redux/reducer/vocabTrainer";
 
 type TToolbar = {
   idVocabTrainer: string;
@@ -67,17 +68,17 @@ export const ToolBar = ({
   // };
 
   return (
-    <div className='flex items-center justify-end'>
+    <div className="flex items-center justify-end">
       <FormProvider {...methods}>
         {isClear && (
           <ButtonLib
-            className='mr-1'
-            variant='outline'
+            className="mr-1"
+            variant="outline"
             onClick={() => {
               setRowSelection({});
               dispatch(resetFilterState());
-              methods.setValue('subject', []);
-              methods.setValue('status', defaultStatus);
+              methods.setValue("subject", []);
+              methods.setValue("status", defaultStatus);
             }}
           >
             <IconFilterRemove /> Clear all
@@ -90,20 +91,30 @@ export const ToolBar = ({
       />
 
       <Modal
-        title='Create your test'
-        description=' You can create your test by entering the required fields below.'
+        title="Create your test"
+        description=" You can create your test by entering the required fields below."
         open={openModal}
         onOpenChange={setOpenModal}
-        head={<Button type='button' classNames='ml-3' title='+ Add test' />}
+        head={
+          <Button
+            type="button"
+            onClick={() => dispatch(setOpenModalState(true))}
+            classNames="ml-3"
+            title="+ Add test"
+          />
+        }
         body={
           <FormVocabTrainer
             idVocabTrainer={idVocabTrainer}
             // mutate={mutatePost}
             // mutatePut={mutatePut}
-            onClose={() => setOpenModal(false)}
+            onClose={() => {
+              dispatch(setOpenModalState(true));
+              setOpenModal(false);
+            }}
           />
         }
-        className='w-full h-full max-w-[150vh] !max-h-[85vh] overflow-x-auto'
+        className="w-full h-full max-w-[150vh] !max-h-[85vh] overflow-x-auto"
       />
     </div>
   );

@@ -1,7 +1,8 @@
-import { TFormInputsFilter } from '@/pages/vocab/components/toolBar';
-import { TVocab } from '@/pages/vocab/types';
-import { defaultStatus } from '@/utils/constants';
-import { createSlice } from '@reduxjs/toolkit';
+import { TFormInputsFilter } from "@/pages/vocab/components/toolBar";
+import { TVocab } from "@/pages/vocab/types";
+import { defaultStatus } from "@/utils/constants";
+import { TPage } from "@/utils/types";
+import { createSlice } from "@reduxjs/toolkit";
 
 type TItemsShow = {
   idRow: string;
@@ -16,17 +17,18 @@ type TInitialStateVocab = {
   itemsShow: TItemsShow[];
   filterData: TFormInputsFilter;
   searchVocab: string;
+  paginationVocabState: TPage;
 };
 
 const initialState: TInitialStateVocab = {
   itemVocab: {
-    _id: '',
-    sourceLanguage: '',
-    targetLanguage: '',
-    textSource: '',
+    _id: "",
+    sourceLanguage: "",
+    targetLanguage: "",
+    textSource: "",
     textTarget: [],
   },
-  idVocabState: '',
+  idVocabState: "",
   idsState: [],
   isToggle: false,
   itemsShow: [],
@@ -34,19 +36,26 @@ const initialState: TInitialStateVocab = {
     subject: [],
     status: defaultStatus,
   },
-  searchVocab: '',
+  searchVocab: "",
+  paginationVocabState: {
+    page: "1",
+    limit: "10",
+  },
 };
 
 const vocabReducer = createSlice({
-  name: 'vocabReducer',
+  name: "vocabReducer",
   initialState,
   reducers: {
     resetFilterState(state) {
-      state.searchVocab = '';
+      state.searchVocab = "";
       state.filterData = {
         subject: [],
         status: defaultStatus,
       };
+    },
+    setPaginationVocabState(state, action) {
+      state.paginationVocabState = action.payload;
     },
     setSearchVocabState(state, action) {
       state.searchVocab = action.payload;
@@ -104,5 +113,6 @@ export const {
   setFilterVocabState,
   setSearchVocabState,
   resetFilterState,
+  setPaginationVocabState,
 } = actions;
 export default reducer;

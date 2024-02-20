@@ -1,23 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RowSelectionState } from '@tanstack/react-table';
+import { createSlice } from "@reduxjs/toolkit";
+import { RowSelectionState } from "@tanstack/react-table";
 
-type TInitialStateVocab = {
+type TInitialStateVocabTrainer = {
   rowSelectionState: RowSelectionState;
+  isOpenModalState: boolean;
 };
 
-const initialState: TInitialStateVocab = {
+const initialState: TInitialStateVocabTrainer = {
   rowSelectionState: {},
+  isOpenModalState: false,
 };
 
 const vocabTrainerReducer = createSlice({
-  name: 'vocabTrainerReducer',
+  name: "vocabTrainerReducer",
   initialState,
   reducers: {
+    setOpenModalState(state, action) {
+      state.isOpenModalState = action.payload;
+    },
     setRowSelectionState(state, action) {
       state.rowSelectionState = action.payload;
     },
   },
 });
 const { actions, reducer } = vocabTrainerReducer;
-export const { setRowSelectionState } = actions;
+export const { setRowSelectionState, setOpenModalState } = actions;
 export default reducer;

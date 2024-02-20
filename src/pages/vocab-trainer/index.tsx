@@ -1,49 +1,60 @@
-import { AlertDialog } from '@/components/alertDialog';
-import Button from '@/components/button';
-import HeaderTable from '@/components/headerTable';
-import Table from '@/components/table';
-import { IconEye, IconTextGrammar, IconTrash } from '@tabler/icons-react';
+import { AlertDialog } from "@/components/alertDialog";
+import Button from "@/components/button";
+import HeaderTable from "@/components/headerTable";
+import Table from "@/components/table";
+import { IconEye, IconTextGrammar, IconTrash } from "@tabler/icons-react";
 import {
   ColumnDef,
   SortingState,
   getCoreRowModel,
   getSortedRowModel,
-} from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
-import { IndeterminateCheckbox } from '../vocab/components/checkbox';
-import clsx from 'clsx';
-import { TVocabTrainer } from './types';
-import { ToolBar } from './components/toolBar';
+} from "@tanstack/react-table";
+import clsx from "clsx";
+import { useEffect, useMemo, useState } from "react";
+import { IndeterminateCheckbox } from "../vocab/components/checkbox";
+import { ToolBar } from "./components/toolBar";
+import { TVocabTrainer } from "./types";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { LIMIT_PAGE_10, ROUTER_VOCAB_TRAINER } from "@/utils/constants";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const data = [
   {
-    _id: '1',
-    nameTest: 'test1',
-    status: 'Passed',
-    duration: '20:35',
-    updatedAt: '23/12/2018',
+    _id: "1",
+    nameTest: "test1",
+    status: "Passed",
+    duration: "20:35",
+    updatedAt: "23/12/2018",
     countTime: 1,
     wordResults: [
       {
         numberQuestion: 1,
-        userSelect: 'text1',
-        systemSelect: 'text2',
+        userSelect: "text1",
+        systemSelect: "text2",
       },
       {
         numberQuestion: 2,
-        userSelect: 'text3',
-        systemSelect: 'text3',
+        userSelect: "text3",
+        systemSelect: "text3",
       },
     ],
   },
 ];
 
 const VocabTrainer = () => {
+  const { pathname } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const counts = Object.keys(rowSelection).length;
+  const { isOpenModalState } = useSelector(
+    (state: RootState) => state.vocabTrainerReducer
+  );
+  const isURLVocabTrainer =
+    pathname === ROUTER_VOCAB_TRAINER && isOpenModalState;
 
   const handleOnYes = (id?: string) => {
     console.log(id);
@@ -66,7 +77,7 @@ const VocabTrainer = () => {
       {
         size: 0,
         enableSorting: false,
-        id: 'select',
+        id: "select",
         header: ({ table }) => (
           <IndeterminateCheckbox
             {...{
@@ -88,59 +99,59 @@ const VocabTrainer = () => {
         ),
       },
       {
-        accessorKey: 'nameTest',
-        header: 'Name',
+        accessorKey: "nameTest",
+        header: "Name",
       },
       {
-        accessorKey: 'status',
-        header: 'Status',
+        accessorKey: "status",
+        header: "Status",
       },
       {
-        accessorKey: 'duration',
-        header: 'Duration',
+        accessorKey: "duration",
+        header: "Duration",
         cell: ({ getValue }) => <>{String(getValue())}s</>,
       },
       {
-        accessorKey: 'countTime',
-        header: 'Count',
+        accessorKey: "countTime",
+        header: "Count",
       },
       {
-        accessorKey: 'updatedAt',
-        header: 'Updated Date',
+        accessorKey: "updatedAt",
+        header: "Updated Date",
       },
       {
         enableSorting: false,
-        id: 'action',
+        id: "action",
         cell: () => (
-          <div className='flex gap-3 items-center w-0'>
+          <div className="flex gap-3 items-center w-0">
             <Button
-              className='h-6 w-6'
-              size='icon'
-              variant='ghost'
+              className="h-6 w-6"
+              size="icon"
+              variant="ghost"
               leftIcon={
-                <IconEye className='text-gray-400 hover:text-gray-500' />
+                <IconEye className="text-gray-400 hover:text-gray-500" />
               }
             />
             <Button
-              className='h-6 w-6'
-              size='icon'
-              variant='ghost'
+              className="h-6 w-6"
+              size="icon"
+              variant="ghost"
               leftIcon={
-                <IconTextGrammar className='text-gray-400 hover:text-gray-500' />
+                <IconTextGrammar className="text-gray-400 hover:text-gray-500" />
               }
             />
             <AlertDialog
               head={
                 <Button
-                  className='h-6 w-6'
-                  size='icon'
-                  variant='ghost'
+                  className="h-6 w-6"
+                  size="icon"
+                  variant="ghost"
                   leftIcon={
-                    <IconTrash className='text-gray-400 hover:text-gray-500' />
+                    <IconTrash className="text-gray-400 hover:text-gray-500" />
                   }
                 />
               }
-              title='Do you want to delete?'
+              title="Do you want to delete?"
             />
           </div>
         ),
@@ -149,11 +160,32 @@ const VocabTrainer = () => {
     []
   );
 
+  // useEffect(() => {
+  //   if (isURLVocabTrainer) return;
+
+  //   if (data?.data && data?.data.length <= 0 && data.currentPage > 1) {
+  //     setSearchParams({
+  //       page: String(data.currentPage - 1),
+  //       limit: LIMIT_PAGE_10,
+  //     });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [data]);
+
+  useEffect(() => {
+    if (isURLVocabTrainer) return;
+    return setSearchParams({
+      page: searchParams.get("page") ?? "1",
+      limit: LIMIT_PAGE_10,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <HeaderTable
-      headText='Vocab Trainer'
+      headText="Vocab Trainer"
       bodyText={
-        'These are the results of your tests but it is not final, you can do more.'
+        "These are the results of your tests but it is not final, you can do more."
       }
     >
       <Table
@@ -161,25 +193,25 @@ const VocabTrainer = () => {
           toolbar: (
             <div
               className={clsx(
-                'flex justify-end items-center mb-2',
-                counts > 0 && 'justify-between'
+                "flex justify-end items-center mb-2",
+                counts > 0 && "justify-between"
               )}
             >
               {counts > 0 && (
-                <div className='text-xs'>{counts} row(s) selected</div>
+                <div className="text-xs">{counts} row(s) selected</div>
               )}
-              <div className='flex justify-center items-center gap-1'>
+              <div className="flex justify-center items-center gap-1">
                 {counts > 0 && (
                   <AlertDialog
                     head={
                       <Button
                         onClick={() => setIsDeleteMulti(true)}
-                        variant='ghost'
+                        variant="ghost"
                         title={`Delete (${counts})`}
-                        leftIcon={<IconTrash className='mr-2 text-customRed' />}
+                        leftIcon={<IconTrash className="mr-2 text-customRed" />}
                       />
                     }
-                    title='Do you want to delete these?'
+                    title="Do you want to delete these?"
                     onYes={handleOnYes}
                   />
                 )}
@@ -188,7 +220,7 @@ const VocabTrainer = () => {
                   setRowSelection={setRowSelection}
                   openModal={openModal}
                   setOpenModal={setOpenModal}
-                  idVocabTrainer={''}
+                  idVocabTrainer={""}
                   // mutatePost={mutatePost}
                   // mutatePut={mutatePut}
                 />

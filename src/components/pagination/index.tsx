@@ -1,21 +1,41 @@
 import { Fragment } from "react";
-import { useSearchParams } from "react-router-dom";
-import { LIMIT_PAGE_10 } from "../../utils/constants";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { LIMIT_PAGE_10, ROUTER_VOCAB_TRAINER } from "../../utils/constants";
 import { TPagination } from "../../utils/types";
 import clsx from "clsx";
 import { ButtonLib } from "../ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { setPaginationVocabState } from "@/redux/reducer/vocab";
+import { RootState } from "@/redux/store";
 
 type TPaginationProps = { paginations: TPagination };
 
 const Pagination = ({ paginations }: TPaginationProps) => {
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const { currentPage, totalPages } = paginations;
   const [searchParams, setSearchParams] = useSearchParams();
+  const { paginationVocabState } = useSelector(
+    (state: RootState) => state.vocabReducer
+  );
+  const { isOpenModalState } = useSelector(
+    (state: RootState) => state.vocabTrainerReducer
+  );
+  const isURLVocabTrainer =
+    pathname === ROUTER_VOCAB_TRAINER && isOpenModalState;
 
   const onPageChange = (newPageNumber: number) => {
-    setSearchParams({
-      page: String(newPageNumber),
-      limit: LIMIT_PAGE_10,
-    });
+    isURLVocabTrainer
+      ? dispatch(
+          setPaginationVocabState({
+            page: String(newPageNumber),
+            limit: LIMIT_PAGE_10,
+          })
+        )
+      : setSearchParams({
+          page: String(newPageNumber),
+          limit: LIMIT_PAGE_10,
+        });
   };
 
   const getPagesToShow = () => {
@@ -58,7 +78,14 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         variant="outline"
         className="h-7 px-2.5"
         onClick={() =>
-          setSearchParams({ page: String(1), limit: LIMIT_PAGE_10 })
+          isURLVocabTrainer
+            ? dispatch(
+                setPaginationVocabState({
+                  page: String(1),
+                  limit: LIMIT_PAGE_10,
+                })
+              )
+            : setSearchParams({ page: String(1), limit: LIMIT_PAGE_10 })
         }
         disabled={currentPage === 1}
       >
@@ -68,10 +95,17 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         variant="outline"
         className="h-7 px-2.5"
         onClick={() =>
-          setSearchParams({
-            page: String(currentPage - 1),
-            limit: LIMIT_PAGE_10,
-          })
+          isURLVocabTrainer
+            ? dispatch(
+                setPaginationVocabState({
+                  page: String(currentPage - 1),
+                  limit: LIMIT_PAGE_10,
+                })
+              )
+            : setSearchParams({
+                page: String(currentPage - 1),
+                limit: LIMIT_PAGE_10,
+              })
         }
         disabled={currentPage === 1}
       >
@@ -90,7 +124,12 @@ const Pagination = ({ paginations }: TPaginationProps) => {
               onClick={() => onPageChange(pageNumber)}
               className={clsx(
                 "h-7 px-2.5",
-                pageNumber === parseInt(searchParams.get("page")!)
+                pageNumber ===
+                  parseInt(
+                    isURLVocabTrainer
+                      ? paginationVocabState.page
+                      : searchParams.get("page")!
+                  )
                   ? "active bg-customBlue text-white"
                   : ""
               )}
