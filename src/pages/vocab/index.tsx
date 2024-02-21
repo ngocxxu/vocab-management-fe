@@ -31,6 +31,7 @@ import { LIMIT_PAGE_10, ROUTER_VOCAB_TRAINER } from "../../utils/constants";
 import { IndeterminateCheckbox } from "./components/checkbox";
 import { ToolBar } from "./components/toolBar";
 import { TVocab } from "./types";
+import { convertOrderBy } from "@/utils";
 
 const Vocab = () => {
   const { pathname } = useLocation();
@@ -57,14 +58,6 @@ const Vocab = () => {
   const refDiv = useRef<HTMLDivElement>(null);
   const counts = Object.keys(rowSelection).length;
 
-  const convertOrderBy = () => {
-    if (sorting[0]?.id) {
-      return sorting[0]?.desc ? "desc" : "asc";
-    } else {
-      return undefined;
-    }
-  };
-
   const { data, isLoading } = useGetAllVocab({
     page: isURLVocabTrainer
       ? paginationVocabState.page!
@@ -73,7 +66,7 @@ const Vocab = () => {
       ? paginationVocabState.limit!
       : searchParams.get("limit")!,
     sortBy: sorting[0]?.id ?? undefined,
-    orderBy: convertOrderBy(),
+    orderBy: convertOrderBy(sorting),
     subjectFilter: filterData.subject?.map((item) => item.value),
     search: searchVocab || undefined,
   });

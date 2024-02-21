@@ -1,6 +1,5 @@
 import {
   IconBooks,
-  IconHistory,
   IconLayoutDashboard,
   IconMedal2,
 } from "@tabler/icons-react";
@@ -21,7 +20,7 @@ const links = [
     // ],
   },
   { link: "/vocab-trainer", label: "Vocab Trainer", icon: IconMedal2 },
-  { link: "/history", label: "History", icon: IconHistory },
+  // { link: "/history", label: "History", icon: IconHistory },
 ];
 
 export function HeaderMenu() {
@@ -58,12 +57,6 @@ export function HeaderMenu() {
       <div className="flex justify-start items-center gap-8 sm:visible invisible ">
         {items}
       </div>
-
-      {/* <label className="btn btn-circle swap swap-rotate visible sm:invisible">
-          <Checkbox />
-          <IconMenu2 className="swap-off fill-current" width="32" height="32" />
-          <IconX className="swap-on fill-current" width="32" height="32" />
-        </label> */}
     </div>
   );
 }

@@ -42,7 +42,8 @@ TFormVocabTrainerProps) => {
       FormSchema
     ) as unknown as Resolver<TFormInputsVocabTrainer>,
   });
-  const isDisabled = watch("nameTest").length === 0 && counts < 5;
+
+  const isDisabled = watch("nameTest").length === 0 || counts < 5;
 
   const onSubmit: SubmitHandler<TFormInputsVocabTrainer> = (data) => {
     console.log(data);
@@ -55,14 +56,11 @@ TFormVocabTrainerProps) => {
     onClose();
   };
 
-  console.log(isDisabled);
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
         name="nameTest"
         control={control}
-        rules={{ required: true }}
         render={({ field }) => (
           <Input
             removeStyle

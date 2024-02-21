@@ -7,7 +7,7 @@ export const languageList = [
 export const wordTypeList = [
   { label: "Noun (Danh từ)", value: "Noun" },
   { label: "Verb (Động từ)", value: "Verb" },
-  { label: "Adverbs (Trạng từ)", value: "Adverbs" },
+  { label: "Adverbs (Trạng từ / Phó từ)", value: "Adverbs" },
   { label: "Adjective (Tính từ)", value: "Adjective" },
   { label: "Pronouns (Đại từ)", value: "Pronouns" },
   { label: "Interjection (Thán từ)", value: "Interjection" },

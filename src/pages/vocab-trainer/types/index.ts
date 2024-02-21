@@ -1,7 +1,7 @@
 export type TVocabTrainer = {
   _id: string;
   nameTest: string;
-  status: string;
+  statusTest: string;
   duration: string;
   updatedAt: string;
   countTime: number;

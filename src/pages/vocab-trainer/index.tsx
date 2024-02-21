@@ -2,7 +2,12 @@ import { AlertDialog } from "@/components/alertDialog";
 import Button from "@/components/button";
 import HeaderTable from "@/components/headerTable";
 import Table from "@/components/table";
-import { IconEye, IconTextGrammar, IconTrash } from "@tabler/icons-react";
+import {
+  IconCircleFilled,
+  IconEye,
+  IconTextGrammar,
+  IconTrash,
+} from "@tabler/icons-react";
 import {
   ColumnDef,
   SortingState,
@@ -15,32 +20,40 @@ import { IndeterminateCheckbox } from "../vocab/components/checkbox";
 import { ToolBar } from "./components/toolBar";
 import { TVocabTrainer } from "./types";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { LIMIT_PAGE_10, ROUTER_VOCAB_TRAINER } from "@/utils/constants";
+import {
+  LIMIT_PAGE_10,
+  ROUTER_VOCAB_TRAINER,
+  colorData,
+} from "@/utils/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useGetAllVocabTrainer } from "@/services/vocabTrainer/useGetAllVocabTrainer";
+import { convertOrderBy } from "@/utils";
+import { format } from "date-fns";
+import { Badge } from "@/components/badge";
 
-const data = [
-  {
-    _id: "1",
-    nameTest: "test1",
-    status: "Passed",
-    duration: "20:35",
-    updatedAt: "23/12/2018",
-    countTime: 1,
-    wordResults: [
-      {
-        numberQuestion: 1,
-        userSelect: "text1",
-        systemSelect: "text2",
-      },
-      {
-        numberQuestion: 2,
-        userSelect: "text3",
-        systemSelect: "text3",
-      },
-    ],
-  },
-];
+// const data = [
+//   {
+//     _id: "1",
+//     nameTest: "test1",
+//     statusTest: "Passed",
+//     duration: "20:35",
+//     updatedAt: "23/12/2018",
+//     countTime: 1,
+//     wordResults: [
+//       {
+//         numberQuestion: 1,
+//         userSelect: "text1",
+//         systemSelect: "text2",
+//       },
+//       {
+//         numberQuestion: 2,
+//         userSelect: "text3",
+//         systemSelect: "text3",
+//       },
+//     ],
+//   },
+// ];
 
 const VocabTrainer = () => {
   const { pathname } = useLocation();
@@ -50,6 +63,14 @@ const VocabTrainer = () => {
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const counts = Object.keys(rowSelection).length;
+  const { data, isLoading } = useGetAllVocabTrainer({
+    page: searchParams.get("page") ?? "1",
+    limit: searchParams.get("limit") ?? "10",
+    sortBy: sorting[0]?.id ?? undefined,
+    orderBy: convertOrderBy(sorting),
+    // subjectFilter: filterData.subject?.map((item) => item.value),
+    // search: searchVocab || undefined,
+  });
   const { isOpenModalState } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
   );
@@ -103,13 +124,34 @@ const VocabTrainer = () => {
         header: "Name",
       },
       {
-        accessorKey: "status",
+        accessorKey: "statusTest",
         header: "Status",
+        cell: ({ getValue }) => {
+          const findColor = colorData.find(
+            (item) => item.status === getValue()
+          );
+          return (
+            <Badge
+              style={{
+                backgroundColor: findColor?.background,
+                color: findColor?.text,
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <IconCircleFilled
+                  style={{ color: findColor?.dot }}
+                  size="0.5rem"
+                />
+                <div> {String(getValue())}</div>
+              </div>
+            </Badge>
+          );
+        },
       },
       {
         accessorKey: "duration",
         header: "Duration",
-        cell: ({ getValue }) => <>{String(getValue())}s</>,
+        cell: ({ getValue }) => (getValue() ? getValue() : "00:00") + "s",
       },
       {
         accessorKey: "countTime",
@@ -118,6 +160,8 @@ const VocabTrainer = () => {
       {
         accessorKey: "updatedAt",
         header: "Updated Date",
+        cell: ({ getValue }) =>
+          format(new Date(String(getValue())), "dd/MM/yyyy"),
       },
       {
         enableSorting: false,
@@ -159,18 +203,6 @@ const VocabTrainer = () => {
     ],
     []
   );
-
-  // useEffect(() => {
-  //   if (isURLVocabTrainer) return;
-
-  //   if (data?.data && data?.data.length <= 0 && data.currentPage > 1) {
-  //     setSearchParams({
-  //       page: String(data.currentPage - 1),
-  //       limit: LIMIT_PAGE_10,
-  //     });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [data]);
 
   useEffect(() => {
     if (isURLVocabTrainer) return;
@@ -228,6 +260,7 @@ const VocabTrainer = () => {
             </div>
           ),
         }}
+        isLoading={isLoading}
         isPagination
         paginations={{
           currentPage: 1,
@@ -235,7 +268,9 @@ const VocabTrainer = () => {
           totalPages: 1,
         }}
         options={{
-          data: data ?? [],
+          // Chua phan trang ben BE
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data: (data as any) ?? [],
           columns: columns,
           state: {
             rowSelection,
