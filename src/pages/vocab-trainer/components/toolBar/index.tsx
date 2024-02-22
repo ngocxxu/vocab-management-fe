@@ -114,7 +114,7 @@ export const ToolBar = ({
             }}
           />
         }
-        className="w-full h-full max-w-[150vh] !max-h-[85vh] overflow-x-auto"
+        className="w-full max-w-[150vh] !max-h-[85vh] overflow-x-auto"
       />
     </div>
   );

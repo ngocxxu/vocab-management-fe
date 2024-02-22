@@ -25,43 +25,25 @@ import {
   ROUTER_VOCAB_TRAINER,
   colorData,
 } from "@/utils/constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useGetAllVocabTrainer } from "@/services/vocabTrainer/useGetAllVocabTrainer";
 import { convertOrderBy } from "@/utils";
 import { format } from "date-fns";
 import { Badge } from "@/components/badge";
-
-// const data = [
-//   {
-//     _id: "1",
-//     nameTest: "test1",
-//     statusTest: "Passed",
-//     duration: "20:35",
-//     updatedAt: "23/12/2018",
-//     countTime: 1,
-//     wordResults: [
-//       {
-//         numberQuestion: 1,
-//         userSelect: "text1",
-//         systemSelect: "text2",
-//       },
-//       {
-//         numberQuestion: 2,
-//         userSelect: "text3",
-//         systemSelect: "text3",
-//       },
-//     ],
-//   },
-// ];
+import { setItemVocabTrainerState } from "@/redux/reducer/vocabTrainer";
+import { Modal } from "@/components/modal";
+import { DetailTable } from "./components/detailTable";
 
 const VocabTrainer = () => {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openDetailModal, setOpenDetailModal] = useState(false);
   const counts = Object.keys(rowSelection).length;
   const { data, isLoading } = useGetAllVocabTrainer({
     page: searchParams.get("page") ?? "1",
@@ -166,14 +148,20 @@ const VocabTrainer = () => {
       {
         enableSorting: false,
         id: "action",
-        cell: () => (
+        cell: ({ row }) => (
           <div className="flex gap-3 items-center w-0">
             <Button
               className="h-6 w-6"
               size="icon"
               variant="ghost"
               leftIcon={
-                <IconEye className="text-gray-400 hover:text-gray-500" />
+                <IconEye
+                  onClick={() => {
+                    dispatch(setItemVocabTrainerState(row.original));
+                    setOpenDetailModal(true);
+                  }}
+                  className="text-gray-400 hover:text-gray-500"
+                />
               }
             />
             <Button
@@ -201,6 +189,7 @@ const VocabTrainer = () => {
         ),
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -282,6 +271,14 @@ const VocabTrainer = () => {
           getRowId: (row) => row._id,
           onSortingChange: setSorting,
         }}
+      />
+      <Modal
+        title="Result Detail"
+        description="Here are details about your test results latest."
+        open={openDetailModal}
+        onOpenChange={setOpenDetailModal}
+        body={<DetailTable />}
+        className="w-full max-w-[100vh] !max-h-[85vh] overflow-x-auto"
       />
     </HeaderTable>
   );

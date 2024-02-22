@@ -1,15 +1,15 @@
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { ReactNode } from 'react';
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { ReactNode } from "react";
 import {
   DialogContent,
   DialogHeader,
   DialogLib,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
+} from "../ui/dialog";
 
 type TModal = {
-  head: ReactNode;
+  head?: ReactNode;
   body: ReactNode;
   title?: string;
   description?: string;
@@ -34,9 +34,9 @@ export const Modal = ({
           {title && (
             <DialogTitle>
               <div>
-                <h4 className='font-semibold mb-2'>{title}</h4>
+                <h4 className="font-semibold mb-2">{title}</h4>
                 {description && (
-                  <p className='text-sm text-customGray font-normal'>
+                  <p className="text-sm text-customGray font-normal">
                     {description}
                   </p>
                 )}
