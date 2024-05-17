@@ -1,39 +1,40 @@
-import { AlertDialog } from "@/components/alertDialog";
-import Button from "@/components/button";
-import HeaderTable from "@/components/headerTable";
-import Table from "@/components/table";
+import { AlertDialog } from '@/components/alertDialog';
+import Button from '@/components/button';
+import HeaderTable from '@/components/headerTable';
+import Table from '@/components/table';
 import {
   IconCircleFilled,
   IconEye,
   IconTextGrammar,
   IconTrash,
-} from "@tabler/icons-react";
+} from '@tabler/icons-react';
 import {
   ColumnDef,
   SortingState,
   getCoreRowModel,
   getSortedRowModel,
-} from "@tanstack/react-table";
-import clsx from "clsx";
-import { useEffect, useMemo, useState } from "react";
-import { IndeterminateCheckbox } from "../vocab/components/checkbox";
-import { ToolBar } from "./components/toolBar";
-import { TVocabTrainer } from "./types";
-import { useLocation, useSearchParams } from "react-router-dom";
+} from '@tanstack/react-table';
+import clsx from 'clsx';
+import { useEffect, useMemo, useState } from 'react';
+import { IndeterminateCheckbox } from '../vocab/components/checkbox';
+import { ToolBar } from './components/toolBar';
+import { TVocabTrainer } from './types';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import {
   LIMIT_PAGE_10,
   ROUTER_VOCAB_TRAINER,
   colorData,
-} from "@/utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { useGetAllVocabTrainer } from "@/services/vocabTrainer/useGetAllVocabTrainer";
-import { convertOrderBy } from "@/utils";
-import { format } from "date-fns";
-import { Badge } from "@/components/badge";
-import { setItemVocabTrainerState } from "@/redux/reducer/vocabTrainer";
-import { Modal } from "@/components/modal";
-import { DetailTable } from "./components/detailTable";
+} from '@/utils/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { useGetAllVocabTrainer } from '@/services/vocabTrainer/useGetAllVocabTrainer';
+import { convertOrderBy } from '@/utils';
+import { format } from 'date-fns';
+import { Badge } from '@/components/badge';
+import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer';
+import { Modal } from '@/components/modal';
+import { DetailTable } from './components/detailTable';
+import { usePostVocabTrainer } from '@/services/vocabTrainer/usePostVocabTrainer';
 
 const VocabTrainer = () => {
   const { pathname } = useLocation();
@@ -44,10 +45,13 @@ const VocabTrainer = () => {
   const [isDeleteMulti, setIsDeleteMulti] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openDetailModal, setOpenDetailModal] = useState(false);
+  const { mutate: mutatePost, isLoading: isLoadingPost } =
+    usePostVocabTrainer();
+
   const counts = Object.keys(rowSelection).length;
   const { data, isLoading } = useGetAllVocabTrainer({
-    page: searchParams.get("page") ?? "1",
-    limit: searchParams.get("limit") ?? "10",
+    page: searchParams.get('page') ?? '1',
+    limit: searchParams.get('limit') ?? '10',
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
     // subjectFilter: filterData.subject?.map((item) => item.value),
@@ -75,12 +79,21 @@ const VocabTrainer = () => {
     // return mutate(id ?? '');
   };
 
+  useEffect(() => {
+    if (isURLVocabTrainer) return;
+    return setSearchParams({
+      page: searchParams.get('page') ?? '1',
+      limit: LIMIT_PAGE_10,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const columns = useMemo<ColumnDef<TVocabTrainer>[]>(
     () => [
       {
         size: 0,
         enableSorting: false,
-        id: "select",
+        id: 'select',
         header: ({ table }) => (
           <IndeterminateCheckbox
             {...{
@@ -102,12 +115,12 @@ const VocabTrainer = () => {
         ),
       },
       {
-        accessorKey: "nameTest",
-        header: "Name",
+        accessorKey: 'nameTest',
+        header: 'Name',
       },
       {
-        accessorKey: "statusTest",
-        header: "Status",
+        accessorKey: 'statusTest',
+        header: 'Status',
         cell: ({ getValue }) => {
           const findColor = colorData.find(
             (item) => item.status === getValue()
@@ -119,10 +132,10 @@ const VocabTrainer = () => {
                 color: findColor?.text,
               }}
             >
-              <div className="flex items-center gap-2">
+              <div className='flex items-center gap-2'>
                 <IconCircleFilled
                   style={{ color: findColor?.dot }}
-                  size="0.5rem"
+                  size='0.5rem'
                 />
                 <div> {String(getValue())}</div>
               </div>
@@ -131,59 +144,59 @@ const VocabTrainer = () => {
         },
       },
       {
-        accessorKey: "duration",
-        header: "Duration",
-        cell: ({ getValue }) => (getValue() ? getValue() : "00:00") + "s",
+        accessorKey: 'duration',
+        header: 'Duration',
+        cell: ({ getValue }) => (getValue() ? getValue() : '00:00') + 's',
       },
       {
-        accessorKey: "countTime",
-        header: "Count",
+        accessorKey: 'countTime',
+        header: 'Count',
       },
       {
-        accessorKey: "updatedAt",
-        header: "Updated Date",
+        accessorKey: 'updatedAt',
+        header: 'Updated Date',
         cell: ({ getValue }) =>
-          format(new Date(String(getValue())), "dd/MM/yyyy"),
+          format(new Date(String(getValue())), 'dd/MM/yyyy'),
       },
       {
         enableSorting: false,
-        id: "action",
+        id: 'action',
         cell: ({ row }) => (
-          <div className="flex gap-3 items-center w-0">
+          <div className='flex gap-3 items-center w-0'>
             <Button
-              className="h-6 w-6"
-              size="icon"
-              variant="ghost"
+              className='h-6 w-6'
+              size='icon'
+              variant='ghost'
               leftIcon={
                 <IconEye
                   onClick={() => {
                     dispatch(setItemVocabTrainerState(row.original));
                     setOpenDetailModal(true);
                   }}
-                  className="text-gray-400 hover:text-gray-500"
+                  className='text-gray-400 hover:text-gray-500'
                 />
               }
             />
             <Button
-              className="h-6 w-6"
-              size="icon"
-              variant="ghost"
+              className='h-6 w-6'
+              size='icon'
+              variant='ghost'
               leftIcon={
-                <IconTextGrammar className="text-gray-400 hover:text-gray-500" />
+                <IconTextGrammar className='text-gray-400 hover:text-gray-500' />
               }
             />
             <AlertDialog
               head={
                 <Button
-                  className="h-6 w-6"
-                  size="icon"
-                  variant="ghost"
+                  className='h-6 w-6'
+                  size='icon'
+                  variant='ghost'
                   leftIcon={
-                    <IconTrash className="text-gray-400 hover:text-gray-500" />
+                    <IconTrash className='text-gray-400 hover:text-gray-500' />
                   }
                 />
               }
-              title="Do you want to delete?"
+              title='Do you want to delete?'
             />
           </div>
         ),
@@ -193,20 +206,11 @@ const VocabTrainer = () => {
     []
   );
 
-  useEffect(() => {
-    if (isURLVocabTrainer) return;
-    return setSearchParams({
-      page: searchParams.get("page") ?? "1",
-      limit: LIMIT_PAGE_10,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <HeaderTable
-      headText="Vocab Trainer"
+      headText='Vocab Trainer'
       bodyText={
-        "These are the results of your tests but it is not final, you can do more."
+        'These are the results of your tests but it is not final, you can do more.'
       }
     >
       <Table
@@ -214,25 +218,25 @@ const VocabTrainer = () => {
           toolbar: (
             <div
               className={clsx(
-                "flex justify-end items-center mb-2",
-                counts > 0 && "justify-between"
+                'flex justify-end items-center mb-2',
+                counts > 0 && 'justify-between'
               )}
             >
               {counts > 0 && (
-                <div className="text-xs">{counts} row(s) selected</div>
+                <div className='text-xs'>{counts} row(s) selected</div>
               )}
-              <div className="flex justify-center items-center gap-1">
+              <div className='flex justify-center items-center gap-1'>
                 {counts > 0 && (
                   <AlertDialog
                     head={
                       <Button
                         onClick={() => setIsDeleteMulti(true)}
-                        variant="ghost"
+                        variant='ghost'
                         title={`Delete (${counts})`}
-                        leftIcon={<IconTrash className="mr-2 text-customRed" />}
+                        leftIcon={<IconTrash className='mr-2 text-customRed' />}
                       />
                     }
-                    title="Do you want to delete these?"
+                    title='Do you want to delete these?'
                     onYes={handleOnYes}
                   />
                 )}
@@ -241,15 +245,14 @@ const VocabTrainer = () => {
                   setRowSelection={setRowSelection}
                   openModal={openModal}
                   setOpenModal={setOpenModal}
-                  idVocabTrainer={""}
-                  // mutatePost={mutatePost}
-                  // mutatePut={mutatePut}
+                  idVocabTrainer={''}
+                  mutatePost={mutatePost}
                 />
               </div>
             </div>
           ),
         }}
-        isLoading={isLoading}
+        isLoading={isLoading || isLoadingPost}
         isPagination
         paginations={{
           currentPage: 1,
@@ -273,12 +276,12 @@ const VocabTrainer = () => {
         }}
       />
       <Modal
-        title="Result Detail"
-        description="Here are details about your test results latest."
+        title='Result Detail'
+        description='Here are details about your test results latest.'
         open={openDetailModal}
         onOpenChange={setOpenDetailModal}
         body={<DetailTable />}
-        className="w-full max-w-[100vh] !max-h-[85vh] overflow-x-auto"
+        className='w-full max-w-[100vh] !max-h-[85vh] overflow-x-auto'
       />
     </HeaderTable>
   );
