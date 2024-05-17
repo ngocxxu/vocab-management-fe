@@ -5,6 +5,8 @@ import { Separator } from '@/components/ui/separator';
 import { Fragment } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { statusList, subjectList } from '../../constants';
+import { ROUTER_VOCAB_TRAINER } from '@/utils/constants';
+import { useLocation } from 'react-router-dom';
 
 type TFilter = {
   onClose: () => void;
@@ -12,19 +14,23 @@ type TFilter = {
 
 export const Filter = ({ onClose }: TFilter) => {
   const { control } = useFormContext();
+  const { pathname } = useLocation();
+  const isURLVocabTrainer = pathname === ROUTER_VOCAB_TRAINER;
 
   return (
     <div className='flex flex-col gap-3'>
-      <div>
-        <p className='mb-2'>Subject</p>
-        <Controller
-          name='subject'
-          control={control}
-          render={({ field }) => (
-            <MultiSelect options={subjectList} {...field} />
-          )}
-        />
-      </div>
+      {!isURLVocabTrainer && (
+        <div>
+          <p className='mb-2'>Subject</p>
+          <Controller
+            name='subject'
+            control={control}
+            render={({ field }) => (
+              <MultiSelect options={subjectList} {...field} />
+            )}
+          />
+        </div>
+      )}
 
       <div>
         <p className='mb-2'>Status</p>

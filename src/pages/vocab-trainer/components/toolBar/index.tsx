@@ -4,17 +4,23 @@ import { Modal } from '@/components/modal/index';
 import { SearchBar } from '@/components/searchBar';
 import { ButtonLib } from '@/components/ui/button';
 import { resetFilterState, setSearchVocabState } from '@/redux/reducer/vocab';
+import {
+  setFilterVocabTrainerState,
+  setOpenModalState,
+} from '@/redux/reducer/vocabTrainer';
 import { RootState } from '@/redux/store';
 import { defaultStatus } from '@/utils/constants';
-import { TOption } from '@/utils/types';
 import { RowSelectionState } from '@tanstack/react-table';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import FormVocabTrainer from '../form';
-import { setOpenModalState } from '@/redux/reducer/vocabTrainer';
-import { UseMutateFunction } from 'react-query';
 import { AxiosResponse } from 'axios';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { UseMutateFunction } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
 import { TFormInputsVocabTrainer } from '../../types';
+import FormVocabTrainer from '../form';
+import { useState } from 'react';
+import { Popover } from '@/components/popover';
+import { IconFilter } from '@tabler/icons-react';
+import { Filter } from '@/pages/vocab/components/filter';
 
 type TToolbar = {
   idVocabTrainer: string;
@@ -32,7 +38,6 @@ type TToolbar = {
 
 export type TFormInputsFilter = {
   status?: string[];
-  subject?: TOption[];
 };
 
 export const ToolBar = ({
@@ -44,29 +49,27 @@ export const ToolBar = ({
   setRowSelection,
 }: TToolbar) => {
   const counts = Object.keys(rowSelection).length;
-  const { filterData, searchVocab } = useSelector(
-    (state: RootState) => state.vocabReducer
+  const { filterData, searchVocabTrainer } = useSelector(
+    (state: RootState) => state.vocabTrainerReducer
   );
 
   const isClear =
-    searchVocab ||
+    searchVocabTrainer ||
     counts > 0 ||
-    // (filterData.status && filterData.status?.length > 0) ||
-    (filterData.subject && filterData.subject?.length > 0);
+    (filterData.status && filterData.status?.length > 0);
   const dispatch = useDispatch();
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const methods = useForm<TFormInputsFilter>({
     defaultValues: {
-      subject: filterData.subject,
       status: filterData.status,
     },
   });
 
-  // const onSubmit: SubmitHandler<TFormInputsFilter> = (data) => {
-  //   dispatch(setFilterVocabState(data));
-  //   setOpen(false);
-  // };
+  const onSubmit: SubmitHandler<TFormInputsFilter> = (data) => {
+    dispatch(setFilterVocabTrainerState(data));
+    setOpen(false);
+  };
 
   return (
     <div className='flex items-center justify-end'>
@@ -78,16 +81,32 @@ export const ToolBar = ({
             onClick={() => {
               setRowSelection({});
               dispatch(resetFilterState());
-              methods.setValue('subject', []);
               methods.setValue('status', defaultStatus);
             }}
           >
             <IconFilterRemove /> Clear all
           </ButtonLib>
         )}
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          align='end'
+          side='bottom'
+          head={
+            <ButtonLib className='mr-1' variant='ghost'>
+              <IconFilter /> Filters
+            </ButtonLib>
+          }
+          body={
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <Filter onClose={() => setOpen(false)} />
+            </form>
+          }
+          className='w-80'
+        />
       </FormProvider>
       <SearchBar
-        defaultValue={searchVocab}
+        defaultValue={searchVocabTrainer}
         onSearch={(input) => dispatch(setSearchVocabState(input))}
       />
 

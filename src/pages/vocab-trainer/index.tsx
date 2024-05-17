@@ -35,6 +35,8 @@ import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer';
 import { Modal } from '@/components/modal';
 import { DetailTable } from './components/detailTable';
 import { usePostVocabTrainer } from '@/services/vocabTrainer/usePostVocabTrainer';
+import { useDeleteVocabTrainer } from '@/services/vocabTrainer/useDeleteVocabTrainer';
+import { useDeleteMultiVocabTrainer } from '@/services/vocabTrainer/useDeleteMultiVocabTrainer';
 
 const VocabTrainer = () => {
   const { pathname } = useLocation();
@@ -47,19 +49,22 @@ const VocabTrainer = () => {
   const [openDetailModal, setOpenDetailModal] = useState(false);
   const { mutate: mutatePost, isLoading: isLoadingPost } =
     usePostVocabTrainer();
+  const { mutate: mutateDelete, isLoading: isLoadingDelete } =
+    useDeleteVocabTrainer();
+  const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
+    useDeleteMultiVocabTrainer();
 
   const counts = Object.keys(rowSelection).length;
+  const { isOpenModalState, searchVocabTrainer } = useSelector(
+    (state: RootState) => state.vocabTrainerReducer
+  );
   const { data, isLoading } = useGetAllVocabTrainer({
     page: searchParams.get('page') ?? '1',
     limit: searchParams.get('limit') ?? '10',
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
-    // subjectFilter: filterData.subject?.map((item) => item.value),
-    // search: searchVocab || undefined,
+    search: searchVocabTrainer || undefined,
   });
-  const { isOpenModalState } = useSelector(
-    (state: RootState) => state.vocabTrainerReducer
-  );
   const isURLVocabTrainer =
     pathname === ROUTER_VOCAB_TRAINER && isOpenModalState;
 
@@ -68,15 +73,15 @@ const VocabTrainer = () => {
 
     if (isDeleteMulti) {
       // Loop find value === true and return [ids]
-      // const mappedIds: string[] = Object.entries(rowSelection).map(
-      //   ([key, value]) => {
-      //     return value ? key : '';
-      //   }
-      // );
+      const mappedIds: string[] = Object.entries(rowSelection).map(
+        ([key, value]) => {
+          return value ? key : '';
+        }
+      );
       setRowSelection({});
-      // return mutateDeleteMulti(mappedIds);
+      return mutateDeleteMulti(mappedIds);
     }
-    // return mutate(id ?? '');
+    return mutateDelete(id ?? '');
   };
 
   useEffect(() => {
@@ -252,17 +257,17 @@ const VocabTrainer = () => {
             </div>
           ),
         }}
-        isLoading={isLoading || isLoadingPost}
+        isLoading={
+          isLoading || isLoadingPost || isLoadingDelete || isLoadingDeleteMulti
+        }
         isPagination
         paginations={{
-          currentPage: 1,
-          totalItems: 1,
-          totalPages: 1,
+          currentPage: data?.currentPage ?? 1,
+          totalItems: data?.totalItems ?? 1,
+          totalPages: data?.totalPages ?? 1,
         }}
         options={{
-          // Chua phan trang ben BE
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          data: (data as any) ?? [],
+          data: data?.data ?? [],
           columns: columns,
           state: {
             rowSelection,
