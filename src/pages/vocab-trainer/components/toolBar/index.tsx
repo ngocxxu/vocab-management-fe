@@ -1,10 +1,14 @@
+import IconFilter from '@/assets/svg/IconFilter';
 import IconFilterRemove from '@/assets/svg/IconFilterRemove';
 import Button from '@/components/button';
 import { Modal } from '@/components/modal/index';
+import { Popover } from '@/components/popover';
 import { SearchBar } from '@/components/searchBar';
 import { ButtonLib } from '@/components/ui/button';
-import { resetFilterState, setSearchVocabState } from '@/redux/reducer/vocab';
+import { Filter } from '@/pages/vocab/components/filter';
+import { setSearchVocabState } from '@/redux/reducer/vocab';
 import {
+  resetFilterVocabTrainerState,
   setFilterVocabTrainerState,
   setOpenModalState,
 } from '@/redux/reducer/vocabTrainer';
@@ -12,15 +16,12 @@ import { RootState } from '@/redux/store';
 import { defaultStatus } from '@/utils/constants';
 import { RowSelectionState } from '@tanstack/react-table';
 import { AxiosResponse } from 'axios';
+import { useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { UseMutateFunction } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { TFormInputsVocabTrainer } from '../../types';
 import FormVocabTrainer from '../form';
-import { useState } from 'react';
-import { Popover } from '@/components/popover';
-import { IconFilter } from '@tabler/icons-react';
-import { Filter } from '@/pages/vocab/components/filter';
 
 type TToolbar = {
   idVocabTrainer: string;
@@ -56,7 +57,8 @@ export const ToolBar = ({
   const isClear =
     searchVocabTrainer ||
     counts > 0 ||
-    (filterData.status && filterData.status?.length > 0);
+    (filterData.status && filterData.status?.length < 3);
+
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -80,7 +82,7 @@ export const ToolBar = ({
             variant='outline'
             onClick={() => {
               setRowSelection({});
-              dispatch(resetFilterState());
+              dispatch(resetFilterVocabTrainerState());
               methods.setValue('status', defaultStatus);
             }}
           >
@@ -94,7 +96,7 @@ export const ToolBar = ({
           side='bottom'
           head={
             <ButtonLib className='mr-1' variant='ghost'>
-              <IconFilter /> Filters
+              <IconFilter /> Filter
             </ButtonLib>
           }
           body={

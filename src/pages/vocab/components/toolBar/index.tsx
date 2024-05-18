@@ -67,7 +67,7 @@ export const ToolBar = ({
   const isClear =
     searchVocab ||
     counts > 0 ||
-    // (filterData.status && filterData.status?.length > 0) ||
+    (filterData.status && filterData.status?.length < 3) ||
     (filterData.subject && filterData.subject?.length > 0);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);

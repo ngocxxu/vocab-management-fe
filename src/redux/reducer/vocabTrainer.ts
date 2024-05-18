@@ -1,5 +1,6 @@
 import { TFormInputsFilter } from '@/pages/vocab-trainer/components/toolBar';
 import { TVocabTrainer } from '@/pages/vocab-trainer/types';
+import { defaultStatus } from '@/utils/constants';
 import { createSlice } from '@reduxjs/toolkit';
 import { RowSelectionState } from '@tanstack/react-table';
 
@@ -25,7 +26,7 @@ const initialState: TInitialStateVocabTrainer = {
   },
   searchVocabTrainer: '',
   filterData: {
-    status: [],
+    status: defaultStatus,
   },
 };
 
@@ -48,6 +49,12 @@ const vocabTrainerReducer = createSlice({
     setFilterVocabTrainerState(state, action) {
       state.filterData = action.payload;
     },
+    resetFilterVocabTrainerState(state) {
+      state.searchVocabTrainer = '';
+      state.filterData = {
+        status: defaultStatus,
+      };
+    },
   },
 });
 const { actions, reducer } = vocabTrainerReducer;
@@ -57,5 +64,6 @@ export const {
   setItemVocabTrainerState,
   setSearchVocabState,
   setFilterVocabTrainerState,
+  resetFilterVocabTrainerState
 } = actions;
 export default reducer;

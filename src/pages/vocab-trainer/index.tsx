@@ -55,7 +55,7 @@ const VocabTrainer = () => {
     useDeleteMultiVocabTrainer();
 
   const counts = Object.keys(rowSelection).length;
-  const { isOpenModalState, searchVocabTrainer } = useSelector(
+  const { isOpenModalState, searchVocabTrainer, filterData } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
   );
   const { data, isLoading } = useGetAllVocabTrainer({
@@ -63,6 +63,7 @@ const VocabTrainer = () => {
     limit: searchParams.get('limit') ?? '10',
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
+    statusFilter: filterData.status,
     search: searchVocabTrainer || undefined,
   });
   const isURLVocabTrainer =
@@ -202,6 +203,7 @@ const VocabTrainer = () => {
                 />
               }
               title='Do you want to delete?'
+              onYes={() => handleOnYes(row.original._id)}
             />
           </div>
         ),

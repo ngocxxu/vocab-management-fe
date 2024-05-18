@@ -19,5 +19,6 @@ export type TPage = {
   sortBy?: string;
   orderBy?: string;
   subjectFilter?: string[];
+  statusFilter?:string[];
   search?: string;
 };
