@@ -70,8 +70,6 @@ const VocabTrainer = () => {
     pathname === ROUTER_VOCAB_TRAINER && isOpenModalState;
 
   const handleOnYes = (id?: string) => {
-    console.log(id);
-
     if (isDeleteMulti) {
       // Loop find value === true and return [ids]
       const mappedIds: string[] = Object.entries(rowSelection).map(
