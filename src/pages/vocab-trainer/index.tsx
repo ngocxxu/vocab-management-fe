@@ -63,7 +63,7 @@ const VocabTrainer = () => {
     limit: searchParams.get('limit') ?? '10',
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
-    statusFilter: filterData.status,
+    statusFilter: filterData.status ?? [],
     search: searchVocabTrainer || undefined,
   });
   const isURLVocabTrainer =
