@@ -8,6 +8,7 @@ import History from './pages/history';
 import Vocab from './pages/vocab';
 import VocabTrainer from './pages/vocab-trainer';
 import HeaderTable from './components/headerTable';
+import { Question } from './pages/vocab-trainer/components/question';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAhopedDbZte4fXSGgg5onc9iOxiqYBZN4',
@@ -56,6 +57,7 @@ function App() {
           ),
         },
         { path: '/vocab-trainer', element: <VocabTrainer /> },
+        { path: '/vocab-trainer/:id', element: <Question /> },
         { path: '/history', element: <History /> },
       ],
     },

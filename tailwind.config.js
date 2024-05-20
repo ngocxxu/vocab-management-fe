@@ -22,6 +22,7 @@ module.exports = {
         customGray2: '#4B5675',
         customGray3: '#E4E6EF',
         customGray4: '#cbd5e1',
+        customGray5: '#f2f4f7',
         customGreen: '#17C653',
         customGreen2: '#14B8A6',
         customGreen3: '#037847',

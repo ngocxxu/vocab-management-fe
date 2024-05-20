@@ -19,7 +19,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { IndeterminateCheckbox } from '../vocab/components/checkbox';
 import { ToolBar } from './components/toolBar';
 import { TVocabTrainer } from './types';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   LIMIT_PAGE_10,
   ROUTER_VOCAB_TRAINER,
@@ -39,6 +39,7 @@ import { useDeleteVocabTrainer } from '@/services/vocabTrainer/useDeleteVocabTra
 import { useDeleteMultiVocabTrainer } from '@/services/vocabTrainer/useDeleteMultiVocabTrainer';
 
 const VocabTrainer = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -182,6 +183,7 @@ const VocabTrainer = () => {
               }
             />
             <Button
+              onClick={() => navigate(`${row.original._id}`)}
               className='h-6 w-6'
               size='icon'
               variant='ghost'
