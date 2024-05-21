@@ -23,7 +23,7 @@ export const Question = () => {
           <p className='font-semibold'>Question</p>
           <div className='bg-customGray6 p-3 rounded-md mt-3 mb-5 font-medium text-sm'>
             Please choose the meaning of the word{' '}
-            <span className='font-bold ml-2 text-white bg-customBlue p-1 rounded'>
+            <span className='font-bold ml-1 text-white bg-customBlue p-1 rounded'>
               막연하다.
             </span>
           </div>
