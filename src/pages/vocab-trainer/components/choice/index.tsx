@@ -45,12 +45,12 @@ export const Choice = () => {
                     return (
                       <FormItem
                         key={item.value}
-                        className='flex items-center space-x-3 space-y-0 bg-customGray6 p-3 rounded-md'
+                        className='flex items-center space-x-3 space-y-0 px-3 bg-customGray6 rounded-md'
                       >
                         <FormControl>
                           <RadioGroupItem value={item.value} />
                         </FormControl>
-                        <FormLabel className='font-medium'>
+                        <FormLabel className='font-medium w-full py-3'>
                           {item.label}
                         </FormLabel>
                       </FormItem>

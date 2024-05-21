@@ -14,7 +14,7 @@ const Button = ({
   leftIcon,
   rightIcon,
   classNames,
-  variant = "default",
+  variant,
   ...props
 }: TButton & ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps) => {
   return (
