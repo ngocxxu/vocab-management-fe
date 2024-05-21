@@ -32,7 +32,7 @@ export const Choice = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name='type'
+          name='choice'
           render={({ field }) => (
             <FormItem className='space-y-3'>
               <FormControl>
@@ -63,8 +63,8 @@ export const Choice = () => {
           )}
         />
         <div className='flex justify-center items-center w-full gap-2 mt-4'>
-          <Button variant='ghost' type='submit' title='Previous' />
-          <Button type='submit' title='Next' />
+          <Button variant='ghost' title='Previous' />
+          <Button disabled={!form.watch('choice')} title='Next' />
         </div>
       </form>
     </Form>
