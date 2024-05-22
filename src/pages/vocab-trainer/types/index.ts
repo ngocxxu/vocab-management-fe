@@ -24,6 +24,6 @@ export type TFormInputsVocabTrainer = {
 export type TQuestion = {
   content: string[];
   options: TOption[];
-  order: string;
+  order: number;
   type: string;
 };
