@@ -10,6 +10,7 @@ type TInitialStateVocabTrainer = {
   itemVocabTrainer: TVocabTrainer;
   searchVocabTrainer: string;
   filterData: TFormInputsFilter;
+  orderQuestion: number;
 };
 
 const initialState: TInitialStateVocabTrainer = {
@@ -25,6 +26,7 @@ const initialState: TInitialStateVocabTrainer = {
     wordResults: [],
   },
   searchVocabTrainer: '',
+  orderQuestion: 1,
   filterData: {
     status: defaultStatus,
   },
@@ -55,6 +57,9 @@ const vocabTrainerReducer = createSlice({
         status: defaultStatus,
       };
     },
+    setOrderQuestion(state, action) {
+      state.orderQuestion = action.payload;
+    },
   },
 });
 const { actions, reducer } = vocabTrainerReducer;
@@ -64,6 +69,7 @@ export const {
   setItemVocabTrainerState,
   setSearchVocabState,
   setFilterVocabTrainerState,
-  resetFilterVocabTrainerState
+  resetFilterVocabTrainerState,
+  setOrderQuestion,
 } = actions;
 export default reducer;

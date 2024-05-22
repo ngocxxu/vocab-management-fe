@@ -1,3 +1,5 @@
+import { TOption } from '@/utils/types';
+
 export type TVocabTrainer = {
   _id: string;
   nameTest: string;
@@ -17,4 +19,11 @@ export type TWordResults = {
 export type TFormInputsVocabTrainer = {
   nameTest: string;
   wordSelects: string[];
+};
+
+export type TQuestion = {
+  content: string[];
+  options: TOption[];
+  order: string;
+  type: string;
 };
