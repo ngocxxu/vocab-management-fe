@@ -51,7 +51,7 @@ export const Choice = ({ data, setCountQuestions }: TChoiceProps) => {
 
   useEffect(() => {
     setCountQuestions(form.watch().wordTestSelects.length);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch().wordTestSelects.length]);
 
   return (
@@ -112,16 +112,26 @@ export const Choice = ({ data, setCountQuestions }: TChoiceProps) => {
               variant='ghost'
               title='Previous'
             />
-            <Button
-              disabled={
-                !form.watch(`wordTestSelects.${orderQuestion - 1}.idWord`)
-              }
-              title={orderQuestion === data.length ? 'Submit' : 'Next'}
-              onClick={() => {
-                append({ idWord: '' });
-                dispatch(setOrderQuestion(orderQuestion + 1));
-              }}
-            />
+            {orderQuestion === data.length ? (
+              <Button
+                disabled={
+                  !form.watch(`wordTestSelects.${orderQuestion - 1}.idWord`)
+                }
+                type='submit'
+                title='Submit'
+              />
+            ) : (
+              <Button
+                disabled={
+                  !form.watch(`wordTestSelects.${orderQuestion - 1}.idWord`)
+                }
+                title='Next'
+                onClick={() => {
+                  append({ idWord: '' });
+                  dispatch(setOrderQuestion(orderQuestion + 1));
+                }}
+              />
+            )}
           </div>
         </form>
       </Form>

@@ -7,6 +7,7 @@ import { setOrderQuestion } from '@/redux/reducer/vocabTrainer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useState } from 'react';
+import { Countdown } from '../countDown';
 
 export const Question = () => {
   const dispatch = useDispatch();
@@ -48,13 +49,13 @@ export const Question = () => {
           </div>
           <div className='bg-white rounded-md p-2 border font-semibold flex gap-2'>
             <Clock />
-            <p>00:05:30</p>
+            <Countdown />
           </div>
         </div>
         <Choice data={data ?? []} setCountQuestions={setCountQuestions} />
       </div>
 
-      <div className='bg-white rounded-md p-4 border-t shadow-md font-semibold'>
+      <div className='bg-white rounded-md p-4 font-semibold shadow-md border-t'>
         Question list
         <div className='bg-customGray5 p-4 mt-3 rounded-md'>
           {data &&
@@ -62,7 +63,7 @@ export const Question = () => {
               <Button
                 disabled={item.order > countQuestions}
                 key={item.order}
-                className='bg-white w-full font-semibold mb-2'
+                className='bg-white w-full font-semibold mb-2 shadow-none'
                 variant='outline'
                 leftIcon={
                   <Circle
