@@ -15,7 +15,7 @@ import { useSubmitTest } from '@/services/vocabTrainer/useSubmitTest';
 import { useEffect } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { TQuestion } from '../../types';
 
 type TFormChoice = { wordTestSelects: { idWord: string }[] };
@@ -31,7 +31,7 @@ export const Choice = ({
   countdown,
   setCountQuestions,
 }: TChoiceProps) => {
-  const { id } = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
   const form = useForm<TFormChoice>({
     defaultValues: {
@@ -57,7 +57,7 @@ export const Choice = ({
     }));
 
     mutate({
-      id: id ?? '',
+      id: location.state.id,
       duration: countdown,
       wordTestSelects: newArr,
     });

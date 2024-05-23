@@ -34,13 +34,20 @@ import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { IndeterminateCheckbox } from '../vocab/components/checkbox';
 import { DetailTable } from './components/detailTable';
 import { ToolBar } from './components/toolBar';
 import { TVocabTrainer } from './types';
 
 const VocabTrainer = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,7 +63,12 @@ const VocabTrainer = () => {
   const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
     useDeleteMultiVocabTrainer();
   const { mutate: mutateQuestion, isLoading: isLoadingQuestion } =
-    usePostQuestion();
+    usePostQuestion({
+      onSuccess: (data) => {
+        localStorage.setItem('questions', JSON.stringify(data));
+        navigate('/vocab-trainer/examination', { state: id });
+      },
+    });
 
   const counts = Object.keys(rowSelection).length;
   const { isOpenModalState, searchVocabTrainer, filterData } = useSelector(
