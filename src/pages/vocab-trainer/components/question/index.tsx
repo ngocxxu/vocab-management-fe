@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { TQuestion } from '../../types';
 import { Choice } from '../choice';
 import { Countdown } from '../countDown';
+import { Loader } from '@/components/loader';
+import { useSubmitTest } from '@/services/vocabTrainer/useSubmitTest';
 
 export const Question = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ export const Question = () => {
   );
   const [countQuestions, setCountQuestions] = useState(1);
   const [data, setData] = useState<TQuestion[]>([]);
+  const { mutate, isLoading } = useSubmitTest();
 
   useEffect(() => {
     const storedData = localStorage.getItem('questions');
@@ -32,6 +35,10 @@ export const Question = () => {
 
   if (data.length <= 0) {
     return;
+  }
+
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
@@ -66,7 +73,12 @@ export const Question = () => {
             <Countdown countdown={countdown} setCountdown={setCountdown} />
           </div>
         </div>
-        <Choice data={data ?? []} countdown={countdown} setCountQuestions={setCountQuestions} />
+        <Choice
+          mutateQuestion={mutate}
+          data={data ?? []}
+          countdown={countdown}
+          setCountQuestions={setCountQuestions}
+        />
       </div>
 
       <div className='bg-white rounded-md p-4 font-semibold shadow-md border-t'>

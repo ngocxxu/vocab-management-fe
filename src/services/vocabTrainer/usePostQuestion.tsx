@@ -1,9 +1,8 @@
 import { useToast } from '@/components/ui/use-toast';
 import { TQuestion } from '@/pages/vocab-trainer/types';
 import { useMutation } from 'react-query';
-import { httpClient } from '../settings';
 import { useNavigate } from 'react-router-dom';
-import { TMutationConfig } from '@/utils/types';
+import { httpClient } from '../settings';
 
 const postQuestion = async (id: string) => {
   const { data } = await httpClient.get<TQuestion[]>(
@@ -12,15 +11,16 @@ const postQuestion = async (id: string) => {
   return data;
 };
 
-export const usePostQuestion = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  config?: TMutationConfig<typeof postQuestion>
-) => {
+export const usePostQuestion = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
   return useMutation({
     mutationFn: (id: string) => postQuestion(id),
+    onSuccess: (data) => {
+      localStorage.setItem('questions', JSON.stringify(data));
+      navigate('/vocab-trainer/examination');
+    },
     onError: () => {
       toast({
         title: 'Error',
@@ -28,6 +28,5 @@ export const usePostQuestion = (
       });
       navigate('/vocab-trainer');
     },
-    ...config,
   });
 };

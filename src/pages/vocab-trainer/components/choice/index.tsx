@@ -1,5 +1,4 @@
 import Button from '@/components/button';
-import { Loader } from '@/components/loader';
 import {
   Form,
   FormControl,
@@ -11,16 +10,22 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { setOrderQuestion } from '@/redux/reducer/vocabTrainer';
 import { RootState } from '@/redux/store';
-import { useSubmitTest } from '@/services/vocabTrainer/useSubmitTest';
 import { useEffect } from 'react';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { TQuestion } from '../../types';
+import { TFormTestVocabTrainer, TQuestion } from '../../types';
+import { UseMutateFunction } from 'react-query';
+import { AxiosResponse } from 'axios';
 
 type TFormChoice = { wordTestSelects: { idWord: string }[] };
 
 type TChoiceProps = {
+  mutateQuestion: UseMutateFunction<
+    AxiosResponse,
+    unknown,
+    TFormTestVocabTrainer,
+    unknown
+  >;
   countdown: number;
   data: TQuestion[];
   setCountQuestions: React.Dispatch<React.SetStateAction<number>>;
@@ -30,8 +35,8 @@ export const Choice = ({
   data,
   countdown,
   setCountQuestions,
+  mutateQuestion,
 }: TChoiceProps) => {
-  const location = useLocation();
   const dispatch = useDispatch();
   const form = useForm<TFormChoice>({
     defaultValues: {
@@ -41,7 +46,6 @@ export const Choice = ({
   const { orderQuestion } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
   );
-  const { mutate, isLoading } = useSubmitTest();
 
   const { fields, append } = useFieldArray({
     control: form.control,
@@ -56,8 +60,8 @@ export const Choice = ({
         data[index].options.find((item2) => item2.value === item.idWord)?.label,
     }));
 
-    mutate({
-      id: location.state.id,
+    mutateQuestion({
+      id: localStorage.getItem('examId') ?? '',
       duration: countdown,
       wordTestSelects: newArr,
     });
@@ -67,10 +71,6 @@ export const Choice = ({
     setCountQuestions(form.watch().wordTestSelects.length);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch().wordTestSelects.length]);
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   return (
     <div className='bg-white rounded-md p-4 border-t shadow-md'>

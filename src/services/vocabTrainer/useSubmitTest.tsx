@@ -23,6 +23,7 @@ export const useSubmitTest = () => {
         title: 'Error',
         description: 'Failed, please try again',
       });
+      navigate('/vocab-trainer');
     },
   });
 };
