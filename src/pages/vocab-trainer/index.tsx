@@ -1,7 +1,22 @@
 import { AlertDialog } from '@/components/alertDialog';
+import { Badge } from '@/components/badge';
 import Button from '@/components/button';
 import HeaderTable from '@/components/headerTable';
+import { Modal } from '@/components/modal';
 import Table from '@/components/table';
+import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer';
+import { RootState } from '@/redux/store';
+import { useDeleteMultiVocabTrainer } from '@/services/vocabTrainer/useDeleteMultiVocabTrainer';
+import { useDeleteVocabTrainer } from '@/services/vocabTrainer/useDeleteVocabTrainer';
+import { useGetAllVocabTrainer } from '@/services/vocabTrainer/useGetAllVocabTrainer';
+import { usePostQuestion } from '@/services/vocabTrainer/usePostQuestion';
+import { usePostVocabTrainer } from '@/services/vocabTrainer/usePostVocabTrainer';
+import { convertOrderBy } from '@/utils';
+import {
+  LIMIT_PAGE_10,
+  ROUTER_VOCAB_TRAINER,
+  colorData,
+} from '@/utils/constants';
 import {
   IconCircleFilled,
   IconEye,
@@ -15,31 +30,16 @@ import {
   getSortedRowModel,
 } from '@tanstack/react-table';
 import clsx from 'clsx';
+import { format } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { IndeterminateCheckbox } from '../vocab/components/checkbox';
+import { DetailTable } from './components/detailTable';
 import { ToolBar } from './components/toolBar';
 import { TVocabTrainer } from './types';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import {
-  LIMIT_PAGE_10,
-  ROUTER_VOCAB_TRAINER,
-  colorData,
-} from '@/utils/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { useGetAllVocabTrainer } from '@/services/vocabTrainer/useGetAllVocabTrainer';
-import { convertOrderBy } from '@/utils';
-import { format } from 'date-fns';
-import { Badge } from '@/components/badge';
-import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer';
-import { Modal } from '@/components/modal';
-import { DetailTable } from './components/detailTable';
-import { usePostVocabTrainer } from '@/services/vocabTrainer/usePostVocabTrainer';
-import { useDeleteVocabTrainer } from '@/services/vocabTrainer/useDeleteVocabTrainer';
-import { useDeleteMultiVocabTrainer } from '@/services/vocabTrainer/useDeleteMultiVocabTrainer';
 
 const VocabTrainer = () => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,6 +54,7 @@ const VocabTrainer = () => {
     useDeleteVocabTrainer();
   const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
     useDeleteMultiVocabTrainer();
+  const { mutate: mutateQuestion } = usePostQuestion();
 
   const counts = Object.keys(rowSelection).length;
   const { isOpenModalState, searchVocabTrainer, filterData } = useSelector(
@@ -183,7 +184,9 @@ const VocabTrainer = () => {
               }
             />
             <Button
-              onClick={() => navigate(`${row.original._id}`)}
+              onClick={() => {
+                mutateQuestion(row.original._id);
+              }}
               className='h-6 w-6'
               size='icon'
               variant='ghost'
@@ -202,7 +205,6 @@ const VocabTrainer = () => {
                   }
                 />
               }
-              title='Do you want to delete?'
               onYes={() => handleOnYes(row.original._id)}
             />
           </div>

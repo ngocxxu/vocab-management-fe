@@ -239,7 +239,6 @@ const Vocab = () => {
                   }
                 />
               }
-              title='Do you want to delete?'
               onYes={() => handleOnYes(row.original._id)}
             />
           </div>

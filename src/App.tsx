@@ -57,7 +57,7 @@ function App() {
           ),
         },
         { path: '/vocab-trainer', element: <VocabTrainer /> },
-        { path: '/vocab-trainer/:id', element: <Question /> },
+        { path: '/vocab-trainer/examination', element: <Question /> },
         { path: '/history', element: <History /> },
       ],
     },

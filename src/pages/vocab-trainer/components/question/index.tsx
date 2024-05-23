@@ -1,24 +1,36 @@
 import Button from '@/components/button';
-import { ChevronLeft, ChevronRight, Circle, Clock } from 'lucide-react';
-import { Choice } from '../choice';
-import { useParams } from 'react-router-dom';
-import { useGetQuestions } from '@/services/vocabTrainer/useGetQuestions';
 import { setOrderQuestion } from '@/redux/reducer/vocabTrainer';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { useState } from 'react';
+import { ChevronLeft, ChevronRight, Circle, Clock } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { TQuestion } from '../../types';
+import { Choice } from '../choice';
 import { Countdown } from '../countDown';
 
 export const Question = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useParams();
-  const { data } = useGetQuestions(id ?? '');
   const { orderQuestion } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
   );
   const [countQuestions, setCountQuestions] = useState(1);
+  const [data, setData] = useState<TQuestion[]>([]);
 
-  if (!data) return;
+  useEffect(() => {
+    const storedData = localStorage.getItem('questions');
+    if (storedData) {
+      setData(JSON.parse(storedData));
+    } else {
+      navigate('/vocab-trainer');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (data.length <= 0) {
+    return;
+  }
 
   return (
     <div className='container my-10 grid grid-cols-5 gap-4'>

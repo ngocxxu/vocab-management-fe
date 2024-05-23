@@ -20,6 +20,7 @@ export const Countdown = () => {
   };
 
   const handleOnNo = () => {
+    localStorage.removeItem('questions');
     navigate('/vocab-trainer');
   };
 

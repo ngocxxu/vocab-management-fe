@@ -111,6 +111,9 @@ export const Choice = ({ data, setCountQuestions }: TChoiceProps) => {
               disabled={orderQuestion === 1}
               variant='ghost'
               title='Previous'
+              onClick={() => {
+                dispatch(setOrderQuestion(orderQuestion - 1));
+              }}
             />
             {orderQuestion === data.length ? (
               <Button
