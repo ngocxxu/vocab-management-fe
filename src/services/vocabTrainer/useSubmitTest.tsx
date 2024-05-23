@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { httpClient } from '../settings';
 
 const submitTest = async ({ id, ...data }: TFormTestVocabTrainer) => {
-  const res = await httpClient.put(`/vocabTrainer/test/${id}`, data);
+  const res = await httpClient.patch(`/vocabTrainer/test/${id}`, data);
   return res;
 };
 
