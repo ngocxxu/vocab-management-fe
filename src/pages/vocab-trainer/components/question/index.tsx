@@ -12,6 +12,8 @@ import { Countdown } from '../countDown';
 export const Question = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [countdown, setCountdown] = useState(1200);
+
   const { orderQuestion } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
   );
@@ -25,7 +27,7 @@ export const Question = () => {
     } else {
       navigate('/vocab-trainer');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (data.length <= 0) {
@@ -61,10 +63,10 @@ export const Question = () => {
           </div>
           <div className='bg-white rounded-md p-2 border font-semibold flex gap-2'>
             <Clock />
-            <Countdown />
+            <Countdown countdown={countdown} setCountdown={setCountdown} />
           </div>
         </div>
-        <Choice data={data ?? []} setCountQuestions={setCountQuestions} />
+        <Choice data={data ?? []} countdown={countdown} setCountQuestions={setCountQuestions} />
       </div>
 
       <div className='bg-white rounded-md p-4 font-semibold shadow-md border-t'>

@@ -1,11 +1,14 @@
 import { AlertDialog } from '@/components/alertDialog';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export const Countdown = () => {
-  const [countdown, setCountdown] = useState(1200); // 600 giây = 10 phút
+type TCountdownProps = {
+  countdown: number;
+  setCountdown: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export const Countdown = ({ countdown, setCountdown }: TCountdownProps) => {
   const [openModal, setOpenModal] = useState(false);
-  const countdownRef = useRef(countdown);
   const navigate = useNavigate();
 
   const customMinutes = (time: number) => {
@@ -29,13 +32,13 @@ export const Countdown = () => {
       if (countdown > 0) {
         setCountdown(countdown - 1);
       } else {
-        setOpenModal(true); // Đánh dấu đếm lùi đã kết thúc
+        setOpenModal(true);
       }
     }, 1000);
 
-    countdownRef.current = countdown;
-
     return () => clearTimeout(timer);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countdown]);
 
   return (

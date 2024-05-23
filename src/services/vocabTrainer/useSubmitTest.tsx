@@ -1,26 +1,22 @@
 import { useToast } from '@/components/ui/use-toast';
-import { TFormInputsVocabTrainer } from '@/pages/vocab-trainer/types';
-import { useMutation, useQueryClient } from 'react-query';
+import { TFormTestVocabTrainer } from '@/pages/vocab-trainer/types';
+import { useMutation } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 import { httpClient } from '../settings';
-import { VOCAB_TRAINER_KEYS } from './queryKeys';
 
-const submitTest = async (data: TFormInputsVocabTrainer) => {
-  const res = await httpClient.post(`/vocabTrainer`, data);
+const submitTest = async ({ id, ...data }: TFormTestVocabTrainer) => {
+  const res = await httpClient.put(`/vocabTrainer/test/${id}`, data);
   return res;
 };
 
 export const useSubmitTest = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
-  const client = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: TFormInputsVocabTrainer) => submitTest(data),
+    mutationFn: (data: TFormTestVocabTrainer) => submitTest(data),
     onSuccess: () => {
-      client.invalidateQueries([VOCAB_TRAINER_KEYS.GET_VOCAB_TRAINER]);
-      toast({
-        title: 'Success',
-        description: 'Created successfully',
-      });
+      navigate('/vocab-trainer');
     },
     onError: () => {
       toast({

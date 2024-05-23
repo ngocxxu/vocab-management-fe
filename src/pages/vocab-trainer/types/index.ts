@@ -21,6 +21,15 @@ export type TFormInputsVocabTrainer = {
   wordSelects: string[];
 };
 
+export type TFormTestVocabTrainer = {
+  id: string;
+  duration: number;
+  wordTestSelects: {
+    idWord: string;
+    userSelect?: string;
+  }[];
+};
+
 export type TQuestion = {
   content: string[];
   options: TOption[];
