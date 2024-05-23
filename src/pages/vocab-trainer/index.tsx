@@ -2,6 +2,7 @@ import { AlertDialog } from '@/components/alertDialog';
 import { Badge } from '@/components/badge';
 import Button from '@/components/button';
 import HeaderTable from '@/components/headerTable';
+import { Loader } from '@/components/loader';
 import { Modal } from '@/components/modal';
 import Table from '@/components/table';
 import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer';
@@ -54,7 +55,8 @@ const VocabTrainer = () => {
     useDeleteVocabTrainer();
   const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
     useDeleteMultiVocabTrainer();
-  const { mutate: mutateQuestion } = usePostQuestion();
+  const { mutate: mutateQuestion, isLoading: isLoadingQuestion } =
+    usePostQuestion();
 
   const counts = Object.keys(rowSelection).length;
   const { isOpenModalState, searchVocabTrainer, filterData } = useSelector(
@@ -214,6 +216,10 @@ const VocabTrainer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  if (isLoadingQuestion) {
+    return <Loader />;
+  }
 
   return (
     <HeaderTable
