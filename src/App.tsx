@@ -53,6 +53,7 @@ function App() {
         },
         { path: '/vocab-trainer', element: <VocabTrainer /> },
         { path: '/vocab-trainer/examination', element: <Question /> },
+        { path: '/vocab-trainer/examination/result', element: <Question /> },
         { path: '/history', element: <History /> },
       ],
     },
