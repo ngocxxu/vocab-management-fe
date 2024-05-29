@@ -19,14 +19,14 @@ export const DetailTable = ({ data }: TDetailTable) => {
         size: 0,
       },
       {
-        accessorKey: 'userSelect',
-        header: 'Your Answer',
+        accessorKey: 'systemSelect',
+        header: 'Correct Answer',
         size: 300,
         enableSorting: false,
       },
       {
-        accessorKey: 'systemSelect',
-        header: 'Correct Answer',
+        accessorKey: 'userSelect',
+        header: 'Your Answer',
         size: 300,
         enableSorting: false,
       },

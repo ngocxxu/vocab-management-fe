@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import { convertTime } from '@/utils';
 import { DEFAULT_COUNTDOWN } from '@/utils/constants';
 import { DetailTable } from '../detailTable';
+import Button from '@/components/button';
 
 export const ResultStatistic = () => {
   const navigate = useNavigate();
@@ -110,6 +111,14 @@ export const ResultStatistic = () => {
                 </span>
               </div>
             </div>
+
+            <Button
+              className='mt-4'
+              title='Return'
+              onClick={() => {
+                navigate('/vocab-trainer');
+              }}
+            />
           </div>
         </div>
       </div>

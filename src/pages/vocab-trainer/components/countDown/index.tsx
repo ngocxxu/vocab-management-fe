@@ -18,8 +18,6 @@ export const Countdown = ({ countdown, setCountdown }: TCountdownProps) => {
   };
 
   const handleOnNo = () => {
-    localStorage.removeItem('examId');
-    localStorage.removeItem('questions');
     navigate('/vocab-trainer');
   };
 
