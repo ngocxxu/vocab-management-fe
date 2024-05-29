@@ -1,4 +1,3 @@
-import 'react-circular-progressbar/dist/styles.css';
 import ProgressBar from 'react-customizable-progressbar';
 
 type TCircleProgress = {
@@ -7,7 +6,11 @@ type TCircleProgress = {
   isPassed: boolean;
 };
 
-export const CircleProgress = ({ percentage, statistic, isPassed }: TCircleProgress) => {
+export const CircleProgress = ({
+  percentage,
+  statistic,
+  isPassed,
+}: TCircleProgress) => {
   return (
     <ProgressBar
       progress={percentage}
