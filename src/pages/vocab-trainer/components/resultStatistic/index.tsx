@@ -11,6 +11,9 @@ import { useNavigate } from 'react-router-dom';
 import { CircleProgress } from '../circleProgress';
 import { LineProgressBar } from '../lineProgressBar';
 import { format } from 'date-fns';
+import { convertTime } from '@/utils';
+import { DEFAULT_COUNTDOWN } from '@/utils/constants';
+import { DetailTable } from '../detailTable';
 
 export const ResultStatistic = () => {
   const navigate = useNavigate();
@@ -23,7 +26,11 @@ export const ResultStatistic = () => {
   const calPercent =
     data?.wordResults.length &&
     countPassed &&
-    (countPassed / data?.wordResults.length).toFixed(1);
+    ((countPassed / data?.wordResults.length) * 100).toFixed(1);
+
+  const calLinePercent = (Number(data?.duration) / DEFAULT_COUNTDOWN) * 100;
+
+  const { minutes, seconds, hours } = convertTime(Number(data?.duration));
 
   useEffect(() => {
     if (!localStorage.getItem('examId')) {
@@ -73,12 +80,14 @@ export const ResultStatistic = () => {
           <div className='w-full'>
             <p>Total time</p>
             <div className='flex items-center mt-6 mb-4'>
-              <p>{format(new Date(data?.duration ?? 0), 'HH:mm:ss')}</p>
+              <p>
+                {hours}:{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+              </p>
               <IconSlash className='text-customGray mx-4' />
               <p className='text-customGray'>00:20:00</p>
             </div>
 
-            <LineProgressBar percentage={50} />
+            <LineProgressBar percentage={calLinePercent} />
 
             <div className='grid grid-cols-12 gap-4 mt-8'>
               <div className='col-span-6 text-customGray text-xl font-normal'>
@@ -90,7 +99,8 @@ export const ResultStatistic = () => {
               <div className='col-span-6 text-customGray text-xl font-normal'>
                 Date time
                 <span className='ml-6 text-customBlack1 font-medium'>
-                  {format(new Date(data?.updatedAt ?? ''), 'dd-MM-yyyy')}
+                  {data?.updatedAt &&
+                    format(new Date(data?.updatedAt), 'dd-MM-yyyy')}
                 </span>
               </div>
               <div className='col-span-12 text-customGray text-xl font-normal'>
@@ -106,7 +116,7 @@ export const ResultStatistic = () => {
 
       <div className='col-span-9 bg-white rounded-md p-6 font-semibold shadow-md border-t'>
         <p className='text-lg font-bold mb-1'>Questions</p>
-        {/* <DetailTable data={wordResults ?? []} /> */}
+        <DetailTable data={data?.wordResults ?? []} />
       </div>
     </div>
   );

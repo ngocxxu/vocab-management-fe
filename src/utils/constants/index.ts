@@ -5,6 +5,8 @@ export const DEAULT_PAGE = "1";
 export const defaultStatus = [...statusList.map((item) => item.value)];
 export const ROUTER_VOCAB_TRAINER = "/vocab-trainer";
 
+export const DEFAULT_COUNTDOWN = 1200
+
 export const colorData = [
   {
     status: "Passed",

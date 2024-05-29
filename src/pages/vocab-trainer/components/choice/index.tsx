@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TFormTestVocabTrainer, TQuestion } from '../../types';
 import { UseMutateFunction } from 'react-query';
 import { AxiosResponse } from 'axios';
+import { DEFAULT_COUNTDOWN } from '@/utils/constants';
 
 type TFormChoice = { wordTestSelects: { idWord: string }[] };
 
@@ -62,7 +63,7 @@ export const Choice = ({
 
     mutateQuestion({
       id: localStorage.getItem('examId') ?? '',
-      duration: countdown,
+      duration: DEFAULT_COUNTDOWN - countdown,
       wordTestSelects: newArr,
     });
   };

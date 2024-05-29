@@ -10,11 +10,12 @@ import { Choice } from '../choice';
 import { Countdown } from '../countDown';
 import { Loader } from '@/components/loader';
 import { useSubmitTest } from '@/services/vocabTrainer/useSubmitTest';
+import { DEFAULT_COUNTDOWN } from '@/utils/constants';
 
 export const Question = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [countdown, setCountdown] = useState(1200);
+  const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN);
 
   const { orderQuestion } = useSelector(
     (state: RootState) => state.vocabTrainerReducer

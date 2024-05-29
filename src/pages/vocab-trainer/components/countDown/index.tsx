@@ -1,4 +1,5 @@
 import { AlertDialog } from '@/components/alertDialog';
+import { convertTime } from '@/utils';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,13 +11,7 @@ type TCountdownProps = {
 export const Countdown = ({ countdown, setCountdown }: TCountdownProps) => {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
-
-  const customMinutes = (time: number) => {
-    return time < 10 ? '0' + time : time;
-  };
-
-  const minutes = customMinutes(Math.floor(countdown / 60));
-  const seconds = countdown % 60;
+  const { minutes, seconds } = convertTime(countdown);
 
   const handleOnYes = () => {
     window.location.reload();

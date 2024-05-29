@@ -4,10 +4,10 @@ import { colorData } from '@/utils/constants';
 import { IconCircleFilled } from '@tabler/icons-react';
 import { ColumnDef, getCoreRowModel } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { TVocabTrainer, TWordResults } from '../../types';
+import { TWordResults } from '../../types';
 
 type TDetailTable = {
-  data: TVocabTrainer;
+  data: TWordResults[];
 };
 
 export const DetailTable = ({ data }: TDetailTable) => {
@@ -63,7 +63,7 @@ export const DetailTable = ({ data }: TDetailTable) => {
   return (
     <Table
       options={{
-        data: data.wordResults,
+        data,
         columns,
         getCoreRowModel: getCoreRowModel(),
       }}
