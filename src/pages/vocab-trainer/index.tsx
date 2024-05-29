@@ -296,7 +296,7 @@ const VocabTrainer = () => {
         description='Here are details about your test results latest.'
         open={openDetailModal}
         onOpenChange={setOpenDetailModal}
-        body={<DetailTable data={itemVocabTrainer} />}
+        body={<DetailTable data={itemVocabTrainer.wordResults} />}
         className='w-full max-w-[100vh] !max-h-[85vh] overflow-x-auto'
       />
     </HeaderTable>
