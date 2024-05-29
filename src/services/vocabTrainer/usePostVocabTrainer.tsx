@@ -16,7 +16,7 @@ export const usePostVocabTrainer = () => {
   return useMutation({
     mutationFn: (data: TFormInputsVocabTrainer) => postVocabTrainer(data),
     onSuccess: () => {
-      client.invalidateQueries([VOCAB_TRAINER_KEYS.GET_VOCAB_TRAINER]);
+      client.invalidateQueries([VOCAB_TRAINER_KEYS.GET_ALL_VOCAB_TRAINER]);
       toast({
         title: 'Success',
         description: 'Created successfully',

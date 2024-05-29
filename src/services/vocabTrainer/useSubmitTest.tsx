@@ -16,7 +16,7 @@ export const useSubmitTest = () => {
   return useMutation({
     mutationFn: (data: TFormTestVocabTrainer) => submitTest(data),
     onSuccess: () => {
-      navigate('/vocab-trainer');
+      navigate('/vocab-trainer/examination/result');
     },
     onError: () => {
       toast({

@@ -1,14 +1,14 @@
-import { TVocabTrainer } from "@/pages/vocab-trainer/types";
-import { useQuery } from "react-query";
-import { ResponseAPI, TPage } from "../../utils/types";
-import { httpClient } from "../settings";
-import { VOCAB_TRAINER_KEYS } from "./queryKeys";
+import { TVocabTrainer } from '@/pages/vocab-trainer/types';
+import { useQuery } from 'react-query';
+import { ResponseAPI, TPage } from '../../utils/types';
+import { httpClient } from '../settings';
+import { VOCAB_TRAINER_KEYS } from './queryKeys';
 
 const getAllVocabTrainer = async (pageOptions: TPage) => {
   const params = new URLSearchParams();
 
   Object.entries(pageOptions).map(([key, value]) => {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       if (value !== undefined) {
         params.append(`${key}`, value.toString());
       }
@@ -29,7 +29,7 @@ const getAllVocabTrainer = async (pageOptions: TPage) => {
 
 export const useGetAllVocabTrainer = (pageOptions: TPage) => {
   return useQuery({
-    queryKey: [VOCAB_TRAINER_KEYS.GET_VOCAB_TRAINER, pageOptions],
+    queryKey: [VOCAB_TRAINER_KEYS.GET_ALL_VOCAB_TRAINER, pageOptions],
     queryFn: () => getAllVocabTrainer(pageOptions),
   });
 };

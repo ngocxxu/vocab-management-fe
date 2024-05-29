@@ -10,7 +10,10 @@ const Layout = () => {
   useEffect(() => {
     const currentPath = location.pathname;
 
-    if (currentPath !== '/vocab-trainer/examination') {
+    if (
+      currentPath !== '/vocab-trainer/examination' &&
+      currentPath !== '/vocab-trainer/examination/result'
+    ) {
       localStorage.removeItem('examId');
       localStorage.removeItem('questions');
     }
