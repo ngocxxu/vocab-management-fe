@@ -59,9 +59,9 @@ const VocabTrainer = () => {
     usePostQuestion();
 
   const counts = Object.keys(rowSelection).length;
-  const { isOpenModalState, searchVocabTrainer, filterData } = useSelector(
-    (state: RootState) => state.vocabTrainerReducer
-  );
+  const { isOpenModalState, searchVocabTrainer, filterData, itemVocabTrainer } =
+    useSelector((state: RootState) => state.vocabTrainerReducer);
+
   const { data, isLoading } = useGetAllVocabTrainer({
     page: searchParams.get('page') ?? '1',
     limit: searchParams.get('limit') ?? '10',
@@ -296,7 +296,7 @@ const VocabTrainer = () => {
         description='Here are details about your test results latest.'
         open={openDetailModal}
         onOpenChange={setOpenDetailModal}
-        body={<DetailTable />}
+        body={<DetailTable data={itemVocabTrainer} />}
         className='w-full max-w-[100vh] !max-h-[85vh] overflow-x-auto'
       />
     </HeaderTable>

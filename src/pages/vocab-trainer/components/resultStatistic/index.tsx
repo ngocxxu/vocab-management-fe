@@ -1,7 +1,15 @@
 import { IconClock, IconSlash, IconSquareCheck } from '@tabler/icons-react';
 import { CircleProgress } from '../circleProgress';
+import { LineProgressBar } from '../lineProgressBar';
+import { DetailTable } from '../detailTable';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
 
 export const ResultStatistic = () => {
+  const { itemVocabTrainer } = useSelector(
+    (state: RootState) => state.vocabTrainerReducer
+  );
+
   return (
     <div className='container my-10 grid grid-cols-9 gap-4'>
       <div className='col-span-4 bg-white rounded-md p-6 pb-0 font-semibold shadow-md border-t'>
@@ -24,6 +32,7 @@ export const ResultStatistic = () => {
           <CircleProgress />
         </div>
       </div>
+
       <div className='col-span-5 bg-white rounded-md p-6 font-semibold shadow-md border-t'>
         <p className='text-lg font-bold mb-1'>Timer</p>
         <div className='flex gap-2 text-2xl mt-4'>
@@ -38,26 +47,35 @@ export const ResultStatistic = () => {
               <p className='text-customGray'>00:30:00</p>
             </div>
 
-            <div className='relative w-full'>
-              <span
-                className='absolute bottom-1 z-10 -translate-x-5 w-4 h-4 bg-white rounded-full'
-                style={{ left: '50%' }}
-              />
-              <div className='relative flex w-full h-6 overflow-hidden rounded-3xl bg-gray-100'>
-                <div className='w-full  bg-gray-100 rounded-3xl h-6 '>
-                  <div
-                    role='progressbar'
-                    className='bg-customBlack1 h-6 rounded-3xl'
-                    style={{ width: '50%' }}
-                  />
-                </div>
+            <LineProgressBar percentage={50} />
+
+            <div className='grid grid-cols-12 gap-4 mt-8'>
+              <div className='col-span-6 text-customGray text-xl font-normal'>
+                Start time
+                <span className='ml-6 text-customBlack1 font-medium'>
+                  17:43
+                </span>
+              </div>
+              <div className='col-span-6 text-customGray text-xl font-normal'>
+                Date time
+                <span className='ml-6 text-customBlack1 font-medium'>
+                  2024-02-21
+                </span>
+              </div>
+              <div className='col-span-12 text-customGray text-xl font-normal'>
+                End time
+                <span className='ml-8 text-customBlack1 font-medium'>
+                  17:43
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
+
       <div className='col-span-9 bg-white rounded-md p-6 font-semibold shadow-md border-t'>
-        3
+        <p className='text-lg font-bold mb-1'>Questions</p>
+        <DetailTable data={itemVocabTrainer} />
       </div>
     </div>
   );
