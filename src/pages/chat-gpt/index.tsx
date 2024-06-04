@@ -1,5 +1,6 @@
 import IconChatGPT from '@/assets/svg/IconChatGPT';
 import IconPaperSend from '@/assets/svg/IconPaperSend';
+import Avatar from '@/components/avatar';
 import Button from '@/components/button';
 import { Textarea } from '@/components/ui/textarea';
 import { IconMicrophone } from '@tabler/icons-react';
@@ -43,6 +44,16 @@ const ChatGPT = () => {
             <IconChatGPT />
           </div>
           <div className='row-span-8 relative'>
+            <div>
+              <div className='flex justify-start items-start mb-4'>
+                <Avatar className='text-white'>N</Avatar>
+                <div className='p-2'>Hello vietnam</div>
+              </div>
+              <div className='flex justify-start items-start mb-4'>
+                <Avatar className='text-white'>GPT</Avatar>
+                <div className='p-2'>Hello vietnam</div>
+              </div>
+            </div>
             <div className='absolute bottom-0 left-0 w-full'>
               <div className='flex justify-center items-center gap-2'>
                 <Button
