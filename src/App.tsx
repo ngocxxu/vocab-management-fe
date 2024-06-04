@@ -11,6 +11,7 @@ import Vocab from './pages/vocab';
 import VocabTrainer from './pages/vocab-trainer';
 import { Question } from './pages/vocab-trainer/components/question';
 import { ResultStatistic } from './pages/vocab-trainer/components/resultStatistic';
+import ChatGPT from './pages/chat-gpt';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAhopedDbZte4fXSGgg5onc9iOxiqYBZN4',
@@ -54,8 +55,12 @@ function App() {
         },
         { path: '/vocab-trainer', element: <VocabTrainer /> },
         { path: '/vocab-trainer/examination', element: <Question /> },
-        { path: '/vocab-trainer/examination/result', element: <ResultStatistic /> },
+        {
+          path: '/vocab-trainer/examination/result',
+          element: <ResultStatistic />,
+        },
         { path: '/history', element: <History /> },
+        { path: '/chat-gpt', element: <ChatGPT /> },
       ],
     },
     { path: '*', element: <ErrorTemplate /> },

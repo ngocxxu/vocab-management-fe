@@ -1,12 +1,13 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
-import { ButtonLib, ButtonProps } from "@/components/ui/button";
-import clsx from "clsx";
+import { ButtonHTMLAttributes, ReactNode } from 'react';
+import { ButtonLib, ButtonProps } from '@/components/ui/button';
+import clsx from 'clsx';
 
 type TButton = {
   title?: string;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   classNames?: string;
+  classNameTitle?: string;
 };
 
 const Button = ({
@@ -14,6 +15,7 @@ const Button = ({
   leftIcon,
   rightIcon,
   classNames,
+  classNameTitle,
   variant,
   ...props
 }: TButton & ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps) => {
@@ -22,13 +24,13 @@ const Button = ({
       variant={variant}
       className={clsx(
         classNames,
-        variant === "default" &&
-          "bg-customBlue text-white hover:bg-customBlue2 hover:text-white"
+        variant === 'default' &&
+          'bg-customBlue text-white hover:bg-customBlue2 hover:text-white'
       )}
       {...props}
     >
       {leftIcon && leftIcon}
-      {title}
+      <span className={classNameTitle}>{title}</span>
       {rightIcon && rightIcon}
     </ButtonLib>
   );

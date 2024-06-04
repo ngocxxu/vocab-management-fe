@@ -2,6 +2,7 @@ import {
   IconBooks,
   IconLayoutDashboard,
   IconMedal2,
+  IconMessages,
 } from "@tabler/icons-react";
 import clsx from "clsx";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -21,6 +22,7 @@ const links = [
   },
   { link: "/vocab-trainer", label: "Vocab Trainer", icon: IconMedal2 },
   // { link: "/history", label: "History", icon: IconHistory },
+  { link: "/chat-gpt", label: "ChatGPT", icon: IconMessages },
 ];
 
 export function HeaderMenu() {
