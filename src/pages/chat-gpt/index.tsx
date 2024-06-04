@@ -1,10 +1,9 @@
 import IconChatGPT from '@/assets/svg/IconChatGPT';
+import IconGPT from '@/assets/svg/IconGPT';
 import IconPaperSend from '@/assets/svg/IconPaperSend';
-import Avatar from '@/components/avatar';
 import Button from '@/components/button';
 import { Textarea } from '@/components/ui/textarea';
-import { IconMicrophone } from '@tabler/icons-react';
-import { IconMessage, IconTrash } from '@tabler/icons-react';
+import { IconMessage, IconMicrophone, IconTrash } from '@tabler/icons-react';
 
 const ChatGPT = () => {
   return (
@@ -45,13 +44,24 @@ const ChatGPT = () => {
           </div>
           <div className='row-span-8 relative'>
             <div>
-              <div className='flex justify-start items-start mb-4'>
-                <Avatar className='text-white'>N</Avatar>
-                <div className='p-2'>Hello vietnam</div>
+              <div className='flex justify-end py-5'>
+                <div className='max-w-[70%] rounded-3xl bg-[#f4f4f4] px-5 py-2.5 dark:bg-token-main-surface-secondary'>
+                  The symbol (that is a string) is particularly useful to
+                  overcome the limitation of the colors on filenames, so that
+                  git can color your newly added file in green but you still
+                  have the symbol next to the filename to identify the project.
+                </div>
               </div>
-              <div className='flex justify-start items-start mb-4'>
-                <Avatar className='text-white'>GPT</Avatar>
-                <div className='p-2'>Hello vietnam</div>
+              <div className='flex justify-start gap-3 py-5'>
+                <div>
+                  <IconGPT />
+                </div>
+                <div>
+                  The symbol (that is a string) is particularly useful to
+                  overcome the limitation of the colors on filenames, so that
+                  git can color your newly added file in green but you still
+                  have the symbol next to the filename to identify the project.
+                </div>
               </div>
             </div>
             <div className='absolute bottom-0 left-0 w-full'>
@@ -62,7 +72,7 @@ const ChatGPT = () => {
                   leftIcon={<IconMicrophone />}
                 />
                 <Textarea
-                  className='resize-none'
+                  className='resize-none focus:outline-none'
                   rows={1}
                   placeholder='Type message'
                 />
