@@ -5,6 +5,7 @@ import HeaderTable from '@/components/headerTable';
 import { Loader } from '@/components/loader';
 import { Modal } from '@/components/modal';
 import Table from '@/components/table';
+import { cn } from '@/lib/utils';
 import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer';
 import { RootState } from '@/redux/store';
 import { useDeleteMultiVocabTrainer } from '@/services/vocabTrainer/useDeleteMultiVocabTrainer';
@@ -30,7 +31,6 @@ import {
   getCoreRowModel,
   getSortedRowModel,
 } from '@tanstack/react-table';
-import clsx from 'clsx';
 import { format } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -233,7 +233,7 @@ const VocabTrainer = () => {
         components={{
           toolbar: (
             <div
-              className={clsx(
+              className={cn(
                 'flex justify-end items-center mb-2',
                 counts > 0 && 'justify-between'
               )}

@@ -1,53 +1,54 @@
-import { cn } from '@/lib/utils';
-import { useGetVocabTrainer } from '@/services/vocabTrainer/useGetVocabTrainer';
 import {
   IconClock,
   IconSlash,
   IconSquareCheck,
-  IconSquareX,
-} from '@tabler/icons-react';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CircleProgress } from '../circleProgress';
-import { LineProgressBar } from '../lineProgressBar';
-import { format } from 'date-fns';
-import { convertTime } from '@/utils';
-import { DEFAULT_COUNTDOWN } from '@/utils/constants';
-import { DetailTable } from '../detailTable';
-import Button from '@/components/button';
-import { useDispatch } from 'react-redux';
-import { setOrderQuestion } from '@/redux/reducer/vocabTrainer';
+  IconSquareX
+} from '@tabler/icons-react'
+import { format } from 'date-fns'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+
+import Button from '@/components/button'
+import { cn } from '@/lib/utils'
+import { setOrderQuestion } from '@/redux/reducer/vocabTrainer'
+import { useGetVocabTrainer } from '@/services/vocabTrainer/useGetVocabTrainer'
+import { convertTime } from '@/utils'
+import { DEFAULT_COUNTDOWN } from '@/utils/constants'
+import { CircleProgress } from '../circleProgress'
+import { DetailTable } from '../detailTable'
+import { LineProgressBar } from '../lineProgressBar'
 
 export const ResultStatistic = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { data } = useGetVocabTrainer(localStorage.getItem('examId') ?? '');
-  const isPassed = data?.statusTest === 'Passed';
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { data } = useGetVocabTrainer(localStorage.getItem('examId') ?? '')
+  const isPassed = data?.statusTest === 'Passed'
   const countPassed = data?.wordResults.filter(
-    (item) => item.status === 'Passed'
-  ).length;
+    item => item.status === 'Passed'
+  ).length
 
   const calPercent =
     data?.wordResults.length &&
     countPassed &&
-    ((countPassed / data?.wordResults.length) * 100).toFixed(1);
+    ((countPassed / data?.wordResults.length) * 100).toFixed(1)
 
-  const calLinePercent = (Number(data?.duration) / DEFAULT_COUNTDOWN) * 100;
+  const calLinePercent = (Number(data?.duration) / DEFAULT_COUNTDOWN) * 100
 
-  const { minutes, seconds, hours } = convertTime(Number(data?.duration));
+  const { minutes, seconds, hours } = convertTime(Number(data?.duration))
 
   useEffect(() => {
     if (!localStorage.getItem('examId')) {
-      navigate('/vocab-trainer');
+      navigate('/vocab-trainer')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   return (
-    <div className='container my-10 grid grid-cols-9 gap-4'>
-      <div className='col-span-4 bg-white rounded-md p-6 pb-0 font-semibold shadow-md border-t'>
-        <p className='text-lg font-bold mb-1'>Result</p>
-        <div className='flex justify-between items-start'>
+    <div className="container my-10 grid grid-cols-9 gap-4">
+      <div className="col-span-4 rounded-md border-t bg-white p-6 pb-0 font-semibold shadow-md">
+        <p className="mb-1 text-lg font-bold">Result</p>
+        <div className="flex items-start justify-between">
           <div>
             <div
               className={cn(
@@ -55,12 +56,12 @@ export const ResultStatistic = () => {
                 isPassed ? 'text-customGreen2' : 'text-customRed'
               )}
             >
-              <div className='mt-1'>
+              <div className="mt-1">
                 {isPassed ? <IconSquareCheck /> : <IconSquareX />}
               </div>
               <div>
                 <p>Test {data?.statusTest}</p>
-                <p className='text-sm text-customGray font-normal mt-3'>
+                <p className="mt-3 text-sm font-normal text-customGray">
                   Thank you for taking the test.
                 </p>
               </div>
@@ -75,62 +76,73 @@ export const ResultStatistic = () => {
         </div>
       </div>
 
-      <div className='col-span-5 bg-white rounded-md p-6 font-semibold shadow-md border-t'>
-        <p className='text-lg font-bold mb-1'>Timer</p>
-        <div className='flex gap-2 text-2xl mt-4'>
-          <div className='mt-1'>
+      <div className="col-span-5 rounded-md border-t bg-white p-6 font-semibold shadow-md">
+        <p className="mb-1 text-lg font-bold">Timer</p>
+        <div className="mt-4 flex gap-2 text-2xl">
+          <div className="mt-1">
             <IconClock />
           </div>
-          <div className='w-full'>
+          <div className="w-full">
             <p>Total time</p>
-            <div className='flex items-center mt-6 mb-4'>
+            <div className="mb-4 mt-6 flex items-center">
               <p>
                 {hours}:{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </p>
-              <IconSlash className='text-customGray mx-4' />
-              <p className='text-customGray'>00:20:00</p>
+              <IconSlash className="mx-4 text-customGray" />
+              <p className="text-customGray">00:20:00</p>
             </div>
 
             <LineProgressBar percentage={calLinePercent} />
 
-            <div className='grid grid-cols-12 gap-4 mt-8'>
-              <div className='col-span-6 text-customGray text-xl font-normal'>
+            <div className="mt-8 grid grid-cols-12 gap-4">
+              <div className="col-span-6 text-xl font-normal text-customGray">
                 Start time
-                <span className='ml-6 text-customBlack1 font-medium'>
+                <span className="ml-6 font-medium text-customBlack1">
                   17:43
                 </span>
               </div>
-              <div className='col-span-6 text-customGray text-xl font-normal'>
+              <div className="col-span-6 text-xl font-normal text-customGray">
                 Date time
-                <span className='ml-6 text-customBlack1 font-medium'>
+                <span className="ml-6 font-medium text-customBlack1">
                   {data?.updatedAt &&
                     format(new Date(data?.updatedAt), 'dd-MM-yyyy')}
                 </span>
               </div>
-              <div className='col-span-12 text-customGray text-xl font-normal'>
+              <div className="col-span-12 text-xl font-normal text-customGray">
                 End time
-                <span className='ml-8 text-customBlack1 font-medium'>
+                <span className="ml-8 font-medium text-customBlack1">
                   17:43
                 </span>
               </div>
             </div>
 
-            <Button
-              className='mt-4'
-              title='Return'
-              onClick={() => {
-                dispatch(setOrderQuestion(1));
-                navigate('/vocab-trainer');
-              }}
-            />
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                variant="outline"
+                className="mt-4"
+                title="Back"
+                onClick={() => {
+                  dispatch(setOrderQuestion(1))
+                  navigate('/vocab-trainer')
+                }}
+              />
+              <Button
+                className="mt-4"
+                title="Retest"
+                onClick={() => {
+                  dispatch(setOrderQuestion(1))
+                  navigate('/vocab-trainer')
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className='col-span-9 bg-white rounded-md p-6 font-semibold shadow-md border-t'>
-        <p className='text-lg font-bold mb-1'>Questions</p>
+      <div className="col-span-9 rounded-md border-t bg-white p-6 font-semibold shadow-md">
+        <p className="mb-1 text-lg font-bold">Questions</p>
         <DetailTable data={data?.wordResults ?? []} />
       </div>
     </div>
-  );
-};
+  )
+}

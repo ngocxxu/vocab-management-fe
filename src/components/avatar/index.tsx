@@ -1,12 +1,12 @@
-import { ReactNode } from 'react';
-import { AvatarFallback, AvatarLib } from '../ui/avatar';
-import { AvatarProps } from '@radix-ui/react-avatar';
-import clsx from 'clsx';
+import { cn } from "@/lib/utils"
+import { AvatarProps } from "@radix-ui/react-avatar"
+import { ReactNode } from "react"
+import { AvatarFallback, AvatarLib } from "../ui/avatar"
 
 type TAvatar = {
-  children: ReactNode;
-  classNameContent?: string;
-};
+  children: ReactNode
+  classNameContent?: string
+}
 
 const Avatar = ({
   children,
@@ -15,11 +15,11 @@ const Avatar = ({
 }: TAvatar & AvatarProps) => {
   return (
     <AvatarLib {...props}>
-      <AvatarFallback className={clsx(classNameContent)}>
+      <AvatarFallback className={cn(classNameContent)}>
         {children}
       </AvatarFallback>
     </AvatarLib>
-  );
-};
+  )
+}
 
-export default Avatar;
+export default Avatar

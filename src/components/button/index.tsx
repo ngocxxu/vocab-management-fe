@@ -1,14 +1,14 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
-import { ButtonLib, ButtonProps } from '@/components/ui/button';
-import clsx from 'clsx';
+import { ButtonLib, ButtonProps } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 type TButton = {
-  title?: string;
-  leftIcon?: ReactNode;
-  rightIcon?: ReactNode;
-  classNames?: string;
-  classNameTitle?: string;
-};
+  title?: string
+  leftIcon?: ReactNode
+  rightIcon?: ReactNode
+  classNames?: string
+  classNameTitle?: string
+}
 
 const Button = ({
   title,
@@ -22,7 +22,7 @@ const Button = ({
   return (
     <ButtonLib
       variant={variant}
-      className={clsx(
+      className={cn(
         classNames,
         variant === 'default' &&
           'bg-customBlue text-white hover:bg-customBlue2 hover:text-white'
@@ -33,7 +33,7 @@ const Button = ({
       <span className={classNameTitle}>{title}</span>
       {rightIcon && rightIcon}
     </ButtonLib>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button
