@@ -1,13 +1,13 @@
-import { CheckboxLib } from "@/components/ui/checkbox";
-import { CheckboxProps } from "@radix-ui/react-checkbox";
-import { ReactNode, useId } from "react";
+import { CheckboxLib } from '@/components/ui/checkbox'
+import { CheckboxProps } from '@radix-ui/react-checkbox'
+import { ReactNode, useId } from 'react'
 
 type TCheckBox = {
-  label?: ReactNode;
-};
+  label?: ReactNode
+}
 
 export function Checkbox({ label, ...props }: TCheckBox & CheckboxProps) {
-  const randomId = useId();
+  const randomId = useId()
 
   return (
     <div className="flex items-center space-x-2">
@@ -22,5 +22,5 @@ export function Checkbox({ label, ...props }: TCheckBox & CheckboxProps) {
         </label>
       )}
     </div>
-  );
+  )
 }

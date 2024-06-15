@@ -1,32 +1,32 @@
-import { useMutation, useQueryClient } from "react-query";
-import { httpClient } from "../settings";
-import { VOCAB_KEYS } from "./queryKeys";
-import { useToast } from "@/components/ui/use-toast";
-import { TVocab } from "@/pages/vocab/types";
+import { useToast } from '@/components/ui/use-toast'
+import { TVocab } from '@/pages/vocab/types'
+import { useMutation, useQueryClient } from 'react-query'
+import { httpClient } from '../settings'
+import { VOCAB_KEYS } from './queryKeys'
 
-const postVocab = async (data: Omit<TVocab, "id">) => {
-  const res = await httpClient.post(`/vocab`, data);
-  return res;
-};
+const postVocab = async (data: Omit<TVocab, 'id'>) => {
+  const res = await httpClient.post(`/vocab`, data)
+  return res
+}
 
 export const usePostVocab = () => {
-  const { toast } = useToast();
-  const client = useQueryClient();
+  const { toast } = useToast()
+  const client = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: Omit<TVocab, "id">) => postVocab(data),
+    mutationFn: (data: Omit<TVocab, 'id'>) => postVocab(data),
     onSuccess: () => {
-      client.invalidateQueries([VOCAB_KEYS.GET_VOCAB]);
+      client.invalidateQueries([VOCAB_KEYS.GET_VOCAB])
       toast({
-        title: "Success",
-        description: "Created successfully",
-      });
+        title: 'Success',
+        description: 'Created successfully'
+      })
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed, please try again",
-      });
-    },
-  });
-};
+        title: 'Error',
+        description: 'Failed, please try again'
+      })
+    }
+  })
+}

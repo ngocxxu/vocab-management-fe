@@ -1,98 +1,93 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { IconPlus, IconX } from "@tabler/icons-react";
-import { AxiosResponse } from "axios";
+import Button from '@/components/button'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { IconPlus, IconX } from '@tabler/icons-react'
+import { AxiosResponse } from 'axios'
 import {
   Controller,
   Resolver,
   SubmitHandler,
   useFieldArray,
-  useForm,
-} from "react-hook-form";
-import { UseMutateFunction } from "react-query";
-import { useSelector } from "react-redux";
-import * as yup from "yup";
-import GroupButton from "../../../../components/button/GroupButton";
-import Input from "../../../../components/input";
-import Select from "../../../../components/select";
-import { RootState } from "../../../../redux/store";
-import { TPutVocabs } from "../../../../services/vocab/usePutVocab";
-import { defaultValue, languageList } from "../../constants";
-import { TextTargetsForm } from "./textTargets";
-import Button from "@/components/button";
-import { TTextTarget, TVocab } from "../../types";
+  useForm
+} from 'react-hook-form'
+import { UseMutateFunction } from 'react-query'
+import { useSelector } from 'react-redux'
+import * as yup from 'yup'
+import GroupButton from '../../../../components/button/GroupButton'
+import Input from '../../../../components/input'
+import Select from '../../../../components/select'
+import { RootState } from '../../../../redux/store'
+import { TPutVocabs } from '../../../../services/vocab/usePutVocab'
+import { defaultValue, languageList } from '../../constants'
+import { TTextTarget, TVocab } from '../../types'
+import { TextTargetsForm } from './textTargets'
 
 type TFormVocabProps = {
-  idVocab: string;
-  isEditing: boolean;
-  onClose: () => void;
-  mutate: UseMutateFunction<
-    AxiosResponse,
-    unknown,
-    Omit<TVocab, "id">,
-    unknown
-  >;
-  mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>;
-};
+  idVocab: string
+  isEditing: boolean
+  onClose: () => void
+  mutate: UseMutateFunction<AxiosResponse, unknown, Omit<TVocab, 'id'>, unknown>
+  mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>
+}
 
 export type TFormInputsVocab = {
-  sourceLanguage: string;
-  targetLanguage: string;
-  textSource: string;
-  textTarget: TTextTarget[];
-};
+  sourceLanguage: string
+  targetLanguage: string
+  textSource: string
+  textTarget: TTextTarget[]
+}
 
 const FormSchema = yup.object().shape({
-  sourceLanguage: yup.string().required("Source language is required"),
-  targetLanguage: yup.string().required("Target language is required"),
-  textSource: yup.string().required("Text source is required"),
+  sourceLanguage: yup.string().required('Source language is required'),
+  targetLanguage: yup.string().required('Target language is required'),
+  textSource: yup.string().required('Text source is required'),
   textTarget: yup.array().of(
     yup.object().shape({
-      text: yup.string().required("Text is required"),
-      wordType: yup.string().required("Word type is required"),
-      subject: yup.array().min(1),
+      text: yup.string().required('Text is required'),
+      wordType: yup.string().required('Word type is required'),
+      subject: yup.array().min(1)
     })
-  ),
-});
+  )
+})
 
 const FormVocab = ({
   idVocab,
   isEditing,
   onClose,
   mutate,
-  mutatePut,
+  mutatePut
 }: TFormVocabProps) => {
-  const { itemVocab } = useSelector((state: RootState) => state.vocabReducer);
+  const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
   const {
     setValue,
     reset,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors }
   } = useForm<TFormInputsVocab>({
     defaultValues: {
-      sourceLanguage: "ko",
-      targetLanguage: "vi",
-      ["textTarget"]:
+      sourceLanguage: 'ko',
+      targetLanguage: 'vi',
+      ['textTarget']:
         itemVocab && isEditing
           ? Array.from(itemVocab.textTarget, () => defaultValue)
-          : [defaultValue],
+          : [defaultValue]
     },
-    resolver: yupResolver(FormSchema) as unknown as Resolver<TFormInputsVocab>,
-  });
+    resolver: yupResolver(FormSchema) as unknown as Resolver<TFormInputsVocab>
+  })
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "textTarget",
-  });
+    name: 'textTarget'
+  })
 
-  const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
+  const onSubmit: SubmitHandler<TFormInputsVocab> = data => {
     isEditing
       ? mutatePut({
-          data: data as Omit<TVocab, "id">,
-          id: idVocab,
+          data: data as Omit<TVocab, 'id'>,
+          id: idVocab
         })
-      : mutate(data as Omit<TVocab, "id">);
-    onClose();
-  };
+      : mutate(data as Omit<TVocab, 'id'>)
+    onClose()
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -172,8 +167,8 @@ const FormVocab = ({
         onClick={() => {
           append({
             ...defaultValue,
-            examples: [],
-          });
+            examples: []
+          })
         }}
         leftIcon={<IconPlus className="mr-1" />}
       />
@@ -186,7 +181,7 @@ const FormVocab = ({
         />
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default FormVocab;
+export default FormVocab

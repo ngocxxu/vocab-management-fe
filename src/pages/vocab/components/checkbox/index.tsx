@@ -1,18 +1,18 @@
 // import { Checkbox } from "@/comp/checkbox";
-import { HTMLProps, useEffect, useRef } from "react";
+import { HTMLProps, useEffect, useRef } from 'react'
 
 export const IndeterminateCheckbox = ({
   indeterminate,
   ...rest
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) => {
-  const ref = useRef<HTMLInputElement>(null!);
+  const ref = useRef<HTMLInputElement>(null!)
 
   useEffect(() => {
-    if (typeof indeterminate === "boolean") {
-      ref.current.indeterminate = !rest.checked && indeterminate;
+    if (typeof indeterminate === 'boolean') {
+      ref.current.indeterminate = !rest.checked && indeterminate
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ref, indeterminate]);
+  }, [ref, indeterminate])
 
   return (
     <input
@@ -21,5 +21,5 @@ export const IndeterminateCheckbox = ({
       ref={ref}
       {...rest}
     />
-  );
-};
+  )
+}

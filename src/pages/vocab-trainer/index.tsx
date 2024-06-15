@@ -1,66 +1,65 @@
-import { AlertDialog } from '@/components/alertDialog';
-import { Badge } from '@/components/badge';
-import Button from '@/components/button';
-import HeaderTable from '@/components/headerTable';
-import { Loader } from '@/components/loader';
-import { Modal } from '@/components/modal';
-import Table from '@/components/table';
-import { cn } from '@/lib/utils';
-import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer';
-import { RootState } from '@/redux/store';
-import { useDeleteMultiVocabTrainer } from '@/services/vocabTrainer/useDeleteMultiVocabTrainer';
-import { useDeleteVocabTrainer } from '@/services/vocabTrainer/useDeleteVocabTrainer';
-import { useGetAllVocabTrainer } from '@/services/vocabTrainer/useGetAllVocabTrainer';
-import { usePostQuestion } from '@/services/vocabTrainer/usePostQuestion';
-import { usePostVocabTrainer } from '@/services/vocabTrainer/usePostVocabTrainer';
-import { convertOrderBy } from '@/utils';
+import { AlertDialog } from '@/components/alertDialog'
+import { Badge } from '@/components/badge'
+import Button from '@/components/button'
+import HeaderTable from '@/components/headerTable'
+import { Loader } from '@/components/loader'
+import { Modal } from '@/components/modal'
+import Table from '@/components/table'
+import { cn } from '@/lib/utils'
+import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer'
+import { RootState } from '@/redux/store'
+import { useDeleteMultiVocabTrainer } from '@/services/vocabTrainer/useDeleteMultiVocabTrainer'
+import { useDeleteVocabTrainer } from '@/services/vocabTrainer/useDeleteVocabTrainer'
+import { useGetAllVocabTrainer } from '@/services/vocabTrainer/useGetAllVocabTrainer'
+import { usePostQuestion } from '@/services/vocabTrainer/usePostQuestion'
+import { usePostVocabTrainer } from '@/services/vocabTrainer/usePostVocabTrainer'
+import { convertOrderBy } from '@/utils'
 import {
   LIMIT_PAGE_10,
   ROUTER_VOCAB_TRAINER,
-  colorData,
-} from '@/utils/constants';
+  colorData
+} from '@/utils/constants'
 import {
   IconCircleFilled,
   IconEye,
   IconTextGrammar,
-  IconTrash,
-} from '@tabler/icons-react';
+  IconTrash
+} from '@tabler/icons-react'
 import {
   ColumnDef,
   SortingState,
   getCoreRowModel,
-  getSortedRowModel,
-} from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useSearchParams } from 'react-router-dom';
-import { IndeterminateCheckbox } from '../vocab/components/checkbox';
-import { DetailTable } from './components/detailTable';
-import { ToolBar } from './components/toolBar';
-import { TVocabTrainer } from './types';
+  getSortedRowModel
+} from '@tanstack/react-table'
+import { format } from 'date-fns'
+import { useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { IndeterminateCheckbox } from '../vocab/components/checkbox'
+import { DetailTable } from './components/detailTable'
+import { ToolBar } from './components/toolBar'
+import { TVocabTrainer } from './types'
 
 const VocabTrainer = () => {
-  const { pathname } = useLocation();
-  const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [rowSelection, setRowSelection] = useState({});
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [isDeleteMulti, setIsDeleteMulti] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [openDetailModal, setOpenDetailModal] = useState(false);
-  const { mutate: mutatePost, isLoading: isLoadingPost } =
-    usePostVocabTrainer();
+  const { pathname } = useLocation()
+  const dispatch = useDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [rowSelection, setRowSelection] = useState({})
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [isDeleteMulti, setIsDeleteMulti] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
+  const [openDetailModal, setOpenDetailModal] = useState(false)
+  const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocabTrainer()
   const { mutate: mutateDelete, isLoading: isLoadingDelete } =
-    useDeleteVocabTrainer();
+    useDeleteVocabTrainer()
   const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
-    useDeleteMultiVocabTrainer();
+    useDeleteMultiVocabTrainer()
   const { mutate: mutateQuestion, isLoading: isLoadingQuestion } =
-    usePostQuestion();
+    usePostQuestion()
 
-  const counts = Object.keys(rowSelection).length;
+  const counts = Object.keys(rowSelection).length
   const { isOpenModalState, searchVocabTrainer, filterData, itemVocabTrainer } =
-    useSelector((state: RootState) => state.vocabTrainerReducer);
+    useSelector((state: RootState) => state.vocabTrainerReducer)
 
   const { data, isLoading } = useGetAllVocabTrainer({
     page: searchParams.get('page') ?? '1',
@@ -68,33 +67,33 @@ const VocabTrainer = () => {
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
     statusFilter: filterData.status ?? [],
-    search: searchVocabTrainer || undefined,
-  });
+    search: searchVocabTrainer || undefined
+  })
   const isURLVocabTrainer =
-    pathname === ROUTER_VOCAB_TRAINER && isOpenModalState;
+    pathname === ROUTER_VOCAB_TRAINER && isOpenModalState
 
   const handleOnYes = (id?: string) => {
     if (isDeleteMulti) {
       // Loop find value === true and return [ids]
       const mappedIds: string[] = Object.entries(rowSelection).map(
         ([key, value]) => {
-          return value ? key : '';
+          return value ? key : ''
         }
-      );
-      setRowSelection({});
-      return mutateDeleteMulti(mappedIds);
+      )
+      setRowSelection({})
+      return mutateDeleteMulti(mappedIds)
     }
-    return mutateDelete(id ?? '');
-  };
+    return mutateDelete(id ?? '')
+  }
 
   useEffect(() => {
-    if (isURLVocabTrainer) return;
+    if (isURLVocabTrainer) return
     return setSearchParams({
       page: searchParams.get('page') ?? '1',
-      limit: LIMIT_PAGE_10,
-    });
+      limit: LIMIT_PAGE_10
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const columns = useMemo<ColumnDef<TVocabTrainer>[]>(
     () => [
@@ -107,7 +106,7 @@ const VocabTrainer = () => {
             {...{
               checked: table.getIsAllRowsSelected(),
               indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler(),
+              onChange: table.getToggleAllRowsSelectedHandler()
             }}
           />
         ),
@@ -117,117 +116,115 @@ const VocabTrainer = () => {
               checked: row.getIsSelected(),
               disabled: !row.getCanSelect(),
               indeterminate: row.getIsSomeSelected(),
-              onChange: row.getToggleSelectedHandler(),
+              onChange: row.getToggleSelectedHandler()
             }}
           />
-        ),
+        )
       },
       {
         accessorKey: 'nameTest',
-        header: 'Name',
+        header: 'Name'
       },
       {
         accessorKey: 'statusTest',
         header: 'Status',
         cell: ({ getValue }) => {
-          const findColor = colorData.find(
-            (item) => item.status === getValue()
-          );
+          const findColor = colorData.find(item => item.status === getValue())
           return (
             <Badge
               style={{
                 backgroundColor: findColor?.background,
-                color: findColor?.text,
+                color: findColor?.text
               }}
             >
-              <div className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 <IconCircleFilled
                   style={{ color: findColor?.dot }}
-                  size='0.5rem'
+                  size="0.5rem"
                 />
                 <div> {String(getValue())}</div>
               </div>
             </Badge>
-          );
-        },
+          )
+        }
       },
       {
         accessorKey: 'duration',
         header: 'Duration',
-        cell: ({ getValue }) => (getValue() ? getValue() : '00:00') + 's',
+        cell: ({ getValue }) => (getValue() ? getValue() : '00:00') + 's'
       },
       {
         accessorKey: 'countTime',
-        header: 'Count',
+        header: 'Count'
       },
       {
         accessorKey: 'updatedAt',
         header: 'Updated Date',
         cell: ({ getValue }) =>
-          format(new Date(String(getValue())), 'dd/MM/yyyy'),
+          format(new Date(String(getValue())), 'dd/MM/yyyy')
       },
       {
         enableSorting: false,
         id: 'action',
         cell: ({ row }) => (
-          <div className='flex gap-3 items-center w-0'>
+          <div className="flex gap-3 items-center w-0">
             <Button
-            type='button'
-              className='h-6 w-6'
-              size='icon'
-              variant='ghost'
+              type="button"
+              className="h-6 w-6"
+              size="icon"
+              variant="ghost"
               leftIcon={
                 <IconEye
                   onClick={() => {
-                    dispatch(setItemVocabTrainerState(row.original));
-                    setOpenDetailModal(true);
+                    dispatch(setItemVocabTrainerState(row.original))
+                    setOpenDetailModal(true)
                   }}
-                  className='text-gray-400 hover:text-gray-500'
+                  className="text-gray-400 hover:text-gray-500"
                 />
               }
             />
             <Button
-            type='button'
+              type="button"
               onClick={() => {
-                mutateQuestion(row.original._id);
-                localStorage.setItem('examId', row.original._id);
+                mutateQuestion(row.original._id)
+                localStorage.setItem('examId', row.original._id)
               }}
-              className='h-6 w-6'
-              size='icon'
-              variant='ghost'
+              className="h-6 w-6"
+              size="icon"
+              variant="ghost"
               leftIcon={
-                <IconTextGrammar className='text-gray-400 hover:text-gray-500' />
+                <IconTextGrammar className="text-gray-400 hover:text-gray-500" />
               }
             />
             <AlertDialog
               head={
                 <Button
-                type='button'
-                  className='h-6 w-6'
-                  size='icon'
-                  variant='ghost'
+                  type="button"
+                  className="h-6 w-6"
+                  size="icon"
+                  variant="ghost"
                   leftIcon={
-                    <IconTrash className='text-gray-400 hover:text-gray-500' />
+                    <IconTrash className="text-gray-400 hover:text-gray-500" />
                   }
                 />
               }
               onYes={() => handleOnYes(row.original._id)}
             />
           </div>
-        ),
-      },
+        )
+      }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
-  );
+  )
 
   if (isLoadingQuestion) {
-    return <Loader />;
+    return <Loader />
   }
 
   return (
     <HeaderTable
-      headText='Vocab Trainer'
+      headText="Vocab Trainer"
       bodyText={
         'These are the results of your tests but it is not final, you can do more.'
       }
@@ -242,21 +239,21 @@ const VocabTrainer = () => {
               )}
             >
               {counts > 0 && (
-                <div className='text-xs'>{counts} row(s) selected</div>
+                <div className="text-xs">{counts} row(s) selected</div>
               )}
-              <div className='flex justify-center items-center gap-1'>
+              <div className="flex justify-center items-center gap-1">
                 {counts > 0 && (
                   <AlertDialog
                     head={
                       <Button
-                      type='button'
+                        type="button"
                         onClick={() => setIsDeleteMulti(true)}
-                        variant='ghost'
+                        variant="ghost"
                         title={`Delete (${counts})`}
-                        leftIcon={<IconTrash className='mr-2 text-customRed' />}
+                        leftIcon={<IconTrash className="mr-2 text-customRed" />}
                       />
                     }
-                    title='Do you want to delete these?'
+                    title="Do you want to delete these?"
                     onYes={handleOnYes}
                   />
                 )}
@@ -270,7 +267,7 @@ const VocabTrainer = () => {
                 />
               </div>
             </div>
-          ),
+          )
         }}
         isLoading={
           isLoading || isLoadingPost || isLoadingDelete || isLoadingDeleteMulti
@@ -279,32 +276,32 @@ const VocabTrainer = () => {
         paginations={{
           currentPage: data?.currentPage ?? 1,
           totalItems: data?.totalItems ?? 1,
-          totalPages: data?.totalPages ?? 1,
+          totalPages: data?.totalPages ?? 1
         }}
         options={{
           data: data?.data ?? [],
           columns: columns,
           state: {
             rowSelection,
-            sorting,
+            sorting
           },
           getSortedRowModel: getSortedRowModel(),
           getCoreRowModel: getCoreRowModel(),
           onRowSelectionChange: setRowSelection,
-          getRowId: (row) => row._id,
-          onSortingChange: setSorting,
+          getRowId: row => row._id,
+          onSortingChange: setSorting
         }}
       />
       <Modal
-        title='Result Detail'
-        description='Here are details about your test results latest.'
+        title="Result Detail"
+        description="Here are details about your test results latest."
         open={openDetailModal}
         onOpenChange={setOpenDetailModal}
         body={<DetailTable data={itemVocabTrainer.wordResults} />}
-        className='w-full max-w-[100vh] !max-h-[85vh] overflow-x-auto'
+        className="w-full max-w-[100vh] !max-h-[85vh] overflow-x-auto"
       />
     </HeaderTable>
-  );
-};
+  )
+}
 
-export default VocabTrainer;
+export default VocabTrainer

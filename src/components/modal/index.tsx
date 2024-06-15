@@ -1,19 +1,19 @@
-import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { ReactNode } from "react";
+import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { ReactNode } from 'react'
 import {
   DialogContent,
   DialogHeader,
   DialogLib,
   DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+  DialogTrigger
+} from '../ui/dialog'
 
 type TModal = {
-  head?: ReactNode;
-  body: ReactNode;
-  title?: string;
-  description?: string;
-};
+  head?: ReactNode
+  body: ReactNode
+  title?: string
+  description?: string
+}
 
 export const Modal = ({
   head,
@@ -29,7 +29,7 @@ export const Modal = ({
   return (
     <DialogLib open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{head}</DialogTrigger>
-      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} {...props}>
+      <DialogContent onOpenAutoFocus={e => e.preventDefault()} {...props}>
         <DialogHeader>
           {title && (
             <DialogTitle>
@@ -54,5 +54,5 @@ export const Modal = ({
         </DialogFooter> */}
       </DialogContent>
     </DialogLib>
-  );
-};
+  )
+}

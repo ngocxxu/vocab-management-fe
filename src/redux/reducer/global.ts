@@ -1,23 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { RowSelectionState } from "@tanstack/react-table";
+import { createSlice } from '@reduxjs/toolkit'
+import { RowSelectionState } from '@tanstack/react-table'
 
 type TInitialStateGlobal = {
-  rowSelectionState: RowSelectionState;
-};
+  rowSelectionState: RowSelectionState
+}
 
 const initialState: TInitialStateGlobal = {
-  rowSelectionState: {},
-};
+  rowSelectionState: {}
+}
 
 const globalReducer = createSlice({
-  name: "globalReducer",
+  name: 'globalReducer',
   initialState,
   reducers: {
     setRowSelectionState(state, action) {
-      state.rowSelectionState = action.payload;
-    },
-  },
-});
-const { actions, reducer } = globalReducer;
-export const { setRowSelectionState } = actions;
-export default reducer;
+      state.rowSelectionState = action.payload
+    }
+  }
+})
+const { actions, reducer } = globalReducer
+export const { setRowSelectionState } = actions
+export default reducer

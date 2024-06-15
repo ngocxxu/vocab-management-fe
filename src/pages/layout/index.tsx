@@ -1,33 +1,33 @@
-import { Outlet, useLocation } from 'react-router-dom';
-import Footer from '../../components/footer';
-import './style.scss';
-import Header from '../../components/header';
-import { useEffect } from 'react';
+import { useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
+import Footer from '../../components/footer'
+import Header from '../../components/header'
+import './style.scss'
 
 const Layout = () => {
-  const location = useLocation();
+  const location = useLocation()
 
   useEffect(() => {
-    const currentPath = location.pathname;
+    const currentPath = location.pathname
 
     if (
       currentPath !== '/vocab-trainer/examination' &&
       currentPath !== '/vocab-trainer/examination/result'
     ) {
-      localStorage.removeItem('examId');
-      localStorage.removeItem('questions');
+      localStorage.removeItem('examId')
+      localStorage.removeItem('questions')
     }
-  }, [location.pathname]);
+  }, [location.pathname])
 
   return (
     <>
-      <div className='layout'>
+      <div className="layout">
         <Header />
         <Outlet />
       </div>
       <Footer />
     </>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

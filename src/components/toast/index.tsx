@@ -1,7 +1,7 @@
-import { Toaster } from "../ui/toaster";
+import { Toaster } from '../ui/toaster'
 
 const Notification = () => {
-  return <Toaster />;
-};
+  return <Toaster />
+}
 
-export default Notification;
+export default Notification

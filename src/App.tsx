@@ -1,17 +1,17 @@
-import { initializeApp } from 'firebase/app';
-import { Suspense, lazy } from 'react';
-import { useRoutes } from 'react-router-dom';
-import './App.scss';
-import HeaderTable from './components/headerTable';
-import { Loader } from './components/loader';
-import Dashboard from './pages/dashboard';
-import { ErrorTemplate } from './pages/error';
-import History from './pages/history';
-import Vocab from './pages/vocab';
-import VocabTrainer from './pages/vocab-trainer';
-import { Question } from './pages/vocab-trainer/components/question';
-import { ResultStatistic } from './pages/vocab-trainer/components/resultStatistic';
-import ChatGPT from './pages/chat-gpt';
+import { initializeApp } from 'firebase/app'
+import { Suspense, lazy } from 'react'
+import { useRoutes } from 'react-router-dom'
+import './App.scss'
+import HeaderTable from './components/headerTable'
+import { Loader } from './components/loader'
+import ChatGPT from './pages/chat-gpt'
+import Dashboard from './pages/dashboard'
+import { ErrorTemplate } from './pages/error'
+import History from './pages/history'
+import Vocab from './pages/vocab'
+import VocabTrainer from './pages/vocab-trainer'
+import { Question } from './pages/vocab-trainer/components/question'
+import { ResultStatistic } from './pages/vocab-trainer/components/resultStatistic'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAhopedDbZte4fXSGgg5onc9iOxiqYBZN4',
@@ -19,12 +19,12 @@ const firebaseConfig = {
   projectId: 'vocab-management',
   storageBucket: 'vocab-management.appspot.com',
   messagingSenderId: '314055413964',
-  appId: '1:314055413964:web:ceb855a96a28cf1403f269',
-};
+  appId: '1:314055413964:web:ceb855a96a28cf1403f269'
+}
 
-initializeApp(firebaseConfig);
+initializeApp(firebaseConfig)
 
-const LayoutLazy = lazy(() => import('./pages/layout'));
+const LayoutLazy = lazy(() => import('./pages/layout'))
 function App() {
   const routes = [
     {
@@ -40,7 +40,7 @@ function App() {
           path: '/vocab',
           element: (
             <HeaderTable
-              headText='Vocabulary List'
+              headText="Vocabulary List"
               bodyText={
                 <>
                   Let your second world be opened up thanks to the vocabulary
@@ -51,24 +51,24 @@ function App() {
             >
               <Vocab />
             </HeaderTable>
-          ),
+          )
         },
         { path: '/vocab-trainer', element: <VocabTrainer /> },
         { path: '/vocab-trainer/examination', element: <Question /> },
         {
           path: '/vocab-trainer/examination/result',
-          element: <ResultStatistic />,
+          element: <ResultStatistic />
         },
         { path: '/history', element: <History /> },
-        { path: '/chat-gpt', element: <ChatGPT /> },
-      ],
+        { path: '/chat-gpt', element: <ChatGPT /> }
+      ]
     },
-    { path: '*', element: <ErrorTemplate /> },
-  ];
+    { path: '*', element: <ErrorTemplate /> }
+  ]
 
-  const element = useRoutes(routes);
+  const element = useRoutes(routes)
 
-  return <>{element}</>;
+  return <>{element}</>
 }
 
-export default App;
+export default App

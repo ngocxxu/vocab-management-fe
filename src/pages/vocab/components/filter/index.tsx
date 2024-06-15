@@ -1,29 +1,29 @@
-import GroupButton from '@/components/button/GroupButton';
-import { Checkbox } from '@/components/checkbox';
-import MultiSelect from '@/components/multiselect';
-import { Separator } from '@/components/ui/separator';
-import { Fragment } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { statusList, subjectList } from '../../constants';
-import { ROUTER_VOCAB_TRAINER } from '@/utils/constants';
-import { useLocation } from 'react-router-dom';
+import GroupButton from '@/components/button/GroupButton'
+import { Checkbox } from '@/components/checkbox'
+import MultiSelect from '@/components/multiselect'
+import { Separator } from '@/components/ui/separator'
+import { ROUTER_VOCAB_TRAINER } from '@/utils/constants'
+import { Fragment } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
+import { useLocation } from 'react-router-dom'
+import { statusList, subjectList } from '../../constants'
 
 type TFilter = {
-  onClose: () => void;
-};
+  onClose: () => void
+}
 
 export const Filter = ({ onClose }: TFilter) => {
-  const { control } = useFormContext();
-  const { pathname } = useLocation();
-  const isURLVocabTrainer = pathname === ROUTER_VOCAB_TRAINER;
+  const { control } = useFormContext()
+  const { pathname } = useLocation()
+  const isURLVocabTrainer = pathname === ROUTER_VOCAB_TRAINER
 
   return (
-    <div className='flex flex-col gap-3'>
+    <div className="flex flex-col gap-3">
       {!isURLVocabTrainer && (
         <div>
-          <p className='mb-2'>Subject</p>
+          <p className="mb-2">Subject</p>
           <Controller
-            name='subject'
+            name="subject"
             control={control}
             render={({ field }) => (
               <MultiSelect options={subjectList} {...field} />
@@ -33,18 +33,18 @@ export const Filter = ({ onClose }: TFilter) => {
       )}
 
       <div>
-        <p className='mb-2'>Status</p>
+        <p className="mb-2">Status</p>
         <Controller
-          name='status'
+          name="status"
           control={control}
           render={({ field }) => {
             return (
-              <div className='flex items-center justify-between'>
+              <div className="flex items-center justify-between">
                 {statusList.map(({ label, value }) => (
                   <Fragment key={label}>
                     <Checkbox
                       checked={field.value?.includes(value)}
-                      onCheckedChange={(checked) => {
+                      onCheckedChange={checked => {
                         return checked
                           ? field.onChange(
                               field.value && [...field.value, value]
@@ -53,7 +53,7 @@ export const Filter = ({ onClose }: TFilter) => {
                               field.value?.filter(
                                 (val: string) => val !== value
                               )
-                            );
+                            )
                       }}
                       label={label}
                       {...field}
@@ -61,15 +61,15 @@ export const Filter = ({ onClose }: TFilter) => {
                   </Fragment>
                 ))}
               </div>
-            );
+            )
           }}
         />
       </div>
 
-      <Separator className='my-2' />
-      <div className='flex justify-end items-center mr-16'>
-        <GroupButton variantNo='ghost' onClose={onClose} />
+      <Separator className="my-2" />
+      <div className="flex justify-end items-center mr-16">
+        <GroupButton variantNo="ghost" onClose={onClose} />
       </div>
     </div>
-  );
-};
+  )
+}

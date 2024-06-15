@@ -5,16 +5,16 @@ import {
   DialogHeader,
   DialogLib,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { ReactNode } from "react";
+  DialogTrigger
+} from '@/components/ui/dialog'
+import { ReactNode } from 'react'
 
 type TDialog = {
-  head: ReactNode;
-  body: ReactNode;
-  foot: ReactNode;
-  label: string;
-};
+  head: ReactNode
+  body: ReactNode
+  foot: ReactNode
+  label: string
+}
 
 export function Dialog({ head, foot, label, body }: TDialog) {
   return (
@@ -28,5 +28,5 @@ export function Dialog({ head, foot, label, body }: TDialog) {
         <DialogFooter>{foot}</DialogFooter>
       </DialogContent>
     </DialogLib>
-  );
+  )
 }

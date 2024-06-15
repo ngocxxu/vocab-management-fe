@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 // // import Commerce from '@chec/commerce.js';
 
 export const STATUS_CODES = {
@@ -6,12 +6,12 @@ export const STATUS_CODES = {
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOTFOUND: 404,
-  SERVER_ERROR: 500,
-};
+  SERVER_ERROR: 500
+}
 
-export const ACCESSTOKEN = 'accessToken';
-export const REFRESHTOKEN = 'refreshToken';
-export const API_URL = import.meta.env.VITE_APP_API_URL;
+export const ACCESSTOKEN = 'accessToken'
+export const REFRESHTOKEN = 'refreshToken'
+export const API_URL = import.meta.env.VITE_APP_API_URL
 
 //setup axios interceptor
 export const httpClient = axios.create({
@@ -19,9 +19,9 @@ export const httpClient = axios.create({
   timeout: 30000, //Thời gian tối đa chờ response trả về
   headers: {
     'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
-});
+    Accept: 'application/json'
+  }
+})
 
 httpClient.interceptors.request.use(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,11 +32,11 @@ httpClient.interceptors.request.use(
         localStorage.getItem(ACCESSTOKEN)
           ? 'Bearer ' + JSON.parse(localStorage.getItem(ACCESSTOKEN) || '')
           : ''
-      }`,
-    };
-    return config;
+      }`
+    }
+    return config
   },
-  async (error) => {
-    return Promise.reject({ error });
+  async error => {
+    return Promise.reject({ error })
   }
-);
+)

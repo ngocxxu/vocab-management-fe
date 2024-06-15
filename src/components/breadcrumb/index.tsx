@@ -1,31 +1,31 @@
-import React from 'react';
-import './style.scss';
+import React from 'react'
+import './style.scss'
 
 const items = [
   {
-    title: 'Home',
+    title: 'Home'
   },
   {
     title: 'Application Center',
-    href: '',
+    href: ''
   },
   {
     title: 'Application List',
-    href: '',
+    href: ''
   },
   {
-    title: 'An Application',
-  },
+    title: 'An Application'
+  }
 ].map((item, index) => (
   <a href={item.href} key={index}>
     {item.title}
   </a>
-));
+))
 
 const BreadcrumbCustom: React.FC = () => (
-  <div className='text-sm breadcrumbs'>
+  <div className="text-sm breadcrumbs">
     <ul>{items}</ul>
   </div>
-);
+)
 
-export default BreadcrumbCustom;
+export default BreadcrumbCustom

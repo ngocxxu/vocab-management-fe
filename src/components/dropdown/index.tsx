@@ -1,24 +1,24 @@
-import { Fragment, ReactNode } from "react";
+import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
+import { DropdownMenuProps } from '@radix-ui/react-dropdown-menu'
+import { Fragment, ReactNode } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { DropdownMenuProps } from "@radix-ui/react-dropdown-menu";
-import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+  DropdownMenuTrigger
+} from '../ui/dropdown-menu'
 
 type DropdownCustom = {
-  head: ReactNode;
-  label: string;
+  head: ReactNode
+  label: string
   list: {
-    icon?: ReactNode;
-    body: ReactNode;
-    separator?: boolean;
-  }[];
-};
+    icon?: ReactNode
+    body: ReactNode
+    separator?: boolean
+  }[]
+}
 
 const DropDownCustom = ({
   head,
@@ -42,7 +42,7 @@ const DropDownCustom = ({
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-};
+  )
+}
 
-export default DropDownCustom;
+export default DropDownCustom

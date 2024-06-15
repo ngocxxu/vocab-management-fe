@@ -1,13 +1,13 @@
-import { ReactNode } from 'react';
-import { TabsContent, TabsLib, TabsList, TabsTrigger } from '../ui/tabs';
+import { ReactNode } from 'react'
+import { TabsContent, TabsLib, TabsList, TabsTrigger } from '../ui/tabs'
 
 type TTabs = {
-  head: { content: ReactNode; value: string }[];
+  head: { content: ReactNode; value: string }[]
   body?: {
-    content: ReactNode;
-    value: string;
-  }[];
-};
+    content: ReactNode
+    value: string
+  }[]
+}
 
 export const Tabs = ({ head, body }: TTabs) => {
   return (
@@ -25,7 +25,7 @@ export const Tabs = ({ head, body }: TTabs) => {
           </TabsContent>
         ))}
 
-      <TabsContent value='password'>Change your password here.</TabsContent>
+      <TabsContent value="password">Change your password here.</TabsContent>
     </TabsLib>
-  );
-};
+  )
+}

@@ -1,59 +1,59 @@
-import { Fragment } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
-import { LIMIT_PAGE_10, ROUTER_VOCAB_TRAINER } from "../../utils/constants";
-import { TPagination } from "../../utils/types";
-import clsx from "clsx";
-import { ButtonLib } from "../ui/button";
-import { useDispatch, useSelector } from "react-redux";
-import { setPaginationVocabState } from "@/redux/reducer/vocab";
-import { RootState } from "@/redux/store";
+import { setPaginationVocabState } from '@/redux/reducer/vocab'
+import { RootState } from '@/redux/store'
+import clsx from 'clsx'
+import { Fragment } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import { LIMIT_PAGE_10, ROUTER_VOCAB_TRAINER } from '../../utils/constants'
+import { TPagination } from '../../utils/types'
+import { ButtonLib } from '../ui/button'
 
-type TPaginationProps = { paginations: TPagination };
+type TPaginationProps = { paginations: TPagination }
 
 const Pagination = ({ paginations }: TPaginationProps) => {
-  const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const { currentPage, totalPages } = paginations;
-  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch()
+  const { pathname } = useLocation()
+  const { currentPage, totalPages } = paginations
+  const [searchParams, setSearchParams] = useSearchParams()
   const { paginationVocabState } = useSelector(
     (state: RootState) => state.vocabReducer
-  );
+  )
   const { isOpenModalState } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
-  );
+  )
   const isURLVocabTrainer =
-    pathname === ROUTER_VOCAB_TRAINER && isOpenModalState;
+    pathname === ROUTER_VOCAB_TRAINER && isOpenModalState
 
   const onPageChange = (newPageNumber: number) => {
     isURLVocabTrainer
       ? dispatch(
           setPaginationVocabState({
             page: String(newPageNumber),
-            limit: LIMIT_PAGE_10,
+            limit: LIMIT_PAGE_10
           })
         )
       : setSearchParams({
           page: String(newPageNumber),
-          limit: LIMIT_PAGE_10,
-        });
-  };
+          limit: LIMIT_PAGE_10
+        })
+  }
 
   const getPagesToShow = () => {
-    const adjacentPageCount = 2; // Số trang xung quanh trang hiện tại
-    const pagesToShow: (number | null)[] = [];
+    const adjacentPageCount = 2 // Số trang xung quanh trang hiện tại
+    const pagesToShow: (number | null)[] = []
 
     const addPage = (pageNumber: number) => {
       if (
         pagesToShow.length > 0 &&
         pageNumber - pagesToShow[pagesToShow.length - 1]! > 1
       ) {
-        pagesToShow.push(null);
+        pagesToShow.push(null)
       }
-      pagesToShow.push(pageNumber);
-    };
+      pagesToShow.push(pageNumber)
+    }
 
     // Thêm trang đầu tiên
-    addPage(1);
+    addPage(1)
 
     // Thêm trang hiện tại và các trang xung quanh nó
     for (
@@ -62,15 +62,15 @@ const Pagination = ({ paginations }: TPaginationProps) => {
       i++
     ) {
       if (i > 1 && i < totalPages) {
-        addPage(i);
+        addPage(i)
       }
     }
 
     // Thêm trang cuối cùng
-    totalPages > 1 && addPage(totalPages);
+    totalPages > 1 && addPage(totalPages)
 
-    return pagesToShow;
-  };
+    return pagesToShow
+  }
 
   return (
     <div className="flex items-center justify-end gap-1 mt-4">
@@ -82,7 +82,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
             ? dispatch(
                 setPaginationVocabState({
                   page: String(1),
-                  limit: LIMIT_PAGE_10,
+                  limit: LIMIT_PAGE_10
                 })
               )
             : setSearchParams({ page: String(1), limit: LIMIT_PAGE_10 })
@@ -99,12 +99,12 @@ const Pagination = ({ paginations }: TPaginationProps) => {
             ? dispatch(
                 setPaginationVocabState({
                   page: String(currentPage - 1),
-                  limit: LIMIT_PAGE_10,
+                  limit: LIMIT_PAGE_10
                 })
               )
             : setSearchParams({
                 page: String(currentPage - 1),
-                limit: LIMIT_PAGE_10,
+                limit: LIMIT_PAGE_10
               })
         }
         disabled={currentPage === 1}
@@ -123,15 +123,15 @@ const Pagination = ({ paginations }: TPaginationProps) => {
               variant="outline"
               onClick={() => onPageChange(pageNumber)}
               className={clsx(
-                "h-7 px-2.5",
+                'h-7 px-2.5',
                 pageNumber ===
                   parseInt(
                     isURLVocabTrainer
                       ? paginationVocabState.page
-                      : searchParams.get("page")!
+                      : searchParams.get('page')!
                   )
-                  ? "active bg-customBlue text-white"
-                  : ""
+                  ? 'active bg-customBlue text-white'
+                  : ''
               )}
             >
               {pageNumber}
@@ -146,7 +146,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         onClick={() =>
           setSearchParams({
             page: String(currentPage + 1),
-            limit: LIMIT_PAGE_10,
+            limit: LIMIT_PAGE_10
           })
         }
         disabled={currentPage === totalPages}
@@ -159,7 +159,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         onClick={() =>
           setSearchParams({
             page: String(totalPages),
-            limit: LIMIT_PAGE_10,
+            limit: LIMIT_PAGE_10
           })
         }
         disabled={currentPage === totalPages}
@@ -167,7 +167,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         »
       </ButtonLib>
     </div>
-  );
-};
+  )
+}
 
-export default Pagination;
+export default Pagination

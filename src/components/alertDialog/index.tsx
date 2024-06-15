@@ -7,19 +7,19 @@ import {
   AlertDialogHeader,
   AlertDialogLib,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { AlertDialogProps } from '@radix-ui/react-alert-dialog';
-import { ReactNode } from 'react';
+  AlertDialogTrigger
+} from '@/components/ui/alert-dialog'
+import { AlertDialogProps } from '@radix-ui/react-alert-dialog'
+import { ReactNode } from 'react'
 
 type TAlertDialog = {
-  head?: ReactNode;
-  title?: string;
-  onYes?: () => void;
-  onNo?: () => void;
-  content?: string;
-  titleBtn?: string;
-};
+  head?: ReactNode
+  title?: string
+  onYes?: () => void
+  onNo?: () => void
+  content?: string
+  titleBtn?: string
+}
 
 export function AlertDialog({
   head,
@@ -29,7 +29,7 @@ export function AlertDialog({
   onNo,
   open,
   onOpenChange,
-  titleBtn = 'Delete',
+  titleBtn = 'Delete'
 }: TAlertDialog & AlertDialogProps) {
   return (
     <AlertDialogLib open={open} onOpenChange={onOpenChange}>
@@ -45,5 +45,5 @@ export function AlertDialog({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialogLib>
-  );
+  )
 }

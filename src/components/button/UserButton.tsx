@@ -1,22 +1,22 @@
-import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react';
-import DropDownCustom from '../dropdown';
-import classes from './button.module.css';
-import Avatar from '../avatar';
+import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react'
+import Avatar from '../avatar'
+import DropDownCustom from '../dropdown'
+import classes from './button.module.css'
 
 const list = [
   {
-    icon: <IconUser size='1rem' />,
-    body: 'Profile',
+    icon: <IconUser size="1rem" />,
+    body: 'Profile'
   },
   {
-    icon: <IconSettings size='1rem' />,
-    body: 'Settings',
+    icon: <IconSettings size="1rem" />,
+    body: 'Settings'
   },
   {
-    icon: <IconLogout size='1rem' className={classes.iconLogout} />,
-    body: 'Logout',
-  },
-];
+    icon: <IconLogout size="1rem" className={classes.iconLogout} />,
+    body: 'Logout'
+  }
+]
 
 // const MenuItem = () => {
 //   return (
@@ -38,16 +38,16 @@ const list = [
 const UserButton = () => {
   return (
     <DropDownCustom
-      label='Menu'
+      label="Menu"
       head={
-        <div className='flex justify-center items-center gap-2'>
+        <div className="flex justify-center items-center gap-2">
           <Avatar>R</Avatar>
-          <p className='font-semibold'>Ranie</p>
+          <p className="font-semibold">Ranie</p>
         </div>
       }
       list={list}
     />
-  );
-};
+  )
+}
 
-export default UserButton;
+export default UserButton

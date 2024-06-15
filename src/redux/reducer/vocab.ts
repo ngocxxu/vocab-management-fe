@@ -1,110 +1,110 @@
-import { TFormInputsFilter } from "@/pages/vocab/components/toolBar";
-import { TVocab } from "@/pages/vocab/types";
-import { defaultStatus } from "@/utils/constants";
-import { TPage } from "@/utils/types";
-import { createSlice } from "@reduxjs/toolkit";
+import { TFormInputsFilter } from '@/pages/vocab/components/toolBar'
+import { TVocab } from '@/pages/vocab/types'
+import { defaultStatus } from '@/utils/constants'
+import { TPage } from '@/utils/types'
+import { createSlice } from '@reduxjs/toolkit'
 
 type TItemsShow = {
-  idRow: string;
-  idxExample: number;
-};
+  idRow: string
+  idxExample: number
+}
 
 type TInitialStateVocab = {
-  itemVocab: TVocab;
-  idVocabState: string;
-  idsState: string[];
-  isToggle: boolean;
-  itemsShow: TItemsShow[];
-  filterData: TFormInputsFilter;
-  searchVocab: string;
-  paginationVocabState: TPage;
-};
+  itemVocab: TVocab
+  idVocabState: string
+  idsState: string[]
+  isToggle: boolean
+  itemsShow: TItemsShow[]
+  filterData: TFormInputsFilter
+  searchVocab: string
+  paginationVocabState: TPage
+}
 
 const initialState: TInitialStateVocab = {
   itemVocab: {
-    _id: "",
-    sourceLanguage: "",
-    targetLanguage: "",
-    textSource: "",
-    textTarget: [],
+    _id: '',
+    sourceLanguage: '',
+    targetLanguage: '',
+    textSource: '',
+    textTarget: []
   },
-  idVocabState: "",
+  idVocabState: '',
   idsState: [],
   isToggle: false,
   itemsShow: [],
   filterData: {
     subject: [],
-    status: defaultStatus,
+    status: defaultStatus
   },
-  searchVocab: "",
+  searchVocab: '',
   paginationVocabState: {
-    page: "1",
-    limit: "10",
-  },
-};
+    page: '1',
+    limit: '10'
+  }
+}
 
 const vocabReducer = createSlice({
-  name: "vocabReducer",
+  name: 'vocabReducer',
   initialState,
   reducers: {
     resetFilterState(state) {
-      state.searchVocab = "";
+      state.searchVocab = ''
       state.filterData = {
         subject: [],
-        status: defaultStatus,
-      };
+        status: defaultStatus
+      }
     },
     setPaginationVocabState(state, action) {
-      state.paginationVocabState = action.payload;
+      state.paginationVocabState = action.payload
     },
     setSearchVocabState(state, action) {
-      state.searchVocab = action.payload;
+      state.searchVocab = action.payload
     },
     setFilterVocabState(state, action) {
-      state.filterData = action.payload;
+      state.filterData = action.payload
     },
     setItemVocabState(state, action) {
-      state.itemVocab = action.payload;
+      state.itemVocab = action.payload
     },
     setIdVocabState(state, action) {
-      state.idVocabState = action.payload;
+      state.idVocabState = action.payload
     },
     toggleState(state, action) {
-      const { id } = action.payload;
+      const { id } = action.payload
       if (!state.idsState.includes(id)) {
-        state.idsState = [...state.idsState, id];
+        state.idsState = [...state.idsState, id]
       } else {
-        state.idsState = state.idsState.filter((item) => item !== id);
+        state.idsState = state.idsState.filter(item => item !== id)
       }
     },
     setItemsShowState(state, action) {
-      const { idRow, idxExample } = action.payload;
+      const { idRow, idxExample } = action.payload
       if (
         state.itemsShow.find(
-          (item) => item.idRow === idRow && item.idxExample === idxExample
+          item => item.idRow === idRow && item.idxExample === idxExample
         )
       ) {
         // Delete item
         state.itemsShow = state.itemsShow.filter(
-          (item) =>
+          item =>
             (item.idRow === idRow && item.idxExample !== idxExample) ||
             (item.idRow !== idRow && item.idxExample !== idxExample) ||
             (item.idRow !== idRow && item.idxExample === idxExample)
-        );
+        )
       } else {
         // Add item
         state.itemsShow = [
           ...state.itemsShow,
           {
             idRow,
-            idxExample,
-          },
-        ];
+            idxExample
+          }
+        ]
       }
-    },
-  },
-});
-const { actions, reducer } = vocabReducer;
+    }
+  }
+})
+const { actions, reducer } = vocabReducer
 export const {
   toggleState,
   setItemsShowState,
@@ -113,6 +113,6 @@ export const {
   setFilterVocabState,
   setSearchVocabState,
   resetFilterState,
-  setPaginationVocabState,
-} = actions;
-export default reducer;
+  setPaginationVocabState
+} = actions
+export default reducer

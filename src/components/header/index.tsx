@@ -1,12 +1,12 @@
-import HeaderTop from "./HeaderTop";
-import "./style.scss";
+import HeaderTop from './HeaderTop'
+import './style.scss'
 
 const Header = () => {
   return (
     <div className="header">
       <HeaderTop />
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

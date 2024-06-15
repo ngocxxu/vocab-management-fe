@@ -1,31 +1,31 @@
-import { useMutation, useQueryClient } from "react-query";
-import { httpClient } from "../settings";
-import { VOCAB_KEYS } from "./queryKeys";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from '@/components/ui/use-toast'
+import { useMutation, useQueryClient } from 'react-query'
+import { httpClient } from '../settings'
+import { VOCAB_KEYS } from './queryKeys'
 
 const deleteMultiVocab = async (ids: string[]) => {
-  const { data } = await httpClient.post(`/vocab/deleteIds`, ids);
-  return data;
-};
+  const { data } = await httpClient.post(`/vocab/deleteIds`, ids)
+  return data
+}
 
 export const useDeleteMultiVocab = () => {
-  const { toast } = useToast();
-  const client = useQueryClient();
+  const { toast } = useToast()
+  const client = useQueryClient()
 
   return useMutation({
     mutationFn: (ids: string[]) => deleteMultiVocab(ids),
     onSuccess: () => {
-      client.invalidateQueries([VOCAB_KEYS.GET_VOCAB]);
+      client.invalidateQueries([VOCAB_KEYS.GET_VOCAB])
       toast({
-        title: "Success",
-        description: "Deleted all successfully",
-      });
+        title: 'Success',
+        description: 'Deleted all successfully'
+      })
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed, please try again",
-      });
-    },
-  });
-};
+        title: 'Error',
+        description: 'Failed, please try again'
+      })
+    }
+  })
+}

@@ -1,17 +1,17 @@
-import { Control, Controller } from "react-hook-form";
-import { TFormInputsVocab } from "..";
-import Input from "../../../../../components/input";
+import { Control, Controller } from 'react-hook-form'
+import { TFormInputsVocab } from '..'
+import Input from '../../../../../components/input'
 
 type TExamplesForm = {
-  idxTextTarget: number;
-  idx: number;
-  control: Control<TFormInputsVocab>;
-};
+  idxTextTarget: number
+  idx: number
+  control: Control<TFormInputsVocab>
+}
 
 export const ExamplesForm = ({
   idxTextTarget,
   control,
-  idx,
+  idx
 }: TExamplesForm) => {
   return (
     <div className="flex justify-center items-center gap-2">
@@ -30,5 +30,5 @@ export const ExamplesForm = ({
         )}
       />
     </div>
-  );
-};
+  )
+}

@@ -72,7 +72,7 @@ const IconVocab = () => {
         fill="white"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default IconVocab;
+export default IconVocab

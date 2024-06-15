@@ -1,10 +1,10 @@
-import { ButtonLib } from "../ui/button";
+import { ButtonLib } from '../ui/button'
 
 type TConfirmButton = {
-  onNo: () => void;
-  onYes: () => void;
-  title: string;
-};
+  onNo: () => void
+  onYes: () => void
+  title: string
+}
 
 const ConfirmButton = ({ onNo, onYes, title }: TConfirmButton) => {
   return (
@@ -22,7 +22,7 @@ const ConfirmButton = ({ onNo, onYes, title }: TConfirmButton) => {
         </ButtonLib>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ConfirmButton;
+export default ConfirmButton

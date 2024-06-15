@@ -1,17 +1,17 @@
-import { TFormInputsFilter } from '@/pages/vocab-trainer/components/toolBar';
-import { TVocabTrainer } from '@/pages/vocab-trainer/types';
-import { defaultStatus } from '@/utils/constants';
-import { createSlice } from '@reduxjs/toolkit';
-import { RowSelectionState } from '@tanstack/react-table';
+import { TFormInputsFilter } from '@/pages/vocab-trainer/components/toolBar'
+import { TVocabTrainer } from '@/pages/vocab-trainer/types'
+import { defaultStatus } from '@/utils/constants'
+import { createSlice } from '@reduxjs/toolkit'
+import { RowSelectionState } from '@tanstack/react-table'
 
 type TInitialStateVocabTrainer = {
-  rowSelectionState: RowSelectionState;
-  isOpenModalState: boolean;
-  itemVocabTrainer: TVocabTrainer;
-  searchVocabTrainer: string;
-  filterData: TFormInputsFilter;
-  orderQuestion: number;
-};
+  rowSelectionState: RowSelectionState
+  isOpenModalState: boolean
+  itemVocabTrainer: TVocabTrainer
+  searchVocabTrainer: string
+  filterData: TFormInputsFilter
+  orderQuestion: number
+}
 
 const initialState: TInitialStateVocabTrainer = {
   rowSelectionState: {},
@@ -23,46 +23,46 @@ const initialState: TInitialStateVocabTrainer = {
     duration: '',
     updatedAt: '',
     countTime: 0,
-    wordResults: [],
+    wordResults: []
   },
   searchVocabTrainer: '',
   orderQuestion: 1,
   filterData: {
-    status: defaultStatus,
-  },
-};
+    status: defaultStatus
+  }
+}
 
 const vocabTrainerReducer = createSlice({
   name: 'vocabTrainerReducer',
   initialState,
   reducers: {
     setOpenModalState(state, action) {
-      state.isOpenModalState = action.payload;
+      state.isOpenModalState = action.payload
     },
     setRowSelectionState(state, action) {
-      state.rowSelectionState = action.payload;
+      state.rowSelectionState = action.payload
     },
     setItemVocabTrainerState(state, action) {
-      state.itemVocabTrainer = action.payload;
+      state.itemVocabTrainer = action.payload
     },
     setSearchVocabState(state, action) {
-      state.searchVocabTrainer = action.payload;
+      state.searchVocabTrainer = action.payload
     },
     setFilterVocabTrainerState(state, action) {
-      state.filterData = action.payload;
+      state.filterData = action.payload
     },
     resetFilterVocabTrainerState(state) {
-      state.searchVocabTrainer = '';
+      state.searchVocabTrainer = ''
       state.filterData = {
-        status: defaultStatus,
-      };
+        status: defaultStatus
+      }
     },
     setOrderQuestion(state, action) {
-      state.orderQuestion = action.payload;
-    },
-  },
-});
-const { actions, reducer } = vocabTrainerReducer;
+      state.orderQuestion = action.payload
+    }
+  }
+})
+const { actions, reducer } = vocabTrainerReducer
 export const {
   setRowSelectionState,
   setOpenModalState,
@@ -70,6 +70,6 @@ export const {
   setSearchVocabState,
   setFilterVocabTrainerState,
   resetFilterVocabTrainerState,
-  setOrderQuestion,
-} = actions;
-export default reducer;
+  setOrderQuestion
+} = actions
+export default reducer

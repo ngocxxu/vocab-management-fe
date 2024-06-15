@@ -1,14 +1,14 @@
-import { Badge } from '@/components/badge';
-import Table from '@/components/table';
-import { colorData } from '@/utils/constants';
-import { IconCircleFilled } from '@tabler/icons-react';
-import { ColumnDef, getCoreRowModel } from '@tanstack/react-table';
-import { useMemo } from 'react';
-import { TWordResults } from '../../types';
+import { Badge } from '@/components/badge'
+import Table from '@/components/table'
+import { colorData } from '@/utils/constants'
+import { IconCircleFilled } from '@tabler/icons-react'
+import { ColumnDef, getCoreRowModel } from '@tanstack/react-table'
+import { useMemo } from 'react'
+import { TWordResults } from '../../types'
 
 type TDetailTable = {
-  data: TWordResults[];
-};
+  data: TWordResults[]
+}
 
 export const DetailTable = ({ data }: TDetailTable) => {
   const columns = useMemo<ColumnDef<TWordResults>[]>(
@@ -16,57 +16,55 @@ export const DetailTable = ({ data }: TDetailTable) => {
       {
         id: 'numberColumn',
         cell: ({ row }) => row.index + 1,
-        size: 0,
+        size: 0
       },
       {
         accessorKey: 'systemSelect',
         header: 'Correct Answer',
         size: 300,
-        enableSorting: false,
+        enableSorting: false
       },
       {
         accessorKey: 'userSelect',
         header: 'Your Answer',
         size: 300,
-        enableSorting: false,
+        enableSorting: false
       },
       {
         accessorKey: 'status',
         header: 'Status',
         cell: ({ getValue }) => {
-          const findColor = colorData.find(
-            (item) => item.status === getValue()
-          );
+          const findColor = colorData.find(item => item.status === getValue())
           return (
             <Badge
               style={{
                 backgroundColor: findColor?.background,
-                color: findColor?.text,
+                color: findColor?.text
               }}
             >
-              <div className='flex items-center gap-2'>
+              <div className="flex items-center gap-2">
                 <IconCircleFilled
                   style={{ color: findColor?.dot }}
-                  size='0.5rem'
+                  size="0.5rem"
                 />
                 <div> {String(getValue())}</div>
               </div>
             </Badge>
-          );
+          )
         },
-        enableSorting: false,
-      },
+        enableSorting: false
+      }
     ],
     []
-  );
+  )
 
   return (
     <Table
       options={{
         data,
         columns,
-        getCoreRowModel: getCoreRowModel(),
+        getCoreRowModel: getCoreRowModel()
       }}
     />
-  );
-};
+  )
+}

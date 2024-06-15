@@ -1,39 +1,39 @@
-import { AlertDialog } from '@/components/alertDialog';
-import { convertTime } from '@/utils';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { AlertDialog } from '@/components/alertDialog'
+import { convertTime } from '@/utils'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 type TCountdownProps = {
-  countdown: number;
-  setCountdown: React.Dispatch<React.SetStateAction<number>>;
-};
+  countdown: number
+  setCountdown: React.Dispatch<React.SetStateAction<number>>
+}
 
 export const Countdown = ({ countdown, setCountdown }: TCountdownProps) => {
-  const [openModal, setOpenModal] = useState(false);
-  const navigate = useNavigate();
-  const { minutes, seconds } = convertTime(countdown);
+  const [openModal, setOpenModal] = useState(false)
+  const navigate = useNavigate()
+  const { minutes, seconds } = convertTime(countdown)
 
   const handleOnYes = () => {
-    window.location.reload();
-  };
+    window.location.reload()
+  }
 
   const handleOnNo = () => {
-    navigate('/vocab-trainer');
-  };
+    navigate('/vocab-trainer')
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (countdown > 0) {
-        setCountdown(countdown - 1);
+        setCountdown(countdown - 1)
       } else {
-        setOpenModal(true);
+        setOpenModal(true)
       }
-    }, 1000);
+    }, 1000)
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [countdown]);
+  }, [countdown])
 
   return (
     <div>
@@ -44,12 +44,12 @@ export const Countdown = ({ countdown, setCountdown }: TCountdownProps) => {
       <AlertDialog
         open={openModal}
         onOpenChange={setOpenModal}
-        title='Sorry. Time is up for you!'
-        content='You have not completed this test within the specified time, it will be transferred to Fail status. You can redo this test immediately by pressing the Retest button.'
-        titleBtn='Retest'
+        title="Sorry. Time is up for you!"
+        content="You have not completed this test within the specified time, it will be transferred to Fail status. You can redo this test immediately by pressing the Retest button."
+        titleBtn="Retest"
         onYes={() => handleOnYes()}
         onNo={() => handleOnNo()}
       />
     </div>
-  );
-};
+  )
+}

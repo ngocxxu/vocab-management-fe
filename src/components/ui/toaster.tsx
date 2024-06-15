@@ -4,14 +4,14 @@ import {
   ToastDescription,
   ToastProvider,
   ToastTitle,
-  ToastViewport,
-} from '@/components/ui/toast';
-import { useToast } from '@/components/ui/use-toast';
-import { Badge } from '../badge';
-import clsx from 'clsx';
+  ToastViewport
+} from '@/components/ui/toast'
+import { useToast } from '@/components/ui/use-toast'
+import clsx from 'clsx'
+import { Badge } from '../badge'
 
 export function Toaster() {
-  const { toasts } = useToast();
+  const { toasts } = useToast()
 
   return (
     <ToastProvider>
@@ -25,7 +25,7 @@ export function Toaster() {
             key={id}
             {...props}
           >
-            <div className='flex gap-2'>
+            <div className="flex gap-2">
               {title && (
                 <ToastTitle>
                   <Badge
@@ -34,7 +34,7 @@ export function Toaster() {
                       'bg-customGreen',
                       title === 'Error' && 'bg-customRed'
                     )}
-                    variant='outline'
+                    variant="outline"
                   >
                     {title}
                   </Badge>
@@ -47,9 +47,9 @@ export function Toaster() {
             {action}
             <ToastClose />
           </Toast>
-        );
+        )
       })}
       <ToastViewport />
     </ToastProvider>
-  );
+  )
 }

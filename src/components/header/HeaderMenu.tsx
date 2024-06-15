@@ -2,17 +2,17 @@ import {
   IconBooks,
   IconLayoutDashboard,
   IconMedal2,
-  IconMessages,
-} from "@tabler/icons-react";
-import clsx from "clsx";
-import { useLocation, useNavigate } from "react-router-dom";
+  IconMessages
+} from '@tabler/icons-react'
+import clsx from 'clsx'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const links = [
-  { link: "/dashboard", label: "Dashboard", icon: IconLayoutDashboard },
+  { link: '/dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
   {
-    link: "/vocab",
-    label: "Vocabulary List",
-    icon: IconBooks,
+    link: '/vocab',
+    label: 'Vocabulary List',
+    icon: IconBooks
     // links: [
     //   { link: '/docs', label: 'Documentation' },
     //   { link: '/resources', label: 'Resources' },
@@ -20,39 +20,39 @@ const links = [
     //   { link: '/blog', label: 'Blog' },
     // ],
   },
-  { link: "/vocab-trainer", label: "Vocab Trainer", icon: IconMedal2 },
+  { link: '/vocab-trainer', label: 'Vocab Trainer', icon: IconMedal2 },
   // { link: "/history", label: "History", icon: IconHistory },
-  { link: "/chat-gpt", label: "ChatGPT", icon: IconMessages },
-];
+  { link: '/chat-gpt', label: 'ChatGPT', icon: IconMessages }
+]
 
 export function HeaderMenu() {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const transformedPath = pathname.split("/").slice(0, 2).join("/");
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const transformedPath = pathname.split('/').slice(0, 2).join('/')
 
-  const items = links.map((link) => {
+  const items = links.map(link => {
     return (
       <a
         key={link.label}
         href={link.link}
-        onClick={(event) => {
-          event.preventDefault();
-          navigate(`${link.link}`);
+        onClick={event => {
+          event.preventDefault()
+          navigate(`${link.link}`)
         }}
       >
         <div className="flex justify-center items-center gap-2">
           <link.icon className="mb-1" size={18} />
           <p
-            className={clsx("pb-1", {
-              "border-b-2": transformedPath === link.link,
+            className={clsx('pb-1', {
+              'border-b-2': transformedPath === link.link
             })}
           >
             {link.label}
           </p>
         </div>
       </a>
-    );
-  });
+    )
+  })
 
   return (
     <div className="flex">
@@ -60,5 +60,5 @@ export function HeaderMenu() {
         {items}
       </div>
     </div>
-  );
+  )
 }

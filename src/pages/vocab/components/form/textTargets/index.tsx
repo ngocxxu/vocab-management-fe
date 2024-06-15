@@ -1,6 +1,7 @@
-import { IconPlus, IconX } from "@tabler/icons-react";
-import clsx from "clsx";
-import { useEffect } from "react";
+import Button from '@/components/button'
+import { IconPlus, IconX } from '@tabler/icons-react'
+import clsx from 'clsx'
+import { useEffect } from 'react'
 import {
   Control,
   Controller,
@@ -8,27 +9,26 @@ import {
   FieldErrors,
   UseFormReset,
   UseFormSetValue,
-  useFieldArray,
-} from "react-hook-form";
-import { useSelector } from "react-redux";
-import { TFormInputsVocab } from "..";
-import Input from "../../../../../components/input";
-import MultiSelect from "../../../../../components/multiselect";
-import Select from "../../../../../components/select";
-import { RootState } from "../../../../../redux/store";
-import { subjectList, wordTypeList } from "../../../constants";
-import { ExamplesForm } from "../examples";
-import Button from "@/components/button";
+  useFieldArray
+} from 'react-hook-form'
+import { useSelector } from 'react-redux'
+import { TFormInputsVocab } from '..'
+import Input from '../../../../../components/input'
+import MultiSelect from '../../../../../components/multiselect'
+import Select from '../../../../../components/select'
+import { RootState } from '../../../../../redux/store'
+import { subjectList, wordTypeList } from '../../../constants'
+import { ExamplesForm } from '../examples'
 
 type TTextTargetsForm = {
-  fieldsLengthItem: number;
-  isEditing: boolean;
-  index: number;
-  control: Control<TFormInputsVocab>;
-  errors: FieldErrors<TFormInputsVocab>;
-  setValue: UseFormSetValue<TFormInputsVocab>;
-  reset: UseFormReset<TFormInputsVocab>;
-};
+  fieldsLengthItem: number
+  isEditing: boolean
+  index: number
+  control: Control<TFormInputsVocab>
+  errors: FieldErrors<TFormInputsVocab>
+  setValue: UseFormSetValue<TFormInputsVocab>
+  reset: UseFormReset<TFormInputsVocab>
+}
 
 export const TextTargetsForm = ({
   isEditing,
@@ -37,14 +37,14 @@ export const TextTargetsForm = ({
   errors,
   reset,
   setValue,
-  fieldsLengthItem,
+  fieldsLengthItem
 }: TTextTargetsForm) => {
-  const { itemVocab } = useSelector((state: RootState) => state.vocabReducer);
+  const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `textTarget.${index}.examples`,
-  });
-  const checkErrors = Object.keys(errors).length > 0;
+    name: `textTarget.${index}.examples`
+  })
+  const checkErrors = Object.keys(errors).length > 0
 
   //Editing
   useEffect(() => {
@@ -54,14 +54,14 @@ export const TextTargetsForm = ({
       // Set intial value from backend when re-render times
       fieldsLengthItem === itemVocab.textTarget.length
     ) {
-      reset((prev) => ({ ...prev, ...itemVocab }));
+      reset(prev => ({ ...prev, ...itemVocab }))
       setValue(
         `textTarget.${index}.wordType`,
         itemVocab.textTarget[index].wordType
-      );
+      )
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditing, itemVocab]);
+  }, [isEditing, itemVocab])
 
   return (
     <>
@@ -151,8 +151,8 @@ export const TextTargetsForm = ({
           <fieldset key={field.id}>
             <div
               className={clsx(
-                idx !== 0 && "mt-4",
-                "flex justify-between items-center"
+                idx !== 0 && 'mt-4',
+                'flex justify-between items-center'
               )}
             >
               <div className="text-sm">Example {idx + 1}</div>
@@ -166,17 +166,17 @@ export const TextTargetsForm = ({
         ))}
         <Button
           type="button"
-          classNames={clsx(fields.length !== 0 && "mt-2", "w-full")}
+          classNames={clsx(fields.length !== 0 && 'mt-2', 'w-full')}
           onClick={() => {
             append({
-              source: "",
-              target: "",
-            });
+              source: '',
+              target: ''
+            })
           }}
           title="Example"
           leftIcon={<IconPlus className="mr-1" />}
         />
       </div>
     </>
-  );
-};
+  )
+}
