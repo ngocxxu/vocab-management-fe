@@ -9,26 +9,15 @@ export const NoticeCalendar = () => {
       <div className="grid grid-cols-3">
         <div className="border-r">
           <h1 className="font-semibold">Notice</h1>
-          <p className="text-sm text-customGray col-span-2">
-            What do you need to pay attention to today?
-          </p>
+          <p className="text-sm text-customGray col-span-2">What do you need to pay attention to today?</p>
           <div className="flex items-center gap-2 mt-3 mb-6">
-            <Avatar
-              className="w-8 h-8"
-              classNameContent="bg-customRed opacity-60"
-            >
+            <Avatar className="w-8 h-8" classNameContent="bg-customRed opacity-60">
               <IconBrandSpeedtest size="1.1rem" />
             </Avatar>
-            <Avatar
-              className="w-8 h-8"
-              classNameContent="bg-customGreen opacity-60"
-            >
+            <Avatar className="w-8 h-8" classNameContent="bg-customGreen opacity-60">
               <IconBook2 size="1.1rem" />
             </Avatar>
-            <Avatar
-              className="w-8 h-8"
-              classNameContent="bg-customYellow opacity-60"
-            >
+            <Avatar className="w-8 h-8" classNameContent="opacity-60 bg-customYellow">
               <IconWriting size="1.1rem" />
             </Avatar>
           </div>
