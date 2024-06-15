@@ -1,25 +1,27 @@
-import React from 'react';
+import React from 'react'
 
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { format } from 'date-fns';
-import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker';
-import { Separator } from '../ui/separator';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import { format } from 'date-fns'
+import { CaptionProps, DayPicker, useNavigation } from 'react-day-picker'
+import { Separator } from '../ui/separator'
 
 function CustomCaption(props: CaptionProps) {
-  const { goToMonth, nextMonth, previousMonth } = useNavigation();
+  const { goToMonth, nextMonth, previousMonth } = useNavigation()
   return (
     <>
-      <div className='flex justify-between items-center mb-2'>
+      <div className="flex justify-between items-center mb-2">
         <button
+          type="button"
           disabled={!previousMonth}
           onClick={() => previousMonth && goToMonth(previousMonth)}
         >
           <IconChevronLeft />
         </button>
-        <div className='font-semibold'>
+        <div className="font-semibold">
           {format(props.displayMonth, 'MMMM yyy')}
         </div>
         <button
+          type="button"
           disabled={!nextMonth}
           onClick={() => nextMonth && goToMonth(nextMonth)}
         >
@@ -28,21 +30,21 @@ function CustomCaption(props: CaptionProps) {
       </div>
       <Separator />
     </>
-  );
+  )
 }
 
 export const Calendar = () => {
-  const [selected, setSelected] = React.useState<Date>();
+  const [selected, setSelected] = React.useState<Date>()
 
   return (
     <DayPicker
-      className='m-0'
+      className="m-0"
       components={{
-        Caption: CustomCaption,
+        Caption: CustomCaption
       }}
-      mode='single'
+      mode="single"
       selected={selected}
       onSelect={setSelected}
     />
-  );
-};
+  )
+}

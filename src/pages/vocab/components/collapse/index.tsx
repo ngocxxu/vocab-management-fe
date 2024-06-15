@@ -1,42 +1,42 @@
-import { Row } from '@tanstack/react-table';
-import { ReactNode, memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Voice from '../../../../components/voice';
-import { setItemsShowState } from '../../../../redux/reducer/vocab';
-import { RootState } from '../../../../redux/store';
-import styles from './styles.module.scss';
-import Button from '@/components/button';
-import { Badge } from '@/components/badge';
-import { TTextTarget } from '../../types';
+import { Badge } from '@/components/badge'
+import Button from '@/components/button'
+import { Row } from '@tanstack/react-table'
+import { ReactNode, memo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import Voice from '../../../../components/voice'
+import { setItemsShowState } from '../../../../redux/reducer/vocab'
+import { RootState } from '../../../../redux/store'
+import { TTextTarget } from '../../types'
+import styles from './styles.module.scss'
 
-type TCollapseVocab<T extends TExtend> = { row: Row<T> };
+type TCollapseVocab<T extends TExtend> = { row: Row<T> }
 export type TExtend = {
-  _id: string;
-  textTarget: TTextTarget[];
-  sourceLanguage: string;
-  targetLanguage: string;
-};
+  _id: string
+  textTarget: TTextTarget[]
+  sourceLanguage: string
+  targetLanguage: string
+}
 
 const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
-  const { textTarget, sourceLanguage, targetLanguage } = row.original;
-  const dispatch = useDispatch();
+  const { textTarget, sourceLanguage, targetLanguage } = row.original
+  const dispatch = useDispatch()
   const { idsState, itemsShow } = useSelector(
     (state: RootState) => state.vocabReducer
-  );
+  )
 
   const checkShow = (idx: number) =>
     itemsShow.find(
-      (item) => item.idRow === row.original._id && item.idxExample === idx
-    );
+      item => item.idRow === row.original._id && item.idxExample === idx
+    )
 
   return (
     idsState.includes(row.original._id) && (
       <tr className={styles.container}>
         <td
-          className='px-6 py-4 break-all'
+          className="px-6 py-4 break-all"
           colSpan={row.getVisibleCells().length}
         >
-          <ol className='list-decimal'>
+          <ol className="list-decimal">
             {textTarget.map(
               (
                 {
@@ -46,7 +46,7 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                   explanationTarget,
                   examples,
                   grammar,
-                  subject,
+                  subject
                 },
                 idx
               ) => {
@@ -55,20 +55,20 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                     className={idx === textTarget.length - 1 ? '' : 'mb-4'}
                     key={text}
                   >
-                    <div className='flex items-center mb-2 gap-3'>
-                      <div className='flex items-center gap-1'>
-                        <div className='text-sky-500'>{wordType}</div>
-                        <div className='flex items-center'>
-                          <span className='font-semibold'>{text}</span>
+                    <div className="flex items-center mb-2 gap-3">
+                      <div className="flex items-center gap-1">
+                        <div className="text-sky-500">{wordType}</div>
+                        <div className="flex items-center">
+                          <span className="font-semibold">{text}</span>
                           <Voice lang={targetLanguage} text={text} />
                         </div>
                       </div>
                       <div>
-                        {subject.map((item) => (
+                        {subject.map(item => (
                           <Badge
                             key={item.label}
-                            variant='outline'
-                            className='text-xs mr-1 border-gray-300'
+                            variant="outline"
+                            className="text-xs mr-1 border-gray-300"
                           >
                             {item.value}
                           </Badge>
@@ -77,13 +77,13 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                     </div>
 
                     {explanationSource && (
-                      <div className='flex items-center mb-2'>
+                      <div className="flex items-center mb-2">
                         <span>{explanationSource}</span>
                         <Voice lang={sourceLanguage} text={explanationSource} />
                       </div>
                     )}
                     {explanationTarget && (
-                      <div className='flex items-center mb-2'>
+                      <div className="flex items-center mb-2">
                         <span>{explanationTarget}</span>
                         <Voice lang={targetLanguage} text={explanationTarget} />
                       </div>
@@ -94,14 +94,14 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       .map(({ source, target }) => (
                         <div
                           key={source}
-                          className='flex justify-start items-end gap-3'
+                          className="flex justify-start items-end gap-3"
                         >
-                          <div className='border-l-4 border-gray-400 pl-2 mb-2'>
-                            <div className='flex items-center'>
+                          <div className="border-l-4 border-gray-400 pl-2 mb-2">
+                            <div className="flex items-center">
                               <div>{source}</div>
                               <Voice lang={sourceLanguage} text={source} />
                             </div>
-                            <div className='flex items-center'>
+                            <div className="flex items-center">
                               <div>{target}</div>
                               <Voice lang={targetLanguage} text={target} />
                             </div>
@@ -111,23 +111,24 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
 
                     {examples.length > 1 && (
                       <Button
-                        variant='link'
-                        className='text-xs text-blue-400 mb-2 block'
+                        type="button"
+                        variant="link"
+                        className="text-xs text-blue-400 mb-2 block"
                         onClick={() => {
                           dispatch(
                             setItemsShowState({
                               idRow: row.original._id,
-                              idxExample: idx,
+                              idxExample: idx
                             })
-                          );
+                          )
                         }}
                         title={!checkShow(idx) ? 'More' : 'Less'}
                       />
                     )}
 
                     {grammar && (
-                      <Badge variant='outline' className='bg-gray-200'>
-                        <span className='mr-2'>Grammar structure:</span>{' '}
+                      <Badge variant="outline" className="bg-gray-200">
+                        <span className="mr-2">Grammar structure:</span>{' '}
                         {grammar}
                       </Badge>
                       // <div className="badge bg-zinc-200 text-xs">
@@ -136,17 +137,17 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       // </div>
                     )}
                   </li>
-                );
+                )
               }
             )}
           </ol>
         </td>
       </tr>
     )
-  );
-};
+  )
+}
 const CollapseVocab = memo(Collapse) as <T extends TExtend>({
-  row,
-}: TCollapseVocab<T>) => false | ReactNode;
+  row
+}: TCollapseVocab<T>) => false | ReactNode
 
-export default CollapseVocab;
+export default CollapseVocab

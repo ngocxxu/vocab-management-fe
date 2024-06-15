@@ -1,24 +1,24 @@
-import Button from '@/components/button';
+import Button from '@/components/button'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { setOrderQuestion } from '@/redux/reducer/vocabTrainer';
-import { RootState } from '@/redux/store';
-import { useEffect } from 'react';
-import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { TFormTestVocabTrainer, TQuestion } from '../../types';
-import { UseMutateFunction } from 'react-query';
-import { AxiosResponse } from 'axios';
-import { DEFAULT_COUNTDOWN } from '@/utils/constants';
+  FormMessage
+} from '@/components/ui/form'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { setOrderQuestion } from '@/redux/reducer/vocabTrainer'
+import { RootState } from '@/redux/store'
+import { DEFAULT_COUNTDOWN } from '@/utils/constants'
+import { AxiosResponse } from 'axios'
+import { useEffect } from 'react'
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+import { UseMutateFunction } from 'react-query'
+import { useDispatch, useSelector } from 'react-redux'
+import { TFormTestVocabTrainer, TQuestion } from '../../types'
 
-type TFormChoice = { wordTestSelects: { idWord: string }[] };
+type TFormChoice = { wordTestSelects: { idWord: string }[] }
 
 type TChoiceProps = {
   mutateQuestion: UseMutateFunction<
@@ -26,94 +26,96 @@ type TChoiceProps = {
     unknown,
     TFormTestVocabTrainer,
     unknown
-  >;
-  countdown: number;
-  data: TQuestion[];
-  setCountQuestions: React.Dispatch<React.SetStateAction<number>>;
-};
+  >
+  countdown: number
+  data: TQuestion[]
+  setCountQuestions: React.Dispatch<React.SetStateAction<number>>
+}
 
 export const Choice = ({
   data,
   countdown,
   setCountQuestions,
-  mutateQuestion,
+  mutateQuestion
 }: TChoiceProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const form = useForm<TFormChoice>({
     defaultValues: {
-      wordTestSelects: [{ idWord: '' }],
-    },
-  });
+      wordTestSelects: [{ idWord: '' }]
+    }
+  })
   const { orderQuestion } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
-  );
+  )
 
   const { fields, append } = useFieldArray({
     control: form.control,
-    name: 'wordTestSelects',
-  });
+    name: 'wordTestSelects'
+  })
 
-  const onSubmit: SubmitHandler<TFormChoice> = (formData) => {
+  const onSubmit: SubmitHandler<TFormChoice> = formData => {
     const newArr = formData.wordTestSelects.map((item, index) => ({
       ...item,
       userSelect:
         data &&
-        data[index].options.find((item2) => item2.value === item.idWord)?.label,
-    }));
+        data[index].options.find(item2 => item2.value === item.idWord)?.label
+    }))
 
     mutateQuestion({
       id: localStorage.getItem('examId') ?? '',
       duration: DEFAULT_COUNTDOWN - countdown,
-      wordTestSelects: newArr,
-    });
-  };
+      wordTestSelects: newArr
+    })
+  }
 
   useEffect(() => {
-    setCountQuestions(form.watch().wordTestSelects.length);
+    setCountQuestions(form.watch().wordTestSelects.length)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch().wordTestSelects.length]);
+  }, [form.watch().wordTestSelects.length])
+
+  console.log({ orderQuestion })
 
   return (
-    <div className='bg-white rounded-md p-4 border-t shadow-md'>
+    <div className="bg-white rounded-md p-4 border-t shadow-md">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {fields.map(
             (field, index) =>
               orderQuestion === index + 1 && (
                 <fieldset key={field.id}>
-                  <p className='font-semibold'>Question</p>
-                  <div className='bg-customGray6 p-3 rounded-md mt-3 mb-5 font-medium text-sm'>
+                  <p className="font-semibold">Question</p>
+                  <div className="bg-customGray6 p-3 rounded-md mt-3 mb-5 font-medium text-sm">
                     Please choose the meaning of the word
-                    <span className='font-bold ml-1 text-white bg-customBlue p-1 rounded'>
+                    <span className="font-bold ml-1 text-white bg-customBlue p-1 rounded">
                       {data[index].content.join(', ')}
                     </span>
                   </div>
-                  <p className='font-semibold mb-3'>Choice</p>
+                  <p className="font-semibold mb-3">Choice</p>
                   <FormField
                     control={form.control}
                     name={`wordTestSelects.${index}.idWord`}
                     render={({ field }) => (
-                      <FormItem className='space-y-3 mb-8'>
+                      <FormItem className="space-y-3 mb-8">
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
-                            className='flex flex-col space-y-1'
+                            className="flex flex-col space-y-1"
                             {...field}
                           >
-                            {data[index].options.map((item) => {
+                            {data[index].options.map(item => {
                               return (
                                 <FormItem
                                   key={item.value}
-                                  className='flex items-center space-x-3 space-y-0 px-3 bg-customGray6 rounded-md'
+                                  className="flex items-center space-x-3 space-y-0 px-3 bg-customGray6 rounded-md"
                                 >
                                   <FormControl>
                                     <RadioGroupItem value={item.value} />
                                   </FormControl>
-                                  <FormLabel className='font-medium w-full py-3'>
+                                  <FormLabel className="font-medium w-full py-3">
                                     {item.label}
                                   </FormLabel>
                                 </FormItem>
-                              );
+                              )
                             })}
                           </RadioGroup>
                         </FormControl>
@@ -125,13 +127,14 @@ export const Choice = ({
               )
           )}
 
-          <div className='flex justify-center items-center w-full gap-2 mt-4'>
+          <div className="flex justify-center items-center w-full gap-2 mt-4">
             <Button
+              type="button"
               disabled={orderQuestion === 1}
-              variant='ghost'
-              title='Previous'
+              variant="ghost"
+              title="Previous"
               onClick={() => {
-                dispatch(setOrderQuestion(orderQuestion - 1));
+                dispatch(setOrderQuestion(orderQuestion - 1))
               }}
             />
             {orderQuestion === data.length ? (
@@ -139,18 +142,19 @@ export const Choice = ({
                 disabled={
                   !form.watch(`wordTestSelects.${orderQuestion - 1}.idWord`)
                 }
-                type='submit'
-                title='Submit'
+                type="submit"
+                title="Submit"
               />
             ) : (
               <Button
+                type="button"
                 disabled={
                   !form.watch(`wordTestSelects.${orderQuestion - 1}.idWord`)
                 }
-                title='Next'
+                title="Next"
                 onClick={() => {
-                  append({ idWord: '' });
-                  dispatch(setOrderQuestion(orderQuestion + 1));
+                  append({ idWord: '' })
+                  dispatch(setOrderQuestion(orderQuestion + 1))
                 }}
               />
             )}
@@ -158,5 +162,5 @@ export const Choice = ({
         </form>
       </Form>
     </div>
-  );
-};
+  )
+}

@@ -48,6 +48,7 @@ export const Question = () => {
         <div className='flex justify-between items-center'>
           <div className='flex justify-center items-center gap-1'>
             <Button
+            type='button'
               disabled={orderQuestion === 1}
               variant='ghost'
               size='icon'
@@ -60,6 +61,7 @@ export const Question = () => {
               {`Question ${orderQuestion}/${data.length}`}
             </div>
             <Button
+            type='button'
               disabled={countQuestions <= orderQuestion}
               variant='ghost'
               size='icon'
@@ -88,6 +90,7 @@ export const Question = () => {
           {data &&
             data.map((item) => (
               <Button
+              type='button'
                 disabled={item.order > countQuestions}
                 key={item.order}
                 className='bg-white w-full font-semibold mb-2 shadow-none'

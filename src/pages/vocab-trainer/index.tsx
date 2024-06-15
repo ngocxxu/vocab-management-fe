@@ -172,6 +172,7 @@ const VocabTrainer = () => {
         cell: ({ row }) => (
           <div className='flex gap-3 items-center w-0'>
             <Button
+            type='button'
               className='h-6 w-6'
               size='icon'
               variant='ghost'
@@ -186,6 +187,7 @@ const VocabTrainer = () => {
               }
             />
             <Button
+            type='button'
               onClick={() => {
                 mutateQuestion(row.original._id);
                 localStorage.setItem('examId', row.original._id);
@@ -200,6 +202,7 @@ const VocabTrainer = () => {
             <AlertDialog
               head={
                 <Button
+                type='button'
                   className='h-6 w-6'
                   size='icon'
                   variant='ghost'
@@ -246,6 +249,7 @@ const VocabTrainer = () => {
                   <AlertDialog
                     head={
                       <Button
+                      type='button'
                         onClick={() => setIsDeleteMulti(true)}
                         variant='ghost'
                         title={`Delete (${counts})`}

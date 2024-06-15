@@ -13,8 +13,10 @@ import Button from '@/components/button'
 import { cn } from '@/lib/utils'
 import { setOrderQuestion } from '@/redux/reducer/vocabTrainer'
 import { useGetVocabTrainer } from '@/services/vocabTrainer/useGetVocabTrainer'
+import { usePostQuestion } from '@/services/vocabTrainer/usePostQuestion'
 import { convertTime } from '@/utils'
 import { DEFAULT_COUNTDOWN } from '@/utils/constants'
+import { Loader } from 'lucide-react'
 import { CircleProgress } from '../circleProgress'
 import { DetailTable } from '../detailTable'
 import { LineProgressBar } from '../lineProgressBar'
@@ -22,7 +24,15 @@ import { LineProgressBar } from '../lineProgressBar'
 export const ResultStatistic = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { data } = useGetVocabTrainer(localStorage.getItem('examId') ?? '')
+  const examId = localStorage.getItem('examId') ?? ''
+  const { data } = useGetVocabTrainer(examId)
+  const {
+    mutate: mutateQuestion,
+    isLoading: isLoadingQuestion,
+    isSuccess,
+    isError
+  } = usePostQuestion()
+
   const isPassed = data?.statusTest === 'Passed'
   const countPassed = data?.wordResults.filter(
     item => item.status === 'Passed'
@@ -38,11 +48,27 @@ export const ResultStatistic = () => {
   const { minutes, seconds, hours } = convertTime(Number(data?.duration))
 
   useEffect(() => {
+    if (isSuccess) {
+      navigate('/vocab-trainer/examination')
+    }
+
+    if (isError) {
+      navigate('/vocab-trainer')
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, isError])
+
+  useEffect(() => {
     if (!localStorage.getItem('examId')) {
       navigate('/vocab-trainer')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  if (isLoadingQuestion) {
+    return <Loader />
+  }
 
   return (
     <div className="container my-10 grid grid-cols-9 gap-4">
@@ -131,7 +157,7 @@ export const ResultStatistic = () => {
                 title="Retest"
                 onClick={() => {
                   dispatch(setOrderQuestion(1))
-                  navigate('/vocab-trainer')
+                  mutateQuestion(examId)
                 }}
               />
             </div>
