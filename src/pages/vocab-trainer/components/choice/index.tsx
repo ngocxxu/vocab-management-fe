@@ -73,8 +73,6 @@ export const Choice = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch().wordTestSelects.length])
 
-  console.log({ orderQuestion })
-
   return (
     <div className="bg-white rounded-md p-4 border-t shadow-md">
       <Form {...form}>
