@@ -15,9 +15,12 @@ import { convertTime } from '@/utils';
 import { DEFAULT_COUNTDOWN } from '@/utils/constants';
 import { DetailTable } from '../detailTable';
 import Button from '@/components/button';
+import { useDispatch } from 'react-redux';
+import { setOrderQuestion } from '@/redux/reducer/vocabTrainer';
 
 export const ResultStatistic = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { data } = useGetVocabTrainer(localStorage.getItem('examId') ?? '');
   const isPassed = data?.statusTest === 'Passed';
   const countPassed = data?.wordResults.filter(
@@ -116,6 +119,7 @@ export const ResultStatistic = () => {
               className='mt-4'
               title='Return'
               onClick={() => {
+                dispatch(setOrderQuestion(1));
                 navigate('/vocab-trainer');
               }}
             />
