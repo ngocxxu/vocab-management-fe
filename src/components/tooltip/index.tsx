@@ -16,7 +16,7 @@ const Tooltip = ({ children, body }: TTooltip) => {
     <TooltipProvider delayDuration={300}>
       <TooltipLib>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent className="bg-customBlue2 text-white">
+        <TooltipContent className="bg-primary text-white">
           {body}
         </TooltipContent>
       </TooltipLib>

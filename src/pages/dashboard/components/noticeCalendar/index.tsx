@@ -9,14 +9,11 @@ export const NoticeCalendar = () => {
       <div className="grid grid-cols-3">
         <div className="border-r">
           <h1 className="font-semibold">Notice</h1>
-          <p className="col-span-2 text-sm text-customGray">
+          <p className="col-span-2 text-sm text-secondary">
             What do you need to pay attention to today?
           </p>
           <div className="mb-6 mt-3 flex items-center gap-2">
-            <Avatar
-              className="h-8 w-8"
-              classNameContent="bg-customRed opacity-60"
-            >
+            <Avatar className="h-8 w-8" classNameContent="bg-error opacity-60">
               <IconBrandSpeedtest size="1.1rem" />
             </Avatar>
             <Avatar
@@ -27,7 +24,7 @@ export const NoticeCalendar = () => {
             </Avatar>
             <Avatar
               className="h-8 w-8"
-              classNameContent="opacity-60 bg-customYellow"
+              classNameContent="opacity-60 bg-warning"
             >
               <IconWriting size="1.1rem" />
             </Avatar>

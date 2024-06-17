@@ -53,12 +53,12 @@ export const Choice = ({
     name: 'wordTestSelects'
   })
 
-  const onSubmit: SubmitHandler<TFormChoice> = formData => {
+  const onSubmit: SubmitHandler<TFormChoice> = (formData) => {
     const newArr = formData.wordTestSelects.map((item, index) => ({
       ...item,
       userSelect:
         data &&
-        data[index].options.find(item2 => item2.value === item.idWord)?.label
+        data[index].options.find((item2) => item2.value === item.idWord)?.label
     }))
 
     mutateQuestion({
@@ -74,7 +74,7 @@ export const Choice = ({
   }, [form.watch().wordTestSelects.length])
 
   return (
-    <div className="bg-white rounded-md p-4 border-t shadow-md">
+    <div className="rounded-md border-t bg-white p-4 shadow-md">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {fields.map(
@@ -82,34 +82,34 @@ export const Choice = ({
               orderQuestion === index + 1 && (
                 <fieldset key={field.id}>
                   <p className="font-semibold">Question</p>
-                  <div className="bg-customGray6 p-3 rounded-md mt-3 mb-5 font-medium text-sm">
+                  <div className="mb-5 mt-3 rounded-md bg-popover p-3 text-sm font-medium">
                     Please choose the meaning of the word
-                    <span className="font-bold ml-1 text-white bg-customBlue p-1 rounded">
+                    <span className="ml-1 rounded bg-primary p-1 font-bold text-white">
                       {data[index].content.join(', ')}
                     </span>
                   </div>
-                  <p className="font-semibold mb-3">Choice</p>
+                  <p className="mb-3 font-semibold">Choice</p>
                   <FormField
                     control={form.control}
                     name={`wordTestSelects.${index}.idWord`}
                     render={({ field }) => (
-                      <FormItem className="space-y-3 mb-8">
+                      <FormItem className="mb-8 space-y-3">
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
                             className="flex flex-col space-y-1"
                             {...field}
                           >
-                            {data[index].options.map(item => {
+                            {data[index].options.map((item) => {
                               return (
                                 <FormItem
                                   key={item.value}
-                                  className="flex items-center space-x-3 space-y-0 px-3 bg-customGray6 rounded-md"
+                                  className="flex items-center space-x-3 space-y-0 rounded-md bg-popover px-3"
                                 >
                                   <FormControl>
                                     <RadioGroupItem value={item.value} />
                                   </FormControl>
-                                  <FormLabel className="font-medium w-full py-3">
+                                  <FormLabel className="w-full py-3 font-medium">
                                     {item.label}
                                   </FormLabel>
                                 </FormItem>
@@ -125,7 +125,7 @@ export const Choice = ({
               )
           )}
 
-          <div className="flex justify-center items-center w-full gap-2 mt-4">
+          <div className="mt-4 flex w-full items-center justify-center gap-2">
             <Button
               type="button"
               disabled={orderQuestion === 1}
@@ -135,7 +135,7 @@ export const Choice = ({
                 dispatch(setOrderQuestion(orderQuestion - 1))
               }}
             />
-            {orderQuestion === data.length ? (
+            {orderQuestion === data.length ?
               <Button
                 disabled={
                   !form.watch(`wordTestSelects.${orderQuestion - 1}.idWord`)
@@ -143,8 +143,7 @@ export const Choice = ({
                 type="submit"
                 title="Submit"
               />
-            ) : (
-              <Button
+            : <Button
                 type="button"
                 disabled={
                   !form.watch(`wordTestSelects.${orderQuestion - 1}.idWord`)
@@ -155,7 +154,7 @@ export const Choice = ({
                   dispatch(setOrderQuestion(orderQuestion + 1))
                 }}
               />
-            )}
+            }
           </div>
         </form>
       </Form>

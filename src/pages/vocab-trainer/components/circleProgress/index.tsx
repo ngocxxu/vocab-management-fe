@@ -22,10 +22,10 @@ export const CircleProgress = ({
       pointerRadius={18}
       pointerStrokeWidth={0}
     >
-      <div className="flex justify-center items-center absolute top-0 w-full h-full">
+      <div className="absolute top-0 flex h-full w-full items-center justify-center">
         <div>
           <p className="text-3xl font-bold">{percentage}%</p>
-          <p className="text-customBlack1 font-normal mt-1 text-center">
+          <p className="mt-1 text-center font-normal text-secondary-foreground">
             {statistic}
           </p>
         </div>

@@ -86,7 +86,7 @@ export const Question = () => {
 
       <div className="bg-white rounded-md p-4 font-semibold shadow-md border-t">
         Question list
-        <div className="bg-customGray5 p-4 mt-3 rounded-md">
+        <div className="bg-popover p-4 mt-3 rounded-md">
           {data &&
             data.map(item => (
               <Button

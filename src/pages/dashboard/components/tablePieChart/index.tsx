@@ -4,17 +4,17 @@ import { dataPie } from '../../constants'
 
 export const TablePieChart = () => {
   return (
-    <div className="flex flex-col gap-3 justify-center text-sm">
-      <div className="flex justify-between items-center font-medium">
+    <div className="flex flex-col justify-center gap-3 text-sm">
+      <div className="flex items-center justify-between font-medium">
         <div>Status</div>
         <div>Words</div>
       </div>
       <Separator />
       {dataPie.map(({ status, value, color }) => (
-        <div className="flex justify-between items-center ">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <IconCircleFilled style={{ color }} size="0.8rem" />
-            <div className="text-customGray">{status}</div>
+            <div className="text-secondary">{status}</div>
           </div>
           <div className="font-medium">{value}</div>
         </div>

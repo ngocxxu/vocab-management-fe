@@ -16,7 +16,7 @@ export const IndeterminateCheckbox = ({
 
   return (
     <input
-      className="accent-customBlue w-4 h-4"
+      className="h-4 w-4 accent-primary"
       type="checkbox"
       ref={ref}
       {...rest}

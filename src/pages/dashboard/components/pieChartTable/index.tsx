@@ -5,10 +5,10 @@ import { IconExclamationCircle } from '@tabler/icons-react'
 
 const PieChartTable = () => {
   return (
-    <div className="p-8 rounded-xl shadow-md border-t">
+    <div className="rounded-xl border-t p-8 shadow-md">
       <div>
         <h1 className="font-semibold">Vocabulary Quantity</h1>
-        <div className="flex items-center gap-1 text-customGray">
+        <div className="flex items-center gap-1 text-secondary">
           <p className="text-sm">
             The rate is based on the total number of vocabulary you registered
           </p>
@@ -18,7 +18,7 @@ const PieChartTable = () => {
           />
         </div>
       </div>
-      <div className="h-64 grid md:grid-cols-3 gap-2">
+      <div className="grid h-64 gap-2 md:grid-cols-3">
         <div className="col-span-2">
           <CustomPieChart />
         </div>

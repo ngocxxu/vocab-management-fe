@@ -250,7 +250,7 @@ const VocabTrainer = () => {
                         onClick={() => setIsDeleteMulti(true)}
                         variant="ghost"
                         title={`Delete (${counts})`}
-                        leftIcon={<IconTrash className="mr-2 text-customRed" />}
+                        leftIcon={<IconTrash className="mr-2 text-error" />}
                       />
                     }
                     title="Do you want to delete these?"

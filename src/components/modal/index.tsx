@@ -29,14 +29,14 @@ export const Modal = ({
   return (
     <DialogLib open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{head}</DialogTrigger>
-      <DialogContent onOpenAutoFocus={e => e.preventDefault()} {...props}>
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} {...props}>
         <DialogHeader>
           {title && (
             <DialogTitle>
               <div>
-                <h4 className="font-semibold mb-2">{title}</h4>
+                <h4 className="mb-2 font-semibold">{title}</h4>
                 {description && (
-                  <p className="text-sm text-customGray font-normal">
+                  <p className="text-sm font-normal text-secondary">
                     {description}
                   </p>
                 )}

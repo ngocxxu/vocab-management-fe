@@ -35,7 +35,7 @@ export const ResultStatistic = () => {
 
   const isPassed = data?.statusTest === 'Passed'
   const countPassed = data?.wordResults.filter(
-    item => item.status === 'Passed'
+    (item) => item.status === 'Passed'
   ).length
 
   const calPercent =
@@ -78,16 +78,18 @@ export const ResultStatistic = () => {
           <div>
             <div
               className={cn(
-                'flex gap-2 text-2xl  mt-4',
-                isPassed ? 'text-customGreen2' : 'text-customRed'
+                'mt-4 flex gap-2 text-2xl',
+                isPassed ? 'text-success' : 'text-error'
               )}
             >
               <div className="mt-1">
-                {isPassed ? <IconSquareCheck /> : <IconSquareX />}
+                {isPassed ?
+                  <IconSquareCheck />
+                : <IconSquareX />}
               </div>
               <div>
                 <p>Test {data?.statusTest}</p>
-                <p className="mt-3 text-sm font-normal text-customGray">
+                <p className="mt-3 text-sm font-normal text-secondary">
                   Thank you for taking the test.
                 </p>
               </div>
@@ -114,29 +116,29 @@ export const ResultStatistic = () => {
               <p>
                 {hours}:{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </p>
-              <IconSlash className="mx-4 text-customGray" />
-              <p className="text-customGray">00:20:00</p>
+              <IconSlash className="mx-4 text-secondary" />
+              <p className="text-secondary">00:20:00</p>
             </div>
 
             <LineProgressBar percentage={calLinePercent} />
 
             <div className="mt-8 grid grid-cols-12 gap-4">
-              <div className="col-span-6 text-xl font-normal text-customGray">
+              <div className="col-span-6 text-xl font-normal text-secondary">
                 Start time
-                <span className="ml-6 font-medium text-customBlack1">
+                <span className="ml-6 font-medium text-secondary-foreground">
                   17:43
                 </span>
               </div>
-              <div className="col-span-6 text-xl font-normal text-customGray">
+              <div className="col-span-6 text-xl font-normal text-secondary">
                 Date time
-                <span className="ml-6 font-medium text-customBlack1">
+                <span className="ml-6 font-medium text-secondary-foreground">
                   {data?.updatedAt &&
                     format(new Date(data?.updatedAt), 'dd-MM-yyyy')}
                 </span>
               </div>
-              <div className="col-span-12 text-xl font-normal text-customGray">
+              <div className="col-span-12 text-xl font-normal text-secondary">
                 End time
-                <span className="ml-8 font-medium text-customBlack1">
+                <span className="ml-8 font-medium text-secondary-foreground">
                   17:43
                 </span>
               </div>

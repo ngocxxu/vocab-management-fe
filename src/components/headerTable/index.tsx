@@ -9,9 +9,9 @@ type THeaderTable = {
 const HeaderTable = ({ children, headText, bodyText }: THeaderTable) => {
   return (
     <div className="my-10">
-      <div className="container bg-white mx-auto rounded-md p-8 border-t shadow-md">
+      <div className="container mx-auto rounded-md border-t bg-white p-8 shadow-md">
         <h4 className="font-semibold">{headText}</h4>
-        <p className="text-sm text-customGray mb-6">{bodyText}</p>
+        <p className="mb-6 text-sm text-secondary">{bodyText}</p>
 
         {children}
       </div>

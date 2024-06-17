@@ -11,6 +11,7 @@ type TButton = {
 }
 
 const Button = ({
+  type = 'button',
   title,
   leftIcon,
   rightIcon,
@@ -21,12 +22,9 @@ const Button = ({
 }: TButton & ButtonHTMLAttributes<HTMLButtonElement> & ButtonProps) => {
   return (
     <ButtonLib
+      type={type}
       variant={variant}
-      className={cn(
-        classNames,
-        variant === 'default' &&
-          'bg-customBlue text-white hover:bg-customBlue2 hover:text-white'
-      )}
+      className={cn(classNames)}
       {...props}
     >
       {leftIcon && leftIcon}

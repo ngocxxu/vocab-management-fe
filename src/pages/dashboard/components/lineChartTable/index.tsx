@@ -3,11 +3,11 @@ import { Tabs } from '@/components/tabs'
 
 const LineChartTable = () => {
   return (
-    <div className="p-8 rounded-xl shadow-md border-t">
-      <div className="mb-5 flex justify-between items-center">
+    <div className="rounded-xl border-t p-8 shadow-md">
+      <div className="mb-5 flex items-center justify-between">
         <div>
           <h1 className="font-semibold">Daily Status</h1>
-          <p className="text-sm text-customGray">Statictics</p>
+          <p className="text-sm text-secondary">Statictics</p>
         </div>
         <Tabs
           head={[

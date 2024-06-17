@@ -18,7 +18,7 @@ const list = [
 const HeaderTop = () => {
   const navigate = useNavigate()
   return (
-    <div className="header-top bg-customBlue text-white">
+    <div className="header-top bg-primary text-white">
       <div className="container mx-auto">
         <div className="header-top-inner flex justify-between">
           <div className="flex justify-between gap-10">
@@ -30,7 +30,7 @@ const HeaderTop = () => {
             </p>
             <HeaderMenu />
           </div>
-          <div className="flex justify-center items-center gap-6">
+          <div className="flex items-center justify-center gap-6">
             <DropDownCustom
               align="end"
               side="bottom"

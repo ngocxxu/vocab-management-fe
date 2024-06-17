@@ -25,17 +25,17 @@ const Pagination = ({ paginations }: TPaginationProps) => {
     pathname === ROUTER_VOCAB_TRAINER && isOpenModalState
 
   const onPageChange = (newPageNumber: number) => {
-    isURLVocabTrainer
-      ? dispatch(
-          setPaginationVocabState({
-            page: String(newPageNumber),
-            limit: LIMIT_PAGE_10
-          })
-        )
-      : setSearchParams({
+    isURLVocabTrainer ?
+      dispatch(
+        setPaginationVocabState({
           page: String(newPageNumber),
           limit: LIMIT_PAGE_10
         })
+      )
+    : setSearchParams({
+        page: String(newPageNumber),
+        limit: LIMIT_PAGE_10
+      })
   }
 
   const getPagesToShow = () => {
@@ -73,19 +73,19 @@ const Pagination = ({ paginations }: TPaginationProps) => {
   }
 
   return (
-    <div className="flex items-center justify-end gap-1 mt-4">
+    <div className="mt-4 flex items-center justify-end gap-1">
       <ButtonLib
         variant="outline"
         className="h-7 px-2.5"
         onClick={() =>
-          isURLVocabTrainer
-            ? dispatch(
-                setPaginationVocabState({
-                  page: String(1),
-                  limit: LIMIT_PAGE_10
-                })
-              )
-            : setSearchParams({ page: String(1), limit: LIMIT_PAGE_10 })
+          isURLVocabTrainer ?
+            dispatch(
+              setPaginationVocabState({
+                page: String(1),
+                limit: LIMIT_PAGE_10
+              })
+            )
+          : setSearchParams({ page: String(1), limit: LIMIT_PAGE_10 })
         }
         disabled={currentPage === 1}
       >
@@ -95,17 +95,17 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         variant="outline"
         className="h-7 px-2.5"
         onClick={() =>
-          isURLVocabTrainer
-            ? dispatch(
-                setPaginationVocabState({
-                  page: String(currentPage - 1),
-                  limit: LIMIT_PAGE_10
-                })
-              )
-            : setSearchParams({
+          isURLVocabTrainer ?
+            dispatch(
+              setPaginationVocabState({
                 page: String(currentPage - 1),
                 limit: LIMIT_PAGE_10
               })
+            )
+          : setSearchParams({
+              page: String(currentPage - 1),
+              limit: LIMIT_PAGE_10
+            })
         }
         disabled={currentPage === 1}
       >
@@ -114,29 +114,30 @@ const Pagination = ({ paginations }: TPaginationProps) => {
 
       {getPagesToShow().map((pageNumber, index) => (
         <Fragment key={index}>
-          {pageNumber === null ? (
+          {pageNumber === null ?
             <ButtonLib variant="outline" className="h-7 px-2.5">
               ...
             </ButtonLib>
-          ) : (
-            <ButtonLib
+          : <ButtonLib
               variant="outline"
               onClick={() => onPageChange(pageNumber)}
               className={clsx(
                 'h-7 px-2.5',
-                pageNumber ===
-                  parseInt(
-                    isURLVocabTrainer
-                      ? paginationVocabState.page
+                (
+                  pageNumber ===
+                    parseInt(
+                      isURLVocabTrainer ?
+                        paginationVocabState.page
                       : searchParams.get('page')!
-                  )
-                  ? 'active bg-customBlue text-white'
-                  : ''
+                    )
+                ) ?
+                  'active'
+                : ''
               )}
             >
               {pageNumber}
             </ButtonLib>
-          )}
+          }
         </Fragment>
       ))}
 
