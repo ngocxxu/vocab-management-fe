@@ -59,15 +59,17 @@ const Vocab = () => {
   const counts = Object.keys(rowSelection).length
 
   const { data, isLoading } = useGetAllVocab({
-    page: isURLVocabTrainer
-      ? paginationVocabState.page!
+    page:
+      isURLVocabTrainer ?
+        paginationVocabState.page!
       : searchParams.get('page')!,
-    limit: isURLVocabTrainer
-      ? paginationVocabState.limit!
+    limit:
+      isURLVocabTrainer ?
+        paginationVocabState.limit!
       : searchParams.get('limit')!,
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
-    subjectFilter: filterData.subject?.map(item => item.value),
+    subjectFilter: filterData.subject?.map((item) => item.value),
     search: searchVocab || undefined
   })
 
@@ -156,7 +158,7 @@ const Vocab = () => {
             <div className="flex items-center">
               <Badge
                 variant="outline"
-                className="break-all badge bg-emerald-500 gap-2 text-white"
+                className="badge gap-2 break-all bg-emerald-500 text-primary-foreground"
               >
                 {String(getValue())}
               </Badge>
@@ -176,7 +178,7 @@ const Vocab = () => {
         cell: ({ row }) => (
           <div
             ref={refDiv}
-            className="break-all cursor-pointer flex justify-between items-center"
+            className="flex cursor-pointer items-center justify-between break-all"
             onClick={() =>
               dispatch(
                 toggleState({
@@ -186,12 +188,12 @@ const Vocab = () => {
             }
           >
             <div>
-              {row.original.textTarget.map(item => {
+              {row.original.textTarget.map((item) => {
                 return (
                   <Fragment key={item.text}>
                     <Badge
                       variant="outline"
-                      className="bg-sky-500 gap-2 text-white"
+                      className="gap-2 bg-sky-500 text-primary-foreground"
                     >
                       {item.text}
                     </Badge>{' '}
@@ -200,11 +202,9 @@ const Vocab = () => {
               })}
             </div>
 
-            {idsState.includes(row.original._id) ? (
+            {idsState.includes(row.original._id) ?
               <IconChevronUp />
-            ) : (
-              <IconChevronDown />
-            )}
+            : <IconChevronDown />}
           </div>
         )
       },
@@ -212,7 +212,7 @@ const Vocab = () => {
         enableSorting: false,
         id: 'action',
         cell: ({ row }) => (
-          <div className="flex gap-3 items-center w-0">
+          <div className="flex w-0 items-center gap-3">
             {!isURLVocabTrainer && (
               <Button
                 className="h-6 w-6"
@@ -255,14 +255,14 @@ const Vocab = () => {
         toolbar: (
           <div
             className={clsx(
-              'flex justify-end items-center mb-2',
+              'mb-2 flex items-center justify-end',
               counts > 0 && 'justify-between'
             )}
           >
             {counts > 0 && (
               <div className="text-xs">{counts} row(s) selected</div>
             )}
-            <div className="flex justify-center items-center gap-1">
+            <div className="flex items-center justify-center gap-1">
               {counts > 0 && !isURLVocabTrainer && (
                 <AlertDialog
                   head={
@@ -270,7 +270,7 @@ const Vocab = () => {
                       onClick={() => setIsDeleteMulti(true)}
                       variant="ghost"
                       title={`Delete (${counts})`}
-                      leftIcon={<IconTrash className="mr-2 text-error" />}
+                      leftIcon={<IconTrash className="text-error mr-2" />}
                     />
                   }
                   title="Do you want to delete these?"
@@ -318,7 +318,7 @@ const Vocab = () => {
         getSortedRowModel: getSortedRowModel(),
         getCoreRowModel: getCoreRowModel(),
         onRowSelectionChange: setRowSelection,
-        getRowId: row => row._id,
+        getRowId: (row) => row._id,
         onSortingChange: setSorting
       }}
     />

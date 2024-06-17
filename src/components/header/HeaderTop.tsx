@@ -18,7 +18,7 @@ const list = [
 const HeaderTop = () => {
   const navigate = useNavigate()
   return (
-    <div className="header-top bg-primary text-white">
+    <div className="header-top bg-primary text-primary-foreground">
       <div className="container mx-auto">
         <div className="header-top-inner flex justify-between">
           <div className="flex justify-between gap-10">

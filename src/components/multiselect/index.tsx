@@ -24,8 +24,8 @@ const MultiSelect = forwardRef(
           classNames={{
             control: () => '!rounded-lg text-sm',
             option: () => '!text-sm',
-            multiValue: () => '!bg-primary text-white !rounded',
-            multiValueLabel: () => '!text-white'
+            multiValue: () => '!bg-primary text-primary-foreground !rounded',
+            multiValueLabel: () => '!text-primary-foreground'
           }}
           isMulti
           name="colors"

@@ -18,10 +18,7 @@ export function Toaster() {
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast
-            className={clsx(
-              'bg-success',
-              title === 'Error' && 'bg-error'
-            )}
+            className={clsx('bg-success', title === 'Error' && 'bg-error')}
             key={id}
             {...props}
           >
@@ -30,7 +27,7 @@ export function Toaster() {
                 <ToastTitle>
                   <Badge
                     className={clsx(
-                      'gap-2 text-white',
+                      'gap-2 text-primary-foreground',
                       'bg-success',
                       title === 'Error' && 'bg-error'
                     )}
