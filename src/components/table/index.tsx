@@ -43,7 +43,7 @@ const DataTable = <T,>({
 
   if (isLoading) {
     return (
-      <div className="h-[400px] flex justify-center items-center">
+      <div className="flex h-[400px] items-center justify-center">
         <IconLoader2 className="h-10 w-10 animate-spin" />
       </div>
     )
@@ -53,13 +53,13 @@ const DataTable = <T,>({
     <>
       {components?.toolbar}
 
-      {options.data.length > 0 ? (
+      {options.data.length > 0 ?
         <>
-          <table className="table text-sm text-left rtl:text-right text-gray-500 w-full">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-              {table.getHeaderGroups().map(headerGroup => (
+          <table className="table w-full text-left text-sm text-gray-500 rtl:text-right">
+            <thead className="bg-gray-50 text-xs uppercase text-gray-700">
+              {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
-                  {headerGroup.headers.map(header => (
+                  {headerGroup.headers.map((header) => (
                     <th
                       scope="col"
                       className="px-6 py-3"
@@ -69,18 +69,19 @@ const DataTable = <T,>({
                     >
                       <div
                         {...{
-                          className: header.column.getCanSort()
-                            ? 'cursor-pointer select-none flex items-center gap-4'
+                          className:
+                            header.column.getCanSort() ?
+                              'cursor-pointer select-none flex items-center gap-4'
                             : '',
                           onClick: header.column.getToggleSortingHandler()
                         }}
                       >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                        {header.isPlaceholder ? null : (
+                          flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )
+                        )}
 
                         {{
                           asc: <IconCaretUpFilled size="0.8rem" />,
@@ -96,10 +97,10 @@ const DataTable = <T,>({
               ))}
             </thead>
             <tbody>
-              {table.getRowModel().rows.map(row => (
+              {table.getRowModel().rows.map((row) => (
                 <Fragment key={row.id}>
-                  <tr className="bg-white border-b">
-                    {row.getVisibleCells().map(cell => (
+                  <tr className="border-b bg-primary-foreground">
+                    {row.getVisibleCells().map((cell) => (
                       <td className="px-6 py-3" key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -115,12 +116,11 @@ const DataTable = <T,>({
           </table>
           {isPagination && <Pagination paginations={paginations!} />}
         </>
-      ) : (
-        <div className="h-[400px] flex flex-col justify-center items-center gap-2">
+      : <div className="flex h-[400px] flex-col items-center justify-center gap-2">
           <IconDatabaseOff size="2rem" />
           <p className="text-xl">No data found</p>
         </div>
-      )}
+      }
     </>
   )
 }

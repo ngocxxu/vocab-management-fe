@@ -36,7 +36,7 @@ export const Modal = ({
               <div>
                 <h4 className="mb-2 font-semibold">{title}</h4>
                 {description && (
-                  <p className="text-sm font-normal text-secondary">
+                  <p className="text-sm font-normal text-secondary-foreground">
                     {description}
                   </p>
                 )}

@@ -45,8 +45,8 @@ export const Question = () => {
   return (
     <div className="container my-10 grid grid-cols-5 gap-4">
       <div className="col-span-4 flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <div className="flex justify-center items-center gap-1">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center gap-1">
             <Button
               type="button"
               disabled={orderQuestion === 1}
@@ -57,7 +57,7 @@ export const Question = () => {
                 dispatch(setOrderQuestion(orderQuestion - 1))
               }}
             />
-            <div className="bg-white mx-auto rounded-md p-2 border font-semibold">
+            <div className="mx-auto rounded-md border bg-primary-foreground p-2 font-semibold">
               {`Question ${orderQuestion}/${data.length}`}
             </div>
             <Button
@@ -71,7 +71,7 @@ export const Question = () => {
               }}
             />
           </div>
-          <div className="bg-white rounded-md p-2 border font-semibold flex gap-2">
+          <div className="flex gap-2 rounded-md border bg-primary-foreground p-2 font-semibold">
             <Clock />
             <Countdown countdown={countdown} setCountdown={setCountdown} />
           </div>
@@ -84,23 +84,23 @@ export const Question = () => {
         />
       </div>
 
-      <div className="bg-white rounded-md p-4 font-semibold shadow-md border-t">
+      <div className="rounded-md border-t bg-primary-foreground p-4 font-semibold shadow-md">
         Question list
-        <div className="bg-popover p-4 mt-3 rounded-md">
+        <div className="mt-3 rounded-md bg-popover p-4">
           {data &&
-            data.map(item => (
+            data.map((item) => (
               <Button
                 type="button"
                 disabled={item.order > countQuestions}
                 key={item.order}
-                className="bg-white w-full font-semibold mb-2 shadow-none"
+                className="mb-2 w-full bg-primary-foreground font-semibold shadow-none"
                 variant="outline"
                 leftIcon={
                   <Circle
                     className="pr-2"
                     height="18px"
                     width="18px"
-                    fill='hsl(var(--success))'
+                    fill="hsl(var(--success))"
                   />
                 }
                 title={`Question ${item.order}`}

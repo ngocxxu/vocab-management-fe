@@ -74,7 +74,7 @@ export const Choice = ({
   }, [form.watch().wordTestSelects.length])
 
   return (
-    <div className="rounded-md border-t bg-white p-4 shadow-md">
+    <div className="rounded-md border-t bg-primary-foreground p-4 shadow-md">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {fields.map(

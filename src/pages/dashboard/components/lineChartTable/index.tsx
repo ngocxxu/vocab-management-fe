@@ -7,7 +7,7 @@ const LineChartTable = () => {
       <div className="mb-5 flex items-center justify-between">
         <div>
           <h1 className="font-semibold">Daily Status</h1>
-          <p className="text-sm text-secondary">Statictics</p>
+          <p className="text-sm text-secondary-foreground">Statictics</p>
         </div>
         <Tabs
           head={[

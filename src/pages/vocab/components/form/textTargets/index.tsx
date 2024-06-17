@@ -54,7 +54,7 @@ export const TextTargetsForm = ({
       // Set intial value from backend when re-render times
       fieldsLengthItem === itemVocab.textTarget.length
     ) {
-      reset(prev => ({ ...prev, ...itemVocab }))
+      reset((prev) => ({ ...prev, ...itemVocab }))
       setValue(
         `textTarget.${index}.wordType`,
         itemVocab.textTarget[index].wordType
@@ -65,7 +65,7 @@ export const TextTargetsForm = ({
 
   return (
     <>
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <Controller
           name={`textTarget.${index}.text`}
           control={control}
@@ -96,7 +96,7 @@ export const TextTargetsForm = ({
           )}
         />
       </div>
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <Controller
           name={`textTarget.${index}.explanationSource`}
           control={control}
@@ -134,9 +134,9 @@ export const TextTargetsForm = ({
         render={({ field }) => (
           <MultiSelect
             error={
-              checkErrors
-                ? (errors.textTarget![index]?.subject as FieldError)
-                : null
+              checkErrors ?
+                (errors.textTarget![index]?.subject as FieldError)
+              : null
             }
             isMark={true}
             label="Subject"
@@ -146,19 +146,19 @@ export const TextTargetsForm = ({
         )}
       />
 
-      <div className="border border-gray-200 rounded-md mt-4 p-2">
+      <div className="mt-4 rounded-md border border-gray-200 p-2">
         {fields.map((field, idx) => (
           <fieldset key={field.id}>
             <div
               className={clsx(
                 idx !== 0 && 'mt-4',
-                'flex justify-between items-center'
+                'flex items-center justify-between'
               )}
             >
               <div className="text-sm">Example {idx + 1}</div>
               <IconX
                 onClick={() => remove(idx)}
-                className="btn btn-square btn-xs btn-outline border-white bg-white"
+                className="btn btn-square btn-xs btn-outline border-white bg-primary-foreground"
               />
             </div>
             <ExamplesForm control={control} idx={idx} idxTextTarget={index} />

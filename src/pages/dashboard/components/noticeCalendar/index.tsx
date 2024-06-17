@@ -9,7 +9,7 @@ export const NoticeCalendar = () => {
       <div className="grid grid-cols-3">
         <div className="border-r">
           <h1 className="font-semibold">Notice</h1>
-          <p className="col-span-2 text-sm text-secondary">
+          <p className="col-span-2 text-sm text-secondary-foreground">
             What do you need to pay attention to today?
           </p>
           <div className="mb-6 mt-3 flex items-center gap-2">

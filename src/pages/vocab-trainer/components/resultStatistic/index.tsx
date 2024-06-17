@@ -72,7 +72,7 @@ export const ResultStatistic = () => {
 
   return (
     <div className="container my-10 grid grid-cols-9 gap-4">
-      <div className="col-span-4 rounded-md border-t bg-white p-6 pb-0 font-semibold shadow-md">
+      <div className="col-span-4 rounded-md border-t bg-primary-foreground p-6 pb-0 font-semibold shadow-md">
         <p className="mb-1 text-lg font-bold">Result</p>
         <div className="flex items-start justify-between">
           <div>
@@ -89,7 +89,7 @@ export const ResultStatistic = () => {
               </div>
               <div>
                 <p>Test {data?.statusTest}</p>
-                <p className="mt-3 text-sm font-normal text-secondary">
+                <p className="mt-3 text-sm font-normal text-secondary-foreground">
                   Thank you for taking the test.
                 </p>
               </div>
@@ -104,7 +104,7 @@ export const ResultStatistic = () => {
         </div>
       </div>
 
-      <div className="col-span-5 rounded-md border-t bg-white p-6 font-semibold shadow-md">
+      <div className="col-span-5 rounded-md border-t bg-primary-foreground p-6 font-semibold shadow-md">
         <p className="mb-1 text-lg font-bold">Timer</p>
         <div className="mt-4 flex gap-2 text-2xl">
           <div className="mt-1">
@@ -116,27 +116,27 @@ export const ResultStatistic = () => {
               <p>
                 {hours}:{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </p>
-              <IconSlash className="mx-4 text-secondary" />
-              <p className="text-secondary">00:20:00</p>
+              <IconSlash className="mx-4 text-secondary-foreground" />
+              <p className="text-secondary-foreground">00:20:00</p>
             </div>
 
             <LineProgressBar percentage={calLinePercent} />
 
             <div className="mt-8 grid grid-cols-12 gap-4">
-              <div className="col-span-6 text-xl font-normal text-secondary">
+              <div className="col-span-6 text-xl font-normal text-secondary-foreground">
                 Start time
                 <span className="ml-6 font-medium text-secondary-foreground">
                   17:43
                 </span>
               </div>
-              <div className="col-span-6 text-xl font-normal text-secondary">
+              <div className="col-span-6 text-xl font-normal text-secondary-foreground">
                 Date time
                 <span className="ml-6 font-medium text-secondary-foreground">
                   {data?.updatedAt &&
                     format(new Date(data?.updatedAt), 'dd-MM-yyyy')}
                 </span>
               </div>
-              <div className="col-span-12 text-xl font-normal text-secondary">
+              <div className="col-span-12 text-xl font-normal text-secondary-foreground">
                 End time
                 <span className="ml-8 font-medium text-secondary-foreground">
                   17:43
@@ -167,7 +167,7 @@ export const ResultStatistic = () => {
         </div>
       </div>
 
-      <div className="col-span-9 rounded-md border-t bg-white p-6 font-semibold shadow-md">
+      <div className="col-span-9 rounded-md border-t bg-primary-foreground p-6 font-semibold shadow-md">
         <p className="mb-1 text-lg font-bold">Questions</p>
         <DetailTable data={data?.wordResults ?? []} />
       </div>

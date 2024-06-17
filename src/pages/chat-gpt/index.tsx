@@ -9,12 +9,12 @@ const ChatGPT = () => {
   return (
     <div className="container my-10">
       <div
-        className="grid grid-cols-12 bg-white rounded-md font-semibold shadow-md border-t"
+        className="grid grid-cols-12 rounded-md border-t bg-primary-foreground font-semibold shadow-md"
         style={{
           height: 'calc(100vh - 50px - 44px - 80px)'
         }}
       >
-        <div className="col-span-3 border-r-2 p-6 flex flex-col justify-between">
+        <div className="col-span-3 flex flex-col justify-between border-r-2 p-6">
           <div>
             <Button type="button" classNames="w-full" title="+ New chat" />
 
@@ -38,14 +38,14 @@ const ChatGPT = () => {
             />
           </div>
         </div>
-        <div className="p-6 grid grid-rows-12 col-span-9 overflow-y-auto">
-          <div className="row-span-4 flex item-center justify-center mt-auto">
+        <div className="col-span-9 grid grid-rows-12 overflow-y-auto p-6">
+          <div className="item-center row-span-4 mt-auto flex justify-center">
             <IconChatGPT />
           </div>
-          <div className="row-span-8 relative">
+          <div className="relative row-span-8">
             <div>
               <div className="flex justify-end py-5">
-                <div className="max-w-[70%] rounded-3xl bg-[#f4f4f4] px-5 py-2.5 dark:bg-token-main-surface-secondary">
+                <div className="dark:bg-token-main-surface-secondary max-w-[70%] rounded-3xl bg-popover px-5 py-2.5">
                   The symbol (that is a string) is particularly useful to
                   overcome the limitation of the colors on filenames, so that
                   git can color your newly added file in green but you still
@@ -65,7 +65,7 @@ const ChatGPT = () => {
               </div>
             </div>
             <div className="absolute bottom-0 left-0 w-full">
-              <div className="flex justify-center items-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <Button
                   variant="ghost"
                   type="button"

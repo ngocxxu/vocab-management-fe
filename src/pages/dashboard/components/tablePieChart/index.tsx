@@ -14,7 +14,7 @@ export const TablePieChart = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <IconCircleFilled style={{ color }} size="0.8rem" />
-            <div className="text-secondary">{status}</div>
+            <div className="text-secondary-foreground">{status}</div>
           </div>
           <div className="font-medium">{value}</div>
         </div>

@@ -8,7 +8,7 @@ const PieChartTable = () => {
     <div className="rounded-xl border-t p-8 shadow-md">
       <div>
         <h1 className="font-semibold">Vocabulary Quantity</h1>
-        <div className="flex items-center gap-1 text-secondary">
+        <div className="flex items-center gap-1 text-secondary-foreground">
           <p className="text-sm">
             The rate is based on the total number of vocabulary you registered
           </p>
