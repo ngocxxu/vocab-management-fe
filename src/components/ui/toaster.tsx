@@ -19,8 +19,8 @@ export function Toaster() {
         return (
           <Toast
             className={clsx(
-              'bg-customGreen4',
-              title === 'Error' && 'bg-customRed3'
+              'bg-success',
+              title === 'Error' && 'bg-error'
             )}
             key={id}
             {...props}
@@ -31,8 +31,8 @@ export function Toaster() {
                   <Badge
                     className={clsx(
                       'gap-2 text-white',
-                      'bg-customGreen',
-                      title === 'Error' && 'bg-customRed'
+                      'bg-success',
+                      title === 'Error' && 'bg-error'
                     )}
                     variant="outline"
                   >

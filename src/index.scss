@@ -32,6 +32,9 @@
     --destructive-foreground: 0 0% 100%;
     --ring: 211.83 100% 54.9%;
     --radius: 0.5rem;
+    --success: 173, 80%, 40%;
+    --warning: 47, 100%, 48%;
+    --error: 346, 94%, 57%;
   }
 
   .dark {
@@ -54,5 +57,8 @@
     --destructive: 8 92% 46%;
     --destructive-foreground: 0 0% 100%;
     --ring: 212 100% 55%;
+    --success: 173, 80%, 40%;
+    --warning: 47, 100%, 48%;
+    --error: 346, 94%, 57%;
   }
 }

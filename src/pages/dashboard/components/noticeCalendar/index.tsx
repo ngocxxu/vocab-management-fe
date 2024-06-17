@@ -5,29 +5,40 @@ import 'react-day-picker/dist/style.css'
 
 export const NoticeCalendar = () => {
   return (
-    <div className="p-8 pr-0 rounded-xl shadow-md border-t">
+    <div className="rounded-xl border-t p-8 pr-0 shadow-md">
       <div className="grid grid-cols-3">
         <div className="border-r">
           <h1 className="font-semibold">Notice</h1>
-          <p className="text-sm text-customGray col-span-2">What do you need to pay attention to today?</p>
-          <div className="flex items-center gap-2 mt-3 mb-6">
-            <Avatar className="w-8 h-8" classNameContent="bg-customRed opacity-60">
+          <p className="col-span-2 text-sm text-customGray">
+            What do you need to pay attention to today?
+          </p>
+          <div className="mb-6 mt-3 flex items-center gap-2">
+            <Avatar
+              className="h-8 w-8"
+              classNameContent="bg-customRed opacity-60"
+            >
               <IconBrandSpeedtest size="1.1rem" />
             </Avatar>
-            <Avatar className="w-8 h-8" classNameContent="bg-customGreen opacity-60">
+            <Avatar
+              className="h-8 w-8"
+              classNameContent="bg-success opacity-60 text-black"
+            >
               <IconBook2 size="1.1rem" />
             </Avatar>
-            <Avatar className="w-8 h-8" classNameContent="opacity-60 bg-customYellow">
+            <Avatar
+              className="h-8 w-8"
+              classNameContent="opacity-60 bg-customYellow"
+            >
               <IconWriting size="1.1rem" />
             </Avatar>
           </div>
-          <ul className="text-sm list-disc">
+          <ul className="list-disc text-sm">
             <li>Retake the failed test on January 29</li>
             <li>Execute the test created on January 22nd a second time </li>
             <li>Added 10 new vocabulary words</li>
           </ul>
         </div>
-        <div className="col-span-2 flex flex-col justify-center items-center">
+        <div className="col-span-2 flex flex-col items-center justify-center">
           <Calendar />
         </div>
       </div>
