@@ -3,25 +3,25 @@ export const dataPie = [
     id: '1',
     status: 'Total',
     value: 5000,
-    color: '#cbd5e1'
+    color: 'hsl(var(--input))'
   },
   {
     id: '2',
     status: 'Passed',
     value: 2500,
-    color: '#14B8A6'
+    color: 'hsl(var(--success))'
   },
   {
     id: '3',
     status: 'Pending',
     value: 2000,
-    color: '#1B84FF'
+    color: 'hsl(var(--primary))'
   },
   {
     id: '4',
     status: 'Failed',
     value: 500,
-    color: '#F82C5D'
+    color: 'hsl(var(--error))'
   }
 ]
 

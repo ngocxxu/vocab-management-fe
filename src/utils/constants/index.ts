@@ -10,20 +10,20 @@ export const DEFAULT_COUNTDOWN = 1200
 export const colorData = [
   {
     status: 'Passed',
-    background: '#ECFDF3',
-    text: '#037847',
-    dot: '#14BA6D'
+    background: 'hsl(var(--success))',
+    text: 'hsl(var(--primary-foreground))',
+    dot: 'hsl(var(--success))'
   },
   {
     status: 'Failed',
-    background: '#FBE7E8',
-    text: '#A30D11',
-    dot: '#F82C5D'
+    background: 'hsl(var(--error))',
+    text: 'hsl(var(--primary-foreground))',
+    dot: 'hsl(var(--destructive))'
   },
   {
     status: 'Pending',
-    background: '#F2F4F7',
-    text: '#4B5675',
-    dot: '#99A1B7'
+    background: 'hsl(var(--muted))',
+    text: 'hsl(var(--primary-foreground))',
+    dot: 'hsl(var(--muted-foreground))'
   }
 ]

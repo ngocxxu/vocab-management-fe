@@ -100,7 +100,7 @@ export const Question = () => {
                     className="pr-2"
                     height="18px"
                     width="18px"
-                    fill="#037847"
+                    fill='hsl(var(--success))'
                   />
                 }
                 title={`Question ${item.order}`}

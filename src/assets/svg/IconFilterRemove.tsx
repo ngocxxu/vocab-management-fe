@@ -1,7 +1,7 @@
 const IconFilterRemove = () => {
   return (
     <svg
-      fill="#14B8A6"
+      fill='hsl(var(--success))'
       className="w-6 h-6 mr-1"
       viewBox="0 0 32 32"
       id="icon"

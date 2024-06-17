@@ -21,7 +21,7 @@ const CustomLineChart = () => {
         <Line
           type="linear"
           dataKey="uv"
-          stroke="#1B84FF"
+          stroke="hsl(var(--primary))"
           dot={{ r: 5 }}
           activeDot={{ r: 8 }}
         />

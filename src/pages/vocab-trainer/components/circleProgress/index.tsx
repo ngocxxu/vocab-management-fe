@@ -16,9 +16,9 @@ export const CircleProgress = ({
       progress={percentage}
       radius={120}
       strokeWidth={50}
-      strokeColor={isPassed ? '#14B8A6' : '#F82C5D'}
+      strokeColor={isPassed ? 'hsl(var(--success))' : 'hsl(var(--error))'}
       trackStrokeWidth={50}
-      trackStrokeColor="#E4E6EF"
+      trackStrokeColor='hsl(var(--card))'
       pointerRadius={18}
       pointerStrokeWidth={0}
     >
