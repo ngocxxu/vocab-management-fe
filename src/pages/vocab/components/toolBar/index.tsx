@@ -79,7 +79,7 @@ export const ToolBar = ({
     }
   })
 
-  const onSubmit: SubmitHandler<TFormInputsFilter> = data => {
+  const onSubmit: SubmitHandler<TFormInputsFilter> = (data) => {
     dispatch(setFilterVocabState(data))
     setOpen(false)
   }
@@ -121,7 +121,7 @@ export const ToolBar = ({
       </FormProvider>
       <SearchBar
         defaultValue={searchVocab}
-        onSearch={input => dispatch(setSearchVocabState(input))}
+        onSearch={(input) => dispatch(setSearchVocabState(input))}
       />
 
       {pathname !== ROUTER_VOCAB_TRAINER && (
@@ -146,7 +146,7 @@ export const ToolBar = ({
               onClose={() => setOpenModal(false)}
             />
           }
-          className="w-full h-full max-w-[100vh] !max-h-[85vh] overflow-x-auto"
+          className="h-full !max-h-[85vh] w-full max-w-[100vh] overflow-x-auto"
         />
       )}
     </div>

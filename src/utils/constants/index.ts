@@ -24,3 +24,10 @@ export const colorData = [
     text: 'hsl(var(--primary-foreground))',
   }
 ]
+
+export const limitData = [
+  { label: '5', value: '5' },
+  { label: '10', value: '10' },
+  { label: '15', value: '15' },
+  { label: '20', value: '20' },
+]

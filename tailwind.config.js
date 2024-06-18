@@ -18,7 +18,6 @@ module.exports = {
     },
     extend: {
       colors: {
-        customBlack: '#0f172a',
         success: 'hsl(var(--success))',
         warning: 'hsl(var(--warning))',
         error: 'hsl(var(--error))',

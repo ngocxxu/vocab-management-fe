@@ -92,8 +92,8 @@ const Vocab = () => {
 
     if (data?.data && data?.data.length <= 0 && data.currentPage > 1) {
       setSearchParams({
-        page: String(data.currentPage - 1),
-        limit: LIMIT_PAGE_10
+        page: searchParams.get('page') ?? '1',
+        limit: searchParams.get('limit') ?? LIMIT_PAGE_10
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,7 +103,7 @@ const Vocab = () => {
     if (isURLVocabTrainer) return
     return setSearchParams({
       page: searchParams.get('page') ?? '1',
-      limit: LIMIT_PAGE_10
+      limit: searchParams.get('limit') ?? LIMIT_PAGE_10
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -270,7 +270,7 @@ const Vocab = () => {
                       onClick={() => setIsDeleteMulti(true)}
                       variant="ghost"
                       title={`Delete (${counts})`}
-                      leftIcon={<IconTrash className="text-error mr-2" />}
+                      leftIcon={<IconTrash className="mr-2 text-error" />}
                     />
                   }
                   title="Do you want to delete these?"

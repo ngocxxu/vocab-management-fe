@@ -5,11 +5,13 @@ import { TOption } from '../../utils/types'
 
 export type TSelect = {
   isMark?: boolean
-  label: string
+  label?: string
   options: TOption[]
   error?: FieldError | null
-  onChange: (e: TOption) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onChange: (e: any) => void
   value: string
+  isSearchable?: boolean
 }
 const Select = ({
   label,
@@ -18,6 +20,7 @@ const Select = ({
   error,
   onChange,
   value,
+  isSearchable = true,
   ...props
 }: TSelect) => {
   return (
@@ -27,14 +30,14 @@ const Select = ({
         {label}
       </div>
       <ReactSelect
+        isSearchable={isSearchable}
         classNames={{
           control: () => '!rounded-lg text-sm',
           option: () => '!text-sm'
         }}
         value={options.find((item) => item.value === value)}
         options={options}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onChange={(e) => onChange((e as any).value)}
+        onChange={(e) => onChange(e!.value)}
         {...props}
       />
 

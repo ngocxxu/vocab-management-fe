@@ -58,7 +58,7 @@ const VocabTrainer = () => {
 
   const { data, isLoading } = useGetAllVocabTrainer({
     page: searchParams.get('page') ?? '1',
-    limit: searchParams.get('limit') ?? '10',
+    limit: searchParams.get('limit') ?? LIMIT_PAGE_10,
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
     statusFilter: filterData.status ?? [],
@@ -85,7 +85,7 @@ const VocabTrainer = () => {
     if (isURLVocabTrainer) return
     return setSearchParams({
       page: searchParams.get('page') ?? '1',
-      limit: LIMIT_PAGE_10
+      limit: searchParams.get('limit') ?? LIMIT_PAGE_10
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
