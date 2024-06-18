@@ -14,7 +14,7 @@ const getAllVocabTrainer = async (pageOptions: TPage) => {
       }
     } else {
       if (value !== undefined && (value as string[]).length > 0) {
-        ;(value as string[]).forEach(item => {
+        (value as string[]).forEach((item) => {
           params.append(`${key}`, item)
         })
       }
