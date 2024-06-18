@@ -1,7 +1,6 @@
 import { Badge } from '@/components/badge'
 import Table from '@/components/table'
 import { colorData } from '@/utils/constants'
-import { IconCircleFilled } from '@tabler/icons-react'
 import { ColumnDef, getCoreRowModel } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { TWordResults } from '../../types'
@@ -34,21 +33,16 @@ export const DetailTable = ({ data }: TDetailTable) => {
         accessorKey: 'status',
         header: 'Status',
         cell: ({ getValue }) => {
-          const findColor = colorData.find(item => item.status === getValue())
+          const findColor = colorData.find((item) => item.status === getValue())
           return (
             <Badge
-              style={{
+            className="w-[4rem]"
+            style={{
                 backgroundColor: findColor?.background,
                 color: findColor?.text
               }}
             >
-              <div className="flex items-center gap-2">
-                <IconCircleFilled
-                  style={{ color: findColor?.dot }}
-                  size="0.5rem"
-                />
-                <div> {String(getValue())}</div>
-              </div>
+              {String(getValue())}
             </Badge>
           )
         },
