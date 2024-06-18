@@ -1,6 +1,6 @@
 import Button from '@/components/button'
+import { cn } from '@/lib/utils'
 import { IconPlus, IconX } from '@tabler/icons-react'
-import clsx from 'clsx'
 import { useEffect } from 'react'
 import {
   Control,
@@ -150,7 +150,7 @@ export const TextTargetsForm = ({
         {fields.map((field, idx) => (
           <fieldset key={field.id}>
             <div
-              className={clsx(
+              className={cn(
                 idx !== 0 && 'mt-4',
                 'flex items-center justify-between'
               )}
@@ -166,7 +166,7 @@ export const TextTargetsForm = ({
         ))}
         <Button
           type="button"
-          classNames={clsx(fields.length !== 0 && 'mt-2', 'w-full')}
+          classNames={cn(fields.length !== 0 && 'mt-2', 'w-full')}
           onClick={() => {
             append({
               source: '',

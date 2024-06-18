@@ -1,5 +1,6 @@
 import { AlertDialog } from '@/components/alertDialog'
 import { Badge } from '@/components/badge'
+import { cn } from '@/lib/utils'
 import { setRowSelectionState } from '@/redux/reducer/vocabTrainer'
 import { convertOrderBy } from '@/utils'
 import {
@@ -14,7 +15,6 @@ import {
   getCoreRowModel,
   getSortedRowModel
 } from '@tanstack/react-table'
-import clsx from 'clsx'
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
@@ -254,7 +254,7 @@ const Vocab = () => {
       components={{
         toolbar: (
           <div
-            className={clsx(
+            className={cn(
               'mb-2 flex items-center justify-end',
               counts > 0 && 'justify-between'
             )}

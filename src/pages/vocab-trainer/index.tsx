@@ -19,12 +19,7 @@ import {
   ROUTER_VOCAB_TRAINER,
   colorData
 } from '@/utils/constants'
-import {
-  IconCircleFilled,
-  IconEye,
-  IconTextGrammar,
-  IconTrash
-} from '@tabler/icons-react'
+import { IconEye, IconTextGrammar, IconTrash } from '@tabler/icons-react'
 import {
   ColumnDef,
   SortingState,
@@ -129,21 +124,16 @@ const VocabTrainer = () => {
         accessorKey: 'statusTest',
         header: 'Status',
         cell: ({ getValue }) => {
-          const findColor = colorData.find(item => item.status === getValue())
+          const findColor = colorData.find((item) => item.status === getValue())
           return (
             <Badge
+              className="w-[4rem]"
               style={{
                 backgroundColor: findColor?.background,
                 color: findColor?.text
               }}
             >
-              <div className="flex items-center gap-2">
-                <IconCircleFilled
-                  style={{ color: findColor?.dot }}
-                  size="0.5rem"
-                />
-                <div> {String(getValue())}</div>
-              </div>
+              {String(getValue())}
             </Badge>
           )
         }
@@ -167,7 +157,7 @@ const VocabTrainer = () => {
         enableSorting: false,
         id: 'action',
         cell: ({ row }) => (
-          <div className="flex gap-3 items-center w-0">
+          <div className="flex w-0 items-center gap-3">
             <Button
               type="button"
               className="h-6 w-6"
@@ -234,14 +224,14 @@ const VocabTrainer = () => {
           toolbar: (
             <div
               className={cn(
-                'flex justify-end items-center mb-2',
+                'mb-2 flex items-center justify-end',
                 counts > 0 && 'justify-between'
               )}
             >
               {counts > 0 && (
                 <div className="text-xs">{counts} row(s) selected</div>
               )}
-              <div className="flex justify-center items-center gap-1">
+              <div className="flex items-center justify-center gap-1">
                 {counts > 0 && (
                   <AlertDialog
                     head={
@@ -250,7 +240,7 @@ const VocabTrainer = () => {
                         onClick={() => setIsDeleteMulti(true)}
                         variant="ghost"
                         title={`Delete (${counts})`}
-                        leftIcon={<IconTrash className="mr-2 text-error" />}
+                        leftIcon={<IconTrash className="text-error mr-2" />}
                       />
                     }
                     title="Do you want to delete these?"
@@ -288,7 +278,7 @@ const VocabTrainer = () => {
           getSortedRowModel: getSortedRowModel(),
           getCoreRowModel: getCoreRowModel(),
           onRowSelectionChange: setRowSelection,
-          getRowId: row => row._id,
+          getRowId: (row) => row._id,
           onSortingChange: setSorting
         }}
       />
@@ -298,7 +288,7 @@ const VocabTrainer = () => {
         open={openDetailModal}
         onOpenChange={setOpenDetailModal}
         body={<DetailTable data={itemVocabTrainer.wordResults} />}
-        className="w-full max-w-[100vh] !max-h-[85vh] overflow-x-auto"
+        className="!max-h-[85vh] w-full max-w-[100vh] overflow-x-auto"
       />
     </HeaderTable>
   )

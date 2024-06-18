@@ -7,7 +7,7 @@ import {
   ToastViewport
 } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 import { Badge } from '../badge'
 
 export function Toaster() {
@@ -18,7 +18,7 @@ export function Toaster() {
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast
-            className={clsx('bg-success', title === 'Error' && 'bg-error')}
+            className={cn('bg-success', title === 'Error' && 'bg-error')}
             key={id}
             {...props}
           >
@@ -26,7 +26,7 @@ export function Toaster() {
               {title && (
                 <ToastTitle>
                   <Badge
-                    className={clsx(
+                    className={cn(
                       'gap-2 text-primary-foreground',
                       'bg-success',
                       title === 'Error' && 'bg-error'

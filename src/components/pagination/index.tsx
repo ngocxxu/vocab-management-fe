@@ -1,6 +1,6 @@
+import { cn } from '@/lib/utils'
 import { setPaginationVocabState } from '@/redux/reducer/vocab'
 import { RootState } from '@/redux/store'
-import clsx from 'clsx'
 import { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
@@ -121,7 +121,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
           : <ButtonLib
               variant="outline"
               onClick={() => onPageChange(pageNumber)}
-              className={clsx(
+              className={cn(
                 'h-7 px-2.5',
                 (
                   pageNumber ===

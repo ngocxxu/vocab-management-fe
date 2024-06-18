@@ -1,5 +1,6 @@
 import { Badge } from '@/components/badge'
 import Button from '@/components/button'
+import { cn } from '@/lib/utils'
 import { Row } from '@tanstack/react-table'
 import { ReactNode, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,14 +27,14 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
 
   const checkShow = (idx: number) =>
     itemsShow.find(
-      item => item.idRow === row.original._id && item.idxExample === idx
+      (item) => item.idRow === row.original._id && item.idxExample === idx
     )
 
   return (
     idsState.includes(row.original._id) && (
       <tr className={styles.container}>
         <td
-          className="px-6 py-4 break-all"
+          className="break-all bg-background px-6 py-4"
           colSpan={row.getVisibleCells().length}
         >
           <ol className="list-decimal">
@@ -52,10 +53,10 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
               ) => {
                 return (
                   <li
-                    className={idx === textTarget.length - 1 ? '' : 'mb-4'}
+                    className={cn(idx === textTarget.length - 1 ? '' : 'mb-4')}
                     key={text}
                   >
-                    <div className="flex items-center mb-2 gap-3">
+                    <div className="mb-2 flex items-center gap-3">
                       <div className="flex items-center gap-1">
                         <div className="text-sky-500">{wordType}</div>
                         <div className="flex items-center">
@@ -64,11 +65,11 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                         </div>
                       </div>
                       <div>
-                        {subject.map(item => (
+                        {subject.map((item) => (
                           <Badge
                             key={item.label}
                             variant="outline"
-                            className="text-xs mr-1 border-gray-300"
+                            className="mr-1 border-gray-300 text-xs"
                           >
                             {item.value}
                           </Badge>
@@ -77,13 +78,13 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                     </div>
 
                     {explanationSource && (
-                      <div className="flex items-center mb-2">
+                      <div className="mb-2 flex items-center">
                         <span>{explanationSource}</span>
                         <Voice lang={sourceLanguage} text={explanationSource} />
                       </div>
                     )}
                     {explanationTarget && (
-                      <div className="flex items-center mb-2">
+                      <div className="mb-2 flex items-center">
                         <span>{explanationTarget}</span>
                         <Voice lang={targetLanguage} text={explanationTarget} />
                       </div>
@@ -94,9 +95,9 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       .map(({ source, target }) => (
                         <div
                           key={source}
-                          className="flex justify-start items-end gap-3"
+                          className="flex items-end justify-start gap-3"
                         >
-                          <div className="border-l-4 border-gray-400 pl-2 mb-2">
+                          <div className="mb-2 border-l-4 border-gray-400 pl-2">
                             <div className="flex items-center">
                               <div>{source}</div>
                               <Voice lang={sourceLanguage} text={source} />
@@ -113,7 +114,7 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                       <Button
                         type="button"
                         variant="link"
-                        className="text-xs text-blue-400 mb-2 block"
+                        className="mb-2 block text-xs text-blue-400"
                         onClick={() => {
                           dispatch(
                             setItemsShowState({

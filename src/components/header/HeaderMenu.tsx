@@ -1,10 +1,10 @@
+import { cn } from '@/lib/utils'
 import {
   IconBooks,
   IconLayoutDashboard,
   IconMedal2,
   IconMessages
 } from '@tabler/icons-react'
-import clsx from 'clsx'
 import { useLocation, useNavigate } from 'react-router-dom'
 
 const links = [
@@ -30,20 +30,20 @@ export function HeaderMenu() {
   const { pathname } = useLocation()
   const transformedPath = pathname.split('/').slice(0, 2).join('/')
 
-  const items = links.map(link => {
+  const items = links.map((link) => {
     return (
       <a
         key={link.label}
         href={link.link}
-        onClick={event => {
+        onClick={(event) => {
           event.preventDefault()
           navigate(`${link.link}`)
         }}
       >
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex items-center justify-center gap-2">
           <link.icon className="mb-1" size={18} />
           <p
-            className={clsx('pb-1', {
+            className={cn('pb-1', {
               'border-b-2': transformedPath === link.link
             })}
           >
@@ -56,7 +56,7 @@ export function HeaderMenu() {
 
   return (
     <div className="flex">
-      <div className="flex justify-start items-center gap-8 sm:visible invisible ">
+      <div className="invisible flex items-center justify-start gap-8 sm:visible">
         {items}
       </div>
     </div>

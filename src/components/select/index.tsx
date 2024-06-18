@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 import { FieldError } from 'react-hook-form'
 import ReactSelect from 'react-select'
 import { TOption } from '../../utils/types'
@@ -22,7 +22,7 @@ const Select = ({
 }: TSelect) => {
   return (
     <label className="form-control w-full">
-      <div className={clsx('text-sm', label && 'mt-4')}>
+      <div className={cn('text-sm', label && 'mt-4')}>
         {isMark && <span className="text-red-600">*</span>}
         {label}
       </div>
@@ -31,10 +31,10 @@ const Select = ({
           control: () => '!rounded-lg text-sm',
           option: () => '!text-sm'
         }}
-        value={options.find(item => item.value === value)}
+        value={options.find((item) => item.value === value)}
         options={options}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onChange={e => onChange((e as any).value)}
+        onChange={(e) => onChange((e as any).value)}
         {...props}
       />
 

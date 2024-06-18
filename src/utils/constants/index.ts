@@ -12,18 +12,15 @@ export const colorData = [
     status: 'Passed',
     background: 'hsl(var(--success))',
     text: 'hsl(var(--primary-foreground))',
-    dot: 'hsl(var(--success))'
   },
   {
     status: 'Failed',
     background: 'hsl(var(--error))',
     text: 'hsl(var(--primary-foreground))',
-    dot: 'hsl(var(--destructive))'
   },
   {
     status: 'Pending',
-    background: 'hsl(var(--muted))',
+    background: 'hsl(var(--accent))',
     text: 'hsl(var(--primary-foreground))',
-    dot: 'hsl(var(--muted-foreground))'
   }
 ]

@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 import { forwardRef } from 'react'
 import { FieldError } from 'react-hook-form'
 import ReactSelect from 'react-select'
@@ -16,7 +16,7 @@ const MultiSelect = forwardRef(
   ({ label, options, isMark, error, ...props }: TMultiSelect, _ref) => {
     return (
       <div className="w-full">
-        <div className={clsx('text-sm', label && 'mt-4')}>
+        <div className={cn('text-sm', label && 'mt-4')}>
           {isMark && <span className="text-red-600">*</span>}
           {label}
         </div>
