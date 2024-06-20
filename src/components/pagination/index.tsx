@@ -4,7 +4,11 @@ import { RootState } from '@/redux/store'
 import { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
-import { ROUTER_VOCAB_TRAINER, limitData } from '../../utils/constants'
+import {
+  LIMIT_PAGE_10,
+  ROUTER_VOCAB_TRAINER,
+  limitData
+} from '../../utils/constants'
 import { TPagination } from '../../utils/types'
 import Select from '../select'
 import { ButtonLib } from '../ui/button'
@@ -24,6 +28,8 @@ const Pagination = ({ paginations }: TPaginationProps) => {
   )
   const isURLVocabTrainer =
     pathname === ROUTER_VOCAB_TRAINER && isOpenModalState
+  const limitValue =
+    isURLVocabTrainer ? paginationVocabState.limit : searchParams.get('limit')!
 
   const onPageChange = (newPageNumber: number) => {
     isURLVocabTrainer ?
@@ -33,7 +39,10 @@ const Pagination = ({ paginations }: TPaginationProps) => {
           page: String(newPageNumber)
         })
       )
-    : setSearchParams({ ...paginationVocabState, page: String(newPageNumber) })
+    : setSearchParams({
+        page: String(newPageNumber),
+        limit: searchParams.get('limit') ?? LIMIT_PAGE_10
+      })
   }
 
   const onLimitChange = (newLimit: string) => {
@@ -44,7 +53,10 @@ const Pagination = ({ paginations }: TPaginationProps) => {
           limit: newLimit
         })
       )
-    : setSearchParams({ ...paginationVocabState, limit: newLimit })
+    : setSearchParams({
+        page: '1',
+        limit: newLimit
+      })
   }
 
   const getPagesToShow = () => {
@@ -81,8 +93,6 @@ const Pagination = ({ paginations }: TPaginationProps) => {
     return pagesToShow
   }
 
-  console.log(paginationVocabState.limit)
-
   return (
     <div className="mt-4 flex items-center justify-between gap-1">
       <div className="flex items-center gap-2 text-xs">
@@ -92,28 +102,18 @@ const Pagination = ({ paginations }: TPaginationProps) => {
           onChange={(e: string) => {
             return onLimitChange(e)
           }}
-          value={paginationVocabState.limit}
+          value={limitValue}
           isSearchable={false}
         />
-        <p className="whitespace-nowrap">1-25 of {totalItems} items</p>
+        <p className="whitespace-nowrap">
+          1-{limitValue} of {totalItems} items
+        </p>
       </div>
       <div>
         <ButtonLib
           variant="outline"
           className="h-7 px-2.5"
-          onClick={() =>
-            isURLVocabTrainer ?
-              dispatch(
-                setPaginationVocabState({
-                  ...paginationVocabState,
-                  page: String(1)
-                })
-              )
-            : setSearchParams({
-                ...paginationVocabState,
-                page: String(1)
-              })
-          }
+          onClick={() => onPageChange(1)}
           disabled={currentPage === 1}
         >
           «
@@ -121,19 +121,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         <ButtonLib
           variant="outline"
           className="h-7 px-2.5"
-          onClick={() =>
-            isURLVocabTrainer ?
-              dispatch(
-                setPaginationVocabState({
-                  ...paginationVocabState,
-                  page: String(currentPage - 1)
-                })
-              )
-            : setSearchParams({
-                ...paginationVocabState,
-                page: String(currentPage - 1)
-              })
-          }
+          onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
           ‹
@@ -171,12 +159,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         <ButtonLib
           variant="outline"
           className="h-7 px-2.5"
-          onClick={() =>
-            setSearchParams({
-              ...paginationVocabState,
-              page: String(currentPage + 1)
-            })
-          }
+          onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
           ›
@@ -184,12 +167,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
         <ButtonLib
           variant="outline"
           className="h-7 px-2.5"
-          onClick={() =>
-            setSearchParams({
-              ...paginationVocabState,
-              page: String(totalPages)
-            })
-          }
+          onClick={() => onPageChange(totalPages)}
           disabled={currentPage === totalPages}
         >
           »
