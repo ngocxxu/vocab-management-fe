@@ -7,6 +7,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 import { IconMessage, IconMicrophone } from '@tabler/icons-react'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { EMessageType } from './constants'
 import { TMessage } from './types'
 
@@ -14,9 +15,7 @@ const ChatGPT = () => {
   const [inputValue, setInputValue] = useState('')
   const [messages, setMessages] = useState<TMessage[]>([])
   const [loading, setLoading] = useState(false)
-  const genAI = new GoogleGenerativeAI(
-    'AIzaSyCB0GFfSVKE9XweRUz3J5YHZf9BWg2AHps'
-  )
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -45,7 +44,6 @@ const ChatGPT = () => {
         ...prev.slice(0, -1),
         { type: EMessageType.AI, content: text }
       ])
-      setInputValue('')
       setLoading(false)
     } catch (error) {
       console.error(error)
@@ -98,7 +96,7 @@ const ChatGPT = () => {
                   {message.type === EMessageType.AI && <IconGPT />}
                   {!message.content ?
                     <Loader2 />
-                  : <div
+                  : <ReactMarkdown
                       className={`ml-2 max-w-[70%] rounded-lg px-4 py-2 ${
                         message.type === EMessageType.USER ?
                           'bg-blue-500 text-white'
@@ -106,7 +104,7 @@ const ChatGPT = () => {
                       }`}
                     >
                       {message.content}
-                    </div>
+                    </ReactMarkdown>
                   }
                 </div>
               ))
@@ -132,6 +130,7 @@ const ChatGPT = () => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault()
                     getResponseForGivenPrompt()
+                    setInputValue('')
                   }
                 }}
               />
