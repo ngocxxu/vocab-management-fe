@@ -35,7 +35,9 @@ const ChatGPT = () => {
         { type: EMessageType.AI, content: '' }
       ])
 
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+      const model = genAI.getGenerativeModel({
+        model: import.meta.env.VITE_GEMINI_MODEL
+      })
       const result = await model.generateContent(inputValue)
       const response = result.response
       const text = response.text()
