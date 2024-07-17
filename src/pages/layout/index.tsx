@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
-import Footer from '../../components/footer'
-import Header from '../../components/header'
+import { Sidebar } from './components/sidebar'
 import './style.scss'
 
 const Layout = () => {
@@ -21,11 +20,13 @@ const Layout = () => {
 
   return (
     <>
-      <div className="layout">
-        <Header />
-        <Outlet />
+      <div className="layout flex flex-row gap-6 m-6">
+        <Sidebar />
+        <div className='w-full'>
+          <Outlet />
+        </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
