@@ -1,25 +1,25 @@
 import { cn } from '@/lib/utils'
 import { AvatarProps } from '@radix-ui/react-avatar'
 import { ReactNode } from 'react'
-import { AvatarFallback, AvatarLib } from '../ui/avatar'
+import { Avatar, AvatarFallback } from '../ui/avatar'
 
 type TAvatar = {
   children: ReactNode
   classNameContent?: string
 }
 
-const Avatar = ({
+const AvatarLib = ({
   children,
   classNameContent,
   ...props
 }: TAvatar & AvatarProps) => {
   return (
-    <AvatarLib {...props}>
+    <Avatar {...props}>
       <AvatarFallback className={cn(classNameContent)}>
         {children}
       </AvatarFallback>
-    </AvatarLib>
+    </Avatar>
   )
 }
 
-export default Avatar
+export default AvatarLib

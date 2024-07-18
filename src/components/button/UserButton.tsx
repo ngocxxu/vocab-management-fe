@@ -1,5 +1,5 @@
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons-react'
-import Avatar from '../avatar'
+import AvatarLib from '../avatar'
 import DropDownCustom from '../dropdown'
 import classes from './button.module.css'
 
@@ -40,8 +40,8 @@ const UserButton = () => {
     <DropDownCustom
       label="Menu"
       head={
-        <div className="flex justify-center items-center gap-2">
-          <Avatar>R</Avatar>
+        <div className="flex items-center justify-center gap-2">
+          <AvatarLib>R</AvatarLib>
           <p className="font-semibold">Ranie</p>
         </div>
       }

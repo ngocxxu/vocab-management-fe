@@ -18,9 +18,64 @@ module.exports = {
     },
     extend: {
       colors: {
-        success: 'hsl(var(--success))',
-        warning: 'hsl(var(--warning))',
-        error: 'hsl(var(--error))',
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+          'vc-100': 'var(--vc-success-100)',
+          'vc-200': 'var(--vc-success-200)',
+          'vc-300': 'var(--vc-success-300)',
+          'vc-400': 'var(--vc-success-400)',
+          'vc-500': 'var(--vc-success-500)',
+          'vc-600': 'var(--vc-success-600)',
+          'vc-700': 'var(--vc-success-700)',
+          'vc-800': 'var(--vc-success-800)',
+          'vc-900': 'var(--vc-success-900)'
+        },
+        gray: {
+          'vc-100': 'var(--vc-gray-100)',
+          'vc-200': 'var(--vc-gray-200)',
+          'vc-300': 'var(--vc-gray-300)',
+          'vc-400': 'var(--vc-gray-400)',
+          'vc-500': 'var(--vc-gray-500)',
+          'vc-600': 'var(--vc-gray-600)',
+          'vc-700': 'var(--vc-gray-700)',
+          'vc-800': 'var(--vc-gray-800)',
+          'vc-900': 'var(--vc-gray-900)'
+        },
+        neutral: {
+          'vc-100': 'var(--vc-neutral-100)',
+          'vc-200': 'var(--vc-neutral-200)',
+          'vc-300': 'var(--vc-neutral-300)',
+          'vc-400': 'var(--vc-neutral-400)',
+          'vc-500': 'var(--vc-neutral-500)',
+          'vc-600': 'var(--vc-neutral-600)',
+          'vc-700': 'var(--vc-neutral-700)',
+          'vc-800': 'var(--vc-neutral-800)',
+          'vc-900': 'var(--vc-neutral-900)'
+        },
+        warning: {
+          DEFAULT: 'hsl(var(--warning))',
+          'vc-100': 'var(--vc-warning-100)',
+          'vc-200': 'var(--vc-warning-200)',
+          'vc-300': 'var(--vc-warning-300)',
+          'vc-400': 'var(--vc-warning-400)',
+          'vc-500': 'var(--vc-warning-500)',
+          'vc-600': 'var(--vc-warning-600)',
+          'vc-700': 'var(--vc-warning-700)',
+          'vc-800': 'var(--vc-warning-800)',
+          'vc-900': 'var(--vc-warning-900)'
+        },
+        error: {
+          DEFAULT: 'hsl(var(--error))',
+          'vc-100': 'var(--vc-error-100)',
+          'vc-200': 'var(--vc-error-200)',
+          'vc-300': 'var(--vc-error-300)',
+          'vc-400': 'var(--vc-error-400)',
+          'vc-500': 'var(--vc-error-500)',
+          'vc-600': 'var(--vc-error-600)',
+          'vc-700': 'var(--vc-error-700)',
+          'vc-800': 'var(--vc-error-800)',
+          'vc-900': 'var(--vc-error-900)'
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -28,7 +83,16 @@ module.exports = {
         foreground: 'hsl(var(--foreground))',
         primary: {
           DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
+          foreground: 'hsl(var(--primary-foreground))',
+          'vc-100': 'var(--vc-primary-100)',
+          'vc-200': 'var(--vc-primary-200)',
+          'vc-300': 'var(--vc-primary-300)',
+          'vc-400': 'var(--vc-primary-400)',
+          'vc-500': 'var(--vc-primary-500)',
+          'vc-600': 'var(--vc-primary-600)',
+          'vc-700': 'var(--vc-primary-700)',
+          'vc-800': 'var(--vc-primary-800)',
+          'vc-900': 'var(--vc-primary-900)'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -73,6 +137,11 @@ module.exports = {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
+      },
+      width: {
+        'vertical-menu': 'var(--vertical-menu-width)',
+        'vertical-menu-md': 'var(--vertical-menu-width-md)',
+        'vertical-menu-sm': 'var(--vertical-menu-width-sm)'
       }
     }
   },
