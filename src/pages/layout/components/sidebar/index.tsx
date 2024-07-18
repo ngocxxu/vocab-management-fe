@@ -7,9 +7,12 @@ import IconHome from '@/assets/svg/IconHome'
 import IconLogo from '@/assets/svg/IconLogo'
 import IconPhone from '@/assets/svg/IconPhone'
 import IconSetting from '@/assets/svg/IconSetting'
+import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { ComponentType, SVGProps } from 'react'
+import { Breakpoint } from '@/utils/enum'
+import { ComponentType, SVGProps, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { useWindowSize } from 'react-use'
 
 const menuList = [
   {
@@ -71,39 +74,64 @@ const Icon = ({ icon: IconComponent, isActive }: TIcon) => (
 )
 
 export const Sidebar = () => {
+  const [isCollapseMenu, setCollapseMenu] = useState(false)
+  const { width } = useWindowSize()
+
+  useEffect(() => {
+    if (width < Breakpoint.XL) {
+      setCollapseMenu(true)
+    } else {
+      setCollapseMenu(false)
+    }
+  }, [width])
+
   return (
-    <div className="w-vertical-menu md:w-vertical-menu-md sm:w-vertical-menu-sm flex-none rounded-xl border px-4 py-6 font-medium shadow-md">
-      <div className="flex flex-col gap-6">
+    <div
+      className={cn(
+        'flex-none rounded-xl border px-4 py-6 font-medium shadow-md transition-all delay-300 ease-in-out',
+        isCollapseMenu ? 'w-vertical-menu-sm' : 'w-vertical-menu'
+      )}
+    >
+      <div
+        className={cn('flex flex-col gap-6', isCollapseMenu && 'items-center')}
+      >
         <div className="flex items-center justify-between">
-          <IconLogo />
-          <div className="cursor-pointer">
+          {!isCollapseMenu && <IconLogo />}
+          <div
+            className={cn('cursor-pointer')}
+            onClick={() => setCollapseMenu(!isCollapseMenu)}
+          >
             <IconBurger />
           </div>
         </div>
 
-        {menuList.map(({ list, title }) => (
+        {menuList.map(({ list, title }, idx) => (
           <div className="flex flex-col gap-2.5" key={title}>
-            <p className="text-gray-vc-400">{title}</p>
+            {isCollapseMenu && idx === menuList.length - 1 && (
+              <Separator className="mx-auto w-8" />
+            )}
+            {!isCollapseMenu && <p className="text-gray-vc-400">{title}</p>}
             <div className="flex flex-col gap-2.5">
               {list.map(({ icon, label, link }) => (
                 <NavLink
                   to={link}
                   className={({ isActive }) =>
-                    `relative flex items-center gap-2 rounded-lg px-4 py-2.5 transition-colors ${
-                      isActive ?
-                        'text-primary-vc-500 bg-gradient-to-r from-blue-50 to-white font-bold'
+                    cn(
+                      'relative flex items-center gap-2 rounded-lg px-4 py-2.5 transition-colors',
+                      isActive && !isCollapseMenu ?
+                        'bg-gradient-to-r from-blue-50 to-white font-bold text-primary-vc-500'
                       : 'text-gray-vc-600 hover:bg-gray-vc-100'
-                    }`
+                    )
                   }
                   key={label}
                 >
                   {({ isActive }) => (
                     <>
                       {isActive && (
-                        <div className="bg-primary-vc-500 absolute bottom-0 left-0 top-0 w-1 rounded-r-lg" />
+                        <div className="absolute bottom-0 left-0 top-0 w-1 rounded-r-lg bg-primary-vc-500" />
                       )}
                       <Icon icon={icon} isActive={isActive} />
-                      {label}
+                      {!isCollapseMenu && label}
                     </>
                   )}
                 </NavLink>

@@ -20,13 +20,12 @@ const Layout = () => {
 
   return (
     <>
-      <div className="layout flex flex-row gap-6 m-6">
+      <div className="layout m-6 flex h-[calc(100vh-48px)] flex-row gap-6">
         <Sidebar />
-        <div className='w-full'>
+        <div className="w-full">
           <Outlet />
         </div>
       </div>
-      {/* <Footer /> */}
     </>
   )
 }

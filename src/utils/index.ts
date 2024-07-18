@@ -1,6 +1,5 @@
 import { SortingState } from '@tanstack/react-table'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const removeOpenAttribute = (
   ref: React.MutableRefObject<HTMLDetailsElement>
 ) => {
