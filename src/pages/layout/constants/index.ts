@@ -28,7 +28,7 @@ export const menuList = [
       {
         icon: IconChatGPT,
         label: 'Chatting with AI',
-        link: '/chat-gpt'
+        link: '/ai-chat'
       },
       {
         icon: IconGlobal,

@@ -15,7 +15,7 @@ import {
   getCoreRowModel,
   getSortedRowModel
 } from '@tanstack/react-table'
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, memo, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import Button from '../../components/button'
@@ -33,7 +33,7 @@ import { IndeterminateCheckbox } from './components/checkbox'
 import { ToolBar } from './components/toolBar'
 import { TVocab } from './types'
 
-const Vocab = () => {
+const Vocab = memo(() => {
   const { pathname } = useLocation()
   const [searchParams, setSearchParams] = useSearchParams()
   const { mutate, isLoading: isLoadingDelete } = useDeleteVocab()
@@ -323,6 +323,6 @@ const Vocab = () => {
       }}
     />
   )
-}
+})
 
 export default Vocab

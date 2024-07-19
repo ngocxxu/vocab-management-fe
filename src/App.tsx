@@ -4,14 +4,8 @@ import { useRoutes } from 'react-router-dom'
 import './App.scss'
 import HeaderTable from './components/headerTable'
 import { Loader } from './components/loader'
-import ChatGPT from './pages/chat-gpt'
-import Dashboard from './pages/dashboard'
 import { ErrorTemplate } from './pages/error'
 import History from './pages/history'
-import Vocab from './pages/vocab'
-import VocabTrainer from './pages/vocab-trainer'
-import { Question } from './pages/vocab-trainer/components/question'
-import { ResultStatistic } from './pages/vocab-trainer/components/resultStatistic'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAhopedDbZte4fXSGgg5onc9iOxiqYBZN4',
@@ -25,6 +19,17 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 
 const LayoutLazy = lazy(() => import('./pages/layout'))
+const QuestionLazy = lazy(
+  () => import('./pages/vocab-trainer/components/question')
+)
+const VocabLazy = lazy(() => import('./pages/vocab'))
+const VocabTrainerLazy = lazy(() => import('./pages/vocab-trainer'))
+const DashboardLazy = lazy(() => import('./pages/dashboard'))
+const AIChatLazy = lazy(() => import('./pages/ai-chat'))
+const ResultStatisticLazy = lazy(
+  () => import('./pages/vocab-trainer/components/resultStatistic')
+)
+
 function App() {
   const routes = [
     {
@@ -34,8 +39,8 @@ function App() {
         </Suspense>
       ),
       children: [
-        { path: '/', element: <Dashboard /> },
-        { path: '/dashboard', element: <Dashboard /> },
+        { path: '/', element: <DashboardLazy /> },
+        { path: '/dashboard', element: <DashboardLazy /> },
         {
           path: '/vocab',
           element: (
@@ -49,18 +54,21 @@ function App() {
                 </>
               }
             >
-              <Vocab />
+              <VocabLazy />
             </HeaderTable>
           )
         },
-        { path: '/vocab-trainer', element: <VocabTrainer /> },
-        { path: '/vocab-trainer/examination', element: <Question /> },
+        { path: '/vocab-trainer', element: <VocabTrainerLazy /> },
+        { path: '/vocab-trainer/examination', element: <QuestionLazy /> },
         {
           path: '/vocab-trainer/examination/result',
-          element: <ResultStatistic />
+          element: <ResultStatisticLazy />
         },
         { path: '/history', element: <History /> },
-        { path: '/chat-gpt', element: <ChatGPT /> }
+        { path: '/community', element: <History /> },
+        { path: '/settings', element: <History /> },
+        { path: '/help-support', element: <History /> },
+        { path: '/ai-chat', element: <AIChatLazy /> }
       ]
     },
     { path: '*', element: <ErrorTemplate /> }

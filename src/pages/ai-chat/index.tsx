@@ -6,12 +6,12 @@ import { Textarea } from '@/components/ui/textarea'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { IconMessage, IconMicrophone } from '@tabler/icons-react'
 import { Loader2 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { memo, useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { EMessageType } from './constants'
 import { TMessage } from './types'
 
-const ChatGPT = () => {
+const AIChat = memo(() => {
   const [inputValue, setInputValue] = useState('')
   const [messages, setMessages] = useState<TMessage[]>([])
   const [loading, setLoading] = useState(false)
@@ -153,6 +153,6 @@ const ChatGPT = () => {
       </div>
     </div>
   )
-}
+})
 
-export default ChatGPT
+export default AIChat

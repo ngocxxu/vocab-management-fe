@@ -27,7 +27,7 @@ import {
   getSortedRowModel
 } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { useEffect, useMemo, useState } from 'react'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { IndeterminateCheckbox } from '../vocab/components/checkbox'
@@ -35,7 +35,7 @@ import { DetailTable } from './components/detailTable'
 import { ToolBar } from './components/toolBar'
 import { TVocabTrainer } from './types'
 
-const VocabTrainer = () => {
+const VocabTrainer = memo(() => {
   const { pathname } = useLocation()
   const dispatch = useDispatch()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -240,7 +240,7 @@ const VocabTrainer = () => {
                         onClick={() => setIsDeleteMulti(true)}
                         variant="ghost"
                         title={`Delete (${counts})`}
-                        leftIcon={<IconTrash className="text-error mr-2" />}
+                        leftIcon={<IconTrash className="mr-2 text-error" />}
                       />
                     }
                     title="Do you want to delete these?"
@@ -292,6 +292,6 @@ const VocabTrainer = () => {
       />
     </HeaderTable>
   )
-}
+})
 
 export default VocabTrainer

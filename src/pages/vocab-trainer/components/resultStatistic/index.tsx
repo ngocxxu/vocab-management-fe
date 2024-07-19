@@ -5,7 +5,7 @@ import {
   IconSquareX
 } from '@tabler/icons-react'
 import { format } from 'date-fns'
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -21,7 +21,7 @@ import { CircleProgress } from '../circleProgress'
 import { DetailTable } from '../detailTable'
 import { LineProgressBar } from '../lineProgressBar'
 
-export const ResultStatistic = () => {
+const ResultStatistic = memo(() => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const examId = localStorage.getItem('examId') ?? ''
@@ -173,4 +173,6 @@ export const ResultStatistic = () => {
       </div>
     </div>
   )
-}
+})
+
+export default ResultStatistic

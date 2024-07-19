@@ -22,7 +22,7 @@ const links = [
   },
   { link: '/vocab-trainer', label: 'Vocab Trainer', icon: IconMedal2 },
   // { link: "/history", label: "History", icon: IconHistory },
-  { link: '/chat-gpt', label: 'ChatGPT', icon: IconMessages }
+  { link: '/ai-chat', label: 'ChatGPT', icon: IconMessages }
 ]
 
 export function HeaderMenu() {

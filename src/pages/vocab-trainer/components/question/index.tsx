@@ -5,14 +5,14 @@ import { RootState } from '@/redux/store'
 import { useSubmitTest } from '@/services/vocabTrainer/useSubmitTest'
 import { DEFAULT_COUNTDOWN } from '@/utils/constants'
 import { ChevronLeft, ChevronRight, Circle, Clock } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { TQuestion } from '../../types'
 import { Choice } from '../choice'
 import { Countdown } from '../countDown'
 
-export const Question = () => {
+const Question = memo(() => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN)
@@ -113,4 +113,6 @@ export const Question = () => {
       </div>
     </div>
   )
-}
+})
+
+export default Question
