@@ -16,6 +16,7 @@ import { useEffect } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { UseMutateFunction } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
+import { EVocabTrainerType } from '../../enum'
 import { TFormTestVocabTrainer, TQuestion } from '../../types'
 
 type TFormChoice = { wordTestSelects: { idWord: string }[] }
@@ -58,7 +59,11 @@ export const Choice = ({
       ...item,
       userSelect:
         data &&
-        data[index].options.find((item2) => item2.value === item.idWord)?.label
+        data[index].options.find((item2) => item2.value === item.idWord)?.label,
+      type:
+        data && data[index].type === EVocabTrainerType.SOURCE ?
+          EVocabTrainerType.SOURCE
+        : EVocabTrainerType.TARGET
     }))
 
     mutateQuestion({

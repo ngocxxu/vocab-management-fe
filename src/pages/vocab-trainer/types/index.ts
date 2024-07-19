@@ -1,4 +1,5 @@
 import { TOption } from '@/utils/types'
+import { EVocabTrainerType } from '../enum'
 
 export type TVocabTrainer = {
   _id: string
@@ -27,6 +28,7 @@ export type TFormTestVocabTrainer = {
   wordTestSelects: {
     idWord: string
     userSelect?: string
+    type?: EVocabTrainerType
   }[]
 }
 
@@ -34,5 +36,5 @@ export type TQuestion = {
   content: string[]
   options: TOption[]
   order: number
-  type: string
+  type: EVocabTrainerType
 }
