@@ -43,7 +43,7 @@ export const Question = () => {
   }
 
   return (
-    <div className="container my-10 grid grid-cols-5 gap-4">
+    <div className="container grid grid-cols-5 gap-4">
       <div className="col-span-4 flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-center gap-1">

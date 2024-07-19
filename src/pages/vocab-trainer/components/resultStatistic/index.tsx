@@ -71,7 +71,7 @@ export const ResultStatistic = () => {
   }
 
   return (
-    <div className="container my-10 grid grid-cols-9 gap-4">
+    <div className="container grid grid-cols-9 gap-4">
       <div className="col-span-4 rounded-md border-t bg-primary-foreground p-6 pb-0 font-semibold shadow-md">
         <p className="mb-1 text-lg font-bold">Result</p>
         <div className="flex items-start justify-between">

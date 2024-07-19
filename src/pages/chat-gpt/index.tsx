@@ -61,7 +61,7 @@ const ChatGPT = () => {
   }
 
   return (
-    <div className="container my-10">
+    <div className="container">
       <div
         className="grid grid-cols-12 rounded-md border-t bg-primary-foreground font-semibold shadow-md"
         style={{
