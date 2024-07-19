@@ -6,6 +6,7 @@ import { convertOrderBy } from '@/utils'
 import {
   IconChevronDown,
   IconChevronUp,
+  IconDice6,
   IconEdit,
   IconTrash
 } from '@tabler/icons-react'
@@ -85,6 +86,12 @@ const Vocab = memo(() => {
       return mutateDeleteMulti(mappedIds)
     }
     return mutate(id ?? '')
+  }
+
+  const handleRandom = () => {
+    const ids = data?.data.map((item) => item._id)
+    const random = ids?.sort(() => 0.5 - Math.random()).slice(0, 10)
+    console.log(random)
   }
 
   useEffect(() => {
@@ -277,6 +284,15 @@ const Vocab = memo(() => {
                   onYes={handleOnYes}
                 />
               )}
+
+              {isURLVocabTrainer && (
+                <Button
+                  onClick={handleRandom}
+                  title="Random"
+                  leftIcon={<IconDice6 className="mr-2" />}
+                />
+              )}
+
               <ToolBar
                 rowSelection={rowSelection}
                 setRowSelection={setRowSelection}
