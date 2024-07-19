@@ -17,9 +17,14 @@ jobs:
 
       - name: Set environment variable
         run: |
-          VITE_APP_API_URL=${{ secrets.VITE_APP_API_URL }}
-          echo "VITE_APP_API_URL=$VITE_APP_API_URL" >> $GITHUB_ENV
-          echo "::addmask::$VITE_APP_API_URL"
+          for var in VITE_APP_API_URL VITE_GEMINI_API_KEY VITE_GEMINI_MODEL; do
+            echo "$var=${!var}" >> $GITHUB_ENV
+            echo "::add-mask::${!var}"
+          done
+        env:
+          VITE_APP_API_URL: ${{ secrets.VITE_APP_API_URL }}
+          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+          VITE_GEMINI_MODEL: ${{ secrets.VITE_GEMINI_MODEL }}
 
       - name: Build
         run: npm run build
