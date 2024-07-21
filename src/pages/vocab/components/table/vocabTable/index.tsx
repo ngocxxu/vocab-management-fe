@@ -126,7 +126,7 @@ export const VocabTable = ({
           </div>
         )
       }}
-      isScroll
+      isScroll={isURLVocabTrainer}
       isPagination
       isCollapse
       isLoading={isLoading}
