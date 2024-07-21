@@ -159,9 +159,8 @@ const FormVocab = ({
           />
         </fieldset>
       ))}
-      <br />
       <Button
-        className="w-full"
+        className="w-full mt-4"
         variant="outline"
         type="button"
         onClick={() => {
