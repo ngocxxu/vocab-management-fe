@@ -141,7 +141,7 @@ const VocabTrainer = memo(() => {
       {
         accessorKey: 'duration',
         header: 'Duration',
-        cell: ({ getValue }) => (getValue() ? getValue() : '00:00') + 's'
+        cell: ({ getValue }) => getValue() + 's'
       },
       {
         accessorKey: 'countTime',

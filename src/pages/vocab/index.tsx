@@ -1,7 +1,10 @@
 import { AlertDialog } from '@/components/alertDialog'
 import { Badge } from '@/components/badge'
+import { Tabs } from '@/components/tabs'
+import { InputLib } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { setRowSelectionState } from '@/redux/reducer/vocabTrainer'
+import { useRandomVocab } from '@/services/vocab/useRandomVocab'
 import { convertOrderBy } from '@/utils'
 import {
   IconChevronDown,
@@ -36,12 +39,16 @@ import { TVocab } from './types'
 
 const Vocab = memo(() => {
   const { pathname } = useLocation()
+  const [randomData, setRandomData] = useState<TVocab[]>([])
   const [searchParams, setSearchParams] = useSearchParams()
   const { mutate, isLoading: isLoadingDelete } = useDeleteVocab()
   const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
     useDeleteMultiVocab()
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab()
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab()
+  const { mutate: mutateRandom, isLoading: isLoadingRandom } = useRandomVocab({
+    onSuccess: ({ data }) => handleResultRandom(data)
+  })
   const dispatch = useDispatch()
   const { idsState, itemVocab, filterData, searchVocab, paginationVocabState } =
     useSelector((state: RootState) => state.vocabReducer)
@@ -53,6 +60,7 @@ const Vocab = memo(() => {
 
   const [openModal, setOpenModal] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  const [amountRandom, setAmountRandom] = useState(10)
   const [rowSelection, setRowSelection] = useState({})
   const [isDeleteMulti, setIsDeleteMulti] = useState(false)
   const [sorting, setSorting] = useState<SortingState>([])
@@ -88,10 +96,24 @@ const Vocab = memo(() => {
     return mutate(id ?? '')
   }
 
+  const handleResultRandom = (data: TVocab[]) => {
+    setRandomData(data)
+
+    const ids = data.map((item) => item._id)
+    const random = ids.sort(() => 0.5 - Math.random()).slice(0, amountRandom)
+
+    const result = random.reduce<{ [key: string]: boolean }>((obj, key) => {
+      obj[key] = true
+      return obj
+    }, {})
+
+    if (result) {
+      setRowSelection(result)
+    }
+  }
+
   const handleRandom = () => {
-    const ids = data?.data.map((item) => item._id)
-    const random = ids?.sort(() => 0.5 - Math.random()).slice(0, 10)
-    console.log(random)
+    mutateRandom(amountRandom)
   }
 
   useEffect(() => {
@@ -203,7 +225,7 @@ const Vocab = memo(() => {
                       className="gap-2 bg-sky-500 text-primary-foreground"
                     >
                       {item.text}
-                    </Badge>{' '}
+                    </Badge>
                   </Fragment>
                 )
               })}
@@ -217,6 +239,7 @@ const Vocab = memo(() => {
       },
       {
         enableSorting: false,
+        accessorKey: 'action',
         id: 'action',
         cell: ({ row }) => (
           <div className="flex w-0 items-center gap-3">
@@ -257,86 +280,159 @@ const Vocab = memo(() => {
   )
 
   return (
-    <Table
-      components={{
-        toolbar: (
-          <div
-            className={cn(
-              'mb-2 flex items-center justify-end',
-              counts > 0 && 'justify-between'
-            )}
-          >
-            {counts > 0 && (
-              <div className="text-xs">{counts} row(s) selected</div>
-            )}
-            <div className="flex items-center justify-center gap-1">
-              {counts > 0 && !isURLVocabTrainer && (
-                <AlertDialog
-                  head={
-                    <Button
-                      onClick={() => setIsDeleteMulti(true)}
-                      variant="ghost"
-                      title={`Delete (${counts})`}
-                      leftIcon={<IconTrash className="mr-2 text-error" />}
-                    />
-                  }
-                  title="Do you want to delete these?"
-                  onYes={handleOnYes}
-                />
-              )}
-
-              {isURLVocabTrainer && (
-                <Button
-                  onClick={handleRandom}
-                  title="Random"
-                  leftIcon={<IconDice6 className="mr-2" />}
-                />
-              )}
-
-              <ToolBar
-                rowSelection={rowSelection}
-                setRowSelection={setRowSelection}
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                idVocab={itemVocab._id}
-                mutatePost={mutatePost}
-                mutatePut={mutatePut}
-                isEditing={isEditing}
-                onAddNew={() => {
-                  setIsEditing(false)
-                }}
-              />
-            </div>
-          </div>
-        )
-      }}
-      isPagination
-      isCollapse
-      isLoading={
-        isLoadingPost ||
-        isLoadingPut ||
-        isLoading ||
-        isLoadingDelete ||
-        isLoadingDeleteMulti
-      }
-      paginations={{
-        currentPage: data?.currentPage ?? 1,
-        totalItems: data?.totalItems ?? 1,
-        totalPages: data?.totalPages ?? 1
-      }}
-      options={{
-        data: data?.data ?? [],
-        columns: columns,
-        state: {
-          rowSelection,
-          sorting
+    <Tabs
+      className="mt-4"
+      head={[
+        {
+          content: 'Vocabulary',
+          value: 'vocabulary'
         },
-        getSortedRowModel: getSortedRowModel(),
-        getCoreRowModel: getCoreRowModel(),
-        onRowSelectionChange: setRowSelection,
-        getRowId: (row) => row._id,
-        onSortingChange: setSorting
-      }}
+        {
+          content: 'Random',
+          value: 'random'
+        }
+      ]}
+      body={[
+        {
+          content: (
+            <Table
+              components={{
+                toolbar: (
+                  <div
+                    className={cn(
+                      'mb-2 flex items-center justify-end',
+                      counts > 0 && 'justify-between'
+                    )}
+                  >
+                    {counts > 0 && (
+                      <div className="text-xs">{counts} row(s) selected</div>
+                    )}
+                    <div className="flex items-center justify-center gap-1">
+                      {counts > 0 && !isURLVocabTrainer && (
+                        <AlertDialog
+                          head={
+                            <Button
+                              onClick={() => setIsDeleteMulti(true)}
+                              variant="ghost"
+                              title={`Delete (${counts})`}
+                              leftIcon={
+                                <IconTrash className="mr-2 text-error" />
+                              }
+                            />
+                          }
+                          title="Do you want to delete these?"
+                          onYes={handleOnYes}
+                        />
+                      )}
+
+                      <ToolBar
+                        rowSelection={rowSelection}
+                        setRowSelection={setRowSelection}
+                        openModal={openModal}
+                        setOpenModal={setOpenModal}
+                        idVocab={itemVocab._id}
+                        mutatePost={mutatePost}
+                        mutatePut={mutatePut}
+                        isEditing={isEditing}
+                        onAddNew={() => {
+                          setIsEditing(false)
+                        }}
+                      />
+                    </div>
+                  </div>
+                )
+              }}
+              isScroll
+              isPagination
+              isCollapse
+              isLoading={
+                isLoadingPost ||
+                isLoadingPut ||
+                isLoading ||
+                isLoadingDelete ||
+                isLoadingDeleteMulti ||
+                isLoadingRandom
+              }
+              paginations={{
+                currentPage: data?.currentPage ?? 1,
+                totalItems: data?.totalItems ?? 1,
+                totalPages: data?.totalPages ?? 1
+              }}
+              options={{
+                data: data?.data ?? [],
+                columns: columns,
+                state: {
+                  rowSelection,
+                  sorting
+                },
+                getSortedRowModel: getSortedRowModel(),
+                getCoreRowModel: getCoreRowModel(),
+                onRowSelectionChange: setRowSelection,
+                getRowId: (row) => row._id,
+                onSortingChange: setSorting
+              }}
+            />
+          ),
+          value: 'vocabulary'
+        },
+        {
+          content: (
+            <>
+              <div className="ml-auto mt-5 flex w-full items-center justify-end text-sm font-semibold">
+                {isURLVocabTrainer && (
+                  <div className="flex items-center gap-2">
+                    <InputLib
+                      value={amountRandom}
+                      onChange={(e) => setAmountRandom(Number(e.target.value))}
+                      className="w-16"
+                      type="number"
+                      min={5}
+                    />
+                    <Button
+                      onClick={handleRandom}
+                      title="Random"
+                      leftIcon={<IconDice6 className="mr-2" />}
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="my-2">
+                {isURLVocabTrainer && (
+                  <Table
+                    isScroll
+                    isCollapse
+                    isLoading={
+                      isLoadingPost ||
+                      isLoadingPut ||
+                      isLoading ||
+                      isLoadingDelete ||
+                      isLoadingDeleteMulti ||
+                      isLoadingRandom
+                    }
+                    options={{
+                      data: randomData ?? [],
+                      columns: columns,
+                      state: {
+                        rowSelection,
+                        sorting,
+                        columnVisibility: {
+                          action: false
+                        }
+                      },
+                      getSortedRowModel: getSortedRowModel(),
+                      getCoreRowModel: getCoreRowModel(),
+                      onRowSelectionChange: setRowSelection,
+                      getRowId: (row) => row._id,
+                      onSortingChange: setSorting
+                    }}
+                  />
+                )}
+              </div>
+            </>
+          ),
+          value: 'random'
+        }
+      ]}
     />
   )
 })

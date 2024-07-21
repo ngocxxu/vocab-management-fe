@@ -7,14 +7,17 @@ type TTabs = {
     content: ReactNode
     value: string
   }[]
+  className?: string
 }
 
-export const Tabs = ({ head, body }: TTabs) => {
+export const Tabs = ({ head, body, className }: TTabs) => {
   return (
-    <TabsLib defaultValue={head[0].value}>
+    <TabsLib className={className} defaultValue={head[0].value}>
       <TabsList>
         {head.map(({ content, value }) => (
-          <TabsTrigger value={value}>{content}</TabsTrigger>
+          <TabsTrigger key={value} value={value}>
+            {content}
+          </TabsTrigger>
         ))}
       </TabsList>
       {body &&

@@ -70,7 +70,6 @@ const FormVocabTrainer = ({ mutate, onClose }: TFormVocabTrainerProps) => {
         )}
       />
 
-      <div className="text-sm font-semibold mt-5">Vocabulary list</div>
       <Vocab />
 
       <div className="flex justify-center">
