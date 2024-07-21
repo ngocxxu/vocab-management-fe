@@ -34,6 +34,13 @@ const Question = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    return () => {
+      dispatch(setOrderQuestion(1))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   if (data.length <= 0) {
     return
   }
