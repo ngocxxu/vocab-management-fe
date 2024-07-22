@@ -19,7 +19,7 @@ export function Popover({
   ...props
 }: TPopover &
   PopoverPrimitive.PopoverProps &
-  PopoverPrimitive.PopperContentProps) {
+  PopoverPrimitive.PopoverContentProps) {
   return (
     <PopoverLib open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{head}</PopoverTrigger>
