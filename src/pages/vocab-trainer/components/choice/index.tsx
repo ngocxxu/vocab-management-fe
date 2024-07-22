@@ -38,7 +38,7 @@ export const Choice = ({
   setCountQuestions,
   mutateQuestion
 }: TChoiceProps) => {
-  const { questions, setCountime } = data
+  const { questions, setCountTime } = data
   const dispatch = useDispatch()
   const form = useForm<TFormChoice>({
     defaultValues: {
@@ -69,7 +69,7 @@ export const Choice = ({
 
     mutateQuestion({
       id: localStorage.getItem('examId') ?? '',
-      duration: setCountime - countdown,
+      duration: setCountTime - countdown,
       wordTestSelects: newArr
     })
   }

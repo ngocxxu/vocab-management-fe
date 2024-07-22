@@ -21,10 +21,10 @@ const Question = memo(() => {
   )
   const [countQuestions, setCountQuestions] = useState(1)
   const [data, setData] = useState<TQuestionAPI>({
-    setCountime: DEFAULT_COUNTDOWN,
+    setCountTime: DEFAULT_COUNTDOWN,
     questions: []
   })
-  const [countdown, setCountdown] = useState(data.setCountime)
+  const [countdown, setCountdown] = useState(data.setCountTime)
   const { mutate, isLoading } = useSubmitTest()
 
   useEffect(() => {
@@ -38,8 +38,8 @@ const Question = memo(() => {
   }, [])
 
   useEffect(() => {
-    setCountdown(data.setCountime)
-  }, [data.setCountime])
+    setCountdown(data.setCountTime)
+  }, [data.setCountTime])
 
   useEffect(() => {
     return () => {

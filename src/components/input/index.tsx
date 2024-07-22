@@ -1,14 +1,15 @@
 import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
 import { FieldError } from 'react-hook-form'
-import { InputLib } from '../ui/input'
+import { InputLib, InputProps } from '../ui/input'
 
 type TInput = {
   isMark?: boolean
   label?: ReactNode
-  placeholder: string
+  placeholder?: string
   error?: FieldError | null
   removeStyle?: boolean
+  type?: string
 }
 
 const Input = ({
@@ -17,8 +18,9 @@ const Input = ({
   isMark = false,
   placeholder,
   error,
+  type = 'text',
   ...props
-}: TInput) => {
+}: TInput & InputProps) => {
   return (
     <label className="form-control w-full">
       <div className={cn('mb-1 text-sm', !removeStyle && 'mt-4')}>
@@ -26,7 +28,7 @@ const Input = ({
         {label}
       </div>
       <InputLib
-        type="text"
+        type={type}
         placeholder={placeholder}
         className="input input-bordered input-sm w-full"
         {...props}

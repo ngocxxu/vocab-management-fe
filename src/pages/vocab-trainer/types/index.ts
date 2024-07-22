@@ -21,6 +21,7 @@ export type TWordResults = {
 export type TFormInputsVocabTrainer = {
   nameTest: string
   wordSelects: string[]
+  setCountTime: number
 }
 
 export type TFormTestVocabTrainer = {
@@ -34,7 +35,7 @@ export type TFormTestVocabTrainer = {
 }
 
 export type TQuestionAPI = {
-  setCountime: number
+  setCountTime: number
   questions: TQuestion[]
 }
 

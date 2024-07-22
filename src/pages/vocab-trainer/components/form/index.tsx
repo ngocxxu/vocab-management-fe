@@ -3,12 +3,13 @@ import Vocab from '@/pages/vocab'
 import { RootState } from '@/redux/store'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { AxiosResponse } from 'axios'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { Controller, Resolver, SubmitHandler, useForm } from 'react-hook-form'
 import { UseMutateFunction } from 'react-query'
 import { useSelector } from 'react-redux'
 import * as yup from 'yup'
 import GroupButton from '../../../../components/button/GroupButton'
+import { DEFAULT_COUNTTIME_MINS, DEFAULT_SECOND, MINIMUM_WORD } from '../../constants'
 import { TFormInputsVocabTrainer } from '../../types'
 
 type TFormVocabTrainerProps = {
@@ -23,7 +24,8 @@ type TFormVocabTrainerProps = {
 }
 
 const FormSchema = yup.object().shape({
-  nameTest: yup.string().required('Name is required')
+  nameTest: yup.string().required('Name is required'),
+  setCountTime: yup.number().required('Countdown is required')
 })
 
 const FormVocabTrainer = ({ mutate, onClose }: TFormVocabTrainerProps) => {
@@ -38,37 +40,79 @@ const FormVocabTrainer = ({ mutate, onClose }: TFormVocabTrainerProps) => {
     })
   }, [rowSelectionState])
 
-  const { handleSubmit, control, watch } = useForm<TFormInputsVocabTrainer>({
-    defaultValues: {
-      nameTest: ''
-    },
-    resolver: yupResolver(
-      FormSchema
-    ) as unknown as Resolver<TFormInputsVocabTrainer>
-  })
+  const { handleSubmit, control, watch, setValue } =
+    useForm<TFormInputsVocabTrainer>({
+      defaultValues: {
+        nameTest: '',
+        setCountTime: DEFAULT_COUNTTIME_MINS
+      },
+      resolver: yupResolver(
+        FormSchema
+      ) as unknown as Resolver<TFormInputsVocabTrainer>
+    })
 
-  const isDisabled = watch('nameTest').length === 0 || counts < 5
+  const isDisabled = watch('nameTest').length === 0 || counts < MINIMUM_WORD
 
-  const onSubmit: SubmitHandler<TFormInputsVocabTrainer> = data => {
-    mutate({ ...data, wordSelects: mappedIds })
+  const onSubmit: SubmitHandler<TFormInputsVocabTrainer> = (formData) => {
+    mutate({
+      ...formData,
+      wordSelects: mappedIds,
+      setCountTime: formData.setCountTime * DEFAULT_SECOND
+    })
     onClose()
   }
 
+  const handleCountTime = useCallback(() => {
+    setValue('setCountTime', DEFAULT_COUNTTIME_MINS)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    handleCountTime()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rowSelectionState])
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Controller
-        name="nameTest"
-        control={control}
-        render={({ field }) => (
-          <Input
-            removeStyle
-            isMark={true}
-            label={<span className="text-sm font-semibold">Name of test</span>}
-            placeholder="Type here"
-            {...field}
+      <div className="flex gap-2">
+        <div className="flex-1">
+          <Controller
+            name="nameTest"
+            control={control}
+            render={({ field }) => (
+              <Input
+                removeStyle
+                isMark={true}
+                label={
+                  <span className="text-sm font-semibold">Name of test</span>
+                }
+                placeholder="Type here"
+                {...field}
+              />
+            )}
           />
-        )}
-      />
+        </div>
+
+        <div>
+          <Controller
+            name="setCountTime"
+            control={control}
+            render={({ field }) => (
+              <Input
+                removeStyle
+                isMark={true}
+                label={
+                  <span className="text-sm font-semibold">
+                    Set countdown <span className="text-xs">(minute unit)</span>
+                  </span>
+                }
+                type="number"
+                {...field}
+              />
+            )}
+          />
+        </div>
+      </div>
 
       <Vocab />
 
