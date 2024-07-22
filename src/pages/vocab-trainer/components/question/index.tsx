@@ -48,8 +48,8 @@ const Question = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (data.questions.length <= 0) {
-    return
+  if (!data || !data.questions || data.questions.length <= 0) {
+    return null
   }
 
   if (isLoading) {
