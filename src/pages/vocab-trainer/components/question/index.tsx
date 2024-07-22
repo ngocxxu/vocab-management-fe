@@ -92,7 +92,7 @@ const Question = memo(() => {
         </div>
         <Choice
           mutateQuestion={mutate}
-          data={data.questions ?? []}
+          data={data}
           countdown={countdown}
           setCountQuestions={setCountQuestions}
         />
