@@ -146,7 +146,7 @@ export const ToolBar = ({
               onClose={() => setOpenModal(false)}
             />
           }
-          className="h-full !max-h-[85vh] w-full max-w-[100vh] overflow-x-auto"
+          className="w-full max-w-[100vh] max-h-[90vh] overflow-x-auto"
         />
       )}
     </div>

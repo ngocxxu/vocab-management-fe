@@ -1,4 +1,5 @@
 import Button from '@/components/button'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IconPlus, IconX } from '@tabler/icons-react'
 import { AxiosResponse } from 'axios'
@@ -68,9 +69,9 @@ const FormVocab = ({
       sourceLanguage: 'ko',
       targetLanguage: 'vi',
       ['textTarget']:
-        itemVocab && isEditing
-          ? Array.from(itemVocab.textTarget, () => defaultValue)
-          : [defaultValue]
+        itemVocab && isEditing ?
+          Array.from(itemVocab.textTarget, () => defaultValue)
+        : [defaultValue]
     },
     resolver: yupResolver(FormSchema) as unknown as Resolver<TFormInputsVocab>
   })
@@ -79,19 +80,19 @@ const FormVocab = ({
     name: 'textTarget'
   })
 
-  const onSubmit: SubmitHandler<TFormInputsVocab> = data => {
-    isEditing
-      ? mutatePut({
-          data: data as Omit<TVocab, 'id'>,
-          id: idVocab
-        })
-      : mutate(data as Omit<TVocab, 'id'>)
+  const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
+    isEditing ?
+      mutatePut({
+        data: data as Omit<TVocab, 'id'>,
+        id: idVocab
+      })
+    : mutate(data as Omit<TVocab, 'id'>)
     onClose()
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <Controller
           name="sourceLanguage"
           control={control}
@@ -137,30 +138,37 @@ const FormVocab = ({
           />
         )}
       />
-      {fields.map((field, index) => (
-        <fieldset
-          className="border border-gray-200 rounded-md mt-4 p-2"
-          key={field.id}
-        >
-          <div className="flex justify-between items-center font-semibold">
-            <div className="text-sm">Item {index + 1}</div>
-            {index > 0 && (
-              <IconX onClick={() => remove(index)} className="cursor-pointer" />
-            )}
-          </div>
-          <TextTargetsForm
-            fieldsLengthItem={fields.length}
-            isEditing={isEditing}
-            setValue={setValue}
-            reset={reset}
-            errors={errors}
-            control={control}
-            index={index}
-          />
-        </fieldset>
-      ))}
+
+      <ScrollArea className="h-[440px]">
+        {fields.map((field, index) => (
+          <fieldset
+            className="mt-4 rounded-md border border-gray-200 p-2"
+            key={field.id}
+          >
+            <div className="flex items-center justify-between font-semibold">
+              <div className="text-sm">Item {index + 1}</div>
+              {index > 0 && (
+                <IconX
+                  onClick={() => remove(index)}
+                  className="cursor-pointer"
+                />
+              )}
+            </div>
+            <TextTargetsForm
+              fieldsLengthItem={fields.length}
+              isEditing={isEditing}
+              setValue={setValue}
+              reset={reset}
+              errors={errors}
+              control={control}
+              index={index}
+            />
+          </fieldset>
+        ))}
+      </ScrollArea>
+
       <Button
-        className="w-full mt-4"
+        className="mt-4 w-full"
         variant="outline"
         type="button"
         onClick={() => {
@@ -172,7 +180,7 @@ const FormVocab = ({
         leftIcon={<IconPlus className="mr-1" />}
       />
 
-      <div className="flex justify-end mt-4">
+      <div className="mt-4 flex justify-end">
         <GroupButton
           variantNo="ghost"
           isEditing={isEditing}
