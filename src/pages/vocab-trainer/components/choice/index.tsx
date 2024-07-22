@@ -11,7 +11,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { setOrderQuestion } from '@/redux/reducer/vocabTrainer'
 import { RootState } from '@/redux/store'
 import { AxiosResponse } from 'axios'
-import { useEffect } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { UseMutateFunction } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,12 +31,7 @@ type TChoiceProps = {
   setCountQuestions: React.Dispatch<React.SetStateAction<number>>
 }
 
-export const Choice = ({
-  data,
-  countdown,
-  setCountQuestions,
-  mutateQuestion
-}: TChoiceProps) => {
+export const Choice = ({ data, countdown, mutateQuestion }: TChoiceProps) => {
   const { questions, setCountTime } = data
   const dispatch = useDispatch()
   const form = useForm<TFormChoice>({
@@ -74,10 +68,10 @@ export const Choice = ({
     })
   }
 
-  useEffect(() => {
-    setCountQuestions(form.watch().wordTestSelects.length)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.watch().wordTestSelects.length])
+  // useEffect(() => {
+  //   setCountQuestions(form.watch().wordTestSelects.length)
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [form.watch().wordTestSelects.length])
 
   if (questions.length <= 0) {
     return
