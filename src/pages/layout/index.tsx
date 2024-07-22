@@ -14,7 +14,7 @@ const Layout = () => {
       currentPath !== '/vocab-trainer/examination/result'
     ) {
       localStorage.removeItem('examId')
-      localStorage.removeItem('questions')
+      localStorage.removeItem('questionnaire')
     }
   }, [location.pathname])
 

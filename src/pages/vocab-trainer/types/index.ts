@@ -8,6 +8,7 @@ export type TVocabTrainer = {
   duration: string
   updatedAt: string
   countTime: number
+  setCountTime: number
   wordResults: TWordResults[]
 }
 
@@ -30,6 +31,11 @@ export type TFormTestVocabTrainer = {
     userSelect?: string
     type?: EVocabTrainerType
   }[]
+}
+
+export type TQuestionAPI = {
+  setCountime: number
+  questions: TQuestion[]
 }
 
 export type TQuestion = {

@@ -7,7 +7,7 @@ export type TOption = {
 }
 
 export type ResponseAPI<T> = {
-  data: T[]
+  data: T
 } & TPagination
 
 export type TPagination = {

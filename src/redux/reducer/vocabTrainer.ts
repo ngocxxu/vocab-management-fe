@@ -1,6 +1,6 @@
 import { TFormInputsFilter } from '@/pages/vocab-trainer/components/toolBar'
 import { TVocabTrainer } from '@/pages/vocab-trainer/types'
-import { defaultStatus } from '@/utils/constants'
+import { DEFAULT_COUNTDOWN, defaultStatus } from '@/utils/constants'
 import { createSlice } from '@reduxjs/toolkit'
 import { RowSelectionState } from '@tanstack/react-table'
 
@@ -23,6 +23,7 @@ const initialState: TInitialStateVocabTrainer = {
     duration: '',
     updatedAt: '',
     countTime: 0,
+    setCountTime: DEFAULT_COUNTDOWN,
     wordResults: []
   },
   searchVocabTrainer: '',

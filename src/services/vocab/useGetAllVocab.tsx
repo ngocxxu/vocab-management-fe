@@ -21,7 +21,7 @@ const getAllVocab = async (pageOptions: TPage) => {
     }
   })
 
-  const { data } = await httpClient.get<ResponseAPI<TVocab>>(
+  const { data } = await httpClient.get<ResponseAPI<TVocab[]>>(
     `/vocab?${params.toString()}`
   )
   return data

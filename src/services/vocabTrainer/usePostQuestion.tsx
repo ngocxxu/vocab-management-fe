@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { httpClient } from '../settings'
 
 const postQuestion = async (id: string) => {
-  const { data } = await httpClient.get<TQuestion[]>(
+  const { data } = await httpClient.get<TQuestion>(
     `/vocabTrainer/question/${id}`
   )
   return data
@@ -17,8 +17,8 @@ export const usePostQuestion = () => {
 
   return useMutation({
     mutationFn: (id: string) => postQuestion(id),
-    onSuccess: data => {
-      localStorage.setItem('questions', JSON.stringify(data))
+    onSuccess: (data) => {
+      localStorage.setItem('questionnaire', JSON.stringify(data))
       navigate('/vocab-trainer/examination')
     },
     onError: () => {

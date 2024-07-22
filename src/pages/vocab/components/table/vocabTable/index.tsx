@@ -23,7 +23,7 @@ type TVocabTable = {
   isURLVocabTrainer: boolean
   idVocab: string
   handleOnYes: () => void
-  data?: ResponseAPI<TVocab>
+  data?: ResponseAPI<TVocab[]>
   columns: ColumnDef<TVocab>[]
   selectionState: {
     rowSelection: RowSelectionState

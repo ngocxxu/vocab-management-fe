@@ -8,24 +8,27 @@ import { ChevronLeft, ChevronRight, Circle, Clock } from 'lucide-react'
 import { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { TQuestion } from '../../types'
+import { TQuestionAPI } from '../../types'
 import { Choice } from '../choice'
 import { Countdown } from '../countDown'
 
 const Question = memo(() => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [countdown, setCountdown] = useState(DEFAULT_COUNTDOWN)
 
   const { orderQuestion } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
   )
   const [countQuestions, setCountQuestions] = useState(1)
-  const [data, setData] = useState<TQuestion[]>([])
+  const [data, setData] = useState<TQuestionAPI>({
+    setCountime: DEFAULT_COUNTDOWN,
+    questions: []
+  })
+  const [countdown, setCountdown] = useState(data.setCountime)
   const { mutate, isLoading } = useSubmitTest()
 
   useEffect(() => {
-    const storedData = localStorage.getItem('questions')
+    const storedData = localStorage.getItem('questionnaire')
     if (storedData) {
       setData(JSON.parse(storedData))
     } else {
@@ -35,13 +38,17 @@ const Question = memo(() => {
   }, [])
 
   useEffect(() => {
+    setCountdown(data.setCountime)
+  }, [data.setCountime])
+
+  useEffect(() => {
     return () => {
       dispatch(setOrderQuestion(1))
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (data.length <= 0) {
+  if (data.questions.length <= 0) {
     return
   }
 
@@ -65,7 +72,7 @@ const Question = memo(() => {
               }}
             />
             <div className="mx-auto rounded-md border bg-primary-foreground p-2 font-semibold">
-              {`Question ${orderQuestion}/${data.length}`}
+              {`Question ${orderQuestion}/${data.questions.length}`}
             </div>
             <Button
               type="button"
@@ -85,7 +92,7 @@ const Question = memo(() => {
         </div>
         <Choice
           mutateQuestion={mutate}
-          data={data ?? []}
+          data={data.questions ?? []}
           countdown={countdown}
           setCountQuestions={setCountQuestions}
         />
@@ -95,7 +102,7 @@ const Question = memo(() => {
         Question list
         <div className="mt-3 rounded-md bg-popover p-4">
           {data &&
-            data.map((item) => (
+            data.questions.map((item) => (
               <Button
                 type="button"
                 disabled={item.order > countQuestions}

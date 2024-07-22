@@ -4,7 +4,7 @@ import { httpClient } from '../settings'
 import { VOCAB_TRAINER_KEYS } from './queryKeys'
 
 const getQuestions = async (id: string) => {
-  const { data } = await httpClient.get<TQuestion[]>(
+  const { data } = await httpClient.get<TQuestion>(
     `/vocabTrainer/question/${id}`
   )
   return data

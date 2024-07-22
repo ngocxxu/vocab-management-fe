@@ -8,7 +8,7 @@ import { TVocab } from '@/pages/vocab/types'
 type RandomVocabResult = Awaited<ReturnType<typeof randomVocab>>
 
 const randomVocab = async (params: number) => {
-  const { data } = await httpClient.get<ResponseAPI<TVocab>>(
+  const { data } = await httpClient.get<ResponseAPI<TVocab[]>>(
     `/vocab/random/${params.toString()}`
   )
   return data
