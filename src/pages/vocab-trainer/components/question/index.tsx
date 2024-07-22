@@ -4,13 +4,14 @@ import { setOrderQuestion } from '@/redux/reducer/vocabTrainer'
 import { RootState } from '@/redux/store'
 import { useSubmitTest } from '@/services/vocabTrainer/useSubmitTest'
 import { DEFAULT_COUNTDOWN } from '@/utils/constants'
-import { ChevronLeft, ChevronRight, Circle, Clock } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock } from 'lucide-react'
 import { memo, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { TQuestionAPI } from '../../types'
 import { Choice } from '../choice'
 import { Countdown } from '../countDown'
+import QuestionList from './questionList'
 
 const Question = memo(() => {
   const navigate = useNavigate()
@@ -98,33 +99,7 @@ const Question = memo(() => {
         />
       </div>
 
-      <div className="rounded-md border-t bg-primary-foreground p-4 font-semibold shadow-md">
-        Question list
-        <div className="mt-3 rounded-md bg-popover p-4">
-          {data &&
-            data.questions.map((item) => (
-              <Button
-                type="button"
-                disabled={item.order > countQuestions}
-                key={item.order}
-                className="mb-2 w-full bg-primary-foreground font-semibold shadow-none"
-                variant="outline"
-                leftIcon={
-                  <Circle
-                    className="pr-2"
-                    height="18px"
-                    width="18px"
-                    fill="hsl(var(--success))"
-                  />
-                }
-                title={`Question ${item.order}`}
-                onClick={() => {
-                  dispatch(setOrderQuestion(item.order))
-                }}
-              />
-            ))}
-        </div>
-      </div>
+      <QuestionList data={data} countQuestions={countQuestions} />
     </div>
   )
 })
