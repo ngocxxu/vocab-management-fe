@@ -64,7 +64,8 @@ export const Choice = ({
       type:
         questions && questions[index].type === EVocabTrainerType.SOURCE ?
           EVocabTrainerType.SOURCE
-        : EVocabTrainerType.TARGET
+        : EVocabTrainerType.TARGET,
+      randomOrder: questions && questions[index].randomOrder
     }))
 
     mutateQuestion({

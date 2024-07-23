@@ -45,5 +45,6 @@ export type TQuestion = {
   content: string[]
   options: TOption[]
   order: number
+  randomOrder: number
   type: EVocabTrainerType
 }
