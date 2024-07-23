@@ -5,18 +5,18 @@ import {
   IconSquareX
 } from '@tabler/icons-react'
 import { format } from 'date-fns'
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import Button from '@/components/button'
+import { Loader } from '@/components/loader'
 import { cn } from '@/lib/utils'
 import { setOrderQuestion } from '@/redux/reducer/vocabTrainer'
 import { useGetVocabTrainer } from '@/services/vocabTrainer/useGetVocabTrainer'
 import { usePostQuestion } from '@/services/vocabTrainer/usePostQuestion'
 import { convertTime } from '@/utils'
 import { DEFAULT_COUNTDOWN } from '@/utils/constants'
-import { Loader } from 'lucide-react'
 import { CircleProgress } from '../circleProgress'
 import { DetailTable } from '../detailTable'
 import { LineProgressBar } from '../lineProgressBar'
@@ -38,10 +38,11 @@ const ResultStatistic = memo(() => {
     (item) => item.status === 'Passed'
   ).length
 
-  const calPercent =
-    data?.wordResults.length &&
-    countPassed &&
-    ((countPassed / data?.wordResults.length) * 100).toFixed(1)
+  const calPercent = useMemo(() => {
+    if (!data?.wordResults?.length || countPassed === undefined) return '0'
+
+    return ((countPassed / data.wordResults.length) * 100).toFixed(1)
+  }, [countPassed, data?.wordResults?.length])
 
   const calLinePercent = (Number(data?.duration) / DEFAULT_COUNTDOWN) * 100
 
@@ -104,7 +105,7 @@ const ResultStatistic = memo(() => {
           <CircleProgress
             isPassed={isPassed}
             percentage={Number(calPercent) ?? 0}
-            statistic={`${countPassed}/${data?.wordResults.length}`}
+            statistic={`${countPassed ?? 0}/${data?.wordResults.length ?? 0}`}
           />
         </div>
       </div>
@@ -119,11 +120,13 @@ const ResultStatistic = memo(() => {
             <p>Total time</p>
             <div className="mb-4 mt-6 flex items-center">
               <p>
-                {hours}:{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                {hours || '00'}:{minutes || '00'}:
+                {seconds < 10 ? `0${seconds || '0'}` : seconds || '00'}
               </p>
               <IconSlash className="mx-4 text-secondary-foreground" />
               <p className="text-secondary-foreground">
-                {hours2}:{minutes2}:{seconds2 < 10 ? `0${seconds2}` : seconds2}
+                {hours2 || '00'}:{minutes2 || '00'}:
+                {seconds2 < 10 ? `0${seconds2 || '0'}` : seconds2 || '00'}
               </p>
             </div>
 
