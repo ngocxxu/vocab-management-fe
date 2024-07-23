@@ -9,7 +9,11 @@ import { UseMutateFunction } from 'react-query'
 import { useSelector } from 'react-redux'
 import * as yup from 'yup'
 import GroupButton from '../../../../components/button/GroupButton'
-import { DEFAULT_COUNTTIME_MINS, DEFAULT_SECOND, MINIMUM_WORD } from '../../constants'
+import {
+  DEFAULT_COUNTTIME_MINS,
+  DEFAULT_SECOND,
+  MINIMUM_WORD
+} from '../../constants'
 import { TFormInputsVocabTrainer } from '../../types'
 
 type TFormVocabTrainerProps = {
@@ -107,6 +111,9 @@ const FormVocabTrainer = ({ mutate, onClose }: TFormVocabTrainerProps) => {
                   </span>
                 }
                 type="number"
+                step={5}
+                min={5}
+                max={100}
                 {...field}
               />
             )}
