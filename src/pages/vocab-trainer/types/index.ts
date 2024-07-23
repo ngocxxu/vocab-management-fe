@@ -24,14 +24,16 @@ export type TFormInputsVocabTrainer = {
   setCountTime: number
 }
 
+export type TWordTestSelect = {
+  idWord: string
+  userSelect?: string
+  type?: EVocabTrainerType
+}
+
 export type TFormTestVocabTrainer = {
   id: string
   duration: number
-  wordTestSelects: {
-    idWord: string
-    userSelect?: string
-    type?: EVocabTrainerType
-  }[]
+  wordTestSelects: TWordTestSelect[]
 }
 
 export type TQuestionAPI = {

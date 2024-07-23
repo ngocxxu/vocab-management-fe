@@ -46,6 +46,11 @@ const ResultStatistic = memo(() => {
   const calLinePercent = (Number(data?.duration) / DEFAULT_COUNTDOWN) * 100
 
   const { minutes, seconds, hours } = convertTime(Number(data?.duration))
+  const {
+    minutes: minutes2,
+    seconds: seconds2,
+    hours: hours2
+  } = convertTime(Number(data?.setCountTime))
 
   useEffect(() => {
     if (isSuccess) {
@@ -117,7 +122,9 @@ const ResultStatistic = memo(() => {
                 {hours}:{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </p>
               <IconSlash className="mx-4 text-secondary-foreground" />
-              <p className="text-secondary-foreground">00:20:00</p>
+              <p className="text-secondary-foreground">
+                {hours2}:{minutes2}:{seconds2 < 10 ? `0${seconds2}` : seconds2}
+              </p>
             </div>
 
             <LineProgressBar percentage={calLinePercent} />
