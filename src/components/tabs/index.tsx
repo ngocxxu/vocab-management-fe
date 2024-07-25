@@ -8,18 +8,29 @@ type TTabs = {
     value: string
   }[]
   className?: string
+  classNameHeader?: string
+  extraHeader?: ReactNode
 }
 
-export const Tabs = ({ head, body, className }: TTabs) => {
+export const Tabs = ({
+  head,
+  body,
+  className,
+  classNameHeader,
+  extraHeader
+}: TTabs) => {
   return (
     <TabsLib className={className} defaultValue={head[0].value}>
-      <TabsList>
-        {head.map(({ content, value }) => (
-          <TabsTrigger key={value} value={value}>
-            {content}
-          </TabsTrigger>
-        ))}
-      </TabsList>
+      <div className="flex items-center gap-2">
+        <TabsList>
+          {head.map(({ content, value }) => (
+            <TabsTrigger className={classNameHeader} key={value} value={value}>
+              {content}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {extraHeader && <div>{extraHeader}</div>}
+      </div>
       {body &&
         body.length > 0 &&
         body.map(({ content, value }) => (

@@ -1,8 +1,10 @@
-import Button from '@/components/button'
+import { Tabs } from '@/components/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { IconPlus, IconX } from '@tabler/icons-react'
+import { IconPlus } from '@tabler/icons-react'
 import { AxiosResponse } from 'axios'
+import { X } from 'lucide-react'
+import { useMemo } from 'react'
 import {
   Controller,
   Resolver,
@@ -80,6 +82,54 @@ const FormVocab = ({
     name: 'textTarget'
   })
 
+  const headTabs = useMemo(
+    () =>
+      fields.map((_, idx) => ({
+        content: (
+          <div className="flex items-center gap-1">
+            Vocab {idx + 1}
+            <div>
+              {idx > 0 && (
+                <X
+                  onClick={() => remove(idx)}
+                  className="ml-1 h-3.5 w-3.5 cursor-pointer"
+                  strokeWidth={4}
+                />
+              )}
+            </div>
+          </div>
+        ),
+        value: String(idx)
+      })),
+    [fields, remove]
+  )
+
+  const bodyTabs = useMemo(
+    () =>
+      fields.map((field, index) => ({
+        content: (
+          <ScrollArea className="h-[440px]">
+            <fieldset
+              className="rounded-md border border-gray-200 p-2"
+              key={field.id}
+            >
+              <TextTargetsForm
+                fieldsLengthItem={fields.length}
+                isEditing={isEditing}
+                setValue={setValue}
+                reset={reset}
+                errors={errors}
+                control={control}
+                index={index}
+              />
+            </fieldset>
+          </ScrollArea>
+        ),
+        value: String(index)
+      })),
+    [control, errors, fields, isEditing, reset, setValue]
+  )
+
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
     isEditing ?
       mutatePut({
@@ -139,48 +189,25 @@ const FormVocab = ({
         )}
       />
 
-      <ScrollArea className="h-[440px]">
-        {fields.map((field, index) => (
-          <fieldset
-            className="mt-4 rounded-md border border-gray-200 p-2"
-            key={field.id}
-          >
-            <div className="flex items-center justify-between font-semibold">
-              <div className="text-sm">Item {index + 1}</div>
-              {index > 0 && (
-                <IconX
-                  onClick={() => remove(index)}
-                  className="cursor-pointer"
-                />
-              )}
-            </div>
-            <TextTargetsForm
-              fieldsLengthItem={fields.length}
-              isEditing={isEditing}
-              setValue={setValue}
-              reset={reset}
-              errors={errors}
-              control={control}
-              index={index}
-            />
-          </fieldset>
-        ))}
-      </ScrollArea>
-
-      <Button
-        className="mt-4 w-full"
-        variant="outline"
-        type="button"
-        onClick={() => {
-          append({
-            ...defaultValue,
-            examples: []
-          })
-        }}
-        leftIcon={<IconPlus className="mr-1" />}
+      <Tabs
+        className="mt-6"
+        classNameHeader="cursor-default"
+        head={headTabs}
+        body={bodyTabs}
+        extraHeader={
+          <IconPlus
+            className="h-5 w-5 cursor-pointer rounded-full border"
+            onClick={() => {
+              append({
+                ...defaultValue,
+                examples: []
+              })
+            }}
+          />
+        }
       />
 
-      <div className="mt-4 flex justify-end">
+      <div className="flex justify-center">
         <GroupButton
           variantNo="ghost"
           isEditing={isEditing}
