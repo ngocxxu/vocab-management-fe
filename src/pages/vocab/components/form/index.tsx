@@ -185,7 +185,8 @@ const FormVocab = ({
               if (
                 (idx === fields.length - 1 &&
                   Number(orderTab) === fields.length - 1) ||
-                idx !== fields.length - 1
+                (idx !== fields.length - 1 &&
+                  Number(orderTab) === fields.length - 1)
               ) {
                 setOrderTab(String(Number(orderTab) - 1))
               }
