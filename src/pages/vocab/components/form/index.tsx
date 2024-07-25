@@ -1,10 +1,11 @@
 import { Tabs } from '@/components/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn } from '@/lib/utils'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IconPlus } from '@tabler/icons-react'
 import { AxiosResponse } from 'axios'
 import { X } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Controller,
   Resolver,
@@ -59,6 +60,7 @@ const FormVocab = ({
   mutate,
   mutatePut
 }: TFormVocabProps) => {
+  const [orderTab, setOrderTab] = useState(String(0))
   const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
   const {
     setValue,
@@ -85,23 +87,10 @@ const FormVocab = ({
   const headTabs = useMemo(
     () =>
       fields.map((_, idx) => ({
-        content: (
-          <div className="flex items-center gap-1">
-            Vocab {idx + 1}
-            <div>
-              {idx > 0 && (
-                <X
-                  onClick={() => remove(idx)}
-                  className="ml-1 h-3.5 w-3.5 cursor-pointer"
-                  strokeWidth={4}
-                />
-              )}
-            </div>
-          </div>
-        ),
+        content: <div className="flex items-center gap-1">Vocab {idx + 1}</div>,
         value: String(idx)
       })),
-    [fields, remove]
+    [fields]
   )
 
   const bodyTabs = useMemo(
@@ -190,8 +179,29 @@ const FormVocab = ({
       />
 
       <Tabs
+        removeItemTab={(idx) => (
+          <X
+            onClick={() => {
+              if (
+                (idx === fields.length - 1 &&
+                  Number(orderTab) === fields.length - 1) ||
+                idx !== fields.length - 1
+              ) {
+                setOrderTab(String(Number(orderTab) - 1))
+              }
+              remove(idx)
+            }}
+            className="h-3.5 w-3.5 cursor-pointer"
+            strokeWidth={4}
+          />
+        )}
+        value={orderTab}
+        onValueChange={(e) => setOrderTab(e)}
         className="mt-6"
-        classNameHeader="cursor-default"
+        classNameHeader={cn(
+          'cursor-default',
+          Number(orderTab) !== 0 && 'rounded-br-none rounded-tr-none'
+        )}
         head={headTabs}
         body={bodyTabs}
         extraHeader={

@@ -1,4 +1,7 @@
-import { ReactNode } from 'react'
+import { cn } from '@/lib/utils'
+import { TabsProps } from '@radix-ui/react-tabs'
+import { Fragment, ReactNode } from 'react'
+import { ScrollArea, ScrollBar } from '../ui/scroll-area'
 import { TabsContent, TabsLib, TabsList, TabsTrigger } from '../ui/tabs'
 
 type TTabs = {
@@ -10,6 +13,7 @@ type TTabs = {
   className?: string
   classNameHeader?: string
   extraHeader?: ReactNode
+  removeItemTab?: (idx: number) => ReactNode
 }
 
 export const Tabs = ({
@@ -17,18 +21,37 @@ export const Tabs = ({
   body,
   className,
   classNameHeader,
-  extraHeader
-}: TTabs) => {
+  extraHeader,
+  removeItemTab,
+  ...props
+}: TTabs & TabsProps) => {
   return (
-    <TabsLib className={className} defaultValue={head[0].value}>
+    <TabsLib className={className} defaultValue={head[0].value} {...props}>
       <div className="flex items-center gap-2">
-        <TabsList>
-          {head.map(({ content, value }) => (
-            <TabsTrigger className={classNameHeader} key={value} value={value}>
-              {content}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        <ScrollArea className="max-w-[90vh]">
+          <TabsList>
+            {head.map(({ content, value }, idx) => (
+              <Fragment key={value}>
+                <TabsTrigger className={classNameHeader} value={value}>
+                  {content}
+                </TabsTrigger>
+                {removeItemTab && idx > 0 && (
+                  <div
+                    className={cn(
+                      'flex h-full items-center pr-1',
+                      props.value === String(idx) &&
+                        'border-l-gray rounded-br-sm rounded-tr-sm border-l bg-white'
+                    )}
+                  >
+                    {removeItemTab(idx)}
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </TabsList>
+
+          <ScrollBar className="bg-gray-vc-300" orientation="horizontal" />
+        </ScrollArea>
         {extraHeader && <div>{extraHeader}</div>}
       </div>
       {body &&
@@ -38,8 +61,6 @@ export const Tabs = ({
             {content}
           </TabsContent>
         ))}
-
-      <TabsContent value="password">Change your password here.</TabsContent>
     </TabsLib>
   )
 }
