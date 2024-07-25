@@ -134,22 +134,16 @@ const ResultStatistic = memo(() => {
 
             <div className="mt-8 grid grid-cols-12 gap-4">
               <div className="col-span-6 text-xl font-normal text-secondary-foreground">
-                Start time
+                Name test:
                 <span className="ml-6 font-medium text-secondary-foreground">
-                  17:43
+                  {data?.nameTest}
                 </span>
               </div>
               <div className="col-span-6 text-xl font-normal text-secondary-foreground">
-                Date time
+                Date time:
                 <span className="ml-6 font-medium text-secondary-foreground">
                   {data?.updatedAt &&
                     format(new Date(data?.updatedAt), 'dd-MM-yyyy')}
-                </span>
-              </div>
-              <div className="col-span-12 text-xl font-normal text-secondary-foreground">
-                End time
-                <span className="ml-8 font-medium text-secondary-foreground">
-                  17:43
                 </span>
               </div>
             </div>

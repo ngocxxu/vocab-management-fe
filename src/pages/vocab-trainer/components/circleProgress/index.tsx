@@ -14,11 +14,11 @@ export const CircleProgress = ({
   return (
     <ProgressBar
       progress={percentage}
-      radius={120}
-      strokeWidth={50}
+      radius={100}
+      strokeWidth={40}
       strokeColor={isPassed ? 'hsl(var(--success))' : 'hsl(var(--error))'}
-      trackStrokeWidth={50}
-      trackStrokeColor='hsl(var(--card))'
+      trackStrokeWidth={40}
+      trackStrokeColor="hsl(var(--card))"
       pointerRadius={18}
       pointerStrokeWidth={0}
     >
