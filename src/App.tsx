@@ -8,7 +8,7 @@ import { ErrorTemplate } from './pages/error'
 import History from './pages/history'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAhopedDbZte4fXSGgg5onc9iOxiqYBZN4',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: 'vocab-management.firebaseapp.com',
   projectId: 'vocab-management',
   storageBucket: 'vocab-management.appspot.com',
