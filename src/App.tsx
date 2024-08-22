@@ -6,6 +6,7 @@ import HeaderTable from './components/headerTable'
 import { Loader } from './components/loader'
 import { ErrorTemplate } from './pages/error'
 import History from './pages/history'
+import { RemindExamination } from './pages/vocab-trainer/components/remindExamination'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -60,6 +61,10 @@ function App() {
         },
         { path: '/vocab-trainer', element: <VocabTrainerLazy /> },
         { path: '/vocab-trainer/examination', element: <QuestionLazy /> },
+        {
+          path: '/vocab-trainer/remind-examination/:id',
+          element: <RemindExamination />
+        },
         {
           path: '/vocab-trainer/examination/result',
           element: <ResultStatisticLazy />
