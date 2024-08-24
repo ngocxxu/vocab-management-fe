@@ -21,11 +21,5 @@ export const useDeleteMultiVocab = () => {
         description: 'Deleted all successfully'
       })
     },
-    onError: () => {
-      toast({
-        title: 'Error',
-        description: 'Failed, please try again'
-      })
-    }
   })
 }

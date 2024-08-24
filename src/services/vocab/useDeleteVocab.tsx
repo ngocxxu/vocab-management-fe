@@ -21,11 +21,5 @@ export const useDeleteVocab = () => {
         description: 'Deleted successfully'
       })
     },
-    onError: () => {
-      toast({
-        title: 'Error',
-        description: 'Failed, please try again'
-      })
-    }
   })
 }

@@ -27,11 +27,5 @@ export const usePutVocab = () => {
         description: 'Updated successfully'
       })
     },
-    onError: () => {
-      toast({
-        title: 'Error',
-        description: 'Failed, please try again'
-      })
-    }
   })
 }

@@ -22,11 +22,5 @@ export const usePostVocabTrainer = () => {
         description: 'Created successfully'
       })
     },
-    onError: () => {
-      toast({
-        title: 'Error',
-        description: 'Failed, please try again'
-      })
-    }
   })
 }

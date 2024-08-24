@@ -5,14 +5,16 @@ import HeaderTable from '@/components/headerTable'
 import { Loader } from '@/components/loader'
 import { Modal } from '@/components/modal'
 import Table from '@/components/table'
+import { useToast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { setItemVocabTrainerState } from '@/redux/reducer/vocabTrainer'
 import { RootState } from '@/redux/store'
+import { VOCAB_TRAINER_KEYS } from '@/services/vocabTrainer/queryKeys'
 import { useDeleteMultiVocabTrainer } from '@/services/vocabTrainer/useDeleteMultiVocabTrainer'
 import { useDeleteVocabTrainer } from '@/services/vocabTrainer/useDeleteVocabTrainer'
 import { useGetAllVocabTrainer } from '@/services/vocabTrainer/useGetAllVocabTrainer'
 import { usePostQuestion } from '@/services/vocabTrainer/usePostQuestion'
-import { usePostVocabTrainer } from '@/services/vocabTrainer/usePostVocabTrainer'
+import { usePostVocabTrainerModal } from '@/services/vocabTrainer/usePostVocabTrainerModal'
 import { convertOrderBy } from '@/utils'
 import {
   LIMIT_PAGE_10,
@@ -28,6 +30,7 @@ import {
 } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { memo, useEffect, useMemo, useState } from 'react'
+import { useQueryClient } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import { IndeterminateCheckbox } from '../vocab/components/checkbox'
@@ -38,13 +41,27 @@ import { TVocabTrainer } from './types'
 const VocabTrainer = memo(() => {
   const { pathname } = useLocation()
   const dispatch = useDispatch()
+  const { toast } = useToast()
+  const client = useQueryClient()
   const [searchParams, setSearchParams] = useSearchParams()
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [isDeleteMulti, setIsDeleteMulti] = useState(false)
   const [openModal, setOpenModal] = useState(false)
   const [openDetailModal, setOpenDetailModal] = useState(false)
-  const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocabTrainer()
+
+  const { mutate: mutatePost, isLoading: isLoadingPost } =
+    usePostVocabTrainerModal({
+      onSuccess: () => {
+        client.invalidateQueries([VOCAB_TRAINER_KEYS.GET_ALL_VOCAB_TRAINER])
+        toast({
+          title: 'Success',
+          description: 'Created successfully'
+        })
+        setOpenModal(false)
+      }
+    })
+
   const { mutate: mutateDelete, isLoading: isLoadingDelete } =
     useDeleteVocabTrainer()
   const { mutate: mutateDeleteMulti, isLoading: isLoadingDeleteMulti } =
@@ -177,7 +194,6 @@ const VocabTrainer = memo(() => {
               type="button"
               onClick={() => {
                 mutateQuestion(row.original._id)
-                localStorage.setItem('examId', row.original._id)
               }}
               className="h-6 w-6"
               size="icon"
@@ -254,14 +270,13 @@ const VocabTrainer = memo(() => {
                   setOpenModal={setOpenModal}
                   idVocabTrainer={''}
                   mutatePost={mutatePost}
+                  isLoadingPost={isLoadingPost}
                 />
               </div>
             </div>
           )
         }}
-        isLoading={
-          isLoading || isLoadingPost || isLoadingDelete || isLoadingDeleteMulti
-        }
+        isLoading={isLoading || isLoadingDelete || isLoadingDeleteMulti}
         isPagination
         paginations={{
           currentPage: data?.currentPage ?? 1,

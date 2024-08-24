@@ -35,6 +35,7 @@ type TToolbar = {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
   rowSelection: RowSelectionState
   setRowSelection: React.Dispatch<React.SetStateAction<Record<string, never>>>
+  isLoadingPost:boolean
 }
 
 export type TFormInputsFilter = {
@@ -47,7 +48,7 @@ export const ToolBar = ({
   openModal,
   setOpenModal,
   rowSelection,
-  setRowSelection
+  setRowSelection,isLoadingPost
 }: TToolbar) => {
   const counts = Object.keys(rowSelection).length
   const { filterData, searchVocabTrainer } = useSelector(
@@ -129,6 +130,7 @@ export const ToolBar = ({
           <FormVocabTrainer
             idVocabTrainer={idVocabTrainer}
             mutate={mutatePost}
+            isLoading={isLoadingPost}
             onClose={() => {
               dispatch(setOpenModalState(true))
               setOpenModal(false)

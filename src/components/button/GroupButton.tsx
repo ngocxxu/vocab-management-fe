@@ -6,6 +6,7 @@ type TGroupButton = {
   variantNo?: 'default' | 'outline' | 'secondary' | 'ghost'
   variantYes?: 'default' | 'outline' | 'secondary' | 'ghost'
   disabledYes?: boolean
+  disabledNo?: boolean
 }
 
 const GroupButton = ({
@@ -13,7 +14,8 @@ const GroupButton = ({
   onClose,
   variantNo = 'default',
   variantYes = 'default',
-  disabledYes
+  disabledYes,
+  disabledNo = false
 }: TGroupButton) => {
   return (
     <div className="flex justify-center items-center gap-2">
@@ -23,6 +25,7 @@ const GroupButton = ({
           type="button"
           onClick={onClose}
           title="Cancel"
+          disabled={disabledNo}
         />
       )}
       <Button

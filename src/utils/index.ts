@@ -1,4 +1,5 @@
 import { SortingState } from '@tanstack/react-table'
+import { AxiosError } from 'axios'
 
 export const removeOpenAttribute = (
   ref: React.MutableRefObject<HTMLDetailsElement>
@@ -29,4 +30,8 @@ export const convertTime = (duration: number) => {
     minutes: customMinutes(Math.floor(duration / 60)),
     seconds: duration % 60
   }
+}
+
+export const helperError = (error: AxiosError) => {
+  return (error.response?.data as { error: string })?.error
 }

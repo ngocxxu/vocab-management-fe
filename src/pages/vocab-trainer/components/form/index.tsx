@@ -24,7 +24,8 @@ type TFormVocabTrainerProps = {
     unknown,
     TFormInputsVocabTrainer,
     unknown
-  >
+  >,
+  isLoading: boolean
 }
 
 const FormSchema = yup.object().shape({
@@ -32,7 +33,7 @@ const FormSchema = yup.object().shape({
   setCountTime: yup.number().required('Countdown is required')
 })
 
-const FormVocabTrainer = ({ mutate, onClose }: TFormVocabTrainerProps) => {
+const FormVocabTrainer = ({ mutate, onClose,isLoading }: TFormVocabTrainerProps) => {
   const { rowSelectionState } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
   )
@@ -55,7 +56,7 @@ const FormVocabTrainer = ({ mutate, onClose }: TFormVocabTrainerProps) => {
       ) as unknown as Resolver<TFormInputsVocabTrainer>
     })
 
-  const isDisabled = watch('nameTest').length === 0 || counts < MINIMUM_WORD
+  const isDisabled = watch('nameTest').length === 0 || counts < MINIMUM_WORD || isLoading
 
   const onSubmit: SubmitHandler<TFormInputsVocabTrainer> = (formData) => {
     mutate({
@@ -63,7 +64,6 @@ const FormVocabTrainer = ({ mutate, onClose }: TFormVocabTrainerProps) => {
       wordSelects: mappedIds,
       setCountTime: formData.setCountTime * DEFAULT_SECOND
     })
-    onClose()
   }
 
   const handleCountTime = useCallback(() => {
@@ -128,6 +128,7 @@ const FormVocabTrainer = ({ mutate, onClose }: TFormVocabTrainerProps) => {
           variantNo="ghost"
           onClose={onClose}
           disabledYes={isDisabled}
+          disabledNo={isLoading}
         />
       </div>
     </form>

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 // // import Commerce from '@chec/commerce.js';
 
 export const STATUS_CODES = {
@@ -29,14 +29,14 @@ httpClient.interceptors.request.use(
     config.headers = {
       ...config.headers, //Lấy lại tất cả các giá trị header qua thuộc tính headers
       Authorization: `${
-        localStorage.getItem(ACCESSTOKEN)
-          ? 'Bearer ' + JSON.parse(localStorage.getItem(ACCESSTOKEN) || '')
-          : ''
+        localStorage.getItem(ACCESSTOKEN) ?
+          'Bearer ' + JSON.parse(localStorage.getItem(ACCESSTOKEN) || '')
+        : ''
       }`
     }
     return config
   },
-  async error => {
+  async (error: AxiosError) => {
     return Promise.reject({ error })
   }
 )
