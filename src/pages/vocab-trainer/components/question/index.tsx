@@ -23,7 +23,8 @@ const Question = memo(() => {
   const [countQuestions, setCountQuestions] = useState(1)
   const [data, setData] = useState<TQuestionAPI>({
     setCountTime: DEFAULT_COUNTDOWN,
-    questions: []
+    questions: [],
+    nameTest: ''
   })
   const [countdown, setCountdown] = useState(data.setCountTime)
   const { mutate, isLoading } = useSubmitTest()
@@ -49,7 +50,7 @@ const Question = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (!data || !data.questions || data.questions.length <= 0) {
+  if (!data?.questions?.length) {
     return null
   }
 
@@ -86,6 +87,9 @@ const Question = memo(() => {
               }}
             />
           </div>
+          <h1 className="text-2xl font-bold uppercase text-gray-800">
+            {data.nameTest}
+          </h1>
           <div className="flex gap-2 rounded-md border bg-primary-foreground p-2 font-semibold">
             <Clock />
             <Countdown countdown={countdown} setCountdown={setCountdown} />

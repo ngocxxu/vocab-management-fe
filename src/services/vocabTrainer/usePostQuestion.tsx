@@ -16,8 +16,9 @@ export const usePostQuestion = () => {
   const { toast } = useToast()
 
   return useMutation({
-    mutationFn: (id: string) => postQuestion(id),
-    onSuccess: (data) => {
+    mutationFn: postQuestion,
+    onSuccess: (data, id) => {
+      localStorage.setItem('examId', id)
       localStorage.setItem('questionnaire', JSON.stringify(data))
       navigate('/vocab-trainer/examination')
     },

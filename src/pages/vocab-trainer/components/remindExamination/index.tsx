@@ -9,7 +9,6 @@ export const RemindExamination = () => {
 
   useEffect(() => {
     mutateQuestion(id)
-    localStorage.setItem('examId', id)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])

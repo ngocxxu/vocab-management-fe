@@ -57,15 +57,15 @@ export const Choice = ({
   const onSubmit: SubmitHandler<TFormChoice> = (formData) => {
     const newArr = formData.wordTestSelects.map((item, index) => ({
       ...item,
-      userSelect:
-        questions &&
-        questions[index].options.find((item2) => item2.value === item.idWord)
-          ?.label,
+
+      userSelect: questions?.[index].options.find(
+        (item2) => item2.value === item.idWord
+      )?.label,
       type:
-        questions && questions[index].type === EVocabTrainerType.SOURCE ?
+        questions?.[index].type === EVocabTrainerType.SOURCE ?
           EVocabTrainerType.SOURCE
         : EVocabTrainerType.TARGET,
-      randomOrder: questions && questions[index].randomOrder
+      randomOrder: questions?.[index].randomOrder
     }))
 
     mutateQuestion({
@@ -90,7 +90,7 @@ export const Choice = ({
                 <fieldset key={field.id}>
                   <p className="font-semibold">Question</p>
                   <div className="mb-5 mt-3 rounded-md bg-popover p-3 text-sm font-medium">
-                    Please choose the meaning of the word
+                    Please choose the meaning of the word{' '}
                     <span className="ml-1 rounded bg-primary p-1 font-bold text-white">
                       {questions[index].content.join(', ')}
                     </span>

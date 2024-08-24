@@ -37,6 +37,7 @@ export type TFormTestVocabTrainer = {
 }
 
 export type TQuestionAPI = {
+  nameTest: string
   setCountTime: number
   questions: TQuestion[]
 }
