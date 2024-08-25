@@ -4,13 +4,17 @@ import Page404 from '../../assets/img/background/404page.webp'
 export const ErrorTemplate = () => {
   const navigate = useNavigate()
   return (
-    <div className="mt-4 w-fit flex justify-center items-center">
-      <img
+    <div className="flex h-screen items-center justify-center overflow-hidden">
+      <button
         onClick={() => navigate('/')}
-        className="block mx-auto my-auto"
-        src={Page404}
-        alt="Page404"
-      />
+        onKeyDown={(e) => e.key === 'Enter' && navigate('/')}
+      >
+        <img
+          className="h-full w-full object-contain transform scale-75"
+          src={Page404}
+          alt="Page404"
+        />
+      </button>
     </div>
   )
 }

@@ -67,13 +67,13 @@ const Vocab = memo(() => {
 
   const { data, isLoading } = useGetAllVocab({
     page:
-      isURLVocabTrainer ?
-        paginationVocabState.page!
-      : searchParams.get('page')!,
+      isURLVocabTrainer
+        ? paginationVocabState.page
+        : searchParams.get('page') ?? '1',
     limit:
-      isURLVocabTrainer ?
-        paginationVocabState.limit!
-      : searchParams.get('limit')!,
+      isURLVocabTrainer
+        ? paginationVocabState.limit
+        : searchParams.get('limit') ?? LIMIT_PAGE_10,
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
     subjectFilter: filterData.subject?.map((item) => item.value),
@@ -106,7 +106,8 @@ const Vocab = memo(() => {
     setRandomData(data)
 
     const ids = data.map((item) => item._id)
-    const random = ids.sort(() => 0.5 - Math.random()).slice(0, amountRandom)
+    const shuffledIds = [...ids].sort(() => 0.5 - Math.random())
+    const random = shuffledIds.slice(0, amountRandom)
 
     const result = random.reduce<{ [key: string]: boolean }>((obj, key) => {
       obj[key] = true
@@ -116,8 +117,8 @@ const Vocab = memo(() => {
     if (result) {
       setRowSelection(result)
     }
-  }
 
+  }
   const handleRandom = () => {
     mutateRandom(amountRandom)
   }
@@ -180,7 +181,7 @@ const Vocab = memo(() => {
         accessorKey: 'textSource',
         header: 'Text source',
         cell: ({ row, getValue }) => (
-          <div
+          <button
             className="w-full cursor-pointer"
             onClick={() =>
               dispatch(
@@ -191,19 +192,14 @@ const Vocab = memo(() => {
             }
           >
             <div className="flex items-center">
-              <Badge
-                variant="outline"
-                className="badge gap-2 break-all bg-emerald-500 text-primary-foreground"
-              >
-                {String(getValue())}
-              </Badge>
+              <p className="font-semibold">{String(getValue())}</p>
 
               <Voice
                 lang={row.original.sourceLanguage}
                 text={String(getValue())}
               />
             </div>
-          </div>
+          </button>
         )
       },
       {
@@ -222,14 +218,11 @@ const Vocab = memo(() => {
               )
             }
           >
-            <div>
+            <div className="flex gap-1">
               {row.original.textTarget.map((item) => {
                 return (
                   <Fragment key={item.text}>
-                    <Badge
-                      variant="outline"
-                      className="gap-2 bg-sky-500 text-primary-foreground"
-                    >
+                    <Badge variant="outline" className="text-gray-vc-600">
                       {item.text}
                     </Badge>
                   </Fragment>
@@ -400,6 +393,7 @@ const Vocab = memo(() => {
       }
     </>
   )
+
 })
 
 export default Vocab
