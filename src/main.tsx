@@ -14,7 +14,7 @@ export const defaultOnError = (error: unknown) => {
   if (error instanceof AxiosError) {
     toast({
       title: 'Error',
-      description: `${error.response?.data.error ?? error.response?.statusText}`
+      description: `${error.response?.data.message ?? error.response?.statusText}`
     })
   }
 }
