@@ -3,7 +3,7 @@ import { usePostQuestion } from '@/services/vocabTrainer/usePostQuestion'
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-export const RemindExamination = () => {
+ const RemindExamination = () => {
   const { id = '' } = useParams()
   const { mutate: mutateQuestion, isLoading } = usePostQuestion()
 
@@ -15,3 +15,5 @@ export const RemindExamination = () => {
 
   return isLoading ? <Loader /> : null
 }
+
+export default RemindExamination

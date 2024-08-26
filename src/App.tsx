@@ -6,7 +6,6 @@ import HeaderTable from './components/headerTable'
 import { Loader } from './components/loader'
 import { ErrorTemplate } from './pages/error'
 import History from './pages/history'
-import { RemindExamination } from './pages/vocab-trainer/components/remindExamination'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -20,12 +19,18 @@ const firebaseConfig = {
 initializeApp(firebaseConfig)
 
 const LayoutLazy = lazy(() => import('./pages/layout'))
+const SecurityLayoutLazy = lazy(() => import('./pages/security-layout'))
 const QuestionLazy = lazy(
   () => import('./pages/vocab-trainer/components/question')
 )
 const VocabLazy = lazy(() => import('./pages/vocab'))
 const VocabTrainerLazy = lazy(() => import('./pages/vocab-trainer'))
 const DashboardLazy = lazy(() => import('./pages/dashboard'))
+const SigninLazy = lazy(() => import('./pages/signin'))
+const SignupLazy = lazy(() => import('./pages/signup'))
+const RemindExaminationLazy = lazy(
+  () => import('./pages/vocab-trainer/components/remindExamination')
+)
 const AIChatLazy = lazy(() => import('./pages/ai-chat'))
 const ResultStatisticLazy = lazy(
   () => import('./pages/vocab-trainer/components/resultStatistic')
@@ -63,7 +68,7 @@ function App() {
         { path: '/vocab-trainer/examination', element: <QuestionLazy /> },
         {
           path: '/vocab-trainer/remind-examination/:id',
-          element: <RemindExamination />
+          element: <RemindExaminationLazy />
         },
         {
           path: '/vocab-trainer/examination/result',
@@ -74,6 +79,17 @@ function App() {
         { path: '/settings', element: <History /> },
         { path: '/help-support', element: <History /> },
         { path: '/ai-chat', element: <AIChatLazy /> }
+      ]
+    },
+    {
+      element: (
+        <Suspense fallback={<Loader />}>
+          <SecurityLayoutLazy />
+        </Suspense>
+      ),
+      children: [
+        { path: '/signin', element: <SigninLazy /> },
+        { path: '/signup', element: <SignupLazy /> }
       ]
     },
     { path: '*', element: <ErrorTemplate /> }
