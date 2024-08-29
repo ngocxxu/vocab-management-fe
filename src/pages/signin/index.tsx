@@ -30,7 +30,7 @@ const Signin = () => {
       </div>
 
       <div>
-        <h1 className="mb-2 text-6xl font-bold">Welcome Back</h1>
+        <h1 className="mb-2 text-center text-6xl font-bold">Welcome Back</h1>
         <p className="text-center text-xl text-gray-vc-400">
           Please login to your account
         </p>
