@@ -5,6 +5,7 @@ import { InputLib } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Separator } from '@/components/ui/separator'
 import { Controller, useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import Logo from '../../assets/img/logo.jpg'
 
 type TFormSignup = {
@@ -31,7 +32,7 @@ const Signup = () => {
 
       <div>
         <h1 className="mb-2 text-center text-6xl font-bold">Welcome Back</h1>
-        <p className="text-center text-xl text-gray-vc-400">
+        <p className="text-md text-center text-gray-vc-400">
           Please fill in your information to create an account
         </p>
       </div>
@@ -92,9 +93,9 @@ const Signup = () => {
 
       <p className="whitespace-nowrap text-center text-sm font-semibold">
         Already have an account?{' '}
-        <span className="cursor-pointer text-primary underline">
+        <Link to="/signin" className="cursor-pointer text-primary underline">
           Login here
-        </span>
+        </Link>
       </p>
     </div>
   )
