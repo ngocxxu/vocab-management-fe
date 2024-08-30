@@ -71,7 +71,7 @@ const Login = () => {
           title="Forgot password?"
         />
 
-        <Button className="mt-6 w-full" title="Login" />
+        <Button className="mt-6 w-full" title="Login" type='submit' />
       </form>
 
       <div className="flex items-center justify-center gap-2">

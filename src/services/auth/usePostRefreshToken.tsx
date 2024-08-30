@@ -3,7 +3,6 @@ import store from '@/redux/store'
 import { useMutation } from 'react-query'
 import { Auth } from '../endPoints'
 import { httpClient } from '../settings'
-import { AxiosResponse } from 'axios'
 import { TLoginUserRes } from './usePostLogin'
 
 export type TPostRefreshTokenReq = {
@@ -11,8 +10,8 @@ export type TPostRefreshTokenReq = {
 }
 
 export const postRefreshToken = async (data: TPostRefreshTokenReq) => {
-  const res = await httpClient.post<AxiosResponse<TLoginUserRes>>(Auth.refreshToken, data)
-  return res.data
+  const res = await httpClient.post<TLoginUserRes>(Auth.refreshToken, data)
+  return res
 }
 
 export const usePostRefreshToken = (data: TPostRefreshTokenReq) => {

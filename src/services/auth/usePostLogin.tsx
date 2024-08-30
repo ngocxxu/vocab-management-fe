@@ -1,7 +1,6 @@
 import { toast } from '@/components/ui/use-toast'
 import { setAccessToken } from '@/redux/reducer/auth'
 import store from '@/redux/store'
-import { AxiosResponse } from 'axios'
 import { useMutation } from 'react-query'
 import { Auth } from '../endPoints'
 import { httpClient, REFRESHTOKEN } from '../settings'
@@ -17,11 +16,8 @@ export type TLoginUserRes = {
 }
 
 const postLogin = async (data: TPostLoginReq) => {
-  const res = await httpClient.post<AxiosResponse<TLoginUserRes>>(
-    Auth.login,
-    data
-  )
-  return res.data
+  const res = await httpClient.post<TLoginUserRes>(Auth.login, data)
+  return res
 }
 
 export const usePostLogin = () => {

@@ -1,7 +1,10 @@
 import Button from '@/components/button'
+import { useNavigate } from 'react-router-dom'
 import CheckLogo from '../../../assets/img/check.jpg'
 
 const SignupSuccess = () => {
+  const navigate = useNavigate()
+
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-16">
       <div>
@@ -21,7 +24,9 @@ const SignupSuccess = () => {
         </p>
       </div>
 
-      <Button size="lg" title="Let's Start!" />
+      <Button size="lg" title="Let's Start!" onClick={() => navigate('/login')}>
+        Let's Start!
+      </Button>
     </div>
   )
 }

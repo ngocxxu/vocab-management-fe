@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 export const useAuth = () => {
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
-  const accessToken = useSelector((state: RootState) => state.authReducer)
+  const accessToken = useSelector((state: RootState) => state.auth)
 
   const loginMutation = usePostLogin()
   const signupMutation = usePostSignup()
@@ -27,6 +27,7 @@ export const useAuth = () => {
 
   return {
     accessToken,
+    isAuthenticated: !!accessToken,
     login: loginMutation.mutate,
     signup: signupMutation.mutate,
     logout,
