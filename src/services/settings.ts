@@ -12,7 +12,6 @@ export const STATUS_CODES = {
 }
 
 export const ACCESSTOKEN = 'accessToken'
-export const REFRESHTOKEN = 'refreshToken'
 export const API_URL = import.meta.env.VITE_APP_API_URL
 
 //setup axios interceptor
@@ -22,19 +21,16 @@ export const httpClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
-  }
+  },
+  withCredentials: true
 })
 
 httpClient.interceptors.request.use(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (config: any) => {
-    config.headers = {
-      ...config.headers,
-      Authorization: `${
-        localStorage.getItem(ACCESSTOKEN) ?
-          'Bearer ' + JSON.parse(localStorage.getItem(ACCESSTOKEN) || '')
-        : ''
-      }`
+    const accessToken = store.getState().auth.accessToken
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`
     }
     return config
   },
@@ -50,9 +46,7 @@ httpClient.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       try {
-        const { data } = await postRefreshToken({
-          refreshToken: localStorage.getItem(REFRESHTOKEN) ?? ''
-        })
+        const { data } = await postRefreshToken()
 
         store.dispatch(setAccessToken(data.accessToken))
         originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`

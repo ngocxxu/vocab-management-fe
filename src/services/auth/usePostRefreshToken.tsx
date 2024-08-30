@@ -5,18 +5,14 @@ import { Auth } from '../endPoints'
 import { httpClient } from '../settings'
 import { TLoginUserRes } from './usePostLogin'
 
-export type TPostRefreshTokenReq = {
-  refreshToken: string
-}
-
-export const postRefreshToken = async (data: TPostRefreshTokenReq) => {
-  const res = await httpClient.post<TLoginUserRes>(Auth.refreshToken, data)
+export const postRefreshToken = async () => {
+  const res = await httpClient.post<TLoginUserRes>(Auth.refreshToken)
   return res
 }
 
-export const usePostRefreshToken = (data: TPostRefreshTokenReq) => {
+export const usePostRefreshToken = () => {
   return useMutation({
-    mutationFn: () => postRefreshToken(data),
+    mutationFn: postRefreshToken,
     onSuccess: ({ data }) => {
       store.dispatch(setAccessToken(data.accessToken))
     }
