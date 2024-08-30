@@ -19,14 +19,12 @@ const Layout = () => {
   }, [location.pathname])
 
   return (
-    <>
-      <div className="layout m-6 flex h-[calc(100vh-48px)] flex-row gap-6">
-        <Sidebar />
-        <div className="w-full">
-          <Outlet />
-        </div>
+    <div className="layout m-6 flex h-[calc(100vh-48px)] flex-row gap-6">
+      <Sidebar />
+      <div className="w-full">
+        <Outlet />
       </div>
-    </>
+    </div>
   )
 }
 

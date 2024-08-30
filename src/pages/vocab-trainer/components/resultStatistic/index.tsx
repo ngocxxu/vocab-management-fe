@@ -104,7 +104,7 @@ const ResultStatistic = memo(() => {
 
           <CircleProgress
             isPassed={isPassed}
-            percentage={Number(calPercent) ?? 0}
+            percentage={Number(calPercent) || 0}
             statistic={`${countPassed ?? 0}/${data?.wordResults.length ?? 0}`}
           />
         </div>
@@ -178,5 +178,4 @@ const ResultStatistic = memo(() => {
     </div>
   )
 })
-
 export default ResultStatistic

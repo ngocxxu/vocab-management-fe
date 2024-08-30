@@ -93,7 +93,7 @@ const Signup = () => {
 
       <p className="whitespace-nowrap text-center text-sm font-semibold">
         Already have an account?{' '}
-        <Link to="/signin" className="cursor-pointer text-primary underline">
+        <Link to="/login" className="cursor-pointer text-primary underline">
           Login here
         </Link>
       </p>

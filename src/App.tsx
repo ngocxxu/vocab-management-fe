@@ -4,6 +4,7 @@ import { useRoutes } from 'react-router-dom'
 import './App.scss'
 import HeaderTable from './components/headerTable'
 import { Loader } from './components/loader'
+import { ProtectRoute } from './components/protectRoute'
 import { ErrorTemplate } from './pages/error'
 import History from './pages/history'
 
@@ -26,7 +27,7 @@ const QuestionLazy = lazy(
 const VocabLazy = lazy(() => import('./pages/vocab'))
 const VocabTrainerLazy = lazy(() => import('./pages/vocab-trainer'))
 const DashboardLazy = lazy(() => import('./pages/dashboard'))
-const SigninLazy = lazy(() => import('./pages/signin'))
+const LoginLazy = lazy(() => import('./pages/login'))
 const SignupLazy = lazy(() => import('./pages/signup'))
 const RemindExaminationLazy = lazy(
   () => import('./pages/vocab-trainer/components/remindExamination')
@@ -41,7 +42,9 @@ function App() {
     {
       element: (
         <Suspense fallback={<Loader />}>
-          <LayoutLazy />
+          <ProtectRoute>
+            <LayoutLazy />
+          </ProtectRoute>
         </Suspense>
       ),
       children: [
@@ -88,7 +91,7 @@ function App() {
         </Suspense>
       ),
       children: [
-        { path: '/signin', element: <SigninLazy /> },
+        { path: '/login', element: <LoginLazy /> },
         { path: '/signup', element: <SignupLazy /> }
       ]
     },

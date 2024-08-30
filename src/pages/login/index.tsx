@@ -13,7 +13,7 @@ type TFormSignin = {
   password: string
 }
 
-const Signin = () => {
+const Login = () => {
   const { handleSubmit, control } = useForm<TFormSignin>({
     defaultValues: {
       email: '',
@@ -105,4 +105,4 @@ const Signin = () => {
   )
 }
 
-export default Signin
+export default Login
