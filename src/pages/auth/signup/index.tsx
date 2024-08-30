@@ -4,24 +4,26 @@ import Button from '@/components/button'
 import { InputLib } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Separator } from '@/components/ui/separator'
+import { usePostSignup } from '@/services/auth/usePostSignup'
 import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import Logo from '../../assets/img/logo.jpg'
+import Logo from '../../../assets/img/logo.jpg'
 
-type TFormSignin = {
+type TFormSignup = {
   email: string
   password: string
 }
 
-const Login = () => {
-  const { handleSubmit, control } = useForm<TFormSignin>({
+const Signup = () => {
+  const { mutate } = usePostSignup()
+  const { handleSubmit, control } = useForm<TFormSignup>({
     defaultValues: {
       email: '',
       password: ''
     }
   })
-  const onSubmit = (formData: TFormSignin) => {
-    console.log(formData)
+  const onSubmit = (formData: TFormSignup) => {
+    mutate(formData)
   }
 
   return (
@@ -33,7 +35,7 @@ const Login = () => {
       <div>
         <h1 className="mb-2 text-center text-6xl font-bold">Welcome Back</h1>
         <p className="text-md text-center text-gray-vc-400">
-          Please login to your account
+          Please fill in your information to create an account
         </p>
       </div>
 
@@ -63,18 +65,14 @@ const Login = () => {
           )}
         />
 
-        <Button
-          className="flex w-full justify-end p-0 underline"
-          variant="link"
-          title="Forgot password?"
-        />
-
-        <Button className="mt-6 w-full" title="Login" />
+        <Button className="mt-6 w-full" title="Sign Up" type="submit" />
       </form>
 
       <div className="flex items-center justify-center gap-2">
         <Separator className="w-20" />
-        <p className="whitespace-nowrap text-sm font-semibold">Or login with</p>
+        <p className="whitespace-nowrap text-sm font-semibold">
+          Or sign up with
+        </p>
         <Separator className="w-20" />
       </div>
 
@@ -96,13 +94,13 @@ const Login = () => {
       </div>
 
       <p className="whitespace-nowrap text-center text-sm font-semibold">
-        Don't have an account?{' '}
-        <Link to="/signup" className="cursor-pointer text-primary underline">
-          Sign up here
+        Already have an account?{' '}
+        <Link to="/login" className="cursor-pointer text-primary underline">
+          Login here
         </Link>
       </p>
     </div>
   )
 }
 
-export default Login
+export default Signup

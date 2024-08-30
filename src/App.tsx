@@ -27,8 +27,9 @@ const QuestionLazy = lazy(
 const VocabLazy = lazy(() => import('./pages/vocab'))
 const VocabTrainerLazy = lazy(() => import('./pages/vocab-trainer'))
 const DashboardLazy = lazy(() => import('./pages/dashboard'))
-const LoginLazy = lazy(() => import('./pages/login'))
-const SignupLazy = lazy(() => import('./pages/signup'))
+const LoginLazy = lazy(() => import('./pages/auth/login'))
+const SignupLazy = lazy(() => import('./pages/auth/signup'))
+const SignupSuccessLazy = lazy(() => import('./pages/auth/signup-success'))
 const RemindExaminationLazy = lazy(
   () => import('./pages/vocab-trainer/components/remindExamination')
 )
@@ -95,6 +96,7 @@ function App() {
         { path: '/signup', element: <SignupLazy /> }
       ]
     },
+    { path: '/signup-success', element: <SignupSuccessLazy /> },
     { path: '*', element: <ErrorTemplate /> }
   ]
 

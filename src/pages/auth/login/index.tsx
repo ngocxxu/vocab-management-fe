@@ -6,22 +6,24 @@ import { PasswordInput } from '@/components/ui/password-input'
 import { Separator } from '@/components/ui/separator'
 import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import Logo from '../../assets/img/logo.jpg'
+import Logo from '../../../assets/img/logo.jpg'
+import { usePostLogin } from '@/services/auth/usePostLogin'
 
-type TFormSignup = {
+type TFormSignin = {
   email: string
   password: string
 }
 
-const Signup = () => {
-  const { handleSubmit, control } = useForm<TFormSignup>({
+const Login = () => {
+  const { mutate } = usePostLogin()
+  const { handleSubmit, control } = useForm<TFormSignin>({
     defaultValues: {
       email: '',
       password: ''
     }
   })
-  const onSubmit = (formData: TFormSignup) => {
-    console.log(formData)
+  const onSubmit = (formData: TFormSignin) => {
+    mutate(formData)
   }
 
   return (
@@ -33,7 +35,7 @@ const Signup = () => {
       <div>
         <h1 className="mb-2 text-center text-6xl font-bold">Welcome Back</h1>
         <p className="text-md text-center text-gray-vc-400">
-          Please fill in your information to create an account
+          Please login to your account
         </p>
       </div>
 
@@ -63,14 +65,18 @@ const Signup = () => {
           )}
         />
 
-        <Button className="mt-6 w-full" title="Sign Up" />
+        <Button
+          className="flex w-full justify-end p-0 underline"
+          variant="link"
+          title="Forgot password?"
+        />
+
+        <Button className="mt-6 w-full" title="Login" />
       </form>
 
       <div className="flex items-center justify-center gap-2">
         <Separator className="w-20" />
-        <p className="whitespace-nowrap text-sm font-semibold">
-          Or sign up with
-        </p>
+        <p className="whitespace-nowrap text-sm font-semibold">Or login with</p>
         <Separator className="w-20" />
       </div>
 
@@ -92,13 +98,13 @@ const Signup = () => {
       </div>
 
       <p className="whitespace-nowrap text-center text-sm font-semibold">
-        Already have an account?{' '}
-        <Link to="/login" className="cursor-pointer text-primary underline">
-          Login here
+        Don't have an account?{' '}
+        <Link to="/signup" className="cursor-pointer text-primary underline">
+          Sign up here
         </Link>
       </p>
     </div>
   )
 }
 
-export default Signup
+export default Login
