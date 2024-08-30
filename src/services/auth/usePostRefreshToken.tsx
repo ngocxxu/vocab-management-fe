@@ -3,14 +3,16 @@ import store from '@/redux/store'
 import { useMutation } from 'react-query'
 import { Auth } from '../endPoints'
 import { httpClient } from '../settings'
+import { AxiosResponse } from 'axios'
+import { TLoginUserRes } from './usePostLogin'
 
 export type TPostRefreshTokenReq = {
   refreshToken: string
 }
 
 export const postRefreshToken = async (data: TPostRefreshTokenReq) => {
-  const res = await httpClient.post(Auth.refreshToken, data)
-  return res
+  const res = await httpClient.post<AxiosResponse<TLoginUserRes>>(Auth.refreshToken, data)
+  return res.data
 }
 
 export const usePostRefreshToken = (data: TPostRefreshTokenReq) => {

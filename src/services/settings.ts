@@ -1,3 +1,5 @@
+import { setAccessToken } from '@/redux/reducer/auth'
+import store from '@/redux/store'
 import axios, { AxiosError } from 'axios'
 import { postRefreshToken } from './auth/usePostRefreshToken'
 
@@ -48,10 +50,13 @@ httpClient.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       try {
-        const newAccessToken = await postRefreshToken({
+        const { data } = await postRefreshToken({
           refreshToken: localStorage.getItem(REFRESHTOKEN) ?? ''
         })
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
+
+        store.dispatch(setAccessToken(data.accessToken))
+        originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
+
         return axios(originalRequest)
       } catch (refreshError) {
         // Redirect to login if refresh fails

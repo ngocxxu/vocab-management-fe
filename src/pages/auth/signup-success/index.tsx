@@ -1,15 +1,10 @@
 import Button from '@/components/button'
-import CheckLogo from '../../../assets/img/check.png'
-import Logo from '../../../assets/img/logo.jpg'
+import CheckLogo from '../../../assets/img/check.jpg'
 
 const SignupSuccess = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-16">
       <div>
-        <img className="transform object-contain" src={Logo} alt="Logo" />
-      </div>
-
-      <div className="w-1/6">
         <img
           className="transform object-contain"
           src={CheckLogo}
