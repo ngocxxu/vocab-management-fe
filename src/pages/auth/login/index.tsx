@@ -4,10 +4,10 @@ import Button from '@/components/button'
 import { InputLib } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Separator } from '@/components/ui/separator'
+import { useAuth } from '@/hooks/useAuth'
 import { Controller, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import Logo from '../../../assets/img/logo.jpg'
-import { usePostLogin } from '@/services/auth/usePostLogin'
 
 type TFormSignin = {
   email: string
@@ -15,7 +15,7 @@ type TFormSignin = {
 }
 
 const Login = () => {
-  const { mutate } = usePostLogin()
+  const { login } = useAuth()
   const { handleSubmit, control } = useForm<TFormSignin>({
     defaultValues: {
       email: '',
@@ -23,7 +23,7 @@ const Login = () => {
     }
   })
   const onSubmit = (formData: TFormSignin) => {
-    mutate(formData)
+    login(formData)
   }
 
   return (

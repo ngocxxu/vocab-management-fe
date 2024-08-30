@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import authReducer from './reducer/auth'
 import dashboardReducer from './reducer/dashboard'
 import vocabReducer from './reducer/vocab'
 import vocabTrainerReducer from './reducer/vocabTrainer'
@@ -7,7 +8,8 @@ const store = configureStore({
   reducer: {
     dashboardReducer,
     vocabReducer,
-    vocabTrainerReducer
+    vocabTrainerReducer,
+    authReducer
   }
 })
 
