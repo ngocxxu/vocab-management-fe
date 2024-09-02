@@ -4,6 +4,7 @@ import IconLogout from '@/assets/svg/IconLogout'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
+import { usePostLogout } from '@/services/auth/usePostLogout'
 import { Breakpoint } from '@/utils/enum'
 import { ComponentType, SVGProps, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -23,7 +24,9 @@ const Icon = ({ icon: IconComponent, isActive }: TIcon) => (
 
 export const Sidebar = () => {
   const [isCollapseMenu, setCollapseMenu] = useState(false)
+  const [dataInfo, setDataInfo] = useState({ name: '', email: '' })
   const { width } = useWindowSize()
+  const { mutate } = usePostLogout()
 
   useEffect(() => {
     if (width < Breakpoint.XL) {
@@ -32,6 +35,13 @@ export const Sidebar = () => {
       setCollapseMenu(false)
     }
   }, [width])
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userInfo')
+    if (storedData) {
+      setDataInfo(JSON.parse(storedData))
+    }
+  }, [])
 
   return (
     <div
@@ -104,21 +114,21 @@ export const Sidebar = () => {
                 src="https://api.multiavatar.com/Ranie"
                 alt="avatar"
               />
-              <AvatarFallback>R</AvatarFallback>
+              <AvatarFallback>{dataInfo.name[0]}</AvatarFallback>
             </Avatar>
             {!isCollapseMenu && (
               <div>
-                <p>Ranie Kim</p>
-                <p className="text-sm font-normal text-gray-vc-600">
-                  raniekim@gmail.com
+                <p>{dataInfo.name}</p>
+                <p className="break-all text-sm font-normal text-gray-vc-600">
+                  {dataInfo.email}
                 </p>
               </div>
             )}
           </div>
           {!isCollapseMenu && (
-            <div className="cursor-pointer">
+            <button className="cursor-pointer" onClick={() => mutate()}>
               <IconLogout />
-            </div>
+            </button>
           )}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useMutation } from 'react-query'
+import { useNavigate } from 'react-router-dom'
 import { Auth } from '../endPoints'
-import { httpClient } from '../settings'
+import { ACCESSTOKEN, httpClient } from '../settings'
 
 const postLogout = async () => {
   const res = await httpClient.post(Auth.logout)
@@ -8,7 +9,14 @@ const postLogout = async () => {
 }
 
 export const usePostLogout = () => {
+  const navigate = useNavigate()
+
   return useMutation({
-    mutationFn: postLogout
+    mutationFn: postLogout,
+    onSuccess: () => {
+      localStorage.removeItem(ACCESSTOKEN)
+      localStorage.removeItem('userInfo')
+      navigate('/login')
+    }
   })
 }

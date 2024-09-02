@@ -1,10 +1,8 @@
 import { toast } from '@/components/ui/use-toast'
-import { setAccessToken } from '@/redux/reducer/auth'
-import store from '@/redux/store'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { Auth } from '../endPoints'
-import { httpClient } from '../settings'
+import { ACCESSTOKEN, httpClient } from '../settings'
 
 export type TPostLoginReq = {
   email: string
@@ -13,6 +11,8 @@ export type TPostLoginReq = {
 
 export type TLoginUserRes = {
   accessToken: string
+  email: string
+  name: string
 }
 
 const postLogin = async (data: TPostLoginReq) => {
@@ -26,7 +26,11 @@ export const usePostLogin = () => {
   return useMutation({
     mutationFn: postLogin,
     onSuccess: ({ data }) => {
-      store.dispatch(setAccessToken(data.accessToken))
+      localStorage.setItem(ACCESSTOKEN, data.accessToken)
+      localStorage.setItem(
+        'userInfo',
+        JSON.stringify({ email: data.email, name: data.name })
+      )
       navigate('/')
       toast({
         title: 'Success',

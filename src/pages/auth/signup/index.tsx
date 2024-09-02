@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import Logo from '../../../assets/img/logo.jpg'
 
 type TFormSignup = {
+  name: string
   email: string
   password: string
 }
@@ -18,6 +19,7 @@ const Signup = () => {
   const { signup } = useAuth()
   const { handleSubmit, control } = useForm<TFormSignup>({
     defaultValues: {
+      name: '',
       email: '',
       password: ''
     }
@@ -40,6 +42,19 @@ const Signup = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <InputLib
+              className="mb-4 border-0"
+              type="text"
+              placeholder="Your name"
+              {...field}
+            />
+          )}
+        />
+
         <Controller
           name="email"
           control={control}

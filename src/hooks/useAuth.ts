@@ -1,14 +1,14 @@
 import { clearAccessToken } from '@/redux/reducer/auth'
-import { RootState } from '@/redux/store'
 import { usePostLogin } from '@/services/auth/usePostLogin'
 import { usePostSignup } from '@/services/auth/usePostSignup'
+import { ACCESSTOKEN } from '@/services/settings'
 import { useQueryClient } from 'react-query'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 export const useAuth = () => {
   const dispatch = useDispatch()
   const queryClient = useQueryClient()
-  const accessToken = useSelector((state: RootState) => state.auth)
+  const accessToken = localStorage.getItem(ACCESSTOKEN)
 
   const loginMutation = usePostLogin()
   const signupMutation = usePostSignup()

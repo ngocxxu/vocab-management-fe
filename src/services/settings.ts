@@ -1,5 +1,3 @@
-import { setAccessToken } from '@/redux/reducer/auth'
-import store from '@/redux/store'
 import axios, { AxiosError } from 'axios'
 import { postRefreshToken } from './auth/usePostRefreshToken'
 
@@ -28,7 +26,7 @@ export const httpClient = axios.create({
 httpClient.interceptors.request.use(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (config: any) => {
-    const accessToken = store.getState().auth.accessToken
+    const accessToken = localStorage.getItem(ACCESSTOKEN)
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`
     }
@@ -48,7 +46,7 @@ httpClient.interceptors.response.use(
       try {
         const { data } = await postRefreshToken()
 
-        store.dispatch(setAccessToken(data.accessToken))
+        localStorage.setItem(ACCESSTOKEN, data.accessToken)
         originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
 
         return axios(originalRequest)

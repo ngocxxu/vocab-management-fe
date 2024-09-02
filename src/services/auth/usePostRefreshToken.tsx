@@ -1,8 +1,6 @@
-import { setAccessToken } from '@/redux/reducer/auth'
-import store from '@/redux/store'
 import { useMutation } from 'react-query'
 import { Auth } from '../endPoints'
-import { httpClient } from '../settings'
+import { ACCESSTOKEN, httpClient } from '../settings'
 import { TLoginUserRes } from './usePostLogin'
 
 export const postRefreshToken = async () => {
@@ -14,7 +12,7 @@ export const usePostRefreshToken = () => {
   return useMutation({
     mutationFn: postRefreshToken,
     onSuccess: ({ data }) => {
-      store.dispatch(setAccessToken(data.accessToken))
+      localStorage.setItem(ACCESSTOKEN, data.accessToken)
     }
   })
 }
