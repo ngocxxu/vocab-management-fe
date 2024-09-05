@@ -1,3 +1,4 @@
+import { handleError, redirectToLogin } from '@/utils'
 import axios, { AxiosError } from 'axios'
 import { postRefreshToken } from './auth/usePostRefreshToken'
 
@@ -40,22 +41,25 @@ httpClient.interceptors.request.use(
 httpClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config
-    if (error.response.status === 401 && !originalRequest._retry) {
+    const { response, config: originalRequest } = error
+
+    if (response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       try {
         const { data } = await postRefreshToken()
-
         localStorage.setItem(ACCESSTOKEN, data.accessToken)
         originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
-
         return axios(originalRequest)
       } catch (refreshError) {
-        // Redirect to login if refresh fails
-        window.location.href = '/login'
-        return Promise.reject(refreshError)
+        redirectToLogin()
+        return handleError(refreshError)
       }
     }
-    return Promise.reject(error)
+
+    if (response.status === 403) {
+      redirectToLogin()
+    }
+
+    return handleError(error)
   }
 )
