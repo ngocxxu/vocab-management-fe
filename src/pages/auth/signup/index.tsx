@@ -1,12 +1,15 @@
 import IconFacebook from '@/assets/svg/IconFacebook'
 import IconGoogle from '@/assets/svg/IconGoogle'
 import Button from '@/components/button'
+import { ErrorMessage } from '@/components/message'
 import { InputLib } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/hooks/useAuth'
-import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, Resolver, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import * as yup from 'yup'
 import Logo from '../../../assets/img/logo.jpg'
 
 type TFormSignup = {
@@ -15,6 +18,19 @@ type TFormSignup = {
   password: string
 }
 
+const FormSchema = yup.object().shape({
+  name: yup.string().required('Name is required'),
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Invalid email format'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters long')
+    .max(128, 'Password must not exceed 128 characters')
+})
+
 const Signup = () => {
   const { signup } = useAuth()
   const { handleSubmit, control } = useForm<TFormSignup>({
@@ -22,7 +38,8 @@ const Signup = () => {
       name: '',
       email: '',
       password: ''
-    }
+    },
+    resolver: yupResolver(FormSchema) as unknown as Resolver<TFormSignup>
   })
   const onSubmit = (formData: TFormSignup) => {
     signup(formData)
@@ -45,38 +62,47 @@ const Signup = () => {
         <Controller
           name="name"
           control={control}
-          render={({ field }) => (
-            <InputLib
-              className="mb-4 border-0"
-              type="text"
-              placeholder="Your name"
-              {...field}
-            />
+          render={({ field, fieldState }) => (
+            <div className="mb-4">
+              <InputLib
+                className="border-0"
+                type="text"
+                placeholder="Your name"
+                {...field}
+              />
+              <ErrorMessage message={fieldState.error?.message || ''} />
+            </div>
           )}
         />
 
         <Controller
           name="email"
           control={control}
-          render={({ field }) => (
-            <InputLib
-              className="mb-4 border-0"
-              type="email"
-              placeholder="Email address"
-              {...field}
-            />
+          render={({ field, fieldState }) => (
+            <div className="mb-4">
+              <InputLib
+                className="border-0"
+                type="email"
+                placeholder="Email address"
+                {...field}
+              />
+              <ErrorMessage message={fieldState.error?.message || ''} />
+            </div>
           )}
         />
 
         <Controller
           name="password"
           control={control}
-          render={({ field }) => (
-            <PasswordInput
-              placeholder="Password"
-              className="mt-4 border-0"
-              {...field}
-            />
+          render={({ field, fieldState }) => (
+            <>
+              <PasswordInput
+                placeholder="Password"
+                className="mt-4 border-0"
+                {...field}
+              />
+              <ErrorMessage message={fieldState.error?.message || ''} />
+            </>
           )}
         />
 

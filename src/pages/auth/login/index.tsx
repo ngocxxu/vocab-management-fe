@@ -1,12 +1,15 @@
 import IconFacebook from '@/assets/svg/IconFacebook'
 import IconGoogle from '@/assets/svg/IconGoogle'
 import Button from '@/components/button'
+import { ErrorMessage } from '@/components/message'
 import { InputLib } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/hooks/useAuth'
-import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Controller, Resolver, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import * as yup from 'yup'
 import Logo from '../../../assets/img/logo.jpg'
 
 type TFormSignin = {
@@ -14,13 +17,26 @@ type TFormSignin = {
   password: string
 }
 
+const FormSchema = yup.object().shape({
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Invalid email format'),
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters long')
+    .max(128, 'Password must not exceed 128 characters')
+})
+
 const Login = () => {
   const { login } = useAuth()
   const { handleSubmit, control } = useForm<TFormSignin>({
     defaultValues: {
       email: '',
       password: ''
-    }
+    },
+    resolver: yupResolver(FormSchema) as unknown as Resolver<TFormSignin>
   })
   const onSubmit = (formData: TFormSignin) => {
     login(formData)
@@ -43,25 +59,31 @@ const Login = () => {
         <Controller
           name="email"
           control={control}
-          render={({ field }) => (
-            <InputLib
-              className="mb-4 border-0"
-              type="email"
-              placeholder="Email address"
-              {...field}
-            />
+          render={({ field, fieldState }) => (
+            <div className="mb-4">
+              <InputLib
+                className="border-0"
+                type="email"
+                placeholder="Email address"
+                {...field}
+              />
+              <ErrorMessage message={fieldState.error?.message || ''} />
+            </div>
           )}
         />
 
         <Controller
           name="password"
           control={control}
-          render={({ field }) => (
-            <PasswordInput
-              placeholder="Password"
-              className="mt-4 border-0"
-              {...field}
-            />
+          render={({ field, fieldState }) => (
+            <>
+              <PasswordInput
+                placeholder="Password"
+                className="mt-4 border-0"
+                {...field}
+              />
+              <ErrorMessage message={fieldState.error?.message || ''} />
+            </>
           )}
         />
 
@@ -71,7 +93,7 @@ const Login = () => {
           title="Forgot password?"
         />
 
-        <Button className="mt-6 w-full" title="Login" type='submit' />
+        <Button className="mt-6 w-full" title="Login" type="submit" />
       </form>
 
       <div className="flex items-center justify-center gap-2">
