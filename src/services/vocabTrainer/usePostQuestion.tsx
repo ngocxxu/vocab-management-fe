@@ -1,5 +1,6 @@
-import { useToast } from '@/components/ui/use-toast'
+import { defaultOnError } from '@/main'
 import { TQuestion } from '@/pages/vocab-trainer/types'
+import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { httpClient } from '../settings'
@@ -13,7 +14,6 @@ const postQuestion = async (id: string) => {
 
 export const usePostQuestion = () => {
   const navigate = useNavigate()
-  const { toast } = useToast()
 
   return useMutation({
     mutationFn: postQuestion,
@@ -22,11 +22,8 @@ export const usePostQuestion = () => {
       localStorage.setItem('questionnaire', JSON.stringify(data))
       navigate('/vocab-trainer/examination')
     },
-    onError: () => {
-      toast({
-        title: 'Error',
-        description: 'Failed, please try again'
-      })
+    onError: (err: AxiosError) => {
+      defaultOnError(err)
       navigate('/vocab-trainer')
     }
   })
