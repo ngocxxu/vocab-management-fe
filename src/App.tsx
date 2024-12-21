@@ -1,12 +1,15 @@
 import { initializeApp } from 'firebase/app'
 import { Suspense, lazy } from 'react'
-import { useRoutes } from 'react-router-dom'
+import { Navigate, useRoutes } from 'react-router-dom'
 import './App.scss'
 import HeaderTable from './components/headerTable'
 import { Loader } from './components/loader'
 import { ProtectRoute } from './components/protectRoute'
 import { ErrorTemplate } from './pages/error'
 import History from './pages/history'
+import { Notifications } from './pages/settings/components/notifications'
+import { Profile } from './pages/settings/components/profile'
+import { CustomSubjects } from './pages/settings/components/subjects'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -83,7 +86,25 @@ function App() {
         { path: '/community', element: <History /> },
         {
           path: '/settings',
-          element: <SettingsLayoutLazy />
+          element: <SettingsLayoutLazy />,
+          children: [
+            {
+              path: 'profile',
+              element: <Profile />
+            },
+            {
+              path: 'subjects',
+              element: <CustomSubjects />
+            },
+            {
+              path: 'notifications',
+              element: <Notifications />
+            },
+            {
+              path: '',
+              element: <Navigate to="/settings/profile" replace />
+            }
+          ]
         },
         { path: '/help-support', element: <History /> },
         { path: '/ai-chat', element: <AIChatLazy /> }
