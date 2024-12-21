@@ -37,6 +37,7 @@ const AIChatLazy = lazy(() => import('./pages/ai-chat'))
 const ResultStatisticLazy = lazy(
   () => import('./pages/vocab-trainer/components/resultStatistic')
 )
+const SettingsLayoutLazy = lazy(() => import('./pages/settings'))
 
 function App() {
   const routes = [
@@ -80,7 +81,14 @@ function App() {
         },
         { path: '/history', element: <History /> },
         { path: '/community', element: <History /> },
-        { path: '/settings', element: <History /> },
+        {
+          path: '/settings',
+          element: (
+            <HeaderTable headText="Settings">
+              <SettingsLayoutLazy />
+            </HeaderTable>
+          )
+        },
         { path: '/help-support', element: <History /> },
         { path: '/ai-chat', element: <AIChatLazy /> }
       ]
