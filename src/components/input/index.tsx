@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
 import { FieldError } from 'react-hook-form'
-import { InputLib, InputProps } from '../ui/input'
+import { InputLib } from '../ui/input'
 
 type TInput = {
   isMark?: boolean
@@ -10,6 +10,7 @@ type TInput = {
   error?: FieldError | null
   removeStyle?: boolean
   type?: string
+  step?: number
 }
 
 const Input = ({
@@ -20,7 +21,7 @@ const Input = ({
   error,
   type = 'text',
   ...props
-}: TInput & InputProps) => {
+}: TInput & React.InputHTMLAttributes<HTMLInputElement>) => {
   return (
     <label className="form-control w-full">
       <div className={cn('mb-1 text-sm', !removeStyle && 'mt-4')}>
