@@ -1,10 +1,11 @@
-import { InputLib, InputProps } from '@/components/ui/input'
+import { InputLib } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { forwardRef, useState } from 'react'
 import { ButtonLib } from './button'
 
-const PasswordInput = forwardRef<HTMLInputElement, InputProps>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const PasswordInput = forwardRef<HTMLInputElement, any>(
   ({ className, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false)
     const disabled =

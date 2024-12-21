@@ -83,11 +83,7 @@ function App() {
         { path: '/community', element: <History /> },
         {
           path: '/settings',
-          element: (
-            <HeaderTable headText="Settings">
-              <SettingsLayoutLazy />
-            </HeaderTable>
-          )
+          element: <SettingsLayoutLazy />
         },
         { path: '/help-support', element: <History /> },
         { path: '/ai-chat', element: <AIChatLazy /> }
