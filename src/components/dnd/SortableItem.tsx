@@ -1,3 +1,5 @@
+import { DraggableAttributes } from '@dnd-kit/core'
+import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
@@ -6,7 +8,10 @@ export const SortableItem = ({
   children
 }: {
   id: number
-  children: React.ReactNode
+  children: (handlers: {
+    attributes?: DraggableAttributes
+    listeners?: SyntheticListenerMap
+  }) => React.ReactNode
 }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id })
@@ -19,15 +24,19 @@ export const SortableItem = ({
     cursor: 'grab'
   }
 
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
+
   return (
-    <div
+    <button
       className="rounded-md border border-slate-300"
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
+      onClick={handleButtonClick}
     >
-      {children}
-    </div>
+      {children({ attributes, listeners })}
+    </button>
   )
 }
