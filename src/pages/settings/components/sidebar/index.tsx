@@ -29,7 +29,7 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="grid grid-cols-5 gap-4">
+    <div className="flex gap-4">
       <div className="flex gap-6">
         <div className="flex flex-col gap-2">
           {items.map((item) => (
@@ -59,9 +59,9 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
             <span className="text-destructive">Delete Account</span>
           </ButtonLib>
         </div>
-        <Separator className="h-[81vh]" orientation="vertical" />
       </div>
-      <div className="col-span-4">{children}</div>
+      <Separator className="h-[81vh]" orientation="vertical" />
+      <div className="ml-6 w-full">{children}</div>
     </div>
   )
 }

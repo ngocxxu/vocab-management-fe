@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { Suspense, lazy } from 'react'
-import { Navigate, useRoutes } from 'react-router-dom'
+import { useRoutes } from 'react-router-dom'
 import './App.scss'
 import HeaderTable from './components/headerTable'
 import { Loader } from './components/loader'
@@ -99,10 +99,6 @@ function App() {
             {
               path: 'notifications',
               element: <Notifications />
-            },
-            {
-              path: '',
-              element: <Navigate to="/settings/profile" replace />
             }
           ]
         },

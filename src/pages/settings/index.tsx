@@ -1,3 +1,4 @@
+import { Navigate, useLocation } from 'react-router-dom'
 import { Notifications } from './components/notifications'
 import { Profile } from './components/profile'
 import { SidebarLayout } from './components/sidebar'
@@ -23,6 +24,12 @@ const items = [
 
 const SettingsLayout = () => {
   const itemUrl = items.find((item) => item.url === window.location.pathname)
+  const location = useLocation()
+
+  if (location.pathname === '/settings') {
+    return <Navigate to="/settings/profile" replace />
+  }
+
   return (
     <div>
       <h1 className="mb-3 mt-5 text-2xl font-semibold">Settings</h1>
