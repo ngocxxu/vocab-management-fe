@@ -15,7 +15,6 @@ export const SortableItem = ({
     transform: CSS.Transform.toString(transform),
     transition,
     padding: '10px',
-    margin: '5px',
     backgroundColor: 'white',
     cursor: 'grab'
   }
