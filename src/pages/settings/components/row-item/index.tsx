@@ -6,20 +6,22 @@ import { GripVertical, Pen, Trash } from 'lucide-react'
 import { TRowItem } from '../../types'
 
 export const RowItem = ({
+  id,
   name,
+  order,
   setOpenModal,
-  setEditing,
+  setEditItem,
   attributes,
   listeners
 }: TRowItem & {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
-  setEditing: React.Dispatch<React.SetStateAction<boolean>>
+  setEditItem: React.Dispatch<React.SetStateAction<TRowItem | null>>
   attributes?: DraggableAttributes
   listeners?: SyntheticListenerMap
 }) => {
   const handleOpenModal = () => {
     setOpenModal(true)
-    setEditing(true)
+    setEditItem({ id, name, order })
   }
 
   return (

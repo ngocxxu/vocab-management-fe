@@ -33,7 +33,7 @@ const FormSchema = yup.object().shape({
 
 const Signup = () => {
   const { signup } = useAuth()
-  const { handleSubmit, control } = useForm<TFormSignup>({
+  const { handleSubmit, control,  } = useForm<TFormSignup>({
     defaultValues: {
       name: '',
       email: '',

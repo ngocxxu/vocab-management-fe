@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import GroupButton from '@/components/button/GroupButton'
 import { SortableItem } from '@/components/dnd/SortableItem'
-import Input from '@/components/input'
 import { Modal } from '@/components/modal'
 import { ButtonLib } from '@/components/ui/button'
+import { InputLib } from '@/components/ui/input'
 import {
   closestCenter,
   DndContext,
@@ -20,7 +20,8 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { TRowItem } from '../../types'
 import { RowItem } from '../row-item'
 
@@ -40,8 +41,14 @@ const data: TRowItem[] = [
 export const CustomSubjects = () => {
   const [items, setItems] = useState(data)
   const [openModal, setOpenModal] = useState(false)
-  const [subjectName, setSubjectName] = useState('')
-  const [isEditing, setEditing] = useState(false)
+  const [editItem, setEditItem] = useState<TRowItem | null>(null)
+  const { handleSubmit, control, watch, setValue, reset } = useForm<{
+    name: string
+  }>({
+    defaultValues: {
+      name: ''
+    }
+  })
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -74,6 +81,17 @@ export const CustomSubjects = () => {
     }
   }
 
+  const onSubmit = (formData: { name: string }) => {
+    console.log({ formData })
+  }
+
+  useEffect(() => {
+    if (editItem) {
+      setValue('name', editItem.name)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editItem])
+
   return (
     <>
       <div>
@@ -98,7 +116,7 @@ export const CustomSubjects = () => {
                       name={item.name}
                       order={item.order}
                       setOpenModal={setOpenModal}
-                      setEditing={setEditing}
+                      setEditItem={setEditItem}
                       attributes={attributes}
                       listeners={listeners}
                     />
@@ -111,28 +129,41 @@ export const CustomSubjects = () => {
       </div>
 
       <Modal
-        title={`${isEditing ? 'Update' : 'Create'} subject`}
+        title={`${editItem ? 'Update' : 'Create'} subject`}
         open={openModal}
         onOpenChange={setOpenModal}
-        onCloseAutoFocus={() => setEditing(false)}
+        onCloseAutoFocus={() => {
+          setEditItem(null)
+          reset()
+        }}
         body={
-          <div>
-            <Input
-              onChange={(e) => setSubjectName(e.target.value)}
-              type="text"
-              placeholder="Input here"
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <div className="mb-4">
+                  <InputLib
+                    className="border-0"
+                    type="text"
+                    placeholder="Your name"
+                    {...field}
+                  />
+                </div>
+              )}
             />
             <div className="justify-cente6 mt-6">
               <GroupButton
                 variantNo="ghost"
                 onClose={() => {
                   setOpenModal(false)
-                  setEditing(false)
+                  setEditItem(null)
+                  reset()
                 }}
-                disabledYes={!subjectName}
+                disabledYes={!watch('name')}
               />
             </div>
-          </div>
+          </form>
         }
         className="max-h-[90vh] w-full max-w-[100vh] overflow-x-auto"
       />
