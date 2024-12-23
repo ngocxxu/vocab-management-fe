@@ -1,3 +1,4 @@
+import { AlertDialog } from '@/components/alertDialog'
 import { ButtonLib } from '@/components/ui/button'
 import { DraggableAttributes } from '@dnd-kit/core'
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
@@ -7,15 +8,18 @@ import { TRowItem } from '../../types'
 export const RowItem = ({
   name,
   setOpenModal,
+  setEditing,
   attributes,
   listeners
 }: TRowItem & {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+  setEditing: React.Dispatch<React.SetStateAction<boolean>>
   attributes?: DraggableAttributes
   listeners?: SyntheticListenerMap
 }) => {
   const handleOpenModal = () => {
     setOpenModal(true)
+    setEditing(true)
   }
 
   return (
@@ -24,7 +28,7 @@ export const RowItem = ({
         <GripVertical className="text-slate-500" />
         {name}
       </div>
-      <div className="ml-auto flex gap-3">
+      <div className="ml-auto flex gap-2">
         <ButtonLib
           className="h-6 w-6"
           variant="ghost"
@@ -33,9 +37,13 @@ export const RowItem = ({
         >
           <Pen />
         </ButtonLib>
-        <ButtonLib className="h-6 w-6" variant="ghost" size="icon">
-          <Trash className="text-red-600" />
-        </ButtonLib>
+        <AlertDialog
+          head={
+            <ButtonLib className="h-6 w-6" variant="ghost" size="icon">
+              <Trash className="text-red-600" />
+            </ButtonLib>
+          }
+        />
       </div>
     </div>
   )

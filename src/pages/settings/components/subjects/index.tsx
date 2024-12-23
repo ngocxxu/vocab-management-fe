@@ -41,6 +41,7 @@ export const CustomSubjects = () => {
   const [items, setItems] = useState(data)
   const [openModal, setOpenModal] = useState(false)
   const [subjectName, setSubjectName] = useState('')
+  const [isEditing, setEditing] = useState(false)
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -97,6 +98,7 @@ export const CustomSubjects = () => {
                       name={item.name}
                       order={item.order}
                       setOpenModal={setOpenModal}
+                      setEditing={setEditing}
                       attributes={attributes}
                       listeners={listeners}
                     />
@@ -109,9 +111,10 @@ export const CustomSubjects = () => {
       </div>
 
       <Modal
-        title="Create subject"
+        title={`${isEditing ? 'Update' : 'Create'} subject`}
         open={openModal}
         onOpenChange={setOpenModal}
+        onCloseAutoFocus={() => setEditing(false)}
         body={
           <div>
             <Input
@@ -124,6 +127,7 @@ export const CustomSubjects = () => {
                 variantNo="ghost"
                 onClose={() => {
                   setOpenModal(false)
+                  setEditing(false)
                 }}
                 disabledYes={!subjectName}
               />
