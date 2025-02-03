@@ -174,28 +174,27 @@ const VocabTrainer = memo(() => {
         enableSorting: false,
         id: 'action',
         cell: ({ row }) => (
-          <div className="flex w-0 items-center gap-3">
+          <div className="flex w-0 items-center gap-2">
             <Button
               type="button"
-              className="h-6 w-6"
+              onClick={() => {
+                dispatch(setItemVocabTrainerState(row.original))
+                setOpenDetailModal(true)
+              }}
+              className="h-6 w-6 gap-0 px-2"
               size="icon"
               variant="ghost"
               leftIcon={
-                <IconEye
-                  onClick={() => {
-                    dispatch(setItemVocabTrainerState(row.original))
-                    setOpenDetailModal(true)
-                  }}
-                  className="text-gray-400 hover:text-gray-500"
-                />
+                <IconEye className="text-gray-400 hover:text-gray-500" />
               }
             />
+
             <Button
               type="button"
               onClick={() => {
                 mutateQuestion(row.original._id)
               }}
-              className="h-6 w-6"
+              className="h-6 w-6 gap-0 px-2"
               size="icon"
               variant="ghost"
               leftIcon={
@@ -206,7 +205,7 @@ const VocabTrainer = memo(() => {
               head={
                 <Button
                   type="button"
-                  className="h-6 w-6"
+                  className="h-6 w-6 gap-0 px-2"
                   size="icon"
                   variant="ghost"
                   leftIcon={

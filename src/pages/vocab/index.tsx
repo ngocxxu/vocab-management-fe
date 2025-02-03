@@ -67,13 +67,13 @@ const Vocab = memo(() => {
 
   const { data, isLoading } = useGetAllVocab({
     page:
-      isURLVocabTrainer
-        ? paginationVocabState.page
-        : searchParams.get('page') ?? '1',
+      isURLVocabTrainer ?
+        paginationVocabState.page
+      : (searchParams.get('page') ?? '1'),
     limit:
-      isURLVocabTrainer
-        ? paginationVocabState.limit
-        : searchParams.get('limit') ?? LIMIT_PAGE_10,
+      isURLVocabTrainer ?
+        paginationVocabState.limit
+      : (searchParams.get('limit') ?? LIMIT_PAGE_10),
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
     subjectFilter: filterData.subject?.map((item) => item.value),
@@ -117,7 +117,6 @@ const Vocab = memo(() => {
     if (result) {
       setRowSelection(result)
     }
-
   }
   const handleRandom = () => {
     mutateRandom(amountRandom)
@@ -244,7 +243,7 @@ const Vocab = memo(() => {
           <div className="flex w-0 items-center gap-3">
             {!isURLVocabTrainer && (
               <Button
-                className="h-6 w-6"
+                className="h-6 w-6 gap-0 px-2"
                 size="icon"
                 variant="ghost"
                 onClick={() => {
@@ -260,7 +259,7 @@ const Vocab = memo(() => {
             <AlertDialog
               head={
                 <Button
-                  className="h-6 w-6"
+                  className="h-6 w-6 gap-0 px-2"
                   size="icon"
                   variant="ghost"
                   leftIcon={
@@ -393,7 +392,6 @@ const Vocab = memo(() => {
       }
     </>
   )
-
 })
 
 export default Vocab

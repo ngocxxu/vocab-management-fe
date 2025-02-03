@@ -109,7 +109,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
           1-{limitValue} of {totalItems} items
         </p>
       </div>
-      <div>
+      <div className='flex items-center gap-2'>
         <ButtonLib
           variant="outline"
           className="h-7 px-2.5"
