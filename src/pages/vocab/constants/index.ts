@@ -9,6 +9,7 @@ export const wordTypeList = [
   { label: 'Verb (Động từ)', value: 'Verb' },
   { label: 'Adverbs (Trạng từ / Phó từ)', value: 'Adverbs' },
   { label: 'Adjective (Tính từ)', value: 'Adjective' },
+  { label: 'Phrase (Cụm từ)', value: 'Phrase' },
   { label: 'Pronouns (Đại từ)', value: 'Pronouns' },
   { label: 'Interjection (Thán từ)', value: 'Interjection' },
   { label: 'Conjunction (Liên từ)', value: 'Conjunction' },
