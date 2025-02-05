@@ -64,7 +64,6 @@ export const CustomSubjects = () => {
     const { active, over } = event
 
     if (!over) return
-
     if (active.id !== over.id) {
       const oldIndex = items.findIndex((item) => item.id === active.id)
       const newIndex = items.findIndex((item) => item.id === over.id)
@@ -82,7 +81,7 @@ export const CustomSubjects = () => {
         // Call the API to update the orders
         mutateReorder({
           items: updatedItems.map((item) => ({
-            name: item.name,
+            _id: item._id,
             order: item.order
           }))
         })
