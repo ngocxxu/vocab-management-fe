@@ -1,8 +1,7 @@
 import { ButtonLib } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const items = [
   {
@@ -20,11 +19,10 @@ const items = [
 ]
 
 export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
-  const [itemChosen, setItemChosen] = useState('My Profile')
+  const { pathname } = useLocation()
   const navigate = useNavigate()
 
-  const handleItemClick = (title: string, url: string) => {
-    setItemChosen(title)
+  const handleItemClick = (url: string) => {
     navigate(url)
   }
 
@@ -37,15 +35,13 @@ export const SidebarLayout = ({ children }: { children: React.ReactNode }) => {
               type="button"
               className={cn(
                 'p-2 text-sm font-medium hover:rounded-full',
-                item.title === itemChosen && 'rounded-full bg-primary-vc-100'
+                item.url === pathname && 'rounded-full bg-primary-vc-100'
               )}
               key={item.title}
-              onClick={() => handleItemClick(item.title, item.url)}
+              onClick={() => handleItemClick(item.url)}
             >
               <span
-                className={cn(
-                  item.title === itemChosen && 'text-primary-vc-500'
-                )}
+                className={cn(item.url === pathname && 'text-primary-vc-500')}
               >
                 {item.title}
               </span>

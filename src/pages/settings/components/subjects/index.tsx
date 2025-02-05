@@ -8,6 +8,8 @@ import { InputLib } from '@/components/ui/input'
 import { useDeleteVocabSubject } from '@/services/vocabSubject/useDeleteVocabSubject'
 import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
 import { usePostVocabSubject } from '@/services/vocabSubject/usePostVocabSubject'
+import { usePutVocabSubject } from '@/services/vocabSubject/usePutVocabSubject'
+import { useReorderVocabSubject } from '@/services/vocabSubject/useReorderVocabSubject'
 import {
   closestCenter,
   DndContext,
@@ -45,6 +47,9 @@ export const CustomSubjects = () => {
   })
   const { data: dataVocabSubject, isLoading } = useGetAllVocabSubject()
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocabSubject()
+  const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocabSubject()
+  const { mutate: mutateReorder, isLoading: isLoadingReorder } =
+    useReorderVocabSubject()
   const { mutate: mutateDelete, isLoading: isLoadingDelete } =
     useDeleteVocabSubject()
 
@@ -75,7 +80,7 @@ export const CustomSubjects = () => {
         setItems(updatedItems)
 
         // Call the API to update the orders
-        mutatePost({
+        mutateReorder({
           items: updatedItems.map((item) => ({
             name: item.name,
             order: item.order
@@ -87,7 +92,20 @@ export const CustomSubjects = () => {
     }
   }
   const onSubmit = (formData: { name: string }) => {
-    console.log({ formData })
+    if (editItem) {
+      mutatePut({
+        id: editItem._id,
+        data: {
+          name: formData.name
+        }
+      })
+    } else {
+      mutatePost({
+        name: formData.name,
+        order: items.length + 1
+      })
+    }
+    setOpenModal(false)
   }
 
   useEffect(() => {
@@ -103,7 +121,13 @@ export const CustomSubjects = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editItem])
 
-  if (isLoading || isLoadingPost || isLoadingDelete) {
+  if (
+    isLoading ||
+    isLoadingReorder ||
+    isLoadingDelete ||
+    isLoadingPost ||
+    isLoadingPut
+  ) {
     return <Loader />
   }
 

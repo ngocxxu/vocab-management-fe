@@ -5,9 +5,7 @@ import { httpClient } from '../settings'
 import { VOCAB_SUBJECT_KEYS } from './queryKeys'
 
 type TReorderVocabSubjectPayload = {
-  data: {
-    items: TReorderVocabSubject[]
-  }
+  items: TReorderVocabSubject[]
 }
 
 const reorderVocabSubject = async (data: TReorderVocabSubjectPayload) => {

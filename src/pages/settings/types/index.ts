@@ -6,6 +6,6 @@ export type TVocabSubject = {
 }
 
 export type TReorderVocabSubject = {
-  id: string
+  name: string
   order: number
 }
