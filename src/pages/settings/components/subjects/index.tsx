@@ -22,10 +22,10 @@ import {
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { TRowItem } from '../../types'
+import { TVocabSubject } from '../../types'
 import { RowItem } from '../row-item'
 
-const data: TRowItem[] = [
+const data: TVocabSubject[] = [
   {
     id: 1,
     name: 'item 1',
@@ -41,7 +41,7 @@ const data: TRowItem[] = [
 export const CustomSubjects = () => {
   const [items, setItems] = useState(data)
   const [openModal, setOpenModal] = useState(false)
-  const [editItem, setEditItem] = useState<TRowItem | null>(null)
+  const [editItem, setEditItem] = useState<TVocabSubject | null>(null)
   const { handleSubmit, control, watch, setValue, reset } = useForm<{
     name: string
   }>({

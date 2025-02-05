@@ -3,7 +3,7 @@ import { ButtonLib } from '@/components/ui/button'
 import { DraggableAttributes } from '@dnd-kit/core'
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
 import { GripVertical, Pen, Trash } from 'lucide-react'
-import { TRowItem } from '../../types'
+import { TVocabSubject } from '../../types'
 
 export const RowItem = ({
   id,
@@ -13,9 +13,9 @@ export const RowItem = ({
   setEditItem,
   attributes,
   listeners
-}: TRowItem & {
+}: TVocabSubject & {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
-  setEditItem: React.Dispatch<React.SetStateAction<TRowItem | null>>
+  setEditItem: React.Dispatch<React.SetStateAction<TVocabSubject | null>>
   attributes?: DraggableAttributes
   listeners?: SyntheticListenerMap
 }) => {
