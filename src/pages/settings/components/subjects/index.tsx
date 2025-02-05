@@ -146,7 +146,7 @@ export const CustomSubjects = () => {
                   <InputLib
                     className="border-0"
                     type="text"
-                    placeholder="Your name"
+                    placeholder="Subject name"
                     {...field}
                   />
                 </div>
