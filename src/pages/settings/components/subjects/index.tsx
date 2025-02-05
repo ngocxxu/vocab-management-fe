@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import GroupButton from '@/components/button/GroupButton'
 import { SortableItem } from '@/components/dnd/SortableItem'
+import { Loader } from '@/components/loader'
 import { Modal } from '@/components/modal'
 import { ButtonLib } from '@/components/ui/button'
 import { InputLib } from '@/components/ui/input'
+import { useDeleteVocabSubject } from '@/services/vocabSubject/useDeleteVocabSubject'
+import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
+import { usePostVocabSubject } from '@/services/vocabSubject/usePostVocabSubject'
 import {
   closestCenter,
   DndContext,
@@ -25,23 +29,13 @@ import { Controller, useForm } from 'react-hook-form'
 import { TVocabSubject } from '../../types'
 import { RowItem } from '../row-item'
 
-const data: TVocabSubject[] = [
-  {
-    id: 1,
-    name: 'item 1',
-    order: 1
-  },
-  {
-    id: 2,
-    name: 'item 2',
-    order: 2
-  }
-]
-
 export const CustomSubjects = () => {
-  const [items, setItems] = useState(data)
+  const [items, setItems] = useState<TVocabSubject[]>([])
   const [openModal, setOpenModal] = useState(false)
-  const [editItem, setEditItem] = useState<TVocabSubject | null>(null)
+  const [editItem, setEditItem] = useState<Omit<
+    TVocabSubject,
+    'id' | 'order'
+  > | null>(null)
   const { handleSubmit, control, watch, setValue, reset } = useForm<{
     name: string
   }>({
@@ -49,6 +43,10 @@ export const CustomSubjects = () => {
       name: ''
     }
   })
+  const { data: dataVocabSubject, isLoading } = useGetAllVocabSubject()
+  const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocabSubject()
+  const { mutate: mutateDelete, isLoading: isLoadingDelete } =
+    useDeleteVocabSubject()
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -75,15 +73,28 @@ export const CustomSubjects = () => {
 
       try {
         setItems(updatedItems)
+
+        // Call the API to update the orders
+        mutatePost({
+          items: updatedItems.map((item) => ({
+            name: item.name,
+            order: item.order
+          }))
+        })
       } catch (error) {
         console.error('Failed to update orders:', error)
       }
     }
   }
-
   const onSubmit = (formData: { name: string }) => {
     console.log({ formData })
   }
+
+  useEffect(() => {
+    if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
+      setItems(dataVocabSubject.data)
+    }
+  }, [dataVocabSubject])
 
   useEffect(() => {
     if (editItem) {
@@ -91,6 +102,10 @@ export const CustomSubjects = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editItem])
+
+  if (isLoading || isLoadingPost || isLoadingDelete) {
+    return <Loader />
+  }
 
   return (
     <>
@@ -112,13 +127,13 @@ export const CustomSubjects = () => {
                 <SortableItem key={item.id} id={item.id}>
                   {({ attributes, listeners }: any) => (
                     <RowItem
-                      id={item.id}
-                      name={item.name}
-                      order={item.order}
+                      {...item}
                       setOpenModal={setOpenModal}
                       setEditItem={setEditItem}
                       attributes={attributes}
                       listeners={listeners}
+                      mutateDelete={mutateDelete}
+                      item={item}
                     />
                   )}
                 </SortableItem>

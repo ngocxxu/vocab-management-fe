@@ -2,26 +2,36 @@ import { AlertDialog } from '@/components/alertDialog'
 import { ButtonLib } from '@/components/ui/button'
 import { DraggableAttributes } from '@dnd-kit/core'
 import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities'
+import { AxiosResponse } from 'axios'
 import { GripVertical, Pen, Trash } from 'lucide-react'
+import { UseMutateFunction } from 'react-query'
 import { TVocabSubject } from '../../types'
 
 export const RowItem = ({
-  id,
-  name,
-  order,
   setOpenModal,
   setEditItem,
   attributes,
-  listeners
+  listeners,
+  mutateDelete,
+  item
 }: TVocabSubject & {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
-  setEditItem: React.Dispatch<React.SetStateAction<TVocabSubject | null>>
+  setEditItem: React.Dispatch<
+    React.SetStateAction<Omit<TVocabSubject, 'id' | 'order'> | null>
+  >
   attributes?: DraggableAttributes
   listeners?: SyntheticListenerMap
+  mutateDelete: UseMutateFunction<AxiosResponse, unknown, string, unknown>
+  item: TVocabSubject
 }) => {
+  const { name, _id } = item
   const handleOpenModal = () => {
     setOpenModal(true)
-    setEditItem({ id, name, order })
+    setEditItem({ _id, name })
+  }
+
+  const handleOnYes = (id: string) => {
+    mutateDelete(id)
   }
 
   return (
@@ -45,6 +55,7 @@ export const RowItem = ({
               <Trash className="text-red-600" />
             </ButtonLib>
           }
+          onYes={() => handleOnYes(_id)}
         />
       </div>
     </div>

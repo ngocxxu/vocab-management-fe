@@ -4,7 +4,9 @@ import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
 import { VOCAB_SUBJECT_KEYS } from './queryKeys'
 
-const postVocabSubject = async (data: Omit<TVocabSubject, 'id'>) => {
+type TPostVocalSubject = { items: Omit<TVocabSubject, 'id' | '_id'>[] }
+
+const postVocabSubject = async (data: TPostVocalSubject) => {
   const res = await httpClient.post(`/vocabSubject`, data)
   return res
 }
@@ -14,7 +16,7 @@ export const usePostVocabSubject = () => {
   const client = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: Omit<TVocabSubject, 'id'>) => postVocabSubject(data),
+    mutationFn: (data: TPostVocalSubject) => postVocabSubject(data),
     onSuccess: () => {
       client.invalidateQueries([VOCAB_SUBJECT_KEYS.GET_VOCAB_SUBJECT])
       toast({
