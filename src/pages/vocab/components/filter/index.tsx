@@ -2,8 +2,10 @@ import GroupButton from '@/components/button/GroupButton'
 import { Checkbox } from '@/components/checkbox'
 import MultiSelect from '@/components/multiselect'
 import { Separator } from '@/components/ui/separator'
+import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
 import { ROUTER_VOCAB_TRAINER } from '@/utils/constants'
-import { Fragment } from 'react'
+import { TOption } from '@/utils/types'
+import { Fragment, useEffect, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
 import { statusList, subjectList } from '../../constants'
@@ -13,9 +15,21 @@ type TFilter = {
 }
 
 export const Filter = ({ onClose }: TFilter) => {
+  const [items, setItems] = useState<TOption[]>([])
   const { control } = useFormContext()
   const { pathname } = useLocation()
   const isURLVocabTrainer = pathname === ROUTER_VOCAB_TRAINER
+  const { data: dataVocabSubject } = useGetAllVocabSubject()
+
+  useEffect(() => {
+    if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
+      const newData = dataVocabSubject.data.map((item) => ({
+        value: item._id,
+        label: item.name
+      }))
+      setItems(newData)
+    }
+  }, [dataVocabSubject])
 
   return (
     <div className="flex flex-col gap-3">
@@ -44,9 +58,9 @@ export const Filter = ({ onClose }: TFilter) => {
                   <Fragment key={label}>
                     <Checkbox
                       checked={field.value?.includes(value)}
-                      onCheckedChange={checked => {
-                        return checked
-                          ? field.onChange(
+                      onCheckedChange={(checked) => {
+                        return checked ?
+                            field.onChange(
                               field.value && [...field.value, value]
                             )
                           : field.onChange(
@@ -67,7 +81,7 @@ export const Filter = ({ onClose }: TFilter) => {
       </div>
 
       <Separator className="my-2" />
-      <div className="flex justify-end items-center mr-16">
+      <div className="mr-16 flex items-center justify-end">
         <GroupButton variantNo="ghost" onClose={onClose} />
       </div>
     </div>

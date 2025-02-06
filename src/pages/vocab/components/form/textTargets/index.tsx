@@ -1,7 +1,9 @@
 import Button from '@/components/button'
 import { cn } from '@/lib/utils'
+import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
+import { TOption } from '@/utils/types'
 import { IconPlus, IconX } from '@tabler/icons-react'
-import { memo, useEffect } from 'react'
+import { memo, useEffect, useState } from 'react'
 import {
   Control,
   Controller,
@@ -17,7 +19,7 @@ import Input from '../../../../../components/input'
 import MultiSelect from '../../../../../components/multiselect'
 import Select from '../../../../../components/select'
 import { RootState } from '../../../../../redux/store'
-import { subjectList, wordTypeList } from '../../../constants'
+import { wordTypeList } from '../../../constants'
 import { ExamplesForm } from '../examples'
 
 type TTextTargetsForm = {
@@ -40,12 +42,14 @@ export const TextTargetsForm = memo(
     setValue,
     fieldsLengthItem
   }: TTextTargetsForm) => {
+    const [items, setItems] = useState<TOption[]>([])
     const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
     const { fields, append, remove } = useFieldArray({
       control,
       name: `textTarget.${index}.examples`
     })
     const checkErrors = Object.keys(errors).length > 0
+    const { data: dataVocabSubject } = useGetAllVocabSubject()
 
     //Editing
     useEffect(() => {
@@ -63,6 +67,16 @@ export const TextTargetsForm = memo(
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEditing, itemVocab])
+
+    useEffect(() => {
+      if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
+        const newData = dataVocabSubject.data.map((item) => ({
+          value: item._id,
+          label: item.name
+        }))
+        setItems(newData)
+      }
+    }, [dataVocabSubject])
 
     return (
       <>
@@ -128,24 +142,26 @@ export const TextTargetsForm = memo(
             <Input label="Grammar" placeholder="Type here" {...field} />
           )}
         />
-        <Controller
-          name={`textTarget.${index}.subject`}
-          rules={{ required: true }}
-          control={control}
-          render={({ field }) => (
-            <MultiSelect
-              error={
-                checkErrors ?
-                  (errors.textTarget![index]?.subject as FieldError)
-                : null
-              }
-              isMark={true}
-              label="Subject"
-              options={subjectList}
-              {...field}
-            />
-          )}
-        />
+        {!!items.length && (
+          <Controller
+            name={`textTarget.${index}.subject`}
+            rules={{ required: true }}
+            control={control}
+            render={({ field }) => (
+              <MultiSelect
+                error={
+                  checkErrors ?
+                    (errors.textTarget![index]?.subject as FieldError)
+                  : null
+                }
+                isMark={true}
+                label="Subject"
+                options={items}
+                {...field}
+              />
+            )}
+          />
+        )}
 
         <div className="mt-4 rounded-md border border-gray-200 p-2">
           {fields.map((field, idx) => (
