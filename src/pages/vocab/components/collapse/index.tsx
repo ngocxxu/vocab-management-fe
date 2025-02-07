@@ -71,7 +71,7 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                             variant="outline"
                             className="mr-1 border-gray-300 text-xs"
                           >
-                            {item.value}
+                            {item.label}
                           </Badge>
                         ))}
                       </div>
