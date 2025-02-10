@@ -76,7 +76,7 @@ const Vocab = memo(() => {
       : (searchParams.get('limit') ?? LIMIT_PAGE_10),
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
-    subjectFilter: filterData.subject?.map((item) => item.value),
+    subjectFilter: filterData.subject?.map((item) => item.label),
     search: searchVocab || undefined
   })
 

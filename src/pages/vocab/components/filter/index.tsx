@@ -2,32 +2,34 @@ import GroupButton from '@/components/button/GroupButton'
 import { Checkbox } from '@/components/checkbox'
 import MultiSelect from '@/components/multiselect'
 import { Separator } from '@/components/ui/separator'
+import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
 import { ROUTER_VOCAB_TRAINER } from '@/utils/constants'
-import { Fragment } from 'react'
+import { TOption } from '@/utils/types'
+import { Fragment, useEffect, useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
-import { statusList, subjectList } from '../../constants'
+import { statusList } from '../../constants'
 
 type TFilter = {
   onClose: () => void
 }
 
 export const Filter = ({ onClose }: TFilter) => {
-  // const [items, setItems] = useState<TOption[]>([])
+  const [items, setItems] = useState<TOption[]>([])
   const { control } = useFormContext()
   const { pathname } = useLocation()
   const isURLVocabTrainer = pathname === ROUTER_VOCAB_TRAINER
-  // const { data: dataVocabSubject } = useGetAllVocabSubject()
+  const { data: dataVocabSubject } = useGetAllVocabSubject()
 
-  // useEffect(() => {
-  //   if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
-  //     const newData = dataVocabSubject.data.map((item) => ({
-  //       value: item._id,
-  //       label: item.name
-  //     }))
-  //     setItems(newData)
-  //   }
-  // }, [dataVocabSubject])
+  useEffect(() => {
+    if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
+      const newData = dataVocabSubject.data.map((item) => ({
+        value: item._id,
+        label: item.name
+      }))
+      setItems(newData)
+    }
+  }, [dataVocabSubject])
 
   return (
     <div className="flex flex-col gap-3">
@@ -37,9 +39,7 @@ export const Filter = ({ onClose }: TFilter) => {
           <Controller
             name="subject"
             control={control}
-            render={({ field }) => (
-              <MultiSelect options={subjectList} {...field} />
-            )}
+            render={({ field }) => <MultiSelect options={items} {...field} />}
           />
         </div>
       )}
