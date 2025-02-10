@@ -2,6 +2,7 @@ import { Tabs } from '@/components/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
+import { TOption } from '@/utils/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IconPlus } from '@tabler/icons-react'
 import { AxiosResponse } from 'axios'
@@ -25,7 +26,6 @@ import { TPutVocabs } from '../../../../services/vocab/usePutVocab'
 import { defaultValue, languageList } from '../../constants'
 import { TTextTarget, TVocab } from '../../types'
 import { TextTargetsForm } from './textTargets'
-import { TOption } from '@/utils/types'
 
 type TFormVocabProps = {
   idVocab: string
@@ -121,7 +121,8 @@ const FormVocab = ({
         ),
         value: String(index)
       })),
-    [control, errors, fields, isEditing, reset, setValue, items]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [control, isEditing, reset, setValue, items]
   )
 
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
