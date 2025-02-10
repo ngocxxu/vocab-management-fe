@@ -6,7 +6,6 @@ import { AxiosResponse } from 'axios'
 import { GripVertical, Pen, Trash } from 'lucide-react'
 import { UseMutateFunction } from 'react-query'
 import { TVocabSubject } from '../../types'
-import { WarningTable } from '../warning-table'
 
 export const RowItem = ({
   setOpenModal,
@@ -50,8 +49,8 @@ export const RowItem = ({
         >
           <Pen />
         </ButtonLib>
-
-        <WarningTable />
+        {/* 
+        <WarningTable /> */}
 
         <AlertDialog
           head={
