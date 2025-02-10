@@ -1,11 +1,12 @@
 import { Tabs } from '@/components/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
+import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { IconPlus } from '@tabler/icons-react'
 import { AxiosResponse } from 'axios'
 import { X } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Controller,
   Resolver,
@@ -24,6 +25,7 @@ import { TPutVocabs } from '../../../../services/vocab/usePutVocab'
 import { defaultValue, languageList } from '../../constants'
 import { TTextTarget, TVocab } from '../../types'
 import { TextTargetsForm } from './textTargets'
+import { TOption } from '@/utils/types'
 
 type TFormVocabProps = {
   idVocab: string
@@ -60,6 +62,7 @@ const FormVocab = ({
   mutate,
   mutatePut
 }: TFormVocabProps) => {
+  const [items, setItems] = useState<TOption[]>([])
   const [orderTab, setOrderTab] = useState(String(0))
   const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
   const {
@@ -83,6 +86,7 @@ const FormVocab = ({
     control,
     name: 'textTarget'
   })
+  const { data: dataVocabSubject } = useGetAllVocabSubject()
 
   const headTabs = useMemo(
     () =>
@@ -110,13 +114,14 @@ const FormVocab = ({
                 errors={errors}
                 control={control}
                 index={index}
+                subjects={items}
               />
             </fieldset>
           </ScrollArea>
         ),
         value: String(index)
       })),
-    [control, errors, fields, isEditing, reset, setValue]
+    [control, errors, fields, isEditing, reset, setValue, items]
   )
 
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
@@ -128,6 +133,16 @@ const FormVocab = ({
     : mutate(data as Omit<TVocab, 'id'>)
     onClose()
   }
+
+  useEffect(() => {
+    if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
+      const newData = dataVocabSubject.data.map((item) => ({
+        value: item._id,
+        label: item.name
+      }))
+      setItems(newData)
+    }
+  }, [dataVocabSubject])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

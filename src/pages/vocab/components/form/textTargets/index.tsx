@@ -1,9 +1,8 @@
 import Button from '@/components/button'
 import { cn } from '@/lib/utils'
-import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
 import { TOption } from '@/utils/types'
 import { IconPlus, IconX } from '@tabler/icons-react'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect } from 'react'
 import {
   Control,
   Controller,
@@ -30,6 +29,7 @@ type TTextTargetsForm = {
   errors: FieldErrors<TFormInputsVocab>
   setValue: UseFormSetValue<TFormInputsVocab>
   reset: UseFormReset<TFormInputsVocab>
+  subjects: TOption[]
 }
 
 export const TextTargetsForm = memo(
@@ -40,16 +40,15 @@ export const TextTargetsForm = memo(
     errors,
     reset,
     setValue,
-    fieldsLengthItem
+    fieldsLengthItem,
+    subjects
   }: TTextTargetsForm) => {
-    const [items, setItems] = useState<TOption[]>([])
     const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
     const { fields, append, remove } = useFieldArray({
       control,
       name: `textTarget.${index}.examples`
     })
     const checkErrors = Object.keys(errors).length > 0
-    const { data: dataVocabSubject } = useGetAllVocabSubject()
 
     //Editing
     useEffect(() => {
@@ -67,16 +66,6 @@ export const TextTargetsForm = memo(
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEditing, itemVocab])
-
-    useEffect(() => {
-      if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
-        const newData = dataVocabSubject.data.map((item) => ({
-          value: item._id,
-          label: item.name
-        }))
-        setItems(newData)
-      }
-    }, [dataVocabSubject])
 
     return (
       <>
@@ -142,7 +131,7 @@ export const TextTargetsForm = memo(
             <Input label="Grammar" placeholder="Type here" {...field} />
           )}
         />
-        {!!items.length && (
+        {!!subjects.length && (
           <Controller
             name={`textTarget.${index}.subject`}
             rules={{ required: true }}
@@ -156,7 +145,7 @@ export const TextTargetsForm = memo(
                 }
                 isMark={true}
                 label="Subject"
-                options={items}
+                options={subjects}
                 {...field}
               />
             )}
