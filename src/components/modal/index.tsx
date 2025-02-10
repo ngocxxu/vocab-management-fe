@@ -1,4 +1,11 @@
+import {
+  TooltipContent,
+  TooltipLib,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { CircleHelp } from 'lucide-react'
 import { ReactNode } from 'react'
 import {
   DialogContent,
@@ -12,6 +19,7 @@ type TModal = {
   head?: ReactNode
   body: ReactNode
   title?: string
+  titleTips?: string
   description?: string
 }
 
@@ -21,6 +29,7 @@ export const Modal = ({
   open,
   onOpenChange,
   title,
+  titleTips,
   description,
   ...props
 }: TModal &
@@ -34,7 +43,22 @@ export const Modal = ({
           {title && (
             <DialogTitle>
               <div>
-                <h4 className="mb-2 font-semibold">{title}</h4>
+                <div className="flex items-center gap-4">
+                  <h4 className="mb-2 font-semibold">{title}</h4>
+
+                  {titleTips && (
+                    <TooltipProvider>
+                      <TooltipLib>
+                        <TooltipTrigger>
+                          <CircleHelp className="mb-1" />
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                          <p>{titleTips}</p>
+                        </TooltipContent>
+                      </TooltipLib>
+                    </TooltipProvider>
+                  )}
+                </div>
                 {description && (
                   <p className="text-sm font-normal text-secondary-foreground">
                     {description}

@@ -5,6 +5,7 @@ import { Loader } from '@/components/loader'
 import { Modal } from '@/components/modal'
 import { ButtonLib } from '@/components/ui/button'
 import { InputLib } from '@/components/ui/input'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { useDeleteVocabSubject } from '@/services/vocabSubject/useDeleteVocabSubject'
 import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
 import { usePostVocabSubject } from '@/services/vocabSubject/usePostVocabSubject'
@@ -145,23 +146,25 @@ export const CustomSubjects = () => {
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
-            <div className="flex flex-col gap-2">
-              {items.map((item) => (
-                <SortableItem key={item.id} id={item.id}>
-                  {({ attributes, listeners }: any) => (
-                    <RowItem
-                      {...item}
-                      setOpenModal={setOpenModal}
-                      setEditItem={setEditItem}
-                      attributes={attributes}
-                      listeners={listeners}
-                      mutateDelete={mutateDelete}
-                      item={item}
-                    />
-                  )}
-                </SortableItem>
-              ))}
-            </div>
+            <ScrollArea className="h-[75vh]">
+              <div className="flex flex-col gap-2">
+                {items.map((item) => (
+                  <SortableItem key={item.id} id={item.id}>
+                    {({ attributes, listeners }: any) => (
+                      <RowItem
+                        {...item}
+                        setOpenModal={setOpenModal}
+                        setEditItem={setEditItem}
+                        attributes={attributes}
+                        listeners={listeners}
+                        mutateDelete={mutateDelete}
+                        item={item}
+                      />
+                    )}
+                  </SortableItem>
+                ))}
+              </div>
+            </ScrollArea>
           </SortableContext>
         </DndContext>
       </div>
