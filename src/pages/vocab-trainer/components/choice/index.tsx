@@ -11,7 +11,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { setOrderQuestion } from '@/redux/reducer/vocabTrainer'
 import { RootState } from '@/redux/store'
 import { AxiosResponse } from 'axios'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { UseMutateFunction } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
@@ -38,6 +38,7 @@ export const Choice = ({
   mutateQuestion,
   setCountQuestions
 }: TChoiceProps) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { questions, setCountTime } = data
   const dispatch = useDispatch()
   const form = useForm<TFormChoice>({
@@ -54,7 +55,21 @@ export const Choice = ({
     name: 'wordTestSelects'
   })
 
+  const handleNext = () => {
+    const currentFieldsLength = fields.length
+    const nextQuestionIndex = orderQuestion
+
+    if (currentFieldsLength <= nextQuestionIndex) {
+      append({ idWord: '' })
+    }
+    dispatch(setOrderQuestion(orderQuestion + 1))
+  }
+
   const onSubmit: SubmitHandler<TFormChoice> = (formData) => {
+    if (!isSubmitting) {
+      return
+    }
+
     const newArr = formData.wordTestSelects.map((item, index) => ({
       ...item,
 
@@ -73,6 +88,8 @@ export const Choice = ({
       duration: setCountTime - countdown,
       wordTestSelects: newArr
     })
+
+    setIsSubmitting(false)
   }
 
   useEffect(() => {
@@ -149,6 +166,7 @@ export const Choice = ({
                 }
                 type="submit"
                 title="Submit"
+                onClick={() => setIsSubmitting(true)}
               />
             : <Button
                 type="button"
@@ -156,10 +174,7 @@ export const Choice = ({
                   !form.watch(`wordTestSelects.${orderQuestion - 1}.idWord`)
                 }
                 title="Next"
-                onClick={() => {
-                  append({ idWord: '' })
-                  dispatch(setOrderQuestion(orderQuestion + 1))
-                }}
+                onClick={handleNext}
               />
             }
           </div>
