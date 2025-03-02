@@ -121,8 +121,7 @@ const FormVocab = ({
         ),
         value: String(index)
       })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [control, isEditing, reset, setValue, items]
+    [control, errors, fields, isEditing, reset, setValue, items]
   )
 
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
