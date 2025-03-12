@@ -5,6 +5,7 @@ import { Modal } from '@/components/modal/index'
 import { Popover } from '@/components/popover'
 import { SearchBar } from '@/components/searchBar'
 import { ButtonLib } from '@/components/ui/button'
+import { FileUpload } from '@/components/uploadFile'
 import {
   resetFilterState,
   setFilterVocabState,
@@ -14,6 +15,7 @@ import { RootState } from '@/redux/store'
 import { TPutVocabs } from '@/services/vocab/usePutVocab'
 import { ROUTER_VOCAB_TRAINER, defaultStatus } from '@/utils/constants'
 import { TOption } from '@/utils/types'
+import { IconUpload } from '@tabler/icons-react'
 import { RowSelectionState } from '@tanstack/react-table'
 import { AxiosResponse } from 'axios'
 import { useState } from 'react'
@@ -71,6 +73,7 @@ export const ToolBar = ({
     (filterData.subject && filterData.subject?.length > 0)
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
+  const [openUpload, setOpenUpload] = useState(false)
 
   const methods = useForm<TFormInputsFilter>({
     defaultValues: {
@@ -126,6 +129,23 @@ export const ToolBar = ({
 
       {pathname !== ROUTER_VOCAB_TRAINER && (
         <Modal
+          open={openUpload}
+          onOpenChange={setOpenUpload}
+          head={
+            <Button
+              type="button"
+              classNames="ml-3"
+              title="Upload"
+              leftIcon={<IconUpload />}
+              variant="outline"
+            />
+          }
+          body={<FileUpload onClose={() => setOpenUpload(false)} />}
+        />
+      )}
+
+      {pathname !== ROUTER_VOCAB_TRAINER && (
+        <Modal
           title={isEditing ? 'Edit' : 'Create'}
           open={openModal}
           onOpenChange={setOpenModal}
@@ -146,7 +166,7 @@ export const ToolBar = ({
               onClose={() => setOpenModal(false)}
             />
           }
-          className="w-full max-w-[100vh] max-h-[90vh] overflow-x-auto"
+          className="max-h-[90vh] w-full max-w-[100vh] overflow-x-auto"
         />
       )}
     </div>
