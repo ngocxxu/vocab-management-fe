@@ -54,7 +54,7 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
     setFiles((prev) => prev.filter((_, index) => index !== indexToRemove)) // Remove file at specified index
   }
 
-  // Handle upload when button is clicked (simulated with async delay)
+  // Handle upload when button is clicked
   const handleUpload = async () => {
     if (files.length > 0) {
       setIsUploading(true) // Show loading overlay
