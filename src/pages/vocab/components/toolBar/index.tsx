@@ -5,6 +5,12 @@ import { Modal } from '@/components/modal/index'
 import { Popover } from '@/components/popover'
 import { SearchBar } from '@/components/searchBar'
 import { ButtonLib } from '@/components/ui/button'
+import {
+  TooltipContent,
+  TooltipLib,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip'
 import { FileUpload } from '@/components/uploadFile'
 import {
   resetFilterState,
@@ -13,9 +19,10 @@ import {
 } from '@/redux/reducer/vocab'
 import { RootState } from '@/redux/store'
 import { TPutVocabs } from '@/services/vocab/usePutVocab'
+import { exportFile } from '@/utils'
 import { ROUTER_VOCAB_TRAINER, defaultStatus } from '@/utils/constants'
 import { TOption } from '@/utils/types'
-import { IconUpload } from '@tabler/icons-react'
+import { IconFileExport, IconUpload } from '@tabler/icons-react'
 import { RowSelectionState } from '@tanstack/react-table'
 import { AxiosResponse } from 'axios'
 import { useState } from 'react'
@@ -28,6 +35,7 @@ import { Filter } from '../filter'
 import FormVocab from '../form'
 
 type TToolbar = {
+  tableData: TVocab[]
   onAddNew: () => void
   idVocab: string
   mutatePost: UseMutateFunction<
@@ -50,6 +58,7 @@ export type TFormInputsFilter = {
 }
 
 export const ToolBar = ({
+  tableData,
   onAddNew,
   mutatePost,
   idVocab,
@@ -122,53 +131,74 @@ export const ToolBar = ({
           className="w-80"
         />
       </FormProvider>
-      <SearchBar
-        defaultValue={searchVocab}
-        onSearch={(input) => dispatch(setSearchVocabState(input))}
-      />
 
-      {pathname !== ROUTER_VOCAB_TRAINER && (
-        <Modal
-          open={openUpload}
-          onOpenChange={setOpenUpload}
-          head={
-            <Button
-              type="button"
-              classNames="ml-3"
-              title="Upload"
-              leftIcon={<IconUpload />}
-              variant="outline"
-            />
-          }
-          body={<FileUpload onClose={() => setOpenUpload(false)} />}
+      <div className="flex gap-2">
+        <SearchBar
+          defaultValue={searchVocab}
+          onSearch={(input) => dispatch(setSearchVocabState(input))}
         />
-      )}
 
-      {pathname !== ROUTER_VOCAB_TRAINER && (
-        <Modal
-          title={isEditing ? 'Edit' : 'Create'}
-          open={openModal}
-          onOpenChange={setOpenModal}
-          head={
-            <Button
-              type="button"
-              classNames="ml-3"
-              title="+ Add new"
-              onClick={onAddNew}
-            />
-          }
-          body={
-            <FormVocab
-              idVocab={idVocab}
-              mutate={mutatePost}
-              mutatePut={mutatePut}
-              isEditing={isEditing}
-              onClose={() => setOpenModal(false)}
-            />
-          }
-          className="max-h-[90vh] w-full max-w-[100vh] overflow-x-auto"
-        />
-      )}
+        {pathname !== ROUTER_VOCAB_TRAINER && (
+          <TooltipProvider>
+            <TooltipLib>
+              <TooltipTrigger>
+                <Modal
+                  open={openUpload}
+                  onOpenChange={setOpenUpload}
+                  head={
+                    <Button
+                      type="button"
+                      className="gap-0"
+                      size="icon"
+                      leftIcon={<IconUpload />}
+                      variant="outline"
+                    />
+                  }
+                  body={<FileUpload onClose={() => setOpenUpload(false)} />}
+                />
+              </TooltipTrigger>
+              <TooltipContent side="top">Import</TooltipContent>
+            </TooltipLib>
+          </TooltipProvider>
+        )}
+
+        {pathname !== ROUTER_VOCAB_TRAINER && (
+          <TooltipProvider>
+            <TooltipLib>
+              <TooltipTrigger>
+                <Button
+                  type="button"
+                  className="gap-0"
+                  size="icon"
+                  leftIcon={<IconFileExport />}
+                  variant="outline"
+                  onClick={() => exportFile(tableData)}
+                />
+              </TooltipTrigger>
+              <TooltipContent side="top">Export</TooltipContent>
+            </TooltipLib>
+          </TooltipProvider>
+        )}
+
+        {pathname !== ROUTER_VOCAB_TRAINER && (
+          <Modal
+            title={isEditing ? 'Edit' : 'Create'}
+            open={openModal}
+            onOpenChange={setOpenModal}
+            head={<Button type="button" title="+ Add new" onClick={onAddNew} />}
+            body={
+              <FormVocab
+                idVocab={idVocab}
+                mutate={mutatePost}
+                mutatePut={mutatePut}
+                isEditing={isEditing}
+                onClose={() => setOpenModal(false)}
+              />
+            }
+            className="max-h-[90vh] w-full max-w-[100vh] overflow-x-auto"
+          />
+        )}
+      </div>
     </div>
   )
 }

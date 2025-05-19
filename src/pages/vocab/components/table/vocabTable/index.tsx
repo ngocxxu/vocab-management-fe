@@ -121,6 +121,7 @@ export const VocabTable = ({
                 onAddNew={() => {
                   setIsEditing(false)
                 }}
+                tableData={data?.data ?? []}
               />
             </div>
           </div>

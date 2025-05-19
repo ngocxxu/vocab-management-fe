@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils'
 import { ReactNode } from 'react'
 import {
   TooltipContent,
@@ -9,14 +10,17 @@ import {
 type TTooltip = {
   children: ReactNode
   body: ReactNode
+  className?: string
 }
 
-const Tooltip = ({ children, body }: TTooltip) => {
+const Tooltip = ({ children, body, className }: TTooltip) => {
   return (
     <TooltipProvider delayDuration={300}>
       <TooltipLib>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        <TooltipContent className="bg-primary text-primary-foreground">
+        <TooltipContent
+          className={cn('bg-primary text-primary-foreground', className)}
+        >
           {body}
         </TooltipContent>
       </TooltipLib>

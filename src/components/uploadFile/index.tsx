@@ -6,6 +6,7 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
+import { importFile } from '@/utils'
 import { Upload, X } from 'lucide-react' // Added X icon for remove functionality
 import { useState } from 'react'
 import Button from '../button' // Assuming this is your custom Button component
@@ -54,20 +55,26 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
     setFiles((prev) => prev.filter((_, index) => index !== indexToRemove)) // Remove file at specified index
   }
 
-  // Handle upload when button is clicked
+  // Handle upload
   const handleUpload = async () => {
     if (files.length > 0) {
-      setIsUploading(true) // Show loading overlay
+      setIsUploading(true)
       try {
-        // Simulate upload process (replace with actual API call)
-        console.log('Uploading files:', files)
-        await new Promise((resolve) => setTimeout(resolve, 2000)) // Simulate 2-second upload
-        setFiles([]) // Reset files after successful upload
+        // Process each Excel file
+        const results = await Promise.all(
+          files.map(async (file) => {
+            const data = await importFile(file)
+            return data
+          })
+        )
+        // Log the imported data
+        console.log('Imported data:', results.flat())
+        setFiles([]) // Clear files after successful import
         onClose()
       } catch (error) {
-        console.error('Upload failed:', error)
+        console.error('Import failed:', error)
       } finally {
-        setIsUploading(false) // Hide loading overlay
+        setIsUploading(false)
       }
     }
   }
