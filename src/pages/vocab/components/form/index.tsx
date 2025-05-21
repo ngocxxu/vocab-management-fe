@@ -82,6 +82,7 @@ const FormVocab = ({
     },
     resolver: yupResolver(FormSchema) as unknown as Resolver<TFormInputsVocab>
   })
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'textTarget'
