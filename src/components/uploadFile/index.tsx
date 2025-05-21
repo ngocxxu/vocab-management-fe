@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { usePostMultiVocab } from '@/services/vocab/usePostMultiVocab'
+import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
 import { importFile } from '@/utils'
 import { Upload, X } from 'lucide-react' // Added X icon for remove functionality
 import { useState } from 'react'
@@ -23,6 +24,7 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
   const [files, setFiles] = useState<File[]>([]) // State to store selected files
   const [isDragging, setIsDragging] = useState(false) // State to track drag status
   const [isUploading, setIsUploading] = useState(false) // State to track upload status
+  const { data: dataVocabSubject } = useGetAllVocabSubject()
   const { mutate: mutateMultiPost, isLoading: isLoadingMultiPost } =
     usePostMultiVocab()
 
@@ -68,7 +70,7 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
     try {
       const results = await Promise.all(
         files.map(async (file) => {
-          const result = await importFile(file)
+          const result = await importFile(file, dataVocabSubject?.data ?? [])
           if (result.error) {
             toast({
               title: 'Error',

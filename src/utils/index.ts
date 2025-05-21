@@ -1,4 +1,5 @@
 import { toast } from '@/components/ui/use-toast'
+import { TVocabSubject } from '@/pages/settings/types'
 import { TTextTarget, TVocab } from '@/pages/vocab/types'
 import { SortingState } from '@tanstack/react-table'
 import { AxiosError } from 'axios'
@@ -85,7 +86,8 @@ export const exportFile = (data: TVocab[], fileName?: string) => {
 }
 
 export const importFile = (
-  file: File
+  file: File,
+  listSubject: TVocabSubject[]
 ): Promise<{ data?: TVocab[]; error?: string }> => {
   return new Promise((resolve) => {
     const reader = new FileReader()
@@ -190,7 +192,8 @@ export const importFile = (
                 .split(', ')
                 .map((label: string) => ({
                   label,
-                  value: ''
+                  value:
+                    listSubject.find((sub) => sub.name === label)?._id || ''
                 }))
             : []
         }
