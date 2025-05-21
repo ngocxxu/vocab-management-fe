@@ -84,66 +84,135 @@ export const exportFile = (data: TVocab[], fileName?: string) => {
   XLSX.writeFile(wb, fileName ?? defaultFileName)
 }
 
-export const importFile = (file: File): Promise<TVocab[]> => {
-  return new Promise((resolve, reject) => {
+export const importFile = (
+  file: File
+): Promise<{ data?: TVocab[]; error?: string }> => {
+  return new Promise((resolve) => {
     const reader = new FileReader()
     reader.onload = (event) => {
-      try {
-        if (!event.target) {
-          throw new Error('Failed to read file: event target is null')
-        }
-        const workbook = XLSX.read(event.target.result, { type: 'binary' })
-        const sheetName = workbook.SheetNames[0]
-        const sheet = workbook.Sheets[sheetName]
-        const jsonData = XLSX.utils.sheet_to_json(sheet)
+      if (!event.target) {
+        return resolve({ error: 'Failed to read file: event target is null' })
+      }
+      const workbook = XLSX.read(event.target.result, { type: 'binary' })
+      const sheetName = workbook.SheetNames[0]
+      const sheet = workbook.Sheets[sheetName]
+      const jsonData = XLSX.utils.sheet_to_json(sheet) as Record<
+        string,
+        unknown
+      >[]
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const reconstructedData = jsonData.reduce((acc: TVocab[], row: any) => {
-          const textTarget: TTextTarget = {
-            text: row.TextTarget_Text,
-            wordType: row.TextTarget_WordType,
-            explanationSource: row.TextTarget_ExplanationSource ?? '',
-            explanationTarget: row.TextTarget_ExplanationTarget ?? '',
-            examples:
-              row.TextTarget_Examples ?
-                row.TextTarget_Examples.split('; ').map((ex: string) => {
+      // Define required and optional fields
+      const requiredFields = {
+        SourceLanguage: 'string',
+        TargetLanguage: 'string',
+        TextSource: 'string',
+        TextTarget_Text: 'string',
+        TextTarget_WordType: 'string'
+      }
+      const optionalFields = [
+        'TextTarget_ExplanationSource',
+        'TextTarget_ExplanationTarget',
+        'TextTarget_Examples',
+        'TextTarget_Grammar',
+        'TextTarget_Subjects'
+      ]
+
+      // Validate each row
+      for (const [index, row] of jsonData.entries()) {
+        for (const [field, type] of Object.entries(requiredFields)) {
+          if (
+            !(field in row) ||
+            row[field] === undefined ||
+            row[field] === null ||
+            row[field] === ''
+          ) {
+            return resolve({
+              error: `Row ${index + 2}: Missing or empty required field '${field}'`
+            })
+          }
+          if (typeof row[field] !== type) {
+            return resolve({
+              error: `Row ${index + 2}: Field '${field}' must be a ${type}, got '${typeof row[field]}'`
+            })
+          }
+        }
+        for (const field of optionalFields) {
+          if (row[field] === undefined || row[field] === null) {
+            row[field] = ''
+          }
+        }
+        if (row.TextTarget_Examples) {
+          const examples = String(row.TextTarget_Examples).split('; ')
+          for (const ex of examples) {
+            if (!ex.includes(': ')) {
+              return resolve({
+                error: `Row ${index + 2}: Invalid example format in 'TextTarget_Examples': '${ex}'`
+              })
+            }
+          }
+        }
+        if (row.TextTarget_Subjects) {
+          const subjects = String(row.TextTarget_Subjects).split(', ')
+          if (subjects.some((s: string) => !s.trim())) {
+            return resolve({
+              error: `Row ${index + 2}: Invalid subjects format in 'TextTarget_Subjects'`
+            })
+          }
+        }
+      }
+
+      // Process data
+      const reconstructedData = jsonData.reduce((acc: TVocab[], row) => {
+        const textTarget: TTextTarget = {
+          text: String(row.TextTarget_Text),
+          wordType: String(row.TextTarget_WordType),
+          explanationSource:
+            row.TextTarget_ExplanationSource ?
+              String(row.TextTarget_ExplanationSource)
+            : '',
+          explanationTarget:
+            row.TextTarget_ExplanationTarget ?
+              String(row.TextTarget_ExplanationTarget)
+            : '',
+          examples:
+            row.TextTarget_Examples ?
+              String(row.TextTarget_Examples)
+                .split('; ')
+                .map((ex: string) => {
                   const [source, target] = ex.split(': ')
                   return { source, target }
                 })
-              : [],
-            grammar: row.TextTarget_Grammar ?? '',
-            subject:
-              row.TextTarget_Subjects ?
-                row.TextTarget_Subjects.split(', ').map((label: string) => ({
+            : [],
+          grammar: row.TextTarget_Grammar ? String(row.TextTarget_Grammar) : '',
+          subject:
+            row.TextTarget_Subjects ?
+              String(row.TextTarget_Subjects)
+                .split(', ')
+                .map((label: string) => ({
                   label,
                   value: ''
                 }))
-              : []
-          }
+            : []
+        }
 
-          const existing = acc.find(
-            (item) => item.textSource === row.TextSource
-          )
-          if (existing) {
-            existing.textTarget.push(textTarget)
-          } else {
-            acc.push({
-              _id: '',
-              sourceLanguage: row.SourceLanguage,
-              targetLanguage: row.TargetLanguage,
-              textSource: row.TextSource,
-              textTarget: [textTarget]
-            })
-          }
-          return acc
-        }, [])
+        const existing = acc.find((item) => item.textSource === row.TextSource)
+        if (existing) {
+          existing.textTarget.push(textTarget)
+        } else {
+          acc.push({
+            _id: '',
+            sourceLanguage: String(row.SourceLanguage),
+            targetLanguage: String(row.TargetLanguage),
+            textSource: String(row.TextSource),
+            textTarget: [textTarget]
+          })
+        }
+        return acc
+      }, [])
 
-        resolve(reconstructedData)
-      } catch (error) {
-        reject(error instanceof Error ? error : new Error(String(error)))
-      }
+      resolve({ data: reconstructedData })
     }
-    reader.onerror = () => reject(new Error('Failed to read file'))
+    reader.onerror = () => resolve({ error: 'Failed to read file' })
     reader.readAsArrayBuffer(file)
   })
 }

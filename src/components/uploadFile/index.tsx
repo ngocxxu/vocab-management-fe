@@ -6,20 +6,25 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
+import { usePostMultiVocab } from '@/services/vocab/usePostMultiVocab'
 import { importFile } from '@/utils'
 import { Upload, X } from 'lucide-react' // Added X icon for remove functionality
 import { useState } from 'react'
 import Button from '../button' // Assuming this is your custom Button component
 import Input from '../input' // Assuming this is your custom Input component
+import { useToast } from '../ui/use-toast'
 
 type TFileUpload = {
   onClose: () => void
 }
 
 export const FileUpload = ({ onClose }: TFileUpload) => {
+  const { toast } = useToast()
   const [files, setFiles] = useState<File[]>([]) // State to store selected files
   const [isDragging, setIsDragging] = useState(false) // State to track drag status
   const [isUploading, setIsUploading] = useState(false) // State to track upload status
+  const { mutate: mutateMultiPost, isLoading: isLoadingMultiPost } =
+    usePostMultiVocab()
 
   // Handle when files are selected through input
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,30 +62,42 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
 
   // Handle upload
   const handleUpload = async () => {
-    if (files.length > 0) {
-      setIsUploading(true)
-      try {
-        // Process each Excel file
-        const results = await Promise.all(
-          files.map(async (file) => {
-            const data = await importFile(file)
-            return data
+    if (files.length === 0) return
+
+    setIsUploading(true)
+    try {
+      const results = await Promise.all(
+        files.map(async (file) => {
+          const result = await importFile(file)
+          if (result.error) {
+            toast({
+              title: 'Error',
+              description: `File ${file.name}: ${result.error}`
+            })
+            return []
+          }
+          toast({
+            title: 'Success',
+            description: `File ${file.name} imported successfully!`
           })
-        )
-        // Log the imported data
-        console.log('Imported data:', results.flat())
-        setFiles([]) // Clear files after successful import
+          return result.data || []
+        })
+      )
+
+      const importedData = results.flat()
+      if (importedData.length > 0) {
+        mutateMultiPost(importedData)
+        console.log('Imported data:', importedData)
+        setFiles([])
         onClose()
-      } catch (error) {
-        console.error('Import failed:', error)
-      } finally {
-        setIsUploading(false)
       }
+    } finally {
+      setIsUploading(false)
     }
   }
 
   const getUploadButtonTitle = () => {
-    if (isUploading) return 'Uploading...'
+    if (isUploading || isLoadingMultiPost) return 'Uploading...'
     const suffix = files.length !== 1 ? 's' : ''
     return `Upload ${files.length} File${suffix}`
   }
@@ -122,13 +139,13 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
                 multiple
                 className="hidden"
                 onChange={handleFileChange}
-                disabled={isUploading} // Disable input during upload
+                disabled={isUploading || isLoadingMultiPost} // Disable input during upload
               />
               <Button
                 variant="outline"
                 onClick={() => document.getElementById('file-upload')?.click()}
                 title="Select Files"
-                disabled={isUploading} // Disable button during upload
+                disabled={isUploading || isLoadingMultiPost} // Disable button during upload
               />
             </div>
           </div>
@@ -154,7 +171,7 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
                       size="sm"
                       className="h-6 w-6 gap-0 px-2 hover:bg-red-100"
                       onClick={() => handleRemoveFile(index)}
-                      disabled={isUploading} // Disable remove during upload
+                      disabled={isUploading || isLoadingMultiPost} // Disable remove during upload
                       leftIcon={<X className="h-4 w-4 text-red-500" />}
                     />
                   </li>
@@ -164,7 +181,9 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
               <Button
                 className="mt-4 w-full"
                 onClick={handleUpload}
-                disabled={files.length === 0 || isUploading} // Disable during upload
+                disabled={
+                  files.length === 0 || isUploading || isLoadingMultiPost
+                } // Disable during upload
                 title={getUploadButtonTitle()}
               />
             </div>
@@ -173,15 +192,16 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
       </Card>
 
       {/* Loading overlay */}
-      {isUploading && (
-        <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-gray-500 bg-opacity-50">
-          <div className="flex flex-col items-center gap-2">
-            {/* Spinner */}
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-            <span className="text-sm text-white">Uploading...</span>
+      {isUploading ||
+        (isLoadingMultiPost && (
+          <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-gray-500 bg-opacity-50">
+            <div className="flex flex-col items-center gap-2">
+              {/* Spinner */}
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+              <span className="text-sm text-white">Uploading...</span>
+            </div>
           </div>
-        </div>
-      )}
+        ))}
     </div>
   )
 }
