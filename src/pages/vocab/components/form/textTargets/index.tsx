@@ -48,6 +48,7 @@ export const TextTargetsForm = memo(
       control,
       name: `textTarget.${index}.examples`
     })
+    
     const checkErrors = Object.keys(errors).length > 0
 
     //Editing
