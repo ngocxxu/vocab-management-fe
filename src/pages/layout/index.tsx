@@ -1,3 +1,5 @@
+import { useSocket } from '@/hooks/useSocket'
+import { disconnectSocket } from '@/utils/socket'
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Sidebar } from './components/sidebar'
@@ -5,6 +7,8 @@ import './style.scss'
 
 const Layout = () => {
   const location = useLocation()
+
+  useSocket()
 
   useEffect(() => {
     const currentPath = location.pathname
@@ -17,6 +21,10 @@ const Layout = () => {
       localStorage.removeItem('questionnaire')
     }
   }, [location.pathname])
+
+  useEffect(() => {
+    return () => disconnectSocket()
+  }, [])
 
   return (
     <div className="layout m-6 flex h-[calc(100vh-48px)] flex-row gap-6">
