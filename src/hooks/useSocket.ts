@@ -15,7 +15,7 @@ export const useSocket = () => {
 
       // Vocab notifications
       socket.on('vocab-notification', (annouce) => {
-        switch (annouce.type) {
+        switch (annouce.action) {
           case 'deleted':
           case 'multi-deleted':
           case 'created':
@@ -33,7 +33,7 @@ export const useSocket = () => {
 
       // Comment notifications
       socket.on('comment-notification', (annouce) => {
-        switch (annouce.type) {
+        switch (annouce.action) {
           case 'deleted':
           case 'multi-deleted':
             toast({
