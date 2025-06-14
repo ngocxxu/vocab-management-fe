@@ -43,8 +43,7 @@ httpClient.interceptors.response.use(
   async (error) => {
     const { response, config: originalRequest } = error
 
-    if (response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
+    if (response.status === 401) {
       try {
         const { data } = await postRefreshToken()
         localStorage.setItem(ACCESSTOKEN, data.accessToken)

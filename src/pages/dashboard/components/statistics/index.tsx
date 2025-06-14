@@ -64,11 +64,11 @@ const listCss = [
 
 const Statistics = () => {
   return (
-    <div className="grid grid-cols-4 gap-4 text-white">
+    <div className="grid grid-cols-4 gap-6 text-white">
       {list.map((item, idx) => (
         <div
           className={cn(
-            'flex items-center justify-between rounded-xl p-8 px-5',
+            'flex items-center justify-between rounded-xl p-8 px-4',
             `${listCss[idx].bgColor}`
           )}
           key={item.label}
