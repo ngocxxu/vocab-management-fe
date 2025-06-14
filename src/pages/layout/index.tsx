@@ -1,3 +1,4 @@
+import Header from '@/components/header-2'
 import { useSocket } from '@/hooks/useSocket'
 import { disconnectSocket } from '@/utils/socket'
 import { useEffect } from 'react'
@@ -30,6 +31,7 @@ const Layout = () => {
     <div className="layout m-6 flex h-[calc(100vh-48px)] flex-row gap-6">
       <Sidebar />
       <div className="w-full">
+        <Header />
         <Outlet />
       </div>
     </div>

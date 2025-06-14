@@ -31,7 +31,10 @@ const DropDownCustom = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>{head}</DropdownMenuTrigger>
-      <DropdownMenuContent {...props}>
+      <DropdownMenuContent
+        onCloseAutoFocus={(e) => e.preventDefault()}
+        {...props}
+      >
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {list.map(({ body, separator }) => (

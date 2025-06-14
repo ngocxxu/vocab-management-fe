@@ -46,7 +46,7 @@ export const Sidebar = () => {
   return (
     <div
       className={cn(
-        'flex-none rounded-xl border px-4 py-6 font-medium shadow-md transition-all duration-500 ease-in-out',
+        'flex-none rounded-xl border bg-white px-4 py-6 font-medium shadow-md transition-all duration-500 ease-in-out',
         isCollapseMenu ? 'w-vertical-menu-sm' : 'w-vertical-menu'
       )}
     >
@@ -111,7 +111,7 @@ export const Sidebar = () => {
           <div className="flex items-center gap-2">
             <Avatar>
               <AvatarImage
-                src="https://api.multiavatar.com/Ranie"
+                src="https://avatar.iran.liara.run/public/92"
                 alt="avatar"
               />
               <AvatarFallback>{dataInfo.name[0]}</AvatarFallback>

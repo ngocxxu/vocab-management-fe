@@ -11,6 +11,7 @@ type TInput = {
   removeStyle?: boolean
   type?: string
   step?: number
+  className?: string
 }
 
 const Input = ({
@@ -20,6 +21,7 @@ const Input = ({
   placeholder,
   error,
   type = 'text',
+  className,
   ...props
 }: TInput & React.InputHTMLAttributes<HTMLInputElement>) => {
   return (
@@ -31,7 +33,7 @@ const Input = ({
       <InputLib
         type={type}
         placeholder={placeholder}
-        className="input input-bordered input-sm w-full"
+        className={cn('input input-bordered input-sm w-full', className)}
         {...props}
       />
 
