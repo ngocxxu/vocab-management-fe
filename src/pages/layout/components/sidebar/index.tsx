@@ -18,7 +18,7 @@ type TIcon = {
 
 const Icon = ({ icon: IconComponent, isActive }: TIcon) => (
   <IconComponent
-    fill={cn(isActive ? 'var(--vc-primary-500)' : 'var(--vc-gray-600)')}
+    fill={cn(isActive ? 'var(--primary-vc-500)' : 'var(--gray-vc-600)')}
   />
 )
 
