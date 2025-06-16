@@ -60,7 +60,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
   }
 
   const getPagesToShow = () => {
-    const adjacentPageCount = 2 // Số trang xung quanh trang hiện tại
+    const adjacentPageCount = 2
     const pagesToShow: (number | null)[] = []
 
     const addPage = (pageNumber: number) => {
@@ -73,10 +73,8 @@ const Pagination = ({ paginations }: TPaginationProps) => {
       pagesToShow.push(pageNumber)
     }
 
-    // Thêm trang đầu tiên
     addPage(1)
 
-    // Thêm trang hiện tại và các trang xung quanh nó
     for (
       let i = currentPage - adjacentPageCount;
       i <= currentPage + adjacentPageCount;
@@ -87,7 +85,6 @@ const Pagination = ({ paginations }: TPaginationProps) => {
       }
     }
 
-    // Thêm trang cuối cùng
     totalPages > 1 && addPage(totalPages)
 
     return pagesToShow
@@ -109,7 +106,7 @@ const Pagination = ({ paginations }: TPaginationProps) => {
           1-{limitValue} of {totalItems} items
         </p>
       </div>
-      <div className='flex items-center gap-2'>
+      <div className="flex items-center gap-2">
         <ButtonLib
           variant="outline"
           className="h-7 px-2.5"

@@ -111,7 +111,7 @@ export const Sidebar = () => {
           <div className="flex items-center gap-2">
             <Avatar>
               <AvatarImage
-                src="https://avatar.iran.liara.run/public/92"
+                src={`https://i.pravatar.cc/150?img=${dataInfo.name}`}
                 alt="avatar"
               />
               <AvatarFallback>{dataInfo.name[0]}</AvatarFallback>

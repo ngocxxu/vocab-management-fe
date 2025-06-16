@@ -94,7 +94,7 @@ const Statistics = () => {
               )}
             >
               {item.trend === 'increase' ? '+' : '-'}
-              {item.changePercent}%
+              <span className='text-[12px]'>{item.changePercent}%</span>
             </div>
           </div>
         </div>

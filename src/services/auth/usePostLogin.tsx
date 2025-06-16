@@ -13,6 +13,7 @@ export type TLoginUserRes = {
   accessToken: string
   email: string
   name: string
+  userId: string
 }
 
 const postLogin = async (data: TPostLoginReq) => {
@@ -29,7 +30,11 @@ export const usePostLogin = () => {
       localStorage.setItem(ACCESSTOKEN, data.accessToken)
       localStorage.setItem(
         'userInfo',
-        JSON.stringify({ email: data.email, name: data.name })
+        JSON.stringify({
+          email: data.email,
+          name: data.name,
+          userId: data.userId
+        })
       )
       navigate('/')
       toast({

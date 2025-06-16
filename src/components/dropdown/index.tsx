@@ -12,7 +12,7 @@ import {
 
 type DropdownCustom = {
   head: ReactNode
-  label: string
+  label: string | ReactNode
   list: {
     icon?: ReactNode
     body: ReactNode
