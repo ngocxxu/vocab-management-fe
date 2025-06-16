@@ -11,7 +11,10 @@ const getAllNotification = async (userId: string) => {
 }
 export const useGetAllNotification = (userId: string) => {
   return useQuery({
+    enabled: !!userId,
     queryKey: [NOTIFICATION_KEYS.GET_NOTIFICATION],
-    queryFn: () => getAllNotification(userId)
+    queryFn: () => {
+      return userId ? getAllNotification(userId) : null
+    }
   })
 }

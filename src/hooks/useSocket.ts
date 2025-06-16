@@ -1,4 +1,5 @@
 import { toast } from '@/components/ui/use-toast.ts'
+import { NOTIFICATION_KEYS } from '@/services/notification/queryKeys'
 import { VOCAB_KEYS } from '@/services/vocab/queryKeys'
 import { EActionSocket, EEmitSocket } from '@/utils/enum'
 import { format } from 'date-fns'
@@ -28,10 +29,13 @@ export const useSocket = () => {
           case MULTI_DELETED:
             toast({
               title: 'Info',
-              description: `${annouce.message} by ${annouce.data.userEmail} at ${format(new Date(String(annouce.timestamp)), 'dd/MM/yyyy')}`
+              description: `${annouce.data.message} by ${annouce.data.email} at ${format(new Date(String(annouce.timestamp)), 'dd/MM/yyyy')}`
             })
 
             queryClient.invalidateQueries({ queryKey: [VOCAB_KEYS.GET_VOCAB] })
+            queryClient.invalidateQueries({
+              queryKey: [NOTIFICATION_KEYS.GET_NOTIFICATION]
+            })
             break
         }
       })

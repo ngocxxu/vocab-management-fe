@@ -1,6 +1,7 @@
 import { ExpandableText } from '@/pages/layout/components/expandedText'
 import { TNotification } from '@/pages/layout/types'
 import { useGetAllNotification } from '@/services/notification/useGetAllNotification'
+import { usePutMarkAllNotification } from '@/services/notification/usePutMarkAllNotification'
 import { IconBell, IconChecks, IconPointFilled } from '@tabler/icons-react'
 import {
   differenceInDays,
@@ -9,6 +10,7 @@ import {
   format
 } from 'date-fns'
 import { Fragment, useEffect, useState } from 'react'
+import { Loader } from '../loader'
 import { Popover } from '../popover'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { ButtonLib } from '../ui/button'
@@ -16,12 +18,14 @@ import { Separator } from '../ui/separator'
 
 const NotificationBody = ({
   dataInfo,
-  setBackup
+  notifications
 }: {
   dataInfo: { name: string; email: string; userId: string }
-  setBackup: React.Dispatch<React.SetStateAction<TNotification[]>>
+  notifications: TNotification[]
 }) => {
-  const { data: notifications } = useGetAllNotification(dataInfo.userId)
+  const { mutate: mutatePutMarkAll, isLoading: isLoadingPutMarkAll } =
+    usePutMarkAllNotification()
+
   const formatTimeAgo = (createdAt: string | Date) => {
     const now = new Date()
     const date = new Date(createdAt)
@@ -41,19 +45,29 @@ const NotificationBody = ({
     }
   }
 
-  useEffect(() => {
-    setBackup(notifications || [])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [notifications])
+  if (isLoadingPutMarkAll) {
+    return <Loader />
+  }
 
   return (
     <>
       <div className="flex items-center justify-between">
         <p className="font-semibold">Notification</p>
-        <div className="flex cursor-pointer items-center gap-1 text-xs text-primary-vc-500">
+
+        <button
+          className="flex cursor-pointer items-center gap-1 text-xs text-primary-vc-500"
+          onClick={() => {
+            mutatePutMarkAll({ userId: dataInfo.userId })
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              mutatePutMarkAll({ userId: dataInfo.userId })
+            }
+          }}
+        >
           <IconChecks size={20} />
           <div>Mark all as read</div>
-        </div>
+        </button>
       </div>
 
       {notifications &&
@@ -63,7 +77,7 @@ const NotificationBody = ({
           return (
             <Fragment key={item.createdAt.toString()}>
               <Separator className="my-3" />
-              <div className="flex items-center justify-between gap-4">
+              <div className="relative flex items-center justify-between gap-4">
                 <div className="flex-none">
                   <Avatar>
                     <AvatarImage
@@ -95,8 +109,14 @@ const NotificationBody = ({
                   </div>
                 </div>
 
-                <div className="flex-none">
-                  <IconPointFilled className="text-primary-vc-500" size={20} />
+                <div className="absolute -right-1.5 -bottom-1.5">
+                  {!item.readBy.find((f) => f.userId === dataInfo.userId)
+                    ?.userId && (
+                    <IconPointFilled
+                      className="text-primary-vc-500"
+                      size={20}
+                    />
+                  )}
                 </div>
               </div>
             </Fragment>
@@ -111,19 +131,21 @@ const NotificationBody = ({
     </>
   )
 }
+
 export const Notification = () => {
   const [dataInfo, setDataInfo] = useState({ name: '', email: '', userId: '' })
+  const { data: notifications } = useGetAllNotification(dataInfo.userId)
+
   const [open, setOpen] = useState(false)
-  const [backup, setBackup] = useState<TNotification[]>([])
 
   const handleAppearCircle = () => {
-    if (backup.length > 0) {
+    if (notifications && notifications.length > 0) {
       return (
-        backup.filter(
+        notifications.filter(
           (item) =>
             item.readBy.length > 0 &&
             item.readBy.find((f) => f.userId === dataInfo.userId)
-        ).length === backup.length
+        ).length === notifications.length
       )
     }
     return false
@@ -153,7 +175,12 @@ export const Notification = () => {
           <IconBell className="cursor-pointer" size={24} />
         </div>
       }
-      body={<NotificationBody dataInfo={dataInfo} setBackup={setBackup} />}
+      body={
+        <NotificationBody
+          dataInfo={dataInfo}
+          notifications={notifications ?? []}
+        />
+      }
       className="w-[400px] max-w-full bg-white"
     />
   )

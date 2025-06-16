@@ -2,21 +2,20 @@ import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
 import { NOTIFICATION_KEYS } from './queryKeys'
 
-export type TPutMarkNotification = {
-  notificationId: string
+export type TPutMarkAllNotification = {
   userId: string
 }
 
-const putMarkNotification = async (item: TPutMarkNotification) => {
-  const res = await httpClient.put(`/notification/mark`, item)
+const putMarkAllNotification = async (item: TPutMarkAllNotification) => {
+  const res = await httpClient.put(`/notification/mark-all`, item)
   return res
 }
 
-export const usePutMarkNotification = () => {
+export const usePutMarkAllNotification = () => {
   const client = useQueryClient()
 
   return useMutation({
-    mutationFn: (item: TPutMarkNotification) => putMarkNotification(item),
+    mutationFn: (item: TPutMarkAllNotification) => putMarkAllNotification(item),
     onSuccess: () => {
       client.invalidateQueries([NOTIFICATION_KEYS.GET_NOTIFICATION])
     }
