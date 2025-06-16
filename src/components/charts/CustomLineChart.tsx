@@ -46,7 +46,7 @@ const ChartComponent = () => {
         />
         <Tooltip
           contentStyle={{
-            backgroundColor: '#333',
+            // backgroundColor: '#333',
             border: 'none',
             borderRadius: '4px',
             color: 'white'
