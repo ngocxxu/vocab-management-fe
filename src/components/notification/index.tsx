@@ -1,4 +1,5 @@
 import { ExpandableText } from '@/pages/layout/components/expandedText'
+import { TNotification } from '@/pages/layout/types'
 import { useGetAllNotification } from '@/services/notification/useGetAllNotification'
 import { IconBell, IconChecks, IconPointFilled } from '@tabler/icons-react'
 import {
@@ -14,9 +15,11 @@ import { ButtonLib } from '../ui/button'
 import { Separator } from '../ui/separator'
 
 const NotificationBody = ({
-  dataInfo
+  dataInfo,
+  setBackup
 }: {
   dataInfo: { name: string; email: string; userId: string }
+  setBackup: React.Dispatch<React.SetStateAction<TNotification[]>>
 }) => {
   const { data: notifications } = useGetAllNotification(dataInfo.userId)
   const formatTimeAgo = (createdAt: string | Date) => {
@@ -37,6 +40,11 @@ const NotificationBody = ({
       return format(date, 'dd/MM/yyyy')
     }
   }
+
+  useEffect(() => {
+    setBackup(notifications || [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notifications])
 
   return (
     <>
@@ -79,7 +87,9 @@ const NotificationBody = ({
                   </div>
                   <div className="text-xs text-muted-foreground">
                     <ExpandableText
-                      text={item.data.message.toString()}
+                      text={
+                        item.data.message.toString() + ' by ' + item.data.name
+                      }
                       maxLength={60}
                     />
                   </div>
@@ -104,10 +114,23 @@ const NotificationBody = ({
 export const Notification = () => {
   const [dataInfo, setDataInfo] = useState({ name: '', email: '', userId: '' })
   const [open, setOpen] = useState(false)
+  const [backup, setBackup] = useState<TNotification[]>([])
+
+  const handleAppearCircle = () => {
+    if (backup.length > 0) {
+      return (
+        backup.filter(
+          (item) =>
+            item.readBy.length > 0 &&
+            item.readBy.find((f) => f.userId === dataInfo.userId)
+        ).length === backup.length
+      )
+    }
+    return false
+  }
 
   useEffect(() => {
     const storedData = localStorage.getItem('userInfo')
-    console.log({ storedData })
 
     if (storedData) {
       setDataInfo(JSON.parse(storedData))
@@ -122,13 +145,15 @@ export const Notification = () => {
       side="bottom"
       head={
         <div className="relative">
-          <div className="absolute -right-2 -top-3">
-            <IconPointFilled className="text-primary-vc-500" size={20} />
-          </div>
+          {!handleAppearCircle() && (
+            <div className="absolute -right-2 -top-3">
+              <IconPointFilled className="text-primary-vc-500" size={20} />
+            </div>
+          )}
           <IconBell className="cursor-pointer" size={24} />
         </div>
       }
-      body={<NotificationBody dataInfo={dataInfo} />}
+      body={<NotificationBody dataInfo={dataInfo} setBackup={setBackup} />}
       className="w-[400px] max-w-full bg-white"
     />
   )
