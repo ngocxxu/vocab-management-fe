@@ -2,70 +2,35 @@ import Button from '@/components/button'
 import { cn } from '@/lib/utils'
 import { TOption } from '@/utils/types'
 import { IconPlus, IconX } from '@tabler/icons-react'
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 import {
   Control,
   Controller,
   FieldError,
   FieldErrors,
-  UseFormReset,
-  UseFormSetValue,
   useFieldArray
 } from 'react-hook-form'
-import { useSelector } from 'react-redux'
 import { TFormInputsVocab } from '..'
 import Input from '../../../../../components/input'
 import MultiSelect from '../../../../../components/multiselect'
 import Select from '../../../../../components/select'
-import { RootState } from '../../../../../redux/store'
 import { wordTypeList } from '../../../constants'
 import { ExamplesForm } from '../examples'
 
 type TTextTargetsForm = {
-  fieldsLengthItem: number
-  isEditing: boolean
   index: number
   control: Control<TFormInputsVocab>
   errors: FieldErrors<TFormInputsVocab>
-  setValue: UseFormSetValue<TFormInputsVocab>
-  reset: UseFormReset<TFormInputsVocab>
   subjects: TOption[]
 }
 
 export const TextTargetsForm = memo(
-  ({
-    isEditing,
-    index,
-    control,
-    errors,
-    reset,
-    setValue,
-    fieldsLengthItem,
-    subjects
-  }: TTextTargetsForm) => {
-    const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
+  ({ index, control, errors, subjects }: TTextTargetsForm) => {
     const { fields, append, remove } = useFieldArray({
       control,
       name: `textTarget.${index}.examples`
     })
     const checkErrors = Object.keys(errors).length > 0
-
-    //Editing
-    useEffect(() => {
-      if (
-        itemVocab &&
-        isEditing &&
-        // Set intial value from backend when re-render times
-        fieldsLengthItem === itemVocab.textTarget.length
-      ) {
-        reset((prev) => ({ ...prev, ...itemVocab }))
-        setValue(
-          `textTarget.${index}.wordType`,
-          itemVocab.textTarget[index].wordType
-        )
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isEditing, itemVocab])
 
     return (
       <>

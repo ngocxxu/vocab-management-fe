@@ -65,21 +65,31 @@ const FormVocab = ({
   const [items, setItems] = useState<TOption[]>([])
   const [orderTab, setOrderTab] = useState(String(0))
   const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
-  const {
-    setValue,
-    reset,
-    handleSubmit,
-    control,
-    formState: { errors }
-  } = useForm<TFormInputsVocab>({
-    defaultValues: {
+
+  const defaultValues = useMemo(() => {
+    if (itemVocab && isEditing) {
+      return {
+        sourceLanguage: itemVocab.sourceLanguage || 'ko',
+        targetLanguage: itemVocab.targetLanguage || 'vi',
+        textSource: itemVocab.textSource || '',
+        textTarget: itemVocab.textTarget || [defaultValue]
+      }
+    }
+    return {
       sourceLanguage: 'ko',
       targetLanguage: 'vi',
-      ['textTarget']:
-        itemVocab && isEditing ?
-          Array.from(itemVocab.textTarget, () => defaultValue)
-        : [defaultValue]
-    },
+      textSource: '',
+      textTarget: [defaultValue]
+    }
+  }, [itemVocab, isEditing])
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset
+  } = useForm<TFormInputsVocab>({
+    defaultValues,
     resolver: yupResolver(FormSchema) as unknown as Resolver<TFormInputsVocab>
   })
 
@@ -87,6 +97,7 @@ const FormVocab = ({
     control,
     name: 'textTarget'
   })
+
   const { data: dataVocabSubject } = useGetAllVocabSubject()
 
   const headTabs = useMemo(
@@ -108,10 +119,6 @@ const FormVocab = ({
               key={field.id}
             >
               <TextTargetsForm
-                fieldsLengthItem={fields.length}
-                isEditing={isEditing}
-                setValue={setValue}
-                reset={reset}
                 errors={errors}
                 control={control}
                 index={index}
@@ -122,7 +129,8 @@ const FormVocab = ({
         ),
         value: String(index)
       })),
-    [control, errors, fields, isEditing, reset, setValue, items]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fields, errors, isEditing, items, control]
   )
 
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
@@ -135,13 +143,31 @@ const FormVocab = ({
     onClose()
   }
 
+  // Reset form khi itemVocab thay đổi (nếu cần)
+  useEffect(() => {
+    if (itemVocab && isEditing) {
+      reset({
+        sourceLanguage: itemVocab.sourceLanguage || 'ko',
+        targetLanguage: itemVocab.targetLanguage || 'vi',
+        textSource: itemVocab.textSource || '',
+        textTarget: itemVocab.textTarget || [defaultValue]
+      })
+    }
+  }, [itemVocab, isEditing, reset])
+
   useEffect(() => {
     if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
       const newData = dataVocabSubject.data.map((item) => ({
         value: item._id,
         label: item.name
       }))
-      setItems(newData)
+
+      setItems((prevItems) => {
+        if (JSON.stringify(prevItems) !== JSON.stringify(newData)) {
+          return newData
+        }
+        return prevItems
+      })
     }
   }, [dataVocabSubject])
 
