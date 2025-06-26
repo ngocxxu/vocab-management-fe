@@ -108,10 +108,10 @@ export const importFile = (
         SourceLanguage: 'string',
         TargetLanguage: 'string',
         TextSource: 'string',
-        TextTarget_Text: 'string',
-        TextTarget_WordType: 'string'
+        TextTarget_Text: 'string'
       }
       const optionalFields = [
+        'TextTarget_WordType',
         'TextTarget_ExplanationSource',
         'TextTarget_ExplanationTarget',
         'TextTarget_Examples',
@@ -167,7 +167,8 @@ export const importFile = (
       const reconstructedData = jsonData.reduce((acc: TVocab[], row) => {
         const textTarget: TTextTarget = {
           text: String(row.TextTarget_Text),
-          wordType: String(row.TextTarget_WordType),
+          wordType:
+            row.TextTarget_WordType ? String(row.TextTarget_WordType) : '',
           explanationSource:
             row.TextTarget_ExplanationSource ?
               String(row.TextTarget_ExplanationSource)
