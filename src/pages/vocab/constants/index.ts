@@ -77,7 +77,7 @@ export const subjectList = [
 
 export const defaultValue = {
   text: '',
-  wordType: 'Verb',
+  wordType: '',
   explanationSource: '',
   explanationTarget: '',
   grammar: '',

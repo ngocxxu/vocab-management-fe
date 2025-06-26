@@ -52,13 +52,13 @@ export const TextTargetsForm = memo(
           <Controller
             name={`textTarget.${index}.wordType`}
             control={control}
-            rules={{ required: true }}
             render={({ field }) => (
               <Select
-                error={errors.targetLanguage}
-                isMark={true}
                 label="Word type"
-                options={wordTypeList}
+                options={[
+                  { value: '', label: 'Select word type' },
+                  ...wordTypeList
+                ]}
                 onChange={field.onChange}
                 value={field.value}
               />

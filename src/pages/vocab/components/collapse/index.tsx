@@ -58,7 +58,9 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                   >
                     <div className="mb-2 flex items-center gap-3">
                       <div className="flex items-center gap-1">
-                        <div className="text-sky-500">{wordType}</div>
+                        {wordType && (
+                          <div className="text-sky-500">{wordType}</div>
+                        )}
                         <div className="flex items-center">
                           <span className="font-semibold">{text}</span>
                           <Voice lang={targetLanguage} text={text} />

@@ -49,7 +49,7 @@ const FormSchema = yup.object().shape({
   textTarget: yup.array().of(
     yup.object().shape({
       text: yup.string().required('Text is required'),
-      wordType: yup.string().required('Word type is required'),
+      wordType: yup.string(),
       subject: yup.array().min(1)
     })
   )
