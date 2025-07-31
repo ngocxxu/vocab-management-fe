@@ -1,10 +1,11 @@
 import { useToast } from '@/components/ui/use-toast'
 import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
+import { VocabTrainer } from '../endPoints'
 import { VOCAB_TRAINER_KEYS } from './queryKeys'
 
 const deleteMultiVocabTrainer = async (ids: string[]) => {
-  const { data } = await httpClient.post(`/vocabTrainer/deleteIds`, ids)
+  const { data } = await httpClient.post(VocabTrainer.bulkDelete, ids)
   return data
 }
 

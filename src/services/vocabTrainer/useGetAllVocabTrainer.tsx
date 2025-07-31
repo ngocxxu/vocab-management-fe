@@ -2,6 +2,7 @@ import { TVocabTrainer } from '@/pages/vocab-trainer/types'
 import { useQuery } from 'react-query'
 import { ResponseAPI, TPage } from '../../utils/types'
 import { httpClient } from '../settings'
+import { VocabTrainer } from '../endPoints'
 import { VOCAB_TRAINER_KEYS } from './queryKeys'
 
 const getAllVocabTrainer = async (pageOptions: TPage) => {
@@ -22,7 +23,7 @@ const getAllVocabTrainer = async (pageOptions: TPage) => {
   })
 
   const { data } = await httpClient.get<ResponseAPI<TVocabTrainer[]>>(
-    `/vocabTrainer?${params.toString()}`
+    `${VocabTrainer.getAll}?${params.toString()}`
   )
   return data
 }

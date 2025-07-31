@@ -2,10 +2,11 @@ import { useToast } from '@/components/ui/use-toast'
 import { TVocab } from '@/pages/vocab/types'
 import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
+import { Vocab } from '../endPoints'
 import { VOCAB_KEYS } from './queryKeys'
 
 const postMultiVocab = async (data: Omit<TVocab, 'id'>[]) => {
-  const res = await httpClient.post(`/vocab/bulk`, data)
+  const res = await httpClient.post(Vocab.bulkCreate, data)
   return res
 }
 

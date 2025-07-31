@@ -1,8 +1,9 @@
 import { useQuery } from 'react-query'
 import { httpClient } from '../settings'
+import { Dashboard } from '../endPoints'
 
 const fetchPosts = async () => {
-  const { data } = await httpClient.get(`/vocab`)
+  const { data } = await httpClient.get(Dashboard.getPosts)
   return data
 }
 

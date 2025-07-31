@@ -17,7 +17,7 @@ export type TLoginUserRes = {
 }
 
 const postLogin = async (data: TPostLoginReq) => {
-  const res = await httpClient.post<TLoginUserRes>(Auth.login, data)
+  const res = await httpClient.post<TLoginUserRes>(Auth.signin, data)
   return res
 }
 

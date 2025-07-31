@@ -1,11 +1,12 @@
 import { TQuestion } from '@/pages/vocab-trainer/types'
 import { useQuery } from 'react-query'
 import { httpClient } from '../settings'
+import { VocabTrainer } from '../endPoints'
 import { VOCAB_TRAINER_KEYS } from './queryKeys'
 
 const getQuestions = async (id: string) => {
   const { data } = await httpClient.get<TQuestion>(
-    `/vocabTrainer/question/${id}`
+    VocabTrainer.getQuestions(id)
   )
   return data
 }

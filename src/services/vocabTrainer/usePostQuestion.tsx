@@ -4,10 +4,11 @@ import { AxiosError } from 'axios'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { httpClient } from '../settings'
+import { VocabTrainer } from '../endPoints'
 
 const postQuestion = async (id: string) => {
   const { data } = await httpClient.get<TQuestion>(
-    `/vocabTrainer/question/${id}`
+    VocabTrainer.getQuestions(id)
   )
   return data
 }

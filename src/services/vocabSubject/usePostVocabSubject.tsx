@@ -2,10 +2,11 @@ import { useToast } from '@/components/ui/use-toast'
 import { TVocabSubject } from '@/pages/settings/types'
 import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
+import { VocabSubject } from '../endPoints'
 import { VOCAB_SUBJECT_KEYS } from './queryKeys'
 
 const postVocabSubject = async (data: Omit<TVocabSubject, 'id' | '_id'>) => {
-  const res = await httpClient.post(`/vocabSubject`, data)
+  const res = await httpClient.post(VocabSubject.create, data)
   return res
 }
 

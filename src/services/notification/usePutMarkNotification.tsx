@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
+import { Notification } from '../endPoints'
 import { NOTIFICATION_KEYS } from './queryKeys'
 
 export type TPutMarkNotification = {
@@ -8,7 +9,7 @@ export type TPutMarkNotification = {
 }
 
 const putMarkNotification = async (item: TPutMarkNotification) => {
-  const res = await httpClient.put(`/notification/mark`, item)
+  const res = await httpClient.put(Notification.markAsRead, item)
   return res
 }
 

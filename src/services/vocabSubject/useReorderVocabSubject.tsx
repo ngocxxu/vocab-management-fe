@@ -2,6 +2,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { TReorderVocabSubject } from '@/pages/settings/types'
 import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
+import { VocabSubject } from '../endPoints'
 import { VOCAB_SUBJECT_KEYS } from './queryKeys'
 
 type TReorderVocabSubjectPayload = {
@@ -9,7 +10,7 @@ type TReorderVocabSubjectPayload = {
 }
 
 const reorderVocabSubject = async (data: TReorderVocabSubjectPayload) => {
-  const res = await httpClient.patch(`/vocabSubject/reorder`, data)
+  const res = await httpClient.patch(VocabSubject.reorder, data)
   return res
 }
 

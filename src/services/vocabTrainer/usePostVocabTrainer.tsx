@@ -2,10 +2,11 @@ import { useToast } from '@/components/ui/use-toast'
 import { TFormInputsVocabTrainer } from '@/pages/vocab-trainer/types'
 import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
+import { VocabTrainer } from '../endPoints'
 import { VOCAB_TRAINER_KEYS } from './queryKeys'
 
 const postVocabTrainer = async (data: TFormInputsVocabTrainer) => {
-  const res = await httpClient.post(`/vocabTrainer`, data)
+  const res = await httpClient.post(VocabTrainer.create, data)
   return res
 }
 

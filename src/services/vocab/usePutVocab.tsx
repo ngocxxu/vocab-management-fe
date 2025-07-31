@@ -2,6 +2,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { TVocab } from '@/pages/vocab/types'
 import { useMutation, useQueryClient } from 'react-query'
 import { httpClient } from '../settings'
+import { Vocab } from '../endPoints'
 import { VOCAB_KEYS } from './queryKeys'
 
 export type TPutVocabs = {
@@ -10,7 +11,7 @@ export type TPutVocabs = {
 }
 
 const putVocab = async (item: TPutVocabs) => {
-  const res = await httpClient.put(`/vocab/${item.id}`, item.data)
+  const res = await httpClient.put(Vocab.update(item.id), item.data)
   return res
 }
 

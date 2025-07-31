@@ -2,6 +2,7 @@ import { TVocab } from '@/pages/vocab/types'
 import { useQuery } from 'react-query'
 import { ResponseAPI, TPage } from '../../utils/types'
 import { httpClient } from '../settings'
+import { Vocab } from '../endPoints'
 import { VOCAB_KEYS } from './queryKeys'
 
 const getAllVocab = async (pageOptions: TPage) => {
@@ -22,7 +23,7 @@ const getAllVocab = async (pageOptions: TPage) => {
   })
 
   const { data } = await httpClient.get<ResponseAPI<TVocab[]>>(
-    `/vocab?${params.toString()}`
+    `${Vocab.getAll}?${params.toString()}`
   )
   return data
 }
