@@ -134,7 +134,7 @@ const NotificationBody = ({
 
 export const Notification = () => {
   const [dataInfo, setDataInfo] = useState({ name: '', email: '', userId: '' })
-  const { data: notifications } = useGetAllNotification(dataInfo.userId)
+  const { data: notifications } = useGetAllNotification()
 
   const [open, setOpen] = useState(false)
 
