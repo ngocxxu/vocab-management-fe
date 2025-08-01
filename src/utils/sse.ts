@@ -13,7 +13,9 @@ export class SSEConnection {
     this.onErrorCallback = onError || undefined
 
     try {
-      this.eventSource = new EventSource(url)
+      this.eventSource = new EventSource(url, {
+        withCredentials: true
+      })
       
       this.eventSource.onopen = () => {
         console.log('SSE connection established')
