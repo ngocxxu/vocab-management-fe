@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app'
 import { Suspense, lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
 import './App.scss'
@@ -10,17 +9,6 @@ import History from './pages/history'
 import { Notifications } from './pages/settings/components/notifications'
 import { Profile } from './pages/settings/components/profile'
 import { CustomSubjects } from './pages/settings/components/subjects'
-
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: 'vocab-management.firebaseapp.com',
-  projectId: 'vocab-management',
-  storageBucket: 'vocab-management.appspot.com',
-  messagingSenderId: '314055413964',
-  appId: '1:314055413964:web:ceb855a96a28cf1403f269'
-}
-
-initializeApp(firebaseConfig)
 
 const LayoutLazy = lazy(() => import('./pages/layout'))
 const SecurityLayoutLazy = lazy(() => import('./pages/security-layout'))
