@@ -49,7 +49,11 @@ const FormSchema = yup.object().shape({
   textTargets: yup.array().of(
     yup.object().shape({
       textTarget: yup.string().required('Text target is required'),
-      wordType: yup.string(),
+      wordType: yup.object().shape({
+        id: yup.string(),
+        name: yup.string(),
+        description: yup.string()
+      }),
       textTargetSubjects: yup.array().min(1)
     })
   )
@@ -69,11 +73,26 @@ const FormVocab = ({
 
   const defaultValues = useMemo(() => {
     if (itemVocab && isEditing) {
+      // Transform backend data to form format if needed
+      const transformedTextTargets = itemVocab.textTargets?.map(textTarget => ({
+        textTarget: textTarget.textTarget,
+        wordType: {
+          id: textTarget.wordType?.id || '',
+          name: textTarget.wordType?.name || '',
+          description: textTarget.wordType?.description || ''
+        },
+        explanationSource: textTarget.explanationSource,
+        explanationTarget: textTarget.explanationTarget,
+        grammar: textTarget.grammar,
+        textTargetSubjects: textTarget.textTargetSubjects || [],
+        vocabExamples: textTarget.vocabExamples
+      })) || [defaultValue]
+
       return {
         sourceLanguageCode: itemVocab.sourceLanguageCode || 'ko',
         targetLanguageCode: itemVocab.targetLanguageCode || 'vi',
         textSource: itemVocab.textSource || '',
-        textTargets: itemVocab.textTargets || [defaultValue]
+        textTargets: transformedTextTargets
       }
     }
     return {
@@ -135,12 +154,30 @@ const FormVocab = ({
   )
 
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
+    // Transform the data to match the expected payload structure
+    const transformedData = {
+      textSource: data.textSource,
+      sourceLanguageCode: data.sourceLanguageCode,
+      targetLanguageCode: data.targetLanguageCode,
+      textTargets: data.textTargets.map(textTarget => ({
+        wordTypeId: textTarget.wordType?.id || '',
+        textTarget: textTarget.textTarget,
+        grammar: textTarget.grammar,
+        explanationSource: textTarget.explanationSource,
+        explanationTarget: textTarget.explanationTarget,
+        subjectIds: textTarget.textTargetSubjects?.map(subject => 
+          subject.subject?.id || subject.id
+        ) || [],
+        vocabExamples: textTarget.vocabExamples
+      }))
+    }
+
     isEditing ?
       mutatePut({
-        data: data as unknown as Omit<TVocab, 'id'>,
+        data: transformedData as unknown as Omit<TVocab, 'id'>,
         id: idVocab
       })
-    : mutate(data as unknown as Omit<TVocab, 'id'>)
+    : mutate(transformedData as unknown as Omit<TVocab, 'id'>)
     onClose()
   }
 

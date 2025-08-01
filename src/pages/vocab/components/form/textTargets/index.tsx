@@ -33,6 +33,8 @@ export const TextTargetsForm = memo(
     const checkErrors = Object.keys(errors).length > 0
     const { data: wordTypes } = useGetAllWordTypes()
 
+
+
     return (
       <>
         <div className="flex items-center justify-center gap-2">
@@ -63,8 +65,18 @@ export const TextTargetsForm = memo(
                     label: wordType.name
                   })) || [])
                 ]}
-                onChange={field.onChange}
-                value={field.value.id}
+                onChange={(selectedValue) => {
+                  if (selectedValue && selectedValue !== '') {
+                    field.onChange({
+                      id: selectedValue
+                    })
+                  } else {
+                    field.onChange({
+                      id: '',
+                    })
+                  }
+                }}
+                value={field.value?.id || ''}
               />
             )}
           />
@@ -105,19 +117,37 @@ export const TextTargetsForm = memo(
             name={`textTargets.${index}.textTargetSubjects`}
             rules={{ required: true }}
             control={control}
-            render={({ field }) => (
-              <MultiSelect
-                error={
-                  checkErrors ?
-                    (errors.textTargets![index]?.textTargetSubjects as FieldError)
-                  : null
-                }
-                isMark={true}
-                label="Subject"
-                options={subjects}
-                {...field}
-              />
-            )}
+            render={({ field }) => {
+              // Transform the field value to match MultiSelect expected format
+              const selectedValues = field.value?.map((item: { subject?: { id: string; name: string } }) => ({
+                value: item.subject?.id || '',
+                label: item.subject?.name || ''
+              })) || []
+
+              return (
+                <MultiSelect
+                  error={
+                    checkErrors ?
+                      (errors.textTargets![index]?.textTargetSubjects as FieldError)
+                    : null
+                  }
+                  isMark={true}
+                  label="Subject"
+                  options={subjects}
+                  value={selectedValues}
+                  onChange={(selectedOptions) => { 
+                    const transformedValue = selectedOptions?.map((option: TOption) => ({
+                      subject: {
+                        id: option.value,
+                        name: option.label,
+                        order: 0
+                      }
+                    })) || []
+                    field.onChange(transformedValue)
+                  }}
+                />
+              )
+            }}
           />
         )}
 

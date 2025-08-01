@@ -35,9 +35,11 @@ const Select = ({
           control: () => '!rounded-lg text-sm',
           option: () => '!text-sm'
         }}
-        value={options.find((item) => item.value === value)}
+        value={options.find((item) => item.value === value) || null}
         options={options}
-        onChange={(e) => onChange(e!.value)}
+        onChange={(e) => {
+          onChange(e ? e.value : '')
+        }}
         {...props}
       />
 

@@ -4,11 +4,15 @@ import { FieldError } from 'react-hook-form'
 import ReactSelect from 'react-select'
 import { TOption } from '../../utils/types'
 
+import { ActionMeta, MultiValue } from 'react-select'
+
 type TMultiSelect = {
   isMark?: boolean
   label?: string
   options: TOption[]
   error?: FieldError | null
+  value?: TOption[]
+  onChange?: (newValue: MultiValue<TOption>, actionMeta: ActionMeta<TOption>) => void
 }
 
 const MultiSelect = forwardRef(
