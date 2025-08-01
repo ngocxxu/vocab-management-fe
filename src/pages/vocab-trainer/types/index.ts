@@ -2,7 +2,7 @@ import { TOption } from '@/utils/types'
 import { EVocabTrainerType } from '../enum'
 
 export type TVocabTrainer = {
-  _id: string
+  id: string
   nameTest: string
   statusTest: string
   duration: string

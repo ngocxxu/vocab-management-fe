@@ -105,7 +105,7 @@ const Vocab = memo(() => {
   const handleResultRandom = (data: TVocab[]) => {
     setRandomData(data)
 
-    const ids = data.map((item) => item._id)
+    const ids = data.map((item) => item.id)
     const shuffledIds = [...ids].sort(() => 0.5 - Math.random())
     const random = shuffledIds.slice(0, amountRandom)
 
@@ -185,7 +185,7 @@ const Vocab = memo(() => {
             onClick={() =>
               dispatch(
                 toggleState({
-                  id: row.original._id
+                  id: row.original.id
                 })
               )
             }
@@ -212,7 +212,7 @@ const Vocab = memo(() => {
             onClick={() =>
               dispatch(
                 toggleState({
-                  id: row.original._id
+                  id: row.original.id
                 })
               )
             }
@@ -229,7 +229,7 @@ const Vocab = memo(() => {
               })}
             </div>
 
-            {idsState.includes(row.original._id) ?
+            {idsState.includes(row.original.id) ?
               <IconChevronUp />
             : <IconChevronDown />}
           </div>
@@ -267,7 +267,7 @@ const Vocab = memo(() => {
                   }
                 />
               }
-              onYes={() => handleOnYes(row.original._id)}
+              onYes={() => handleOnYes(row.original.id)}
             />
           </div>
         )
@@ -290,7 +290,7 @@ const Vocab = memo(() => {
           isURLVocabTrainer={isURLVocabTrainer}
           data={data}
           columns={columns}
-          idVocab={itemVocab._id}
+          idVocab={itemVocab.id}
           handleOnYes={handleOnYes}
           mutatePost={mutatePost}
           mutatePut={mutatePut}
@@ -320,7 +320,7 @@ const Vocab = memo(() => {
                   isURLVocabTrainer={isURLVocabTrainer}
                   data={data}
                   columns={columns}
-                  idVocab={itemVocab._id}
+                  idVocab={itemVocab.id}
                   handleOnYes={handleOnYes}
                   mutatePost={mutatePost}
                   mutatePut={mutatePut}
@@ -377,7 +377,7 @@ const Vocab = memo(() => {
                           getSortedRowModel: getSortedRowModel(),
                           getCoreRowModel: getCoreRowModel(),
                           onRowSelectionChange: setRowSelection,
-                          getRowId: (row) => row._id,
+                          getRowId: (row) => row.id,
                           onSortingChange: setSorting
                         }}
                       />

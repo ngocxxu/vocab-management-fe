@@ -24,7 +24,7 @@ export const Filter = ({ onClose }: TFilter) => {
   useEffect(() => {
     if (dataVocabSubject && dataVocabSubject?.items.length > 0) {
       const newData = dataVocabSubject.items.map((item) => ({
-        value: item._id,
+        value: item.id,
         label: item.name
       }))
       setItems(newData)

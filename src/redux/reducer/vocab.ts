@@ -22,11 +22,11 @@ type TInitialStateVocab = {
 
 const initialState: TInitialStateVocab = {
   itemVocab: {
-    _id: '',
-    sourceLanguage: '',
-    targetLanguage: '',
+    id: '',
+    sourceLanguageCode: '',
+    targetLanguageCode: '',
     textSource: '',
-    textTarget: []
+    textTargets: []
   },
   idVocabState: '',
   idsState: [],

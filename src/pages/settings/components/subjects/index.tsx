@@ -35,10 +35,8 @@ import { RowItem } from '../row-item'
 export const CustomSubjects = () => {
   const [items, setItems] = useState<TVocabSubject[]>([])
   const [openModal, setOpenModal] = useState(false)
-  const [editItem, setEditItem] = useState<Omit<
-    TVocabSubject,
-    'id' | 'order'
-  > | null>(null)
+  const [editItem, setEditItem] = useState<Omit<TVocabSubject, 'id' | 'order'> | null>(null)
+  const [editItemId, setEditItemId] = useState<string | null>(null)
   const { handleSubmit, control, watch, setValue, reset } = useForm<{
     name: string
   }>({
@@ -82,7 +80,7 @@ export const CustomSubjects = () => {
         // Call the API to update the orders
         mutateReorder({
           items: updatedItems.map((item) => ({
-            _id: item._id,
+            id: item.id,
             order: item.order
           }))
         })
@@ -92,9 +90,9 @@ export const CustomSubjects = () => {
     }
   }
   const onSubmit = (formData: { name: string }) => {
-    if (editItem) {
+    if (editItem && editItemId) {
       mutatePut({
-        id: editItem._id,
+        id: editItemId,
         data: {
           name: formData.name
         }
@@ -149,12 +147,20 @@ export const CustomSubjects = () => {
             <ScrollArea className="h-[75vh]">
               <div className="flex flex-col gap-2">
                 {items.map((item) => (
-                  <SortableItem key={item.id} id={item.id}>
+                  <SortableItem key={item.order} id={item.order}>
                     {({ attributes, listeners }: any) => (
                       <RowItem
                         {...item}
                         setOpenModal={setOpenModal}
-                        setEditItem={setEditItem}
+                        setEditItem={(editData) => {
+                          if (editData) {
+                            setEditItem({ name: editData.name })
+                            setEditItemId(item.id)
+                          } else {
+                            setEditItem(null)
+                            setEditItemId(null)
+                          }
+                        }}
                         attributes={attributes}
                         listeners={listeners}
                         mutateDelete={mutateDelete}

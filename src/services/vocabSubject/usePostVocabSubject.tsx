@@ -5,7 +5,7 @@ import { httpClient } from '../settings'
 import { VocabSubject } from '../endPoints'
 import { VOCAB_SUBJECT_KEYS } from './queryKeys'
 
-const postVocabSubject = async (data: Omit<TVocabSubject, 'id' | '_id'>) => {
+const postVocabSubject = async (data: Omit<TVocabSubject, 'id' | 'id'>) => {
   const res = await httpClient.post(VocabSubject.create, data)
   return res
 }
@@ -15,7 +15,7 @@ export const usePostVocabSubject = () => {
   const client = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: Omit<TVocabSubject, 'id' | '_id'>) =>
+    mutationFn: (data: Omit<TVocabSubject, 'id' | 'id'>) =>
       postVocabSubject(data),
     onSuccess: () => {
       client.invalidateQueries([VOCAB_SUBJECT_KEYS.GET_VOCAB_SUBJECT])

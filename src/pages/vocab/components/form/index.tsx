@@ -36,17 +36,17 @@ type TFormVocabProps = {
 }
 
 export type TFormInputsVocab = {
-  sourceLanguage: string
-  targetLanguage: string
+  sourceLanguageCode: string
+  targetLanguageCode: string
   textSource: string
-  textTarget: TTextTarget[]
+  textTargets: TTextTarget[]
 }
 
 const FormSchema = yup.object().shape({
-  sourceLanguage: yup.string().required('Source language is required'),
-  targetLanguage: yup.string().required('Target language is required'),
+  sourceLanguageCode: yup.string().required('Source language is required'),
+  targetLanguageCode: yup.string().required('Target language is required'),
   textSource: yup.string().required('Text source is required'),
-  textTarget: yup.array().of(
+  textTargets: yup.array().of(
     yup.object().shape({
       textTarget: yup.string().required('Text target is required'),
       wordType: yup.string(),
@@ -66,22 +66,25 @@ const FormVocab = ({
   const [orderTab, setOrderTab] = useState(String(0))
   const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
 
+
   const defaultValues = useMemo(() => {
     if (itemVocab && isEditing) {
       return {
-        sourceLanguage: itemVocab.sourceLanguageCode || 'ko',
-        targetLanguage: itemVocab.targetLanguageCode || 'vi',
+        sourceLanguageCode: itemVocab.sourceLanguageCode || 'ko',
+        targetLanguageCode: itemVocab.targetLanguageCode || 'vi',
         textSource: itemVocab.textSource || '',
-        textTarget: itemVocab.textTargets || [defaultValue]
+        textTargets: itemVocab.textTargets || [defaultValue]
       }
     }
     return {
-      sourceLanguage: 'ko',
-      targetLanguage: 'vi',
+      sourceLanguageCode: 'ko',
+      targetLanguageCode: 'vi',
       textSource: '',
-      textTarget: [defaultValue]
+      textTargets: [defaultValue]
     }
   }, [itemVocab, isEditing])
+  console.log(defaultValues)
+
 
   const {
     handleSubmit,
@@ -95,7 +98,7 @@ const FormVocab = ({
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'textTarget'
+    name: 'textTargets'
   })
 
   const { data: dataVocabSubject } = useGetAllVocabSubject()
@@ -147,10 +150,10 @@ const FormVocab = ({
   useEffect(() => {
     if (itemVocab && isEditing) {
       reset({
-        sourceLanguage: itemVocab.sourceLanguageCode   || 'ko',
-        targetLanguage: itemVocab.targetLanguageCode || 'vi',
+        sourceLanguageCode: itemVocab.sourceLanguageCode   || 'ko',
+        targetLanguageCode: itemVocab.targetLanguageCode || 'vi',
         textSource: itemVocab.textSource || '',
-        textTarget: itemVocab.textTargets || [defaultValue]
+        textTargets: itemVocab.textTargets || [defaultValue]
       })
     }
   }, [itemVocab, isEditing, reset])
@@ -158,7 +161,7 @@ const FormVocab = ({
   useEffect(() => {
     if (dataVocabSubject && dataVocabSubject?.items.length > 0) {
       const newData = dataVocabSubject.items.map((item) => ({
-        value: item._id,
+        value: item.id,
         label: item.name
       }))
 
@@ -175,12 +178,12 @@ const FormVocab = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center justify-center gap-2">
         <Controller
-          name="sourceLanguage"
+          name="sourceLanguageCode"
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
             <Select
-              error={errors.sourceLanguage}
+              error={errors.sourceLanguageCode}
               isMark={true}
               label="Source language"
               options={languageList}
@@ -190,12 +193,12 @@ const FormVocab = ({
           )}
         />
         <Controller
-          name="targetLanguage"
+          name="targetLanguageCode"
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
             <Select
-              error={errors.targetLanguage}
+              error={errors.targetLanguageCode}
               isMark={true}
               label="Target language"
               options={languageList}

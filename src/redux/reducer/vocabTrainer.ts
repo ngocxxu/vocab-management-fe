@@ -17,7 +17,7 @@ const initialState: TInitialStateVocabTrainer = {
   rowSelectionState: {},
   isOpenModalState: false,
   itemVocabTrainer: {
-    _id: '',
+    id: '',
     nameTest: '',
     statusTest: '',
     duration: '',

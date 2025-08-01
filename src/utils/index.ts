@@ -194,7 +194,7 @@ export const importFile = (
                 .map((label: string) => ({
                   label,
                   value:
-                    listSubject.find((sub) => sub.name === label)?._id || ''
+                    listSubject.find((sub) => sub.name === label)?.id || ''
                 }))
             : []
         }
@@ -204,7 +204,7 @@ export const importFile = (
           existing.textTargets.push(textTarget)
         } else {
           acc.push({
-            _id: '',
+            id: '',
             sourceLanguageCode: String(row.SourceLanguage),
             targetLanguageCode: String(row.TargetLanguage),
             textSource: String(row.TextSource),

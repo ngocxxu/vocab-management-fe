@@ -28,7 +28,7 @@ export type TTextTarget = {
 }
 
 export type TVocab = {
-  _id: string
+  id: string
   sourceLanguageCode: string
   targetLanguageCode: string
   textSource: string

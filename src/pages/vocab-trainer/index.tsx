@@ -192,7 +192,7 @@ const VocabTrainer = memo(() => {
             <Button
               type="button"
               onClick={() => {
-                mutateQuestion(row.original._id)
+                mutateQuestion(row.original.id)
               }}
               className="h-6 w-6 gap-0 px-2"
               size="icon"
@@ -213,7 +213,7 @@ const VocabTrainer = memo(() => {
                   }
                 />
               }
-              onYes={() => handleOnYes(row.original._id)}
+              onYes={() => handleOnYes(row.original.id)}
             />
           </div>
         )
@@ -292,7 +292,7 @@ const VocabTrainer = memo(() => {
           getSortedRowModel: getSortedRowModel(),
           getCoreRowModel: getCoreRowModel(),
           onRowSelectionChange: setRowSelection,
-          getRowId: (row) => row._id,
+          getRowId: (row) => row.id,
           onSortingChange: setSorting
         }}
       />

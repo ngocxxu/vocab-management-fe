@@ -24,10 +24,10 @@ export const RowItem = ({
   mutateDelete: UseMutateFunction<AxiosResponse, unknown, string, unknown>
   item: TVocabSubject
 }) => {
-  const { name, _id } = item
+  const { name, id } = item
   const handleOpenModal = () => {
     setOpenModal(true)
-    setEditItem({ _id, name })
+    setEditItem({ name })
   }
 
   const handleOnYes = (id: string) => {
@@ -58,7 +58,7 @@ export const RowItem = ({
               <Trash className="text-red-600" />
             </ButtonLib>
           }
-          onYes={() => handleOnYes(_id)}
+          onYes={() => handleOnYes(id)}
         />
       </div>
     </div>

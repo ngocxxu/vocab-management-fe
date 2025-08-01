@@ -146,7 +146,7 @@ export const VocabTable = ({
         getSortedRowModel: getSortedRowModel(),
         getCoreRowModel: getCoreRowModel(),
         onRowSelectionChange: setRowSelection,
-        getRowId: (row) => row._id,
+        getRowId: (row) => row.id,
         onSortingChange: setSorting
       }}
     />

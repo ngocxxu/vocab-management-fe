@@ -12,7 +12,7 @@ import styles from './styles.module.scss'
 
 type TCollapseVocab<T extends TExtend> = { row: Row<T> }
 export type TExtend = {
-  _id: string
+  id: string
   textTargets: TTextTarget[]
   sourceLanguageCode: string
   targetLanguageCode: string
@@ -27,11 +27,11 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
 
   const checkShow = (idx: number) =>
     itemsShow.find(
-      (item) => item.idRow === row.original._id && item.idxExample === idx
+      (item) => item.idRow === row.original.id && item.idxExample === idx
     )
 
   return (
-    idsState.includes(row.original._id) && (
+    idsState.includes(row.original.id) && (
       <tr className={styles.container}>
         <td
           className="break-all bg-background px-6 py-4"
@@ -120,7 +120,7 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                         onClick={() => {
                           dispatch(
                             setItemsShowState({
-                              idRow: row.original._id,
+                              idRow: row.original.id,
                               idxExample: idx
                             })
                           )
