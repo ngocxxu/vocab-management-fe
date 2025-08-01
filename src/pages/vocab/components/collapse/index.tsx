@@ -59,7 +59,7 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                     <div className="mb-2 flex items-center gap-3">
                       <div className="flex items-center gap-1">
                         {wordType && (
-                          <div className="text-sky-500">{wordType}</div>
+                          <div className="text-sky-500">{wordType.name}</div>
                         )}
                         <div className="flex items-center">
                           <span className="font-semibold">{textTarget}</span>
@@ -67,13 +67,13 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                         </div>
                       </div>
                       <div>
-                        {textTargetSubjects.map((item) => (
+                        {textTargetSubjects.map((item, subjectIndex) => (
                           <Badge
-                            key={item.label}
+                            key={`${textTarget}-${item.subject.name}-${subjectIndex}`}
                             variant="outline"
                             className="mr-1 border-gray-300 text-xs"
                           >
-                            {item.label}
+                            {item.subject.name}
                           </Badge>
                         ))}
                       </div>
@@ -94,9 +94,9 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
 
                     {vocabExamples
                       .slice(0, !checkShow(idx) ? 1 : vocabExamples.length)
-                      .map(({ source, target }) => (
+                      .map(({ source, target }, exampleIndex) => (
                         <div
-                          key={source}
+                          key={`${textTarget}-${source}-${exampleIndex}`}
                           className="flex items-end justify-start gap-3"
                         >
                           <div className="mb-2 border-l-4 border-gray-400 pl-2">
@@ -126,7 +126,9 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                           )
                         }}
                         title={!checkShow(idx) ? 'More' : 'Less'}
-                      />
+                      >
+                        {!checkShow(idx) ? 'More' : 'Less'}
+                      </Button>
                     )}
 
                     {grammar && (

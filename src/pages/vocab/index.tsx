@@ -218,9 +218,9 @@ const Vocab = memo(() => {
             }
           >
             <div className="flex gap-1">
-              {row.original.textTargets.map((item) => {
+              {row.original.textTargets.map((item, index) => {
                 return (
-                  <Fragment key={item.textTarget}>
+                  <Fragment key={`${item.textTarget}-${index}`}>
                     <Badge variant="outline" className="text-gray-vc-600">
                       {item.textTarget}
                     </Badge>
