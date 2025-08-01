@@ -59,19 +59,19 @@ export const redirectToLogin = () => {
 
 export const exportFile = (data: TVocab[], fileName?: string) => {
   const worksheetData = data.flatMap((item) =>
-    item.textTarget.map((target) => ({
-      SourceLanguage: item.sourceLanguage,
-      TargetLanguage: item.targetLanguage,
+    item.textTargets.map((target) => ({
+      SourceLanguage: item.sourceLanguageCode,
+      TargetLanguage: item.targetLanguageCode,
       TextSource: item.textSource,
-      TextTarget_Text: target.text,
+      TextTarget_Text: target.textTarget,
       TextTarget_WordType: target.wordType,
       TextTarget_ExplanationSource: target.explanationSource,
       TextTarget_ExplanationTarget: target.explanationTarget,
-      TextTarget_Examples: target.examples
+      TextTarget_Examples: target.vocabExamples
         .map((ex) => `${ex.source}: ${ex.target}`)
         .join('; '),
       TextTarget_Grammar: target.grammar,
-      TextTarget_Subjects: target.subject.map((sub) => sub.label).join(', ')
+      TextTarget_Subjects: target.textTargetSubjects.map((sub) => sub.label).join(', ')
     }))
   )
 
@@ -166,7 +166,7 @@ export const importFile = (
       // Process data
       const reconstructedData = jsonData.reduce((acc: TVocab[], row) => {
         const textTarget: TTextTarget = {
-          text: String(row.TextTarget_Text),
+          textTarget: String(row.TextTarget_Text),
           wordType:
             row.TextTarget_WordType ? String(row.TextTarget_WordType) : '',
           explanationSource:
@@ -177,7 +177,7 @@ export const importFile = (
             row.TextTarget_ExplanationTarget ?
               String(row.TextTarget_ExplanationTarget)
             : '',
-          examples:
+          vocabExamples:
             row.TextTarget_Examples ?
               String(row.TextTarget_Examples)
                 .split('; ')
@@ -187,7 +187,7 @@ export const importFile = (
                 })
             : [],
           grammar: row.TextTarget_Grammar ? String(row.TextTarget_Grammar) : '',
-          subject:
+          textTargetSubjects:
             row.TextTarget_Subjects ?
               String(row.TextTarget_Subjects)
                 .split(', ')
@@ -201,14 +201,14 @@ export const importFile = (
 
         const existing = acc.find((item) => item.textSource === row.TextSource)
         if (existing) {
-          existing.textTarget.push(textTarget)
+          existing.textTargets.push(textTarget)
         } else {
           acc.push({
             _id: '',
-            sourceLanguage: String(row.SourceLanguage),
-            targetLanguage: String(row.TargetLanguage),
+            sourceLanguageCode: String(row.SourceLanguage),
+            targetLanguageCode: String(row.TargetLanguage),
             textSource: String(row.TextSource),
-            textTarget: [textTarget]
+            textTargets: [textTarget]
           })
         }
         return acc

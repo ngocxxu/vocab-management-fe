@@ -48,9 +48,9 @@ const FormSchema = yup.object().shape({
   textSource: yup.string().required('Text source is required'),
   textTarget: yup.array().of(
     yup.object().shape({
-      text: yup.string().required('Text is required'),
+      textTarget: yup.string().required('Text target is required'),
       wordType: yup.string(),
-      subject: yup.array().min(1)
+      textTargetSubjects: yup.array().min(1)
     })
   )
 })
@@ -69,10 +69,10 @@ const FormVocab = ({
   const defaultValues = useMemo(() => {
     if (itemVocab && isEditing) {
       return {
-        sourceLanguage: itemVocab.sourceLanguage || 'ko',
-        targetLanguage: itemVocab.targetLanguage || 'vi',
+        sourceLanguage: itemVocab.sourceLanguageCode || 'ko',
+        targetLanguage: itemVocab.targetLanguageCode || 'vi',
         textSource: itemVocab.textSource || '',
-        textTarget: itemVocab.textTarget || [defaultValue]
+        textTarget: itemVocab.textTargets || [defaultValue]
       }
     }
     return {
@@ -136,10 +136,10 @@ const FormVocab = ({
   const onSubmit: SubmitHandler<TFormInputsVocab> = (data) => {
     isEditing ?
       mutatePut({
-        data: data as Omit<TVocab, 'id'>,
+        data: data as unknown as Omit<TVocab, 'id'>,
         id: idVocab
       })
-    : mutate(data as Omit<TVocab, 'id'>)
+    : mutate(data as unknown as Omit<TVocab, 'id'>)
     onClose()
   }
 
@@ -147,10 +147,10 @@ const FormVocab = ({
   useEffect(() => {
     if (itemVocab && isEditing) {
       reset({
-        sourceLanguage: itemVocab.sourceLanguage || 'ko',
-        targetLanguage: itemVocab.targetLanguage || 'vi',
+        sourceLanguage: itemVocab.sourceLanguageCode   || 'ko',
+        targetLanguage: itemVocab.targetLanguageCode || 'vi',
         textSource: itemVocab.textSource || '',
-        textTarget: itemVocab.textTarget || [defaultValue]
+        textTarget: itemVocab.textTargets || [defaultValue]
       })
     }
   }, [itemVocab, isEditing, reset])
@@ -253,7 +253,7 @@ const FormVocab = ({
             onClick={() => {
               append({
                 ...defaultValue,
-                examples: []
+                vocabExamples: []
               })
             }}
           />

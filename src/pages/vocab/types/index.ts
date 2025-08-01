@@ -6,19 +6,19 @@ export type TExamples = {
 }
 
 export type TTextTarget = {
-  text: string
+  textTarget: string
   wordType: string
   explanationSource: string
   explanationTarget: string
-  examples: TExamples[]
+  vocabExamples: TExamples[]
   grammar: string
-  subject: TOption[]
+  textTargetSubjects: TOption[]
 }
 
 export type TVocab = {
   _id: string
-  sourceLanguage: string
-  targetLanguage: string
+  sourceLanguageCode: string
+  targetLanguageCode: string
   textSource: string
-  textTarget: TTextTarget[]
+  textTargets: TTextTarget[]
 }

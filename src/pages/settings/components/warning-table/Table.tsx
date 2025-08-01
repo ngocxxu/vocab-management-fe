@@ -28,16 +28,16 @@ export const DetailTable = ({ data }: TTable) => {
       },
       {
         size: 1000,
-        accessorKey: 'textTarget',
+        accessorKey: 'textTargets',
         header: 'Text target',
         cell: ({ row }) => (
           <div className="flex cursor-pointer items-center justify-between break-all">
             <div className="flex gap-1">
-              {row.original.textTarget.map((item) => {
+              {row.original.textTargets.map((item) => {
                 return (
-                  <Fragment key={item.text}>
+                  <Fragment key={item.textTarget}>
                     <Badge variant="outline" className="text-gray-vc-600">
-                      {item.text}
+                      {item.textTarget}
                     </Badge>
                   </Fragment>
                 )

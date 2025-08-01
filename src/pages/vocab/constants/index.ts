@@ -76,12 +76,12 @@ export const subjectList = [
 ]
 
 export const defaultValue = {
-  text: '',
+  textTarget: '',
   wordType: '',
   explanationSource: '',
   explanationTarget: '',
   grammar: '',
-  subject: []
+  textTargetSubjects: []
 }
 
 export const statusList = [

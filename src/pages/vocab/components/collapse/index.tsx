@@ -13,13 +13,13 @@ import styles from './styles.module.scss'
 type TCollapseVocab<T extends TExtend> = { row: Row<T> }
 export type TExtend = {
   _id: string
-  textTarget: TTextTarget[]
-  sourceLanguage: string
-  targetLanguage: string
+  textTargets: TTextTarget[]
+  sourceLanguageCode: string
+  targetLanguageCode: string
 }
 
 const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
-  const { textTarget, sourceLanguage, targetLanguage } = row.original
+  const { textTargets, sourceLanguageCode, targetLanguageCode } = row.original
   const dispatch = useDispatch()
   const { idsState, itemsShow } = useSelector(
     (state: RootState) => state.vocabReducer
@@ -38,23 +38,23 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
           colSpan={row.getVisibleCells().length}
         >
           <ol className="list-decimal">
-            {textTarget.map(
+            {textTargets.map(
               (
                 {
-                  text,
+                  textTarget,
                   wordType,
                   explanationSource,
                   explanationTarget,
-                  examples,
+                  vocabExamples,
                   grammar,
-                  subject
+                  textTargetSubjects
                 },
                 idx
               ) => {
                 return (
                   <li
-                    className={cn(idx === textTarget.length - 1 ? '' : 'mb-4')}
-                    key={text}
+                    className={cn(idx === textTargets.length - 1 ? '' : 'mb-4')}
+                    key={textTarget}
                   >
                     <div className="mb-2 flex items-center gap-3">
                       <div className="flex items-center gap-1">
@@ -62,12 +62,12 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                           <div className="text-sky-500">{wordType}</div>
                         )}
                         <div className="flex items-center">
-                          <span className="font-semibold">{text}</span>
-                          <Voice lang={targetLanguage} text={text} />
+                          <span className="font-semibold">{textTarget}</span>
+                          <Voice lang={targetLanguageCode} text={textTarget} />
                         </div>
                       </div>
                       <div>
-                        {subject.map((item) => (
+                        {textTargetSubjects.map((item) => (
                           <Badge
                             key={item.label}
                             variant="outline"
@@ -82,18 +82,18 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                     {explanationSource && (
                       <div className="mb-2 flex items-center">
                         <span>{explanationSource}</span>
-                        <Voice lang={sourceLanguage} text={explanationSource} />
+                        <Voice lang={sourceLanguageCode} text={explanationSource} />
                       </div>
                     )}
                     {explanationTarget && (
                       <div className="mb-2 flex items-center">
                         <span>{explanationTarget}</span>
-                        <Voice lang={targetLanguage} text={explanationTarget} />
+                        <Voice lang={targetLanguageCode} text={explanationTarget} />
                       </div>
                     )}
 
-                    {examples
-                      .slice(0, !checkShow(idx) ? 1 : examples.length)
+                    {vocabExamples
+                      .slice(0, !checkShow(idx) ? 1 : vocabExamples.length)
                       .map(({ source, target }) => (
                         <div
                           key={source}
@@ -102,17 +102,17 @@ const Collapse = <T extends TExtend>({ row }: TCollapseVocab<T>) => {
                           <div className="mb-2 border-l-4 border-gray-400 pl-2">
                             <div className="flex items-center">
                               <div>{source}</div>
-                              <Voice lang={sourceLanguage} text={source} />
+                              <Voice lang={sourceLanguageCode} text={source} />
                             </div>
                             <div className="flex items-center">
                               <div>{target}</div>
-                              <Voice lang={targetLanguage} text={target} />
+                              <Voice lang={targetLanguageCode} text={target} />
                             </div>
                           </div>
                         </div>
                       ))}
 
-                    {examples.length > 1 && (
+                    {vocabExamples.length > 1 && (
                       <Button
                         type="button"
                         variant="link"

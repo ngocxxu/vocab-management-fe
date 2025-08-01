@@ -28,7 +28,7 @@ export const TextTargetsForm = memo(
   ({ index, control, errors, subjects }: TTextTargetsForm) => {
     const { fields, append, remove } = useFieldArray({
       control,
-      name: `textTarget.${index}.examples`
+      name: `textTarget.${index}.vocabExamples`
     })
     const checkErrors = Object.keys(errors).length > 0
 
@@ -36,12 +36,12 @@ export const TextTargetsForm = memo(
       <>
         <div className="flex items-center justify-center gap-2">
           <Controller
-            name={`textTarget.${index}.text`}
+            name={`textTarget.${index}.textTarget`}
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
               <Input
-                error={checkErrors ? errors.textTarget![index]?.text : null}
+                error={checkErrors ? errors.textTarget![index]?.textTarget : null}
                 isMark={true}
                 label="Text target"
                 placeholder="Type here"
@@ -98,14 +98,14 @@ export const TextTargetsForm = memo(
         />
         {!!subjects.length && (
           <Controller
-            name={`textTarget.${index}.subject`}
+            name={`textTarget.${index}.textTargetSubjects`}
             rules={{ required: true }}
             control={control}
             render={({ field }) => (
               <MultiSelect
                 error={
                   checkErrors ?
-                    (errors.textTarget![index]?.subject as FieldError)
+                    (errors.textTarget![index]?.textTargetSubjects as FieldError)
                   : null
                 }
                 isMark={true}

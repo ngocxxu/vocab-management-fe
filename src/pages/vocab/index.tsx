@@ -194,7 +194,7 @@ const Vocab = memo(() => {
               <p className="font-semibold">{String(getValue())}</p>
 
               <Voice
-                lang={row.original.sourceLanguage}
+                lang={row.original.sourceLanguageCode}
                 text={String(getValue())}
               />
             </div>
@@ -218,11 +218,11 @@ const Vocab = memo(() => {
             }
           >
             <div className="flex gap-1">
-              {row.original.textTarget.map((item) => {
+              {row.original.textTargets.map((item) => {
                 return (
-                  <Fragment key={item.text}>
+                  <Fragment key={item.textTarget}>
                     <Badge variant="outline" className="text-gray-vc-600">
-                      {item.text}
+                      {item.textTarget}
                     </Badge>
                   </Fragment>
                 )
