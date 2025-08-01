@@ -70,7 +70,7 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
     try {
       const results = await Promise.all(
         files.map(async (file) => {
-          const result = await importFile(file, dataVocabSubject?.data ?? [])
+          const result = await importFile(file, dataVocabSubject?.items ?? [])
           if (result.error) {
             toast({
               title: 'Error',

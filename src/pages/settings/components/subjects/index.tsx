@@ -109,8 +109,8 @@ export const CustomSubjects = () => {
   }
 
   useEffect(() => {
-    if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
-      setItems(dataVocabSubject.data)
+    if (dataVocabSubject && dataVocabSubject?.items.length > 0) {
+      setItems(dataVocabSubject.items)
     }
   }, [dataVocabSubject])
 

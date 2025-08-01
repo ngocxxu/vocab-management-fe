@@ -22,8 +22,8 @@ export const Filter = ({ onClose }: TFilter) => {
   const { data: dataVocabSubject } = useGetAllVocabSubject()
 
   useEffect(() => {
-    if (dataVocabSubject && dataVocabSubject?.data.length > 0) {
-      const newData = dataVocabSubject.data.map((item) => ({
+    if (dataVocabSubject && dataVocabSubject?.items.length > 0) {
+      const newData = dataVocabSubject.items.map((item) => ({
         value: item._id,
         label: item.name
       }))

@@ -283,7 +283,7 @@ const VocabTrainer = memo(() => {
           totalPages: data?.totalPages ?? 1
         }}
         options={{
-          data: data?.data ?? [],
+          data: data?.items ?? [],
           columns: columns,
           state: {
             rowSelection,

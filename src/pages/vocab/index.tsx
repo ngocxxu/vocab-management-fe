@@ -46,7 +46,7 @@ const Vocab = memo(() => {
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab()
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab()
   const { mutate: mutateRandom, isLoading: isLoadingRandom } = useRandomVocab({
-    onSuccess: ({ data }) => handleResultRandom(data)
+    onSuccess: ({ items }) => handleResultRandom(items)
   })
   const dispatch = useDispatch()
   const { idsState, itemVocab, filterData, searchVocab, paginationVocabState } =
@@ -125,7 +125,7 @@ const Vocab = memo(() => {
   useEffect(() => {
     if (isURLVocabTrainer) return
 
-    if (data?.data && data?.data.length <= 0 && data.currentPage > 1) {
+    if (data?.items && data?.items.length <= 0 && data.currentPage > 1) {
       setSearchParams({
         page: searchParams.get('page') ?? '1',
         pageSize: searchParams.get('pageSize') ?? PAGE_SIZE_10

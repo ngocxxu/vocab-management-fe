@@ -121,7 +121,7 @@ export const VocabTable = ({
                 onAddNew={() => {
                   setIsEditing(false)
                 }}
-                tableData={data?.data ?? []}
+                tableData={data?.items ?? []}
               />
             </div>
           </div>
@@ -137,7 +137,7 @@ export const VocabTable = ({
         totalPages: data?.totalPages ?? 1
       }}
       options={{
-        data: data?.data ?? [],
+        data: data?.items ?? [],
         columns: columns,
         state: {
           rowSelection,
