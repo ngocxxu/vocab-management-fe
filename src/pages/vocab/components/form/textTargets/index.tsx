@@ -28,7 +28,7 @@ export const TextTargetsForm = memo(
   ({ index, control, errors, subjects }: TTextTargetsForm) => {
     const { fields, append, remove } = useFieldArray({
       control,
-      name: `textTarget.${index}.vocabExamples`
+      name: `textTargets.${index}.vocabExamples`
     })
     const checkErrors = Object.keys(errors).length > 0
 
@@ -36,12 +36,12 @@ export const TextTargetsForm = memo(
       <>
         <div className="flex items-center justify-center gap-2">
           <Controller
-            name={`textTarget.${index}.textTarget`}
+            name={`textTargets.${index}.textTarget`}
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
               <Input
-                error={checkErrors ? errors.textTarget![index]?.textTarget : null}
+                error={checkErrors ? errors.textTargets![index]?.textTarget : null}
                 isMark={true}
                 label="Text target"
                 placeholder="Type here"
@@ -50,7 +50,7 @@ export const TextTargetsForm = memo(
             )}
           />
           <Controller
-            name={`textTarget.${index}.wordType`}
+            name={`textTargets.${index}.wordType`}
             control={control}
             render={({ field }) => (
               <Select
@@ -60,14 +60,14 @@ export const TextTargetsForm = memo(
                   ...wordTypeList
                 ]}
                 onChange={field.onChange}
-                value={field.value}
+                value={field.value.name}
               />
             )}
           />
         </div>
         <div className="flex items-center justify-center gap-2">
           <Controller
-            name={`textTarget.${index}.explanationSource`}
+            name={`textTargets.${index}.explanationSource`}
             control={control}
             render={({ field }) => (
               <Input
@@ -78,7 +78,7 @@ export const TextTargetsForm = memo(
             )}
           />
           <Controller
-            name={`textTarget.${index}.explanationTarget`}
+            name={`textTargets.${index}.explanationTarget`}
             control={control}
             render={({ field }) => (
               <Input
@@ -90,7 +90,7 @@ export const TextTargetsForm = memo(
           />
         </div>
         <Controller
-          name={`textTarget.${index}.grammar`}
+          name={`textTargets.${index}.grammar`}
           control={control}
           render={({ field }) => (
             <Input label="Grammar" placeholder="Type here" {...field} />
@@ -98,14 +98,14 @@ export const TextTargetsForm = memo(
         />
         {!!subjects.length && (
           <Controller
-            name={`textTarget.${index}.textTargetSubjects`}
+            name={`textTargets.${index}.textTargetSubjects`}
             rules={{ required: true }}
             control={control}
             render={({ field }) => (
               <MultiSelect
                 error={
                   checkErrors ?
-                    (errors.textTarget![index]?.textTargetSubjects as FieldError)
+                    (errors.textTargets![index]?.textTargetSubjects as FieldError)
                   : null
                 }
                 isMark={true}

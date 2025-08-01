@@ -5,11 +5,10 @@ import { NOTIFICATION_KEYS } from './queryKeys'
 
 export type TPutMarkNotification = {
   notificationId: string
-  userId: string
 }
 
 const putMarkNotification = async (item: TPutMarkNotification) => {
-  const res = await httpClient.put(Notification.markAsRead, item)
+  const res = await httpClient.put(Notification.markAsRead(item.notificationId))
   return res
 }
 

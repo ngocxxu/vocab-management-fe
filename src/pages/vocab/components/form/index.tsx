@@ -83,8 +83,6 @@ const FormVocab = ({
       textTargets: [defaultValue]
     }
   }, [itemVocab, isEditing])
-  console.log(defaultValues)
-
 
   const {
     handleSubmit,

@@ -16,14 +16,14 @@ export const ExamplesForm = ({
   return (
     <div className="flex justify-center items-center gap-2">
       <Controller
-        name={`textTarget.${idxTextTarget}.examples.${idx}.source`}
+        name={`textTargets.${idxTextTarget}.vocabExamples.${idx}.source`}
         control={control}
         render={({ field }) => (
           <Input label="Source" placeholder="Type here" {...field} />
         )}
       />
       <Controller
-        name={`textTarget.${idxTextTarget}.examples.${idx}.target`}
+        name={`textTargets.${idxTextTarget}.vocabExamples.${idx}.target`}
         control={control}
         render={({ field }) => (
           <Input label="Target" placeholder="Type here" {...field} />
