@@ -14,8 +14,8 @@ import { TFormInputsVocab } from '..'
 import Input from '../../../../../components/input'
 import MultiSelect from '../../../../../components/multiselect'
 import Select from '../../../../../components/select'
-import { wordTypeList } from '../../../constants'
 import { ExamplesForm } from '../examples'
+import { useGetAllWordTypes } from '@/services/wordType'
 
 type TTextTargetsForm = {
   index: number
@@ -31,6 +31,7 @@ export const TextTargetsForm = memo(
       name: `textTargets.${index}.vocabExamples`
     })
     const checkErrors = Object.keys(errors).length > 0
+    const { data: wordTypes } = useGetAllWordTypes()
 
     return (
       <>
@@ -57,10 +58,13 @@ export const TextTargetsForm = memo(
                 label="Word type"
                 options={[
                   { value: '', label: 'Select word type' },
-                  ...wordTypeList
+                  ...(wordTypes?.items?.map((wordType) => ({
+                    value: wordType.id,
+                    label: wordType.name
+                  })) || [])
                 ]}
                 onChange={field.onChange}
-                value={field.value.name}
+                value={field.value.id}
               />
             )}
           />

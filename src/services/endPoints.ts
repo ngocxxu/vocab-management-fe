@@ -11,6 +11,13 @@ export const Auth = {
   logoutAllDevice: '/auth/logout-all-device'
 }
 
+export const WordType = {
+  getAll: '/word-types',
+  create: '/word-types',
+  update: (id: string) => `/word-types/${id}`,
+  delete: (id: string) => `/word-types/${id}`
+}
+
 export const Vocab = {
   getAll: '/vocabs',
   create: '/vocabs',
