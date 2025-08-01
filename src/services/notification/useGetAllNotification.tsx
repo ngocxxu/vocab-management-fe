@@ -1,21 +1,18 @@
 import { TNotification } from '@/pages/layout/types'
 import { useQuery } from 'react-query'
-import { httpClient } from '../settings'
 import { Notification } from '../endPoints'
+import { httpClient } from '../settings'
 import { NOTIFICATION_KEYS } from './queryKeys'
 
-const getAllNotification = async (userId: string) => {
-  const { data } = await httpClient.get<TNotification[]>(
-    Notification.getAll(userId)
-  )
+const getAllNotification = async () => {
+  const { data } = await httpClient.get<TNotification[]>(Notification.getAll)
   return data
 }
-export const useGetAllNotification = (userId: string) => {
+export const useGetAllNotification = () => {
   return useQuery({
-    enabled: !!userId,
     queryKey: [NOTIFICATION_KEYS.GET_NOTIFICATION],
     queryFn: () => {
-      return userId ? getAllNotification(userId) : null
+      return getAllNotification()
     }
   })
 }

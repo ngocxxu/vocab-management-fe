@@ -12,41 +12,43 @@ export const Auth = {
 }
 
 export const Vocab = {
-  getAll: '/vocab',
-  create: '/vocab',
-  update: (id: string) => `/vocab/${id}`,
-  delete: (id: string) => `/vocab/${id}`,
-  bulkCreate: '/vocab/bulk',
-  bulkDelete: '/vocab/deleteIds',
-  random: (count: number) => `/vocab/random/${count}`
+  getAll: '/vocabs',
+  create: '/vocabs',
+  update: (id: string) => `/vocabs/${id}`,
+  delete: (id: string) => `/vocabs/${id}`,
+  bulkCreate: '/vocabs/bulk',
+  bulkDelete: '/vocabs/ids',
+  random: (count: number) => `/vocabs/random/${count}`
 }
 
 export const VocabSubject = {
-  getAll: '/vocabSubject',
-  create: '/vocabSubject',
-  update: (id: string) => `/vocabSubject/${id}`,
-  delete: (id: string) => `/vocabSubject/${id}`,
-  reorder: '/vocabSubject/reorder'
+  getAll: '/subjects',
+  create: '/subjects',
+  update: (id: string) => `/subjects/${id}`,
+  delete: (id: string) => `/subjects/${id}`,
+  reorder: '/subjects/reorder'
 }
 
 export const VocabTrainer = {
-  getAll: '/vocabTrainer',
-  create: '/vocabTrainer',
-  delete: (id: string) => `/vocabTrainer/${id}`,
-  bulkDelete: '/vocabTrainer/deleteIds',
-  getQuestions: (id: string) => `/vocabTrainer/question/${id}`,
-  submitTest: (id: string) => `/vocabTrainer/test/${id}`,
-  getVocabTrainer: (id: string) => `/vocabTrainer/${id}`,
-  createQuestion: '/vocabTrainer/question'
+  getAll: '/vocab-trainers',
+  create: '/vocab-trainers',
+  delete: (id: string) => `/vocab-trainers/${id}`,
+  bulkDelete: '/vocab-trainers/ids',
+  getQuestions: (id: string) => `/vocab-trainers/question/${id}`,
+  submitTest: (id: string) => `/vocab-trainers/test/${id}`,
+  getVocabTrainer: (id: string) => `/vocab-trainers/${id}`,
+  createQuestion: '/vocab-trainers/question'
 }
 
 export const Notification = {
-  getAll: (userId: string) => `/notification/${userId}`,
-  getUnread: (userId: string) => `/notification/unread/${userId}`,
-  markAsRead: '/notification/mark',
-  markAllAsRead: '/notification/mark-all'
+  getAll: `/notifications/my`,
+  getUnread: `/notifications/my/unread`,
+  getUnreadCount: `/notifications/my/unread-count`,
+  markAsRead: (id: string) => `/notifications/${id}/my/mark-as-read`,
+  markAllAsRead: `/notifications/my/mark-all-as-read`,
+  delete: (id: string) => `/notifications/${id}/my`
 }
 
 export const Dashboard = {
-  getPosts: '/vocab'
+  getPosts: '/vocabs'
 }
