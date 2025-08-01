@@ -1,4 +1,4 @@
-import { handleError, redirectToLogin } from '@/utils'
+import { redirectToLogin } from '@/utils'
 import axios, { AxiosError } from 'axios'
 import { postRefreshToken } from './auth/usePostRefreshToken'
 
@@ -10,10 +10,9 @@ export const STATUS_CODES = {
   SERVER_ERROR: 500
 }
 
-export const ACCESSTOKEN = 'accessToken'
 export const API_URL = import.meta.env.VITE_APP_API_URL
 
-//setup axios interceptor
+// ✅ Simplified setup for cookie-based auth
 export const httpClient = axios.create({
   baseURL: API_URL,
   timeout: 30000,
@@ -21,44 +20,44 @@ export const httpClient = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json'
   },
-  withCredentials: true
+  withCredentials: true // Important: automatically sends cookies
 })
 
+// ✅ Simplified request interceptor (or no need)
 httpClient.interceptors.request.use(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (config: any) => {
-    const accessToken = localStorage.getItem(ACCESSTOKEN)
-    if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`
-    }
+  (config) => {
+    // No need to add Authorization header
+    // Browser automatically sends cookies
     return config
   },
-  async (error: AxiosError) => {
-    return Promise.reject({ error })
+  (error: AxiosError) => {
+    return Promise.reject(error)
   }
 )
 
+// ✅ Simplified response interceptor
 httpClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const { response, config: originalRequest } = error
 
-    if (response.status === 401) {
+    if (response?.status === 401) {
       try {
-        const { data } = await postRefreshToken()
-        localStorage.setItem(ACCESSTOKEN, data.accessToken)
-        originalRequest.headers['Authorization'] = `Bearer ${data.accessToken}`
-        return axios(originalRequest)
+        // Call refresh endpoint - browser automatically sends refresh cookie
+        await postRefreshToken()
+        
+        // Retry the original request
+        return httpClient(originalRequest)
       } catch (refreshError) {
         redirectToLogin()
-        return handleError(refreshError)
+        return Promise.reject(refreshError)
       }
     }
 
-    if (response.status === 403) {
+    if (response?.status === 403) {
       redirectToLogin()
     }
 
-    return handleError(error)
+    return Promise.reject(error)
   }
 )

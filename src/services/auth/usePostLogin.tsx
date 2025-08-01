@@ -2,7 +2,7 @@ import { toast } from '@/components/ui/use-toast'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { Auth } from '../endPoints'
-import { ACCESSTOKEN, httpClient } from '../settings'
+import {  httpClient } from '../settings'
 
 export type TPostLoginReq = {
   email: string
@@ -26,16 +26,7 @@ export const usePostLogin = () => {
 
   return useMutation({
     mutationFn: postLogin,
-    onSuccess: ({ data }) => {
-      localStorage.setItem(ACCESSTOKEN, data.accessToken)
-      localStorage.setItem(
-        'userInfo',
-        JSON.stringify({
-          email: data.email,
-          name: data.name,
-          userId: data.userId
-        })
-      )
+    onSuccess: () => {
       navigate('/')
       toast({
         title: 'Success',
