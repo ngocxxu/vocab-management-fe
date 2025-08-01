@@ -10,6 +10,7 @@ import { ComponentType, SVGProps, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useWindowSize } from 'react-use'
 import { menuList } from '../../constants'
+import { TLoginUserRes } from '@/services/auth/usePostLogin'
 
 type TIcon = {
   icon: ComponentType<SVGProps<SVGSVGElement>>
@@ -24,7 +25,19 @@ const Icon = ({ icon: IconComponent, isActive }: TIcon) => (
 
 export const Sidebar = () => {
   const [isCollapseMenu, setCollapseMenu] = useState(false)
-  const [dataInfo, setDataInfo] = useState({ name: '', email: '' })
+  const [dataInfo, setDataInfo] = useState<TLoginUserRes['user']>({
+    id: '',
+    email: '',
+    phone: '',
+    createdAt: '',
+    updatedAt: '',
+    firstName: '',
+    lastName: '',
+    avatar: '',
+    role: '',
+    isActive: false,
+    supabaseUserId: ''
+  })
   const { width } = useWindowSize()
   const { mutate } = usePostLogout()
 
@@ -111,14 +124,14 @@ export const Sidebar = () => {
           <div className="flex items-center gap-2">
             <Avatar>
               <AvatarImage
-                src={`https://i.pravatar.cc/150?img=${dataInfo.name}`}
+                src={`https://i.pravatar.cc/150?img=${dataInfo.firstName}`}
                 alt="avatar"
               />
-              <AvatarFallback>{dataInfo.name[0]}</AvatarFallback>
+              <AvatarFallback>{dataInfo.firstName[0]}</AvatarFallback>
             </Avatar>
             {!isCollapseMenu && (
               <div>
-                <p>{dataInfo.name}</p>
+                <p>{dataInfo.firstName} {dataInfo.lastName}</p>
                 <p className="break-all text-sm font-normal text-gray-vc-600">
                   {dataInfo.email}
                 </p>

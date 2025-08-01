@@ -15,12 +15,13 @@ import { Popover } from '../popover'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { ButtonLib } from '../ui/button'
 import { Separator } from '../ui/separator'
+import { TLoginUserRes } from '@/services/auth/usePostLogin'
 
 const NotificationBody = ({
   dataInfo,
   notifications
 }: {
-  dataInfo: { name: string; email: string; userId: string }
+  dataInfo: TLoginUserRes['user']
   notifications: TNotification[]
 }) => {
   const { mutate: mutatePutMarkAll, isLoading: isLoadingPutMarkAll } =
@@ -57,11 +58,11 @@ const NotificationBody = ({
         <button
           className="flex cursor-pointer items-center gap-1 text-xs text-primary-vc-500"
           onClick={() => {
-            mutatePutMarkAll({ userId: dataInfo.userId })
+            mutatePutMarkAll({ userId: dataInfo.id })
           }}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
-              mutatePutMarkAll({ userId: dataInfo.userId })
+              mutatePutMarkAll({ userId: dataInfo.id })
             }
           }}
         >
@@ -81,7 +82,7 @@ const NotificationBody = ({
                 <div className="flex-none">
                   <Avatar>
                     <AvatarImage
-                      src={`https://i.pravatar.cc/150?img=${item.data.name}`}
+                      src={`https://i.pravatar.cc/150?img=${item.data.firstName}`}
                       alt={item.data.name.toString()[0]}
                     />
                     <AvatarFallback>
@@ -110,7 +111,7 @@ const NotificationBody = ({
                 </div>
 
                 <div className="absolute -right-1.5 -bottom-1.5">
-                  {!item.readBy.find((f) => f.userId === dataInfo.userId)
+                  {!item.readBy.find((f) => f.userId === dataInfo.id)
                     ?.userId && (
                     <IconPointFilled
                       className="text-primary-vc-500"
@@ -133,8 +134,20 @@ const NotificationBody = ({
 }
 
 export const Notification = () => {
-  const [dataInfo, setDataInfo] = useState({ name: '', email: '', userId: '' })
-  const { data: notifications } = useGetAllNotification()
+  const [dataInfo, setDataInfo] = useState<TLoginUserRes['user']>({
+    id: '',
+    email: '',
+    phone: '',
+    createdAt: '',
+    updatedAt: '',
+    firstName: '',
+    lastName: '',
+    avatar: '',
+    role: '',
+    isActive: false,
+    supabaseUserId: ''
+  })
+    const { data: notifications } = useGetAllNotification()
 
   const [open, setOpen] = useState(false)
 
@@ -144,7 +157,7 @@ export const Notification = () => {
         notifications.filter(
           (item) =>
             item.readBy.length > 0 &&
-            item.readBy.find((f) => f.userId === dataInfo.userId)
+            item.readBy.find((f) => f.userId === dataInfo.id)
         ).length === notifications.length
       )
     }

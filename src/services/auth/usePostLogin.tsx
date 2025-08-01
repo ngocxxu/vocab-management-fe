@@ -37,15 +37,12 @@ export const usePostLogin = () => {
   return useMutation({
     mutationFn: postLogin,
     onSuccess: (res) => {
-      // Clear any existing user data
       localStorage.removeItem('userInfo')
       
-      // Store new user info
       localStorage.setItem(
         'userInfo',
         JSON.stringify({
           email: res.data.user.email,
-          name: res.data.user.firstName + ' ' + res.data.user.lastName,
           avatar: res.data.user.avatar,
           role: res.data.user.role,
           firstName: res.data.user.firstName,
