@@ -1,5 +1,5 @@
 import { toast } from '@/components/ui/use-toast'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { Auth } from '../endPoints'
 import { httpClient } from '../settings'
@@ -32,10 +32,15 @@ const postLogin = async (data: TPostLoginReq) => {
 
 export const usePostLogin = () => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: postLogin,
     onSuccess: (res) => {
+      // Clear any existing user data
+      localStorage.removeItem('userInfo')
+      
+      // Store new user info
       localStorage.setItem(
         'userInfo',
         JSON.stringify({
@@ -48,6 +53,9 @@ export const usePostLogin = () => {
           userId: res.data.user.id
         })
       )
+      
+      // Invalidate and refetch current user
+      queryClient.invalidateQueries(['currentUser'])
       
       navigate('/')
       toast({
