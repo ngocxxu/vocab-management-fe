@@ -5,9 +5,9 @@ import { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import {
-  LIMIT_PAGE_10,
+  PAGE_SIZE_10,
   ROUTER_VOCAB_TRAINER,
-  limitData
+  pageSizeData
 } from '../../utils/constants'
 import { TPagination } from '../../utils/types'
 import Select from '../select'
@@ -28,8 +28,8 @@ const Pagination = ({ paginations }: TPaginationProps) => {
   )
   const isURLVocabTrainer =
     pathname === ROUTER_VOCAB_TRAINER && isOpenModalState
-  const limitValue =
-    isURLVocabTrainer ? paginationVocabState.limit : searchParams.get('limit')!
+  const pageSizeValue =
+    isURLVocabTrainer ? paginationVocabState.pageSize : searchParams.get('pageSize')!
 
   const onPageChange = (newPageNumber: number) => {
     isURLVocabTrainer ?
@@ -41,21 +41,21 @@ const Pagination = ({ paginations }: TPaginationProps) => {
       )
     : setSearchParams({
         page: String(newPageNumber),
-        limit: searchParams.get('limit') ?? LIMIT_PAGE_10
+        pageSize: searchParams.get('pageSize') ?? PAGE_SIZE_10
       })
   }
 
-  const onLimitChange = (newLimit: string) => {
+  const onPageSizeChange = (newPageSize: string) => {
     isURLVocabTrainer ?
       dispatch(
         setPaginationVocabState({
           ...paginationVocabState,
-          limit: newLimit
+          pageSize: newPageSize
         })
       )
     : setSearchParams({
         page: '1',
-        limit: newLimit
+        pageSize: newPageSize
       })
   }
 
@@ -95,15 +95,15 @@ const Pagination = ({ paginations }: TPaginationProps) => {
       <div className="flex items-center gap-2 text-xs">
         <p className="whitespace-nowrap">Items per page</p>
         <Select
-          options={limitData}
+          options={pageSizeData}
           onChange={(e: string) => {
-            return onLimitChange(e)
+            return onPageSizeChange(e)
           }}
-          value={limitValue}
+          value={pageSizeValue}
           isSearchable={false}
         />
         <p className="whitespace-nowrap">
-          1-{limitValue} of {totalItems} items
+          1-{pageSizeValue} of {totalItems} items
         </p>
       </div>
       <div className="flex items-center gap-2">

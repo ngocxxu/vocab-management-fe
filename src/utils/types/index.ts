@@ -18,7 +18,7 @@ export type TPagination = {
 
 export type TPage = {
   page: string
-  limit: string
+  pageSize: string
   sortBy?: string
   orderBy?: string
   subjectFilter?: string[]

@@ -1,6 +1,6 @@
 import { TFormInputsFilter } from '@/pages/vocab/components/toolBar'
 import { TVocab } from '@/pages/vocab/types'
-import { LIMIT_PAGE_10, defaultStatus } from '@/utils/constants'
+import { PAGE_SIZE_10, defaultStatus } from '@/utils/constants'
 import { TPage } from '@/utils/types'
 import { createSlice } from '@reduxjs/toolkit'
 
@@ -39,7 +39,7 @@ const initialState: TInitialStateVocab = {
   searchVocab: '',
   paginationVocabState: {
     page: '1',
-    limit: LIMIT_PAGE_10
+    pageSize: PAGE_SIZE_10
   }
 }
 

@@ -1,6 +1,6 @@
 import { statusList } from '@/pages/vocab/constants'
 
-export const LIMIT_PAGE_10 = '10'
+export const PAGE_SIZE_10 = '10'
 export const DEAULT_PAGE = '1'
 export const defaultStatus = [...statusList.map(item => item.value)]
 export const ROUTER_VOCAB_TRAINER = '/vocab-trainer'
@@ -25,7 +25,7 @@ export const colorData = [
   }
 ]
 
-export const limitData = [
+export const pageSizeData = [
   { label: '5', value: '5' },
   { label: '10', value: '10' },
   { label: '15', value: '15' },

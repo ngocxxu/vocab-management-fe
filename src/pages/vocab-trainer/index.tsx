@@ -17,7 +17,7 @@ import { usePostQuestion } from '@/services/vocabTrainer/usePostQuestion'
 import { usePostVocabTrainerModal } from '@/services/vocabTrainer/usePostVocabTrainerModal'
 import { convertOrderBy } from '@/utils'
 import {
-  LIMIT_PAGE_10,
+  PAGE_SIZE_10,
   ROUTER_VOCAB_TRAINER,
   colorData
 } from '@/utils/constants'
@@ -75,7 +75,7 @@ const VocabTrainer = memo(() => {
 
   const { data, isLoading } = useGetAllVocabTrainer({
     page: searchParams.get('page') ?? '1',
-    limit: searchParams.get('limit') ?? LIMIT_PAGE_10,
+    pageSize: searchParams.get('pageSize') ?? PAGE_SIZE_10,
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
     statusFilter: filterData.status ?? [],
@@ -102,7 +102,7 @@ const VocabTrainer = memo(() => {
     if (isURLVocabTrainer) return
     return setSearchParams({
       page: searchParams.get('page') ?? '1',
-      limit: searchParams.get('limit') ?? LIMIT_PAGE_10
+      pageSize: searchParams.get('pageSize') ?? PAGE_SIZE_10
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

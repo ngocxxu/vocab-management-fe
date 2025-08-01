@@ -31,7 +31,7 @@ import { useDeleteVocab } from '../../services/vocab/useDeleteVocab'
 import { useGetAllVocab } from '../../services/vocab/useGetAllVocab'
 import { usePostVocab } from '../../services/vocab/usePostVocab'
 import { usePutVocab } from '../../services/vocab/usePutVocab'
-import { LIMIT_PAGE_10, ROUTER_VOCAB_TRAINER } from '../../utils/constants'
+import { PAGE_SIZE_10, ROUTER_VOCAB_TRAINER } from '../../utils/constants'
 import { IndeterminateCheckbox } from './components/checkbox'
 import { VocabTable } from './components/table/vocabTable'
 import { TVocab } from './types'
@@ -70,10 +70,10 @@ const Vocab = memo(() => {
       isURLVocabTrainer ?
         paginationVocabState.page
       : (searchParams.get('page') ?? '1'),
-    limit:
+    pageSize:
       isURLVocabTrainer ?
-        paginationVocabState.limit
-      : (searchParams.get('limit') ?? LIMIT_PAGE_10),
+        paginationVocabState.pageSize
+      : (searchParams.get('pageSize') ?? PAGE_SIZE_10),
     sortBy: sorting[0]?.id ?? undefined,
     orderBy: convertOrderBy(sorting),
     subjectFilter: filterData.subject?.map((item) => item.label),
@@ -128,7 +128,7 @@ const Vocab = memo(() => {
     if (data?.data && data?.data.length <= 0 && data.currentPage > 1) {
       setSearchParams({
         page: searchParams.get('page') ?? '1',
-        limit: searchParams.get('limit') ?? LIMIT_PAGE_10
+        pageSize: searchParams.get('pageSize') ?? PAGE_SIZE_10
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,7 +138,7 @@ const Vocab = memo(() => {
     if (isURLVocabTrainer) return
     return setSearchParams({
       page: searchParams.get('page') ?? '1',
-      limit: searchParams.get('limit') ?? LIMIT_PAGE_10
+      pageSize: searchParams.get('pageSize') ?? PAGE_SIZE_10
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
