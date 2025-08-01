@@ -1,6 +1,6 @@
 import Header from '@/components/header-2'
-import { useSocket } from '@/hooks/useSocket'
-import { disconnectSocket } from '@/utils/socket'
+import { useSSE } from '@/hooks/useSSE'
+import { disconnectSSE } from '@/utils/sse'
 import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Sidebar } from './components/sidebar'
@@ -9,7 +9,7 @@ import './style.scss'
 const Layout = () => {
   const location = useLocation()
 
-  useSocket()
+  useSSE()
 
   useEffect(() => {
     const currentPath = location.pathname
@@ -24,7 +24,7 @@ const Layout = () => {
   }, [location.pathname])
 
   useEffect(() => {
-    return () => disconnectSocket()
+    return () => disconnectSSE()
   }, [])
 
   return (

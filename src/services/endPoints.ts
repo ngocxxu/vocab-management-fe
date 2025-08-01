@@ -52,3 +52,7 @@ export const Notification = {
 export const Dashboard = {
   getPosts: '/vocabs'
 }
+
+export const SSE = {
+  getEvents: '/sse/events'
+}
