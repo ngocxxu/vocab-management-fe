@@ -24,14 +24,14 @@ import Select from '../../../../components/select'
 import { RootState } from '../../../../redux/store'
 import { TPutVocabs } from '../../../../services/vocab/usePutVocab'
 import { defaultValue, languageList } from '../../constants'
-import { TTextTarget, TVocab } from '../../types'
+import { TCreateVocab, TTextTarget } from '../../types'
 import { TextTargetsForm } from './textTargets'
 
 type TFormVocabProps = {
   idVocab: string
   isEditing: boolean
   onClose: () => void
-  mutate: UseMutateFunction<AxiosResponse, unknown, Omit<TVocab, 'id'>, unknown>
+  mutate: UseMutateFunction<AxiosResponse, unknown, TCreateVocab, unknown>
   mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>
 }
 
@@ -42,22 +42,30 @@ export type TFormInputsVocab = {
   textTargets: TTextTarget[]
 }
 
-const FormSchema = yup.object().shape({
-  sourceLanguageCode: yup.string().required('Source language is required'),
-  targetLanguageCode: yup.string().required('Target language is required'),
-  textSource: yup.string().required('Text source is required'),
-  textTargets: yup.array().of(
-    yup.object().shape({
-      textTarget: yup.string().required('Text target is required'),
-      wordType: yup.object().shape({
-        id: yup.string(),
-        name: yup.string(),
-        description: yup.string()
-      }),
-      textTargetSubjects: yup.array().min(1)
-    })
-  )
-})
+const FormSchema = yup
+  .object()
+  .shape({
+    sourceLanguageCode: yup.string().required('Source language is required'),
+    targetLanguageCode: yup.string().required('Target language is required'),
+    textSource: yup.string().required('Text source is required'),
+    textTargets: yup
+      .array()
+      .of(
+        yup
+          .object()
+          .shape({
+            textTarget: yup.string().required('Text target is required'),
+            wordType: yup
+              .object()
+              .shape({
+                id: yup.string(),
+                name: yup.string(),
+                description: yup.string()
+              }),
+            textTargetSubjects: yup.array().min(1)
+          })
+      )
+  })
 
 const FormVocab = ({
   idVocab,
@@ -70,23 +78,24 @@ const FormVocab = ({
   const [orderTab, setOrderTab] = useState(String(0))
   const { itemVocab } = useSelector((state: RootState) => state.vocabReducer)
 
-
   const defaultValues = useMemo(() => {
     if (itemVocab && isEditing) {
       // Transform backend data to form format if needed
-      const transformedTextTargets = itemVocab.textTargets?.map(textTarget => ({
-        textTarget: textTarget.textTarget,
-        wordType: {
-          id: textTarget.wordType?.id || '',
-          name: textTarget.wordType?.name || '',
-          description: textTarget.wordType?.description || ''
-        },
-        explanationSource: textTarget.explanationSource,
-        explanationTarget: textTarget.explanationTarget,
-        grammar: textTarget.grammar,
-        textTargetSubjects: textTarget.textTargetSubjects || [],
-        vocabExamples: textTarget.vocabExamples
-      })) || [defaultValue]
+      const transformedTextTargets = itemVocab.textTargets?.map(
+        (textTarget) => ({
+          textTarget: textTarget.textTarget,
+          wordType: {
+            id: textTarget.wordType?.id || '',
+            name: textTarget.wordType?.name || '',
+            description: textTarget.wordType?.description || ''
+          },
+          explanationSource: textTarget.explanationSource,
+          explanationTarget: textTarget.explanationTarget,
+          grammar: textTarget.grammar,
+          textTargetSubjects: textTarget.textTargetSubjects || [],
+          vocabExamples: textTarget.vocabExamples
+        })
+      ) || [defaultValue]
 
       return {
         sourceLanguageCode: itemVocab.sourceLanguageCode || 'ko',
@@ -159,25 +168,26 @@ const FormVocab = ({
       textSource: data.textSource,
       sourceLanguageCode: data.sourceLanguageCode,
       targetLanguageCode: data.targetLanguageCode,
-      textTargets: data.textTargets.map(textTarget => ({
+      textTargets: data.textTargets.map((textTarget) => ({
         wordTypeId: textTarget.wordType?.id || '',
         textTarget: textTarget.textTarget,
         grammar: textTarget.grammar,
         explanationSource: textTarget.explanationSource,
         explanationTarget: textTarget.explanationTarget,
-        subjectIds: textTarget.textTargetSubjects?.map(subject => 
-          subject.subject?.id || subject.id
-        ) || [],
+        subjectIds:
+          textTarget.textTargetSubjects?.map(
+            (subject) => subject.subject?.id || subject.id
+          ) || [],
         vocabExamples: textTarget.vocabExamples
       }))
     }
 
     isEditing ?
       mutatePut({
-        data: transformedData as unknown as Omit<TVocab, 'id'>,
+        data: transformedData as unknown as TPutVocabs['data'],
         id: idVocab
       })
-    : mutate(transformedData as unknown as Omit<TVocab, 'id'>)
+    : mutate(transformedData as unknown as TCreateVocab)
     onClose()
   }
 
@@ -185,7 +195,7 @@ const FormVocab = ({
   useEffect(() => {
     if (itemVocab && isEditing) {
       reset({
-        sourceLanguageCode: itemVocab.sourceLanguageCode   || 'ko',
+        sourceLanguageCode: itemVocab.sourceLanguageCode || 'ko',
         targetLanguageCode: itemVocab.targetLanguageCode || 'vi',
         textSource: itemVocab.textSource || '',
         textTargets: itemVocab.textTargets || [defaultValue]
@@ -289,10 +299,7 @@ const FormVocab = ({
           <IconPlus
             className="h-5 w-5 cursor-pointer rounded-full border"
             onClick={() => {
-              append({
-                ...defaultValue,
-                vocabExamples: []
-              })
+              append({ ...defaultValue, vocabExamples: [] })
             }}
           />
         }

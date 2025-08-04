@@ -23,7 +23,7 @@ export const Vocab = {
   create: '/vocabs',
   update: (id: string) => `/vocabs/${id}`,
   delete: (id: string) => `/vocabs/${id}`,
-  bulkCreate: '/vocabs/bulk',
+  bulkCreate: '/vocabs/bulk/create',
   bulkDelete: '/vocabs/bulk/delete',
   random: (count: number) => `/vocabs/random/${count}`
 }

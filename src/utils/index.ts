@@ -71,7 +71,9 @@ export const exportFile = (data: TVocab[], fileName?: string) => {
         .map((ex) => `${ex.source}: ${ex.target}`)
         .join('; '),
       TextTarget_Grammar: target.grammar,
-      TextTarget_Subjects: target.textTargetSubjects.map((sub) => sub.subject.name).join(', ')
+      TextTarget_Subjects: target.textTargetSubjects
+        .map((sub) => sub.subject.name)
+        .join(', ')
     }))
   )
 
@@ -168,15 +170,9 @@ export const importFile = (
         const textTarget: TTextTarget = {
           textTarget: String(row.TextTarget_Text),
           wordType:
-            row.TextTarget_WordType ? {
-              id: '',
-              name: String(row.TextTarget_WordType),
-              description: ''
-            } : {
-              id: '',
-              name: '',
-              description: ''
-            },
+            row.TextTarget_WordType ?
+              { id: '', name: String(row.TextTarget_WordType), description: '' }
+            : { id: '', name: '', description: '' },
           explanationSource:
             row.TextTarget_ExplanationSource ?
               String(row.TextTarget_ExplanationSource)

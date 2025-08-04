@@ -2,7 +2,7 @@ import { AlertDialog } from '@/components/alertDialog'
 import Button from '@/components/button'
 import Table from '@/components/table'
 import { cn } from '@/lib/utils'
-import { TVocab } from '@/pages/vocab/types'
+import { TCreateVocab, TVocab } from '@/pages/vocab/types'
 import { TPutVocabs } from '@/services/vocab/usePutVocab'
 import { ResponseAPI } from '@/utils/types'
 import { IconTrash } from '@tabler/icons-react'
@@ -48,7 +48,7 @@ type TVocabTable = {
   mutatePost: UseMutateFunction<
     AxiosResponse,
     unknown,
-    Omit<TVocab, 'id'>,
+    TCreateVocab,
     unknown
   >
   mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>

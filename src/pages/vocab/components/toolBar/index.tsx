@@ -30,7 +30,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { UseMutateFunction } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { TVocab } from '../../types'
+import { TCreateVocab, TVocab } from '../../types'
 import { Filter } from '../filter'
 import FormVocab from '../form'
 
@@ -38,12 +38,7 @@ type TToolbar = {
   tableData: TVocab[]
   onAddNew: () => void
   idVocab: string
-  mutatePost: UseMutateFunction<
-    AxiosResponse,
-    unknown,
-    Omit<TVocab, 'id'>,
-    unknown
-  >
+  mutatePost: UseMutateFunction<AxiosResponse, unknown, TCreateVocab, unknown>
   mutatePut: UseMutateFunction<AxiosResponse, unknown, TPutVocabs, unknown>
   isEditing: boolean
   openModal: boolean
@@ -52,10 +47,7 @@ type TToolbar = {
   setRowSelection: React.Dispatch<React.SetStateAction<Record<string, never>>>
 }
 
-export type TFormInputsFilter = {
-  status?: string[]
-  subject?: TOption[]
-}
+export type TFormInputsFilter = { status?: string[]; subject?: TOption[] }
 
 export const ToolBar = ({
   tableData,
@@ -85,10 +77,7 @@ export const ToolBar = ({
   const [openUpload, setOpenUpload] = useState(false)
 
   const methods = useForm<TFormInputsFilter>({
-    defaultValues: {
-      subject: filterData.subject,
-      status: filterData.status
-    }
+    defaultValues: { subject: filterData.subject, status: filterData.status }
   })
 
   const onSubmit: SubmitHandler<TFormInputsFilter> = (data) => {

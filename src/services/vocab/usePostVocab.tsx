@@ -1,11 +1,11 @@
 import { useToast } from '@/components/ui/use-toast'
-import { TVocab } from '@/pages/vocab/types'
+import { TCreateVocab } from '@/pages/vocab/types'
 import { useMutation, useQueryClient } from 'react-query'
-import { httpClient } from '../settings'
 import { Vocab } from '../endPoints'
+import { httpClient } from '../settings'
 import { VOCAB_KEYS } from './queryKeys'
 
-const postVocab = async (data: Omit<TVocab, 'id'>) => {
+const postVocab = async (data: TCreateVocab) => {
   const res = await httpClient.post(Vocab.create, data)
   return res
 }
@@ -15,13 +15,10 @@ export const usePostVocab = () => {
   const client = useQueryClient()
 
   return useMutation({
-    mutationFn: (data: Omit<TVocab, 'id'>) => postVocab(data),
+    mutationFn: (data: TCreateVocab) => postVocab(data),
     onSuccess: () => {
       client.invalidateQueries([VOCAB_KEYS.GET_VOCAB])
-      toast({
-        title: 'Success',
-        description: 'Created successfully'
-      })
-    },
+      toast({ title: 'Success', description: 'Created successfully' })
+    }
   })
 }
