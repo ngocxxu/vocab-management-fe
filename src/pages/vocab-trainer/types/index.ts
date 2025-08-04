@@ -1,51 +1,64 @@
+import { TVocab } from '@/pages/vocab/types'
 import { TOption } from '@/utils/types'
-import { EVocabTrainerType } from '../enum'
+import { EQuestionType, EVocabTrainerType } from '../enum'
 
 export type TVocabTrainer = {
   id: string
-  nameTest: string
-  statusTest: string
-  duration: string
-  updatedAt: string
+  name: string
+  status: string
+  questionType: EQuestionType
+  reminderTime: number
   countTime: number
   setCountTime: number
-  wordResults: TWordResults[]
+  reminderDisabled: boolean
+  reminderRepeat: number
+  reminderLastRemind: string
+  userId: string
+  vocabAssignments: TVocabAssignment[]
+  results: TWordResults[]
+  questions: TQuestion[]
+}
+
+export type TVocabAssignment = {
+  id: string
+  vocabTrainerId: string
+  vocabId: string
+  vocab: TVocab
 }
 
 export type TWordResults = {
-  userSelect: string
-  systemSelect: string
-  status: string
-}
-
-export type TFormInputsVocabTrainer = {
-  nameTest: string
-  wordSelects: string[]
-  setCountTime: number
-}
-
-export type TWordTestSelect = {
-  idWord: string
-  userSelect?: string
-  type?: EVocabTrainerType
-}
-
-export type TFormTestVocabTrainer = {
   id: string
-  duration: number
-  wordTestSelects: TWordTestSelect[]
-}
-
-export type TQuestionAPI = {
-  nameTest: string
-  setCountTime: number
-  questions: TQuestion[]
+  vocabTrainerId: string
+  status: string
+  userSelected: string
+  systemSelected: string
 }
 
 export type TQuestion = {
   content: string[]
   options: TOption[]
-  order: number
-  randomOrder: number
   type: EVocabTrainerType
+}
+
+export type TFormInputsVocabTrainer = {
+  name: string
+  wordTestSelects: string[]
+  setCountTime: number
+}
+
+export type TWordTestSelect = {
+  vocabId: string
+  userSelect: string
+}
+
+export type TFormTestVocabTrainer = {
+  id: string
+  countTime: number
+  wordTestSelects: TWordTestSelect[]
+}
+
+export type TQuestionAPI = {
+  name: string
+  setCountTime: number
+  questions: TQuestion[]
 }
