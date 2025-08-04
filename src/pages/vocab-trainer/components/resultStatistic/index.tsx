@@ -20,6 +20,7 @@ import { DEFAULT_COUNTDOWN } from '@/utils/constants'
 import { CircleProgress } from '../circleProgress'
 import { DetailTable } from '../detailTable'
 import { LineProgressBar } from '../lineProgressBar'
+import { EVocabTrainerStatus } from '../../enum'
 
 const ResultStatistic = memo(() => {
   const navigate = useNavigate()
@@ -33,9 +34,9 @@ const ResultStatistic = memo(() => {
     isError
   } = usePostQuestion()
 
-  const isPassed = data?.status === 'Passed'
+  const isPassed = data?.status === EVocabTrainerStatus.PASSED
   const countPassed = data?.results.filter(
-    (item) => item.status === 'Passed'
+    (item) => item.status === EVocabTrainerStatus.PASSED
   ).length
 
   const calPercent = useMemo(() => {

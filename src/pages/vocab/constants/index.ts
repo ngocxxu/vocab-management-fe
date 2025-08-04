@@ -1,3 +1,5 @@
+import { EQuestionType, EVocabTrainerStatus } from '@/pages/vocab-trainer/enum'
+
 export const languageList = [
   { label: 'Korean', value: 'ko' },
   { label: 'Vietnamese', value: 'vi' },
@@ -77,29 +79,23 @@ export const subjectList = [
 
 export const defaultValue = {
   textTarget: '',
-  wordType: {
-    id: '',
-    name: '',
-    description: ''
-  },
+  wordType: { id: '', name: '', description: '' },
   explanationSource: '',
   explanationTarget: '',
   grammar: '',
-  textTargetSubjects: [
-  ]
+  textTargetSubjects: []
 }
 
 export const statusList = [
-  {
-    label: 'Pending',
-    value: 'Pending'
-  },
-  {
-    label: 'Passed',
-    value: 'Passed'
-  },
-  {
-    label: 'Failed',
-    value: 'Failed'
-  }
+  { label: EVocabTrainerStatus.PENDING, value: EVocabTrainerStatus.PENDING },
+  { label: EVocabTrainerStatus.PASSED, value: EVocabTrainerStatus.PASSED },
+  { label: EVocabTrainerStatus.FAILED, value: EVocabTrainerStatus.FAILED }
+]
+
+export const questionTypeList = [
+  { label: EQuestionType.MULTIPLE_CHOICE, value: EQuestionType.MULTIPLE_CHOICE },
+  { label: EQuestionType.FILL_IN_THE_BLANK, value: EQuestionType.FILL_IN_THE_BLANK },
+  { label: EQuestionType.MATCHING, value: EQuestionType.MATCHING },
+  { label: EQuestionType.TRUE_OR_FALSE, value: EQuestionType.TRUE_OR_FALSE },
+  { label: EQuestionType.SHORT_ANSWER, value: EQuestionType.SHORT_ANSWER }
 ]

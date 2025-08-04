@@ -1,11 +1,11 @@
 import { TVocab } from '@/pages/vocab/types'
 import { useQuery } from 'react-query'
-import { ResponseAPI, TPage } from '../../utils/types'
-import { httpClient } from '../settings'
+import { ResponseAPI, TVocabQuery } from '../../utils/types'
 import { Vocab } from '../endPoints'
+import { httpClient } from '../settings'
 import { VOCAB_KEYS } from './queryKeys'
 
-const getAllVocab = async (pageOptions: TPage) => {
+const getAllVocab = async (pageOptions: TVocabQuery) => {
   const params = new URLSearchParams()
 
   Object.entries(pageOptions).map(([key, value]) => {
@@ -28,7 +28,7 @@ const getAllVocab = async (pageOptions: TPage) => {
   return data
 }
 
-export const useGetAllVocab = (pageOptions: TPage) => {
+export const useGetAllVocab = (pageOptions: TVocabQuery) => {
   return useQuery({
     queryKey: [VOCAB_KEYS.GET_VOCAB, pageOptions],
     queryFn: () => getAllVocab(pageOptions)

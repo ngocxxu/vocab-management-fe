@@ -6,8 +6,8 @@ import { Popover } from '@/components/popover'
 import { SearchBar } from '@/components/searchBar'
 import { ButtonLib } from '@/components/ui/button'
 import { Filter } from '@/pages/vocab/components/filter'
-import { setSearchVocabState } from '@/redux/reducer/vocab'
 import {
+  setSearchVocabTrainerState,
   resetFilterVocabTrainerState,
   setFilterVocabTrainerState,
   setOpenModalState
@@ -38,7 +38,7 @@ type TToolbar = {
   isLoadingPost: boolean
 }
 
-export type TFormInputsFilter = { status?: string[] }
+export type TFormInputsFilter = { status?: string[]; questionType?: string[] }
 
 export const ToolBar = ({
   mutatePost,
@@ -57,13 +57,14 @@ export const ToolBar = ({
   const isClear =
     searchVocabTrainer ||
     counts > 0 ||
-    (filterData.status && filterData.status?.length < 3)
+    (filterData.status && filterData.status?.length < 3) ||
+    (filterData.questionType && filterData.questionType?.length < 3)
 
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
 
   const methods = useForm<TFormInputsFilter>({
-    defaultValues: { status: filterData.status }
+    defaultValues: { status: filterData.status, questionType: filterData.questionType }
   })
 
   const onSubmit: SubmitHandler<TFormInputsFilter> = (data) => {
@@ -82,6 +83,7 @@ export const ToolBar = ({
               setRowSelection({})
               dispatch(resetFilterVocabTrainerState())
               methods.setValue('status', defaultStatus)
+              methods.setValue('questionType', [])
             }}
           >
             <IconFilterRemove /> Clear all
@@ -99,7 +101,9 @@ export const ToolBar = ({
           }
           body={
             <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Filter onClose={() => setOpen(false)} />
+              <Filter
+                onClose={() => setOpen(false)}
+              />
             </form>
           }
           className="w-80"
@@ -107,7 +111,7 @@ export const ToolBar = ({
       </FormProvider>
       <SearchBar
         defaultValue={searchVocabTrainer}
-        onSearch={(input) => dispatch(setSearchVocabState(input))}
+        onSearch={(input) => dispatch(setSearchVocabTrainerState(input))}
       />
 
       <Modal

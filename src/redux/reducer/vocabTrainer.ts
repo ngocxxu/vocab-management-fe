@@ -1,5 +1,5 @@
 import { TFormInputsFilter } from '@/pages/vocab-trainer/components/toolBar'
-import { EVocabTrainerType } from '@/pages/vocab-trainer/enum'
+import { EQuestionType } from '@/pages/vocab-trainer/enum'
 import { TVocabTrainer } from '@/pages/vocab-trainer/types'
 import { DEFAULT_COUNTDOWN, defaultStatus } from '@/utils/constants'
 import { createSlice } from '@reduxjs/toolkit'
@@ -21,7 +21,7 @@ const initialState: TInitialStateVocabTrainer = {
     id: '',
     name: '',
     status: '',
-    questionType: EVocabTrainerType.SOURCE,
+    questionType: EQuestionType.MULTIPLE_CHOICE,
     reminderTime: 0,
     countTime: 0,
     setCountTime: DEFAULT_COUNTDOWN,
@@ -31,7 +31,9 @@ const initialState: TInitialStateVocabTrainer = {
     userId: '',
     vocabAssignments: [],
     results: [],
-    questions: []
+    questions: [],
+    createdAt: '',
+    updatedAt: ''
   },
   searchVocabTrainer: '',
   orderQuestion: 1,
@@ -51,7 +53,7 @@ const vocabTrainerReducer = createSlice({
     setItemVocabTrainerState(state, action) {
       state.itemVocabTrainer = action.payload
     },
-    setSearchVocabState(state, action) {
+    setSearchVocabTrainerState(state, action) {
       state.searchVocabTrainer = action.payload
     },
     setFilterVocabTrainerState(state, action) {
@@ -71,7 +73,7 @@ export const {
   setRowSelectionState,
   setOpenModalState,
   setItemVocabTrainerState,
-  setSearchVocabState,
+  setSearchVocabTrainerState,
   setFilterVocabTrainerState,
   resetFilterVocabTrainerState,
   setOrderQuestion

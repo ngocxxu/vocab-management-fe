@@ -36,6 +36,7 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import { IndeterminateCheckbox } from '../vocab/components/checkbox'
 import { DetailTable } from './components/detailTable'
 import { ToolBar } from './components/toolBar'
+import { EQuestionType, EVocabTrainerStatus } from './enum'
 import { TVocabTrainer } from './types'
 
 const VocabTrainer = memo(() => {
@@ -67,16 +68,17 @@ const VocabTrainer = memo(() => {
     usePostQuestion()
 
   const counts = Object.keys(rowSelection).length
-  const { isOpenModalState, searchVocabTrainer, filterData, itemVocabTrainer } =
+  const { isOpenModalState, filterData, itemVocabTrainer, searchVocabTrainer } =
     useSelector((state: RootState) => state.vocabTrainerReducer)
 
   const { data, isLoading } = useGetAllVocabTrainer({
     page: searchParams.get('page') ?? '1',
     pageSize: searchParams.get('pageSize') ?? PAGE_SIZE_10,
     sortBy: sorting[0]?.id ?? undefined,
-    orderBy: convertOrderBy(sorting),
-    statusFilter: filterData.status ?? [],
-    search: searchVocabTrainer || undefined
+    sortOrder: convertOrderBy(sorting),
+    status: filterData.status as unknown as EVocabTrainerStatus,
+    questionType: filterData.questionType as unknown as EQuestionType,
+    name: searchVocabTrainer.trim()
   })
   const isURLVocabTrainer =
     pathname === ROUTER_VOCAB_TRAINER && isOpenModalState

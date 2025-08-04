@@ -46,7 +46,7 @@ const Vocab = memo(() => {
   const { mutate: mutatePost, isLoading: isLoadingPost } = usePostVocab()
   const { mutate: mutatePut, isLoading: isLoadingPut } = usePutVocab()
   const { mutate: mutateRandom, isLoading: isLoadingRandom } = useRandomVocab({
-    onSuccess: ({ items }) => handleResultRandom(items)
+    onSuccess: (items) => handleResultRandom(items)
   })
   const dispatch = useDispatch()
   const { idsState, itemVocab, filterData, searchVocab, paginationVocabState } =
@@ -75,9 +75,9 @@ const Vocab = memo(() => {
         paginationVocabState.pageSize
       : (searchParams.get('pageSize') ?? PAGE_SIZE_10),
     sortBy: sorting[0]?.id ?? undefined,
-    orderBy: convertOrderBy(sorting),
-    subjectFilter: filterData.subject?.map((item) => item.label),
-    search: searchVocab || undefined
+    sortOrder: convertOrderBy(sorting),
+    subjectIds: filterData.subject?.map((item) => item.label),
+    textSource: searchVocab || undefined
   })
 
   const isLoadingAPI =
@@ -105,18 +105,18 @@ const Vocab = memo(() => {
   const handleResultRandom = (data: TVocab[]) => {
     setRandomData(data)
 
-    const ids = data.map((item) => item.id)
-    const shuffledIds = [...ids].sort(() => 0.5 - Math.random())
-    const random = shuffledIds.slice(0, amountRandom)
+    // const ids = data.map((item) => item.id)
+    // const shuffledIds = [...ids].sort(() => 0.5 - Math.random())
+    // const random = shuffledIds.slice(0, amountRandom)
 
-    const result = random.reduce<{ [key: string]: boolean }>((obj, key) => {
-      obj[key] = true
-      return obj
-    }, {})
+    // const result = random.reduce<{ [key: string]: boolean }>((obj, key) => {
+    //   obj[key] = true
+    //   return obj
+    // }, {})
 
-    if (result) {
-      setRowSelection(result)
-    }
+    // if (result) {
+    //   setRowSelection(result)
+    // }
   }
   const handleRandom = () => {
     mutateRandom(amountRandom)
@@ -182,13 +182,7 @@ const Vocab = memo(() => {
         cell: ({ row, getValue }) => (
           <button
             className="w-full cursor-pointer"
-            onClick={() =>
-              dispatch(
-                toggleState({
-                  id: row.original.id
-                })
-              )
-            }
+            onClick={() => dispatch(toggleState({ id: row.original.id }))}
           >
             <div className="flex items-center">
               <p className="font-semibold">{String(getValue())}</p>
@@ -209,13 +203,7 @@ const Vocab = memo(() => {
           <div
             ref={refDiv}
             className="flex cursor-pointer items-center justify-between break-all"
-            onClick={() =>
-              dispatch(
-                toggleState({
-                  id: row.original.id
-                })
-              )
-            }
+            onClick={() => dispatch(toggleState({ id: row.original.id }))}
           >
             <div className="flex gap-1">
               {row.original.textTargets.map((item, index) => {
@@ -298,14 +286,8 @@ const Vocab = memo(() => {
       : <Tabs
           className="mt-4"
           head={[
-            {
-              content: 'Vocabulary',
-              value: 'vocabulary'
-            },
-            {
-              content: 'Random',
-              value: 'random'
-            }
+            { content: 'Vocabulary', value: 'vocabulary' },
+            { content: 'Random', value: 'random' }
           ]}
           body={[
             {
@@ -370,9 +352,7 @@ const Vocab = memo(() => {
                           state: {
                             rowSelection,
                             sorting,
-                            columnVisibility: {
-                              action: false
-                            }
+                            columnVisibility: { action: false }
                           },
                           getSortedRowModel: getSortedRowModel(),
                           getCoreRowModel: getCoreRowModel(),
