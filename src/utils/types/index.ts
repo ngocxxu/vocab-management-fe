@@ -44,3 +44,9 @@ export type TMutationConfig<MutationFnType extends (...args: any) => any> =
     AxiosError,
     Parameters<MutationFnType>[0]
   >
+
+export enum EUserRole {
+  ADMIN = 'ADMIN',
+  STAFF = 'STAFF',
+  CUSTOMER = 'CUSTOMER'
+}

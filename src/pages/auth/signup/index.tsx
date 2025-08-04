@@ -6,6 +6,7 @@ import { InputLib } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
 import { Separator } from '@/components/ui/separator'
 import { useAuth } from '@/hooks/useAuth'
+import { EUserRole } from '@/utils/types'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Controller, Resolver, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -13,36 +14,58 @@ import * as yup from 'yup'
 import Logo from '../../../assets/img/logo.jpg'
 
 type TFormSignup = {
-  name: string
   email: string
   password: string
+  firstName: string
+  lastName: string
+  phone: string
+  avatar: string
+  role: string
 }
 
-const FormSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  email: yup
-    .string()
-    .required('Email is required')
-    .email('Invalid email format'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(6, 'Password must be at least 6 characters long')
-    .max(128, 'Password must not exceed 128 characters')
-})
+const FormSchema = yup
+  .object()
+  .shape({
+    email: yup
+      .string()
+      .required('Email is required')
+      .email('Invalid email format'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(6, 'Password must be at least 6 characters long')
+      .max(128, 'Password must not exceed 128 characters'),
+    firstName: yup.string().required('First name is required'),
+    lastName: yup.string().required('Last name is required'),
+    phone: yup.string(),
+    avatar: yup.string().required('Avatar is required'),
+    role: yup.string().required('Role is required')
+  })
 
 const Signup = () => {
   const { signup } = useAuth()
-  const { handleSubmit, control,  } = useForm<TFormSignup>({
+  const { handleSubmit, control } = useForm<TFormSignup>({
     defaultValues: {
-      name: '',
       email: '',
-      password: ''
+      password: '',
+      firstName: '',
+      lastName: '',
+      phone: '',
+      avatar: 'https://i.pravatar.cc/300?img=test',
+      role: EUserRole.STAFF
     },
     resolver: yupResolver(FormSchema) as unknown as Resolver<TFormSignup>
   })
   const onSubmit = (formData: TFormSignup) => {
-    signup(formData)
+    // Convert empty strings to undefined
+    const processedData = Object.fromEntries(
+      Object.entries(formData).map(([key, value]) => [
+        key,
+        value === '' ? undefined : value
+      ])
+    ) as TFormSignup
+
+    signup(processedData)
   }
 
   return (
@@ -59,21 +82,39 @@ const Signup = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="name"
-          control={control}
-          render={({ field, fieldState }) => (
-            <div className="mb-4">
-              <InputLib
-                className="border-0"
-                type="text"
-                placeholder="Your name"
-                {...field}
-              />
-              <ErrorMessage message={fieldState.error?.message || ''} />
-            </div>
-          )}
-        />
+        <div className="flex flex-row justify-between gap-4">
+          <Controller
+            name="firstName"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="mb-4 w-full">
+                <InputLib
+                  className="border-0"
+                  type="text"
+                  placeholder="First name"
+                  {...field}
+                />
+                <ErrorMessage message={fieldState.error?.message || ''} />
+              </div>
+            )}
+          />
+
+          <Controller
+            name="lastName"
+            control={control}
+            render={({ field, fieldState }) => (
+              <div className="mb-4 w-full">
+                <InputLib
+                  className="border-0"
+                  type="text"
+                  placeholder="Last name"
+                  {...field}
+                />
+                <ErrorMessage message={fieldState.error?.message || ''} />
+              </div>
+            )}
+          />
+        </div>
 
         <Controller
           name="email"
@@ -98,11 +139,27 @@ const Signup = () => {
             <>
               <PasswordInput
                 placeholder="Password"
-                className="mt-4 border-0"
+                className="mb-4 border-0"
                 {...field}
               />
               <ErrorMessage message={fieldState.error?.message || ''} />
             </>
+          )}
+        />
+
+        <Controller
+          name="phone"
+          control={control}
+          render={({ field, fieldState }) => (
+            <div className="mb-4">
+              <InputLib
+                className="border-0"
+                type="number"
+                placeholder="Phone"
+                {...field}
+              />
+              <ErrorMessage message={fieldState.error?.message || ''} />
+            </div>
           )}
         />
 

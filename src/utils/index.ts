@@ -64,7 +64,7 @@ export const exportFile = (data: TVocab[], fileName?: string) => {
       TargetLanguage: item.targetLanguageCode,
       TextSource: item.textSource,
       TextTarget_Text: target.textTarget,
-      TextTarget_WordType: target.wordType,
+      TextTarget_WordType: target.wordType.name,
       TextTarget_ExplanationSource: target.explanationSource,
       TextTarget_ExplanationTarget: target.explanationTarget,
       TextTarget_Examples: target.vocabExamples

@@ -7,6 +7,11 @@ import { httpClient } from '../settings'
 export type TPostSignupReq = {
   email: string
   password: string
+  firstName: string
+  lastName: string
+  phone?: string
+  avatar: string
+  role: string
 }
 
 const postSignup = async (data: TPostSignupReq) => {
