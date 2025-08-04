@@ -17,11 +17,14 @@ const QuestionList = memo(({ data, countQuestions }: TQuestionListProps) => {
       Question list
       <div className="mt-3 rounded-md bg-popover p-4">
         {data &&
-          data.questions.map((item) => (
+          data.questions.map((_, index) => {
+            const order = index + 1
+            const isDisabled = order > countQuestions
+            return (
             <Button
               type="button"
-              disabled={item.order > countQuestions}
-              key={item.order}
+              disabled={isDisabled}
+              key={order}
               className="mb-2 w-full bg-primary-foreground font-semibold shadow-none"
               variant="outline"
               leftIcon={
@@ -32,12 +35,12 @@ const QuestionList = memo(({ data, countQuestions }: TQuestionListProps) => {
                   fill="hsl(var(--success))"
                 />
               }
-              title={`Question ${item.order}`}
+              title={`Question ${order}`}
               onClick={() => {
-                dispatch(setOrderQuestion(item.order))
+                dispatch(setOrderQuestion(order))
               }}
             />
-          ))}
+          )})}
       </div>
     </div>
   )

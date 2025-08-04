@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { UseMutateFunction } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
-import { EVocabTrainerType } from '../../enum'
+import { EQuestionType, EVocabTrainerType } from '../../enum'
 import { TFormTestVocabTrainer, TQuestionAPI } from '../../types'
 
 type TFormChoice = { wordTestSelects: { idWord: string }[] }
@@ -42,9 +42,7 @@ export const Choice = ({
   const { questions, setCountTime } = data
   const dispatch = useDispatch()
   const form = useForm<TFormChoice>({
-    defaultValues: {
-      wordTestSelects: [{ idWord: '' }]
-    }
+    defaultValues: { wordTestSelects: [{ idWord: '' }] }
   })
   const { orderQuestion } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
@@ -73,20 +71,23 @@ export const Choice = ({
     const newArr = formData.wordTestSelects.map((item, index) => ({
       ...item,
 
-      userSelect: questions?.[index].options.find(
+      userSelected: questions?.[index].options.find(
         (item2) => item2.value === item.idWord
       )?.label,
       type:
         questions?.[index].type === EVocabTrainerType.SOURCE ?
           EVocabTrainerType.SOURCE
         : EVocabTrainerType.TARGET,
-      randomOrder: questions?.[index].randomOrder
     }))
 
     mutateQuestion({
       id: localStorage.getItem('examId') ?? '',
-      duration: setCountTime - countdown,
-      wordTestSelects: newArr
+      countTime: setCountTime - countdown,
+      wordTestSelects: newArr.map((item) => ({
+        vocabId: item.idWord,
+        userSelected: item.userSelected ?? ''
+      })),
+      questionType: EQuestionType.MULTIPLE_CHOICE
     })
 
     setIsSubmitting(false)

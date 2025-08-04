@@ -54,10 +54,7 @@ const VocabTrainer = memo(() => {
     usePostVocabTrainerModal({
       onSuccess: () => {
         client.invalidateQueries([VOCAB_TRAINER_KEYS.GET_ALL_VOCAB_TRAINER])
-        toast({
-          title: 'Success',
-          description: 'Created successfully'
-        })
+        toast({ title: 'Success', description: 'Created successfully' })
         setOpenModal(false)
       }
     })
@@ -133,12 +130,9 @@ const VocabTrainer = memo(() => {
           />
         )
       },
+      { accessorKey: 'name', header: 'Name' },
       {
-        accessorKey: 'nameTest',
-        header: 'Name'
-      },
-      {
-        accessorKey: 'statusTest',
+        accessorKey: 'status',
         header: 'Status',
         cell: ({ getValue }) => {
           const findColor = colorData.find((item) => item.status === getValue())
@@ -156,14 +150,11 @@ const VocabTrainer = memo(() => {
         }
       },
       {
-        accessorKey: 'duration',
-        header: 'Duration',
+        accessorKey: 'countTime',
+        header: 'Count Time',
         cell: ({ getValue }) => getValue() + 's'
       },
-      {
-        accessorKey: 'countTime',
-        header: 'Count'
-      },
+      { accessorKey: 'setCountTime', header: 'Set Count Time' },
       {
         accessorKey: 'updatedAt',
         header: 'Updated Date',
@@ -285,10 +276,7 @@ const VocabTrainer = memo(() => {
         options={{
           data: data?.items ?? [],
           columns: columns,
-          state: {
-            rowSelection,
-            sorting
-          },
+          state: { rowSelection, sorting },
           getSortedRowModel: getSortedRowModel(),
           getCoreRowModel: getCoreRowModel(),
           onRowSelectionChange: setRowSelection,
@@ -301,7 +289,7 @@ const VocabTrainer = memo(() => {
         description="Here are details about your test results latest."
         open={openDetailModal}
         onOpenChange={setOpenDetailModal}
-        body={<DetailTable data={itemVocabTrainer.wordResults} />}
+        body={<DetailTable data={itemVocabTrainer.results} />}
         className="!max-h-[85vh] w-full max-w-[100vh] overflow-x-auto"
       />
     </HeaderTable>

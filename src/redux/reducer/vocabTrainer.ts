@@ -1,4 +1,5 @@
 import { TFormInputsFilter } from '@/pages/vocab-trainer/components/toolBar'
+import { EVocabTrainerType } from '@/pages/vocab-trainer/enum'
 import { TVocabTrainer } from '@/pages/vocab-trainer/types'
 import { DEFAULT_COUNTDOWN, defaultStatus } from '@/utils/constants'
 import { createSlice } from '@reduxjs/toolkit'
@@ -18,19 +19,23 @@ const initialState: TInitialStateVocabTrainer = {
   isOpenModalState: false,
   itemVocabTrainer: {
     id: '',
-    nameTest: '',
-    statusTest: '',
-    duration: '',
-    updatedAt: '',
+    name: '',
+    status: '',
+    questionType: EVocabTrainerType.SOURCE,
+    reminderTime: 0,
     countTime: 0,
     setCountTime: DEFAULT_COUNTDOWN,
-    wordResults: []
+    reminderDisabled: false,
+    reminderRepeat: 0,
+    reminderLastRemind: '',
+    userId: '',
+    vocabAssignments: [],
+    results: [],
+    questions: []
   },
   searchVocabTrainer: '',
   orderQuestion: 1,
-  filterData: {
-    status: defaultStatus
-  }
+  filterData: { status: defaultStatus }
 }
 
 const vocabTrainerReducer = createSlice({
@@ -54,9 +59,7 @@ const vocabTrainerReducer = createSlice({
     },
     resetFilterVocabTrainerState(state) {
       state.searchVocabTrainer = ''
-      state.filterData = {
-        status: defaultStatus
-      }
+      state.filterData = { status: defaultStatus }
     },
     setOrderQuestion(state, action) {
       state.orderQuestion = action.payload

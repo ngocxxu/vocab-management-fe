@@ -46,13 +46,11 @@ export type TFormInputsVocabTrainer = {
   setCountTime: number
 }
 
-export type TWordTestSelect = {
-  vocabId: string
-  userSelect: string
-}
+export type TWordTestSelect = { vocabId: string; userSelected: string }
 
 export type TFormTestVocabTrainer = {
   id: string
+  questionType: EQuestionType
   countTime: number
   wordTestSelects: TWordTestSelect[]
 }

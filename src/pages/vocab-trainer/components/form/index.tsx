@@ -24,16 +24,22 @@ type TFormVocabTrainerProps = {
     unknown,
     TFormInputsVocabTrainer,
     unknown
-  >,
+  >
   isLoading: boolean
 }
 
-const FormSchema = yup.object().shape({
-  nameTest: yup.string().required('Name is required'),
-  setCountTime: yup.number().required('Countdown is required')
-})
+const FormSchema = yup
+  .object()
+  .shape({
+    name: yup.string().required('Name is required'),
+    setCountTime: yup.number().required('Countdown is required')
+  })
 
-const FormVocabTrainer = ({ mutate, onClose,isLoading }: TFormVocabTrainerProps) => {
+const FormVocabTrainer = ({
+  mutate,
+  onClose,
+  isLoading
+}: TFormVocabTrainerProps) => {
   const { rowSelectionState } = useSelector(
     (state: RootState) => state.vocabTrainerReducer
   )
@@ -47,16 +53,14 @@ const FormVocabTrainer = ({ mutate, onClose,isLoading }: TFormVocabTrainerProps)
 
   const { handleSubmit, control, watch, setValue } =
     useForm<TFormInputsVocabTrainer>({
-      defaultValues: {
-        nameTest: '',
-        setCountTime: DEFAULT_COUNTTIME_MINS
-      },
+      defaultValues: { name: '', setCountTime: DEFAULT_COUNTTIME_MINS },
       resolver: yupResolver(
         FormSchema
       ) as unknown as Resolver<TFormInputsVocabTrainer>
     })
 
-  const isDisabled = watch('nameTest').length === 0 || counts < MINIMUM_WORD || isLoading
+  const isDisabled =
+    watch('name').length === 0 || counts < MINIMUM_WORD || isLoading
 
   const onSubmit: SubmitHandler<TFormInputsVocabTrainer> = (formData) => {
     mutate({
@@ -81,7 +85,7 @@ const FormVocabTrainer = ({ mutate, onClose,isLoading }: TFormVocabTrainerProps)
       <div className="flex gap-2">
         <div className="flex-1">
           <Controller
-            name="nameTest"
+            name="name"
             control={control}
             render={({ field }) => (
               <Input

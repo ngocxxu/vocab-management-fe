@@ -5,26 +5,20 @@ import { ColumnDef, getCoreRowModel } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { TWordResults } from '../../types'
 
-type TDetailTable = {
-  data: TWordResults[]
-}
+type TDetailTable = { data: TWordResults[] }
 
 export const DetailTable = ({ data }: TDetailTable) => {
   const columns = useMemo<ColumnDef<TWordResults>[]>(
     () => [
+      { id: 'numberColumn', cell: ({ row }) => row.index + 1, size: 0 },
       {
-        id: 'numberColumn',
-        cell: ({ row }) => row.index + 1,
-        size: 0
-      },
-      {
-        accessorKey: 'systemSelect',
+        accessorKey: 'systemSelected',
         header: 'Correct Answer',
         size: 300,
         enableSorting: false
       },
       {
-        accessorKey: 'userSelect',
+        accessorKey: 'userSelected',
         header: 'Your Answer',
         size: 300,
         enableSorting: false
@@ -36,8 +30,8 @@ export const DetailTable = ({ data }: TDetailTable) => {
           const findColor = colorData.find((item) => item.status === getValue())
           return (
             <Badge
-            className="w-[4rem]"
-            style={{
+              className="w-[4rem]"
+              style={{
                 backgroundColor: findColor?.background,
                 color: findColor?.text
               }}
@@ -53,12 +47,6 @@ export const DetailTable = ({ data }: TDetailTable) => {
   )
 
   return (
-    <Table
-      options={{
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel()
-      }}
-    />
+    <Table options={{ data, columns, getCoreRowModel: getCoreRowModel() }} />
   )
 }

@@ -24,7 +24,7 @@ export const Vocab = {
   update: (id: string) => `/vocabs/${id}`,
   delete: (id: string) => `/vocabs/${id}`,
   bulkCreate: '/vocabs/bulk',
-  bulkDelete: '/vocabs/ids',
+  bulkDelete: '/vocabs/bulk/delete',
   random: (count: number) => `/vocabs/random/${count}`
 }
 
@@ -40,11 +40,10 @@ export const VocabTrainer = {
   getAll: '/vocab-trainers',
   create: '/vocab-trainers',
   delete: (id: string) => `/vocab-trainers/${id}`,
-  bulkDelete: '/vocab-trainers/ids',
-  getQuestions: (id: string) => `/vocab-trainers/question/${id}`,
-  submitTest: (id: string) => `/vocab-trainers/test/${id}`,
-  getVocabTrainer: (id: string) => `/vocab-trainers/${id}`,
-  createQuestion: '/vocab-trainers/question'
+  bulkDelete: '/vocab-trainers/bulk/delete',
+  getQuestions: (id: string) => `/vocab-trainers/${id}/exam`,
+  submitTest: (id: string) => `/vocab-trainers/${id}/exam`,
+  getVocabTrainer: (id: string) => `/vocab-trainers/${id}`
 }
 
 export const Notification = {

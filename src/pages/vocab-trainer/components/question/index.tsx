@@ -24,7 +24,7 @@ const Question = memo(() => {
   const [data, setData] = useState<TQuestionAPI>({
     setCountTime: DEFAULT_COUNTDOWN,
     questions: [],
-    nameTest: ''
+    name: ''
   })
   const [countdown, setCountdown] = useState(data.setCountTime)
   const { mutate, isLoading } = useSubmitTest()
@@ -88,7 +88,7 @@ const Question = memo(() => {
             />
           </div>
           <h1 className="text-2xl font-bold uppercase text-gray-800">
-            {data.nameTest}
+            {data.name}
           </h1>
           <div className="flex gap-2 rounded-md border bg-primary-foreground p-2 font-semibold">
             <Clock />

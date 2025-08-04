@@ -33,20 +33,20 @@ const ResultStatistic = memo(() => {
     isError
   } = usePostQuestion()
 
-  const isPassed = data?.statusTest === 'Passed'
-  const countPassed = data?.wordResults.filter(
+  const isPassed = data?.status === 'Passed'
+  const countPassed = data?.results.filter(
     (item) => item.status === 'Passed'
   ).length
 
   const calPercent = useMemo(() => {
-    if (!data?.wordResults?.length || countPassed === undefined) return '0'
+    if (!data?.results?.length || countPassed === undefined) return '0'
 
-    return ((countPassed / data.wordResults.length) * 100).toFixed(1)
-  }, [countPassed, data?.wordResults?.length])
+    return ((countPassed / data.results.length) * 100).toFixed(1)
+  }, [countPassed, data?.results?.length])
 
-  const calLinePercent = (Number(data?.duration) / DEFAULT_COUNTDOWN) * 100
+  const calLinePercent = (Number(data?.countTime) / DEFAULT_COUNTDOWN) * 100
 
-  const { minutes, seconds, hours } = convertTime(Number(data?.duration))
+  const { minutes, seconds, hours } = convertTime(Number(data?.countTime))
   const {
     minutes: minutes2,
     seconds: seconds2,
@@ -94,7 +94,7 @@ const ResultStatistic = memo(() => {
                 : <IconSquareX />}
               </div>
               <div>
-                <p>Test {data?.statusTest}</p>
+                <p>Test {data?.status}</p>
                 <p className="mt-3 text-sm font-normal text-secondary-foreground">
                   Thank you for taking the test.
                 </p>
@@ -105,7 +105,7 @@ const ResultStatistic = memo(() => {
           <CircleProgress
             isPassed={isPassed}
             percentage={Number(calPercent) || 0}
-            statistic={`${countPassed ?? 0}/${data?.wordResults.length ?? 0}`}
+            statistic={`${countPassed ?? 0}/${data?.results.length ?? 0}`}
           />
         </div>
       </div>
@@ -136,7 +136,7 @@ const ResultStatistic = memo(() => {
               <div className="col-span-6 text-xl font-normal text-secondary-foreground">
                 Name test:
                 <span className="ml-6 font-medium text-secondary-foreground">
-                  {data?.nameTest}
+                  {data?.name}
                 </span>
               </div>
               <div className="col-span-6 text-xl font-normal text-secondary-foreground">
@@ -173,7 +173,7 @@ const ResultStatistic = memo(() => {
 
       <div className="col-span-9 rounded-md border-t bg-primary-foreground p-6 font-semibold shadow-md">
         <p className="mb-1 text-lg font-bold">Questions</p>
-        <DetailTable data={data?.wordResults ?? []} />
+        <DetailTable data={data?.results ?? []} />
       </div>
     </div>
   )
