@@ -6,7 +6,7 @@ import { VocabSubject } from '../endPoints'
 import { VOCAB_SUBJECT_KEYS } from './queryKeys'
 
 type TReorderVocabSubjectPayload = {
-  items: TReorderVocabSubject[]
+  subjectIds: TReorderVocabSubject[]
 }
 
 const reorderVocabSubject = async (data: TReorderVocabSubjectPayload) => {

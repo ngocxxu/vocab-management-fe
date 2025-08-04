@@ -79,7 +79,7 @@ export const CustomSubjects = () => {
 
         // Call the API to update the orders
         mutateReorder({
-          items: updatedItems.map((item) => ({
+          subjectIds: updatedItems.map((item) => ({
             id: item.id,
             order: item.order
           }))
