@@ -191,7 +191,7 @@ const FormVocab = ({
     onClose()
   }
 
-  // Reset form khi itemVocab thay đổi (nếu cần)
+  // Reset form when itemVocab changes (if needed)
   useEffect(() => {
     if (itemVocab && isEditing) {
       reset({

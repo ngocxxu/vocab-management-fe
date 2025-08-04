@@ -1,6 +1,6 @@
 import { toast } from '@/components/ui/use-toast'
 import { TVocabSubject } from '@/pages/settings/types'
-import { TTextTarget, TVocab } from '@/pages/vocab/types'
+import { TCreateVocab, TVocab } from '@/pages/vocab/types'
 import { SortingState } from '@tanstack/react-table'
 import { AxiosError } from 'axios'
 import { format } from 'date-fns'
@@ -89,8 +89,9 @@ export const exportFile = (data: TVocab[], fileName?: string) => {
 
 export const importFile = (
   file: File,
-  listSubject: TVocabSubject[]
-): Promise<{ data?: TVocab[]; error?: string }> => {
+  listSubject: TVocabSubject[],
+  listWordTypes: { id: string; name: string; description: string }[]
+): Promise<{ data?: TCreateVocab[]; error?: string }> => {
   return new Promise((resolve) => {
     const reader = new FileReader()
     reader.onload = (event) => {
@@ -166,13 +167,33 @@ export const importFile = (
       }
 
       // Process data
-      const reconstructedData = jsonData.reduce((acc: TVocab[], row) => {
-        const textTarget: TTextTarget = {
+      const reconstructedData = jsonData.reduce((acc: TCreateVocab[], row) => {
+        // Find word type ID if word type name is provided
+        const wordTypeId =
+          row.TextTarget_WordType ?
+            listWordTypes.find(
+              (wordType) => wordType.name === String(row.TextTarget_WordType)
+            )?.id || ''
+          : ''
+
+        // Get subject IDs from subject names
+        const subjectIds =
+          row.TextTarget_Subjects ?
+            String(row.TextTarget_Subjects)
+              .split(', ')
+              .map((label: string) => {
+                const subject = listSubject.find(
+                  (sub) => sub.name === label.trim()
+                )
+                return subject?.id || ''
+              })
+              .filter((id) => id !== '') // Remove empty IDs
+          : []
+
+        const textTarget = {
+          wordTypeId: wordTypeId,
           textTarget: String(row.TextTarget_Text),
-          wordType:
-            row.TextTarget_WordType ?
-              { id: '', name: String(row.TextTarget_WordType), description: '' }
-            : { id: '', name: '', description: '' },
+          grammar: row.TextTarget_Grammar ? String(row.TextTarget_Grammar) : '',
           explanationSource:
             row.TextTarget_ExplanationSource ?
               String(row.TextTarget_ExplanationSource)
@@ -181,6 +202,7 @@ export const importFile = (
             row.TextTarget_ExplanationTarget ?
               String(row.TextTarget_ExplanationTarget)
             : '',
+          subjectIds: subjectIds,
           vocabExamples:
             row.TextTarget_Examples ?
               String(row.TextTarget_Examples)
@@ -189,21 +211,6 @@ export const importFile = (
                   const [source, target] = ex.split(': ')
                   return { source, target }
                 })
-            : [],
-          grammar: row.TextTarget_Grammar ? String(row.TextTarget_Grammar) : '',
-          textTargetSubjects:
-            row.TextTarget_Subjects ?
-              String(row.TextTarget_Subjects)
-                .split(', ')
-                .map((label: string) => ({
-                  label,
-                  id: listSubject.find((sub) => sub.name === label)?.id || '',
-                  subject: {
-                    id: listSubject.find((sub) => sub.name === label)?.id || '',
-                    name: label,
-                    order: 0
-                  }
-                }))
             : []
         }
 
@@ -212,7 +219,6 @@ export const importFile = (
           existing.textTargets.push(textTarget)
         } else {
           acc.push({
-            id: '',
             sourceLanguageCode: String(row.SourceLanguage),
             targetLanguageCode: String(row.TargetLanguage),
             textSource: String(row.TextSource),

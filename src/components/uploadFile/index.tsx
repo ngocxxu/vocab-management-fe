@@ -8,6 +8,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { usePostMultiVocab } from '@/services/vocab/usePostMultiVocab'
 import { useGetAllVocabSubject } from '@/services/vocabSubject/useGetAllVocabSubject'
+import { useGetAllWordTypes } from '@/services/wordType/useGetAllWordTypes'
 import { importFile } from '@/utils'
 import { Upload, X } from 'lucide-react' // Added X icon for remove functionality
 import { useState } from 'react'
@@ -15,9 +16,7 @@ import Button from '../button' // Assuming this is your custom Button component
 import Input from '../input' // Assuming this is your custom Input component
 import { useToast } from '../ui/use-toast'
 
-type TFileUpload = {
-  onClose: () => void
-}
+type TFileUpload = { onClose: () => void }
 
 export const FileUpload = ({ onClose }: TFileUpload) => {
   const { toast } = useToast()
@@ -25,6 +24,7 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
   const [isDragging, setIsDragging] = useState(false) // State to track drag status
   const [isUploading, setIsUploading] = useState(false) // State to track upload status
   const { data: dataVocabSubject } = useGetAllVocabSubject()
+  const { data: dataWordTypes } = useGetAllWordTypes()
   const { mutate: mutateMultiPost, isLoading: isLoadingMultiPost } =
     usePostMultiVocab()
 
@@ -70,7 +70,11 @@ export const FileUpload = ({ onClose }: TFileUpload) => {
     try {
       const results = await Promise.all(
         files.map(async (file) => {
-          const result = await importFile(file, dataVocabSubject?.items ?? [])
+          const result = await importFile(
+            file,
+            dataVocabSubject?.items ?? [],
+            dataWordTypes?.items ?? []
+          )
           if (result.error) {
             toast({
               title: 'Error',
