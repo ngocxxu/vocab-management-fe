@@ -20,7 +20,7 @@ import { useState } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { UseMutateFunction } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
-import { TFormInputsVocabTrainer } from '../../types'
+import { TCreateVocabTrainer } from '../../types'
 import FormVocabTrainer from '../form'
 
 type TToolbar = {
@@ -28,19 +28,17 @@ type TToolbar = {
   mutatePost: UseMutateFunction<
     AxiosResponse,
     unknown,
-    TFormInputsVocabTrainer,
+    TCreateVocabTrainer,
     unknown
   >
   openModal: boolean
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
   rowSelection: RowSelectionState
   setRowSelection: React.Dispatch<React.SetStateAction<Record<string, never>>>
-  isLoadingPost:boolean
+  isLoadingPost: boolean
 }
 
-export type TFormInputsFilter = {
-  status?: string[]
-}
+export type TFormInputsFilter = { status?: string[] }
 
 export const ToolBar = ({
   mutatePost,
@@ -48,7 +46,8 @@ export const ToolBar = ({
   openModal,
   setOpenModal,
   rowSelection,
-  setRowSelection,isLoadingPost
+  setRowSelection,
+  isLoadingPost
 }: TToolbar) => {
   const counts = Object.keys(rowSelection).length
   const { filterData, searchVocabTrainer } = useSelector(
@@ -64,12 +63,10 @@ export const ToolBar = ({
   const [open, setOpen] = useState(false)
 
   const methods = useForm<TFormInputsFilter>({
-    defaultValues: {
-      status: filterData.status
-    }
+    defaultValues: { status: filterData.status }
   })
 
-  const onSubmit: SubmitHandler<TFormInputsFilter> = data => {
+  const onSubmit: SubmitHandler<TFormInputsFilter> = (data) => {
     dispatch(setFilterVocabTrainerState(data))
     setOpen(false)
   }
@@ -110,7 +107,7 @@ export const ToolBar = ({
       </FormProvider>
       <SearchBar
         defaultValue={searchVocabTrainer}
-        onSearch={input => dispatch(setSearchVocabState(input))}
+        onSearch={(input) => dispatch(setSearchVocabState(input))}
       />
 
       <Modal
@@ -137,7 +134,7 @@ export const ToolBar = ({
             }}
           />
         }
-        className="w-full max-w-[100vh] max-h-[90vh] overflow-x-auto"
+        className="max-h-[90vh] w-full max-w-[100vh] overflow-x-auto"
       />
     </div>
   )

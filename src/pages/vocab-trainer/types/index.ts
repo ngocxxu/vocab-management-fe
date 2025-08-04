@@ -17,6 +17,8 @@ export type TVocabTrainer = {
   vocabAssignments: TVocabAssignment[]
   results: TWordResults[]
   questions: TQuestion[]
+  updatedAt: string
+  createdAt: string
 }
 
 export type TVocabAssignment = {
@@ -59,4 +61,17 @@ export type TQuestionAPI = {
   name: string
   setCountTime: number
   questions: TQuestion[]
+}
+
+export type TCreateVocabTrainer = {
+  name: string
+  status: string
+  questionType: EQuestionType
+  reminderTime: number
+  countTime: number
+  setCountTime: number
+  reminderDisabled: boolean
+  reminderRepeat: number
+  reminderLastRemind: string
+  vocabAssignmentIds: string[]
 }

@@ -14,7 +14,8 @@ import {
   DEFAULT_SECOND,
   MINIMUM_WORD
 } from '../../constants'
-import { TFormInputsVocabTrainer } from '../../types'
+import { TCreateVocabTrainer } from '../../types'
+import { EQuestionType, EVocabTrainerStatus } from '../../enum'
 
 type TFormVocabTrainerProps = {
   idVocabTrainer: string
@@ -22,7 +23,7 @@ type TFormVocabTrainerProps = {
   mutate: UseMutateFunction<
     AxiosResponse,
     unknown,
-    TFormInputsVocabTrainer,
+    TCreateVocabTrainer,
     unknown
   >
   isLoading: boolean
@@ -52,21 +53,28 @@ const FormVocabTrainer = ({
   }, [rowSelectionState])
 
   const { handleSubmit, control, watch, setValue } =
-    useForm<TFormInputsVocabTrainer>({
+    useForm<TCreateVocabTrainer>({
       defaultValues: { name: '', setCountTime: DEFAULT_COUNTTIME_MINS },
       resolver: yupResolver(
         FormSchema
-      ) as unknown as Resolver<TFormInputsVocabTrainer>
+      ) as unknown as Resolver<TCreateVocabTrainer>
     })
 
   const isDisabled =
     watch('name').length === 0 || counts < MINIMUM_WORD || isLoading
 
-  const onSubmit: SubmitHandler<TFormInputsVocabTrainer> = (formData) => {
+  const onSubmit: SubmitHandler<TCreateVocabTrainer> = (formData) => {
     mutate({
-      ...formData,
-      wordSelects: mappedIds,
-      setCountTime: formData.setCountTime * DEFAULT_SECOND
+      name: formData.name,
+      status: EVocabTrainerStatus.PENDING,
+      questionType: EQuestionType.MULTIPLE_CHOICE,
+      reminderTime: 0,
+      countTime: 0,
+      setCountTime: formData.setCountTime * DEFAULT_SECOND,
+      reminderDisabled: true,
+      reminderRepeat: 2,
+      reminderLastRemind: new Date().toISOString(),
+      vocabAssignmentIds: mappedIds
     })
   }
 

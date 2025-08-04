@@ -10,3 +10,9 @@ export enum EQuestionType {
   TRUE_OR_FALSE = 'TRUE_OR_FALSE',
   SHORT_ANSWER = 'SHORT_ANSWER'
 }
+
+export enum EVocabTrainerStatus {
+  PENDING = 'PENDING',
+  PASSED = 'PASSED',
+  FAILED = 'FAILED'
+}
