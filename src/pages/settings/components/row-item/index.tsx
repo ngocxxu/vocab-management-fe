@@ -34,27 +34,43 @@ export const RowItem = ({
     mutateDelete(id)
   }
 
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+  }
+
   return (
-    <div className="grid grid-cols-12">
-      <div className="col-span-11 flex gap-2" {...attributes} {...listeners}>
-        <GripVertical className="text-slate-500" />
-        {name}
+    <div className="grid grid-cols-12 items-center">
+      <div className="col-span-11 flex items-center gap-2">
+        <div
+          className="cursor-grab active:cursor-grabbing"
+          {...attributes}
+          {...listeners}
+        >
+          <GripVertical className="text-slate-500" />
+        </div>
+        <span className="flex-1">{name}</span>
       </div>
       <div className="ml-auto flex gap-2">
         <ButtonLib
           className="h-6 w-6"
           variant="ghost"
           size="icon"
-          onClick={handleOpenModal}
+          onClick={(e) => {
+            handleButtonClick(e)
+            handleOpenModal()
+          }}
         >
           <Pen />
         </ButtonLib>
-        {/* 
-        <WarningTable /> */}
 
         <AlertDialog
           head={
-            <ButtonLib className="h-6 w-6" variant="ghost" size="icon">
+            <ButtonLib
+              className="h-6 w-6"
+              variant="ghost"
+              size="icon"
+              onClick={handleButtonClick}
+            >
               <Trash className="text-red-600" />
             </ButtonLib>
           }

@@ -7,7 +7,7 @@ export const SortableItem = ({
   id,
   children
 }: {
-  id: number
+  id: string | number
   children: (handlers: {
     attributes?: DraggableAttributes
     listeners?: SyntheticListenerMap
@@ -19,24 +19,16 @@ export const SortableItem = ({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    padding: '10px',
-    backgroundColor: 'white',
     cursor: 'grab'
   }
 
-  const handleButtonClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
-
   return (
-    <button
-      className="rounded-md border border-slate-300"
+    <div
       ref={setNodeRef}
       style={style}
-      onClick={handleButtonClick}
+      className="rounded-md border border-slate-300 bg-white p-3"
     >
       {children({ attributes, listeners })}
-    </button>
+    </div>
   )
 }

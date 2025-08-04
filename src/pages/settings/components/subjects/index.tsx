@@ -35,7 +35,10 @@ import { RowItem } from '../row-item'
 export const CustomSubjects = () => {
   const [items, setItems] = useState<TVocabSubject[]>([])
   const [openModal, setOpenModal] = useState(false)
-  const [editItem, setEditItem] = useState<Omit<TVocabSubject, 'id' | 'order'> | null>(null)
+  const [editItem, setEditItem] = useState<Omit<
+    TVocabSubject,
+    'id' | 'order'
+  > | null>(null)
   const [editItemId, setEditItemId] = useState<string | null>(null)
   const { handleSubmit, control, watch, setValue, reset } = useForm<{
     name: string
@@ -143,11 +146,14 @@ export const CustomSubjects = () => {
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
         >
-          <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          <SortableContext
+            items={items.map((item) => item.id)}
+            strategy={verticalListSortingStrategy}
+          >
             <ScrollArea className="h-[75vh]">
               <div className="flex flex-col gap-2">
                 {items.map((item) => (
-                  <SortableItem key={item.order} id={item.order}>
+                  <SortableItem key={item.id} id={item.id}>
                     {({ attributes, listeners }: any) => (
                       <RowItem
                         {...item}
