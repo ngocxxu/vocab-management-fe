@@ -1,5 +1,6 @@
 import { redirectToLogin } from '@/utils'
 import axios, { AxiosError } from 'axios'
+import { postRefreshToken } from './auth/usePostRefreshToken'
 
 export const STATUS_CODES = {
   SUCCESS: 200,
@@ -13,13 +14,13 @@ export const API_URL = import.meta.env.VITE_APP_API_URL
 
 // ✅ Simplified setup for cookie-based auth
 export const httpClient = axios.create({
+  withCredentials: true, // Important: automatically sends cookies
   baseURL: API_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json'
-  },
-  withCredentials: true // Important: automatically sends cookies
+  }
 })
 
 // ✅ Simplified request interceptor (or no need)
@@ -34,32 +35,31 @@ httpClient.interceptors.request.use(
   }
 )
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
 // ✅ Simplified response interceptor
 httpClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const { response, config: originalRequest } = error
 
-    if (response?.status === 403) {
-      if (!originalRequest._retryCount) {
-        originalRequest._retryCount = 0
-      }
+    if (response?.status === 401) {
+      try {
+        // Call refresh endpoint - browser automatically sends refresh cookie
+        await postRefreshToken()
 
-      if (originalRequest._retryCount < 3) {
-        originalRequest._retryCount++
-
-        // Exponential backoff: 1s, 2s, 4s
-        const delayTime = Math.pow(2, originalRequest._retryCount - 1) * 1000
-        await delay(delayTime)
-
+        // Retry the original request
         return httpClient(originalRequest)
+      } catch (refreshError) {
+        redirectToLogin()
+        return Promise.reject(refreshError)
       }
+    }
 
+    if (response?.status === 403) {
       redirectToLogin()
     }
 
     return Promise.reject(error)
   }
 )
+
+axios.defaults.withCredentials = true
